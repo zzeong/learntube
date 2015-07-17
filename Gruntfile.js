@@ -521,7 +521,7 @@ module.exports = function (grunt) {
             filePath = filePath.replace('/.tmp/', '');
             return '<script src="' + filePath + '"></script>';
           },
-          starttag: '<!-- injector:js -->',
+          starttag: '<!-- injector:js By grunt-injector -->',
           endtag: '<!-- endinjector -->'
         },
         files: {
@@ -546,7 +546,7 @@ module.exports = function (grunt) {
             filePath = filePath.replace('/client/components/', '');
             return '@import \'' + filePath + '\';';
           },
-          starttag: '// injector',
+          starttag: '// injector By grunt-injector',
           endtag: '// endinjector'
         },
         files: {
@@ -565,7 +565,7 @@ module.exports = function (grunt) {
             filePath = filePath.replace('/.tmp/', '');
             return '<link rel="stylesheet" href="' + filePath + '">';
           },
-          starttag: '<!-- injector:css -->',
+          starttag: '<!-- injector:css By grunt-injector -->',
           endtag: '<!-- endinjector -->'
         },
         files: {
@@ -667,10 +667,12 @@ module.exports = function (grunt) {
       ]);
     }
 
-    else grunt.task.run([
-      'test:server',
-      'test:client'
-    ]);
+    else {
+      grunt.task.run([
+        'test:server',
+        'test:client'
+      ]);
+    }
   });
 
   grunt.registerTask('build', [

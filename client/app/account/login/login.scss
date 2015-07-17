@@ -12,9 +12,11 @@ $btnGithubBackgroundHighlight:      #ccc;
 // Social buttons
 // --------------------------------------------------
 
-.btn-google-plus {
-  @include button-variant($btnText, $btnGooglePlusBackground, $btnGooglePlusBackgroundHighlight);
-}
-.btn-github {
-  @include button-variant($btnTextAlt, $btnGithubBackground, $btnGithubBackgroundHighlight);
-}
+//------ DISABLE BOOTSTRAP
+//.btn-google-plus {
+//  @include button-variant($btnText, $btnGooglePlusBackground, $btnGooglePlusBackgroundHighlight);
+//}
+//.btn-github {
+//  @include button-variant($btnTextAlt, $btnGithubBackground, $btnGithubBackgroundHighlight);
+//}
+//------ END DISABLE BOOTSTRAP

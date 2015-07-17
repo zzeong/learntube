@@ -1,7 +1,11 @@
-$icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
+//------ DISABLE BOOTSTRAP
+//$icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
 $fa-font-path: "/bower_components/font-awesome/fonts";
+//------ END DISABLE BOOTSTRAP
 
-@import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
+//------ DISABLE BOOTSTRAP
+//@import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
+//------ END DISABLE BOOTSTRAP
 @import 'font-awesome/scss/font-awesome';
 
 /**
@@ -20,4 +24,5 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import 'account/login/login.scss';
 @import 'admin/admin.scss';
 @import 'main/main.scss';
+@import 'modal/modal.scss';
 // endinjector
