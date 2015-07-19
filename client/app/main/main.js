@@ -6,6 +6,7 @@ angular.module('learntubeApp')
       .state('Home', {
         url: '/',
         templateUrl: 'app/main/main.html',
-        controller: 'MainCtrl'
+        //controller: 'MainCtrl'
+        controller: 'AppCtrl'
       });
   });
