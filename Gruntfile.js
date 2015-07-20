@@ -521,7 +521,7 @@ module.exports = function (grunt) {
             filePath = filePath.replace('/.tmp/', '');
             return '<script src="' + filePath + '"></script>';
           },
-          starttag: '<!-- injector:js By grunt-injector -->',
+          starttag: '<!-- injector:js -->',
           endtag: '<!-- endinjector -->'
         },
         files: {
