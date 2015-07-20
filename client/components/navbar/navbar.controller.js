@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-  .controller('NavbarCtrl', function ($scope, $location, Auth) {
+  .controller('ToolbarCtrl', function ($scope, $location, Auth) {
     $scope.menu = [{
       'title': 'Home',
       'link': '/'
