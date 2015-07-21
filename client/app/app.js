@@ -16,6 +16,21 @@ angular.module('learntubeApp', [
     $httpProvider.interceptors.push('authInterceptor');
   })
 
+  .directive('focusMe', function($timeout) {
+    return {
+      link: function(scope, element, attrs) {
+        scope.$watch(attrs.focusMe, function(value) {
+          if(value === true) {
+            $timeout(function() {
+              element[0].focus(); 
+              scope[attrs.focusMe] = false;
+            });
+          }
+        }); 
+      } 
+    }; 
+  })
+
   .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
     return {
       // Add authorization token to headers

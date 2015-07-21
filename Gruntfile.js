@@ -546,7 +546,7 @@ module.exports = function (grunt) {
             filePath = filePath.replace('/client/components/', '');
             return '@import \'' + filePath + '\';';
           },
-          starttag: '// injector By grunt-injector',
+          starttag: '// injector',
           endtag: '// endinjector'
         },
         files: {

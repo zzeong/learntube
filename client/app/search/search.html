@@ -1,9 +1,5 @@
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 
-<div id="buttons">
-  <label> <input id="query" type="text" ng-model="q"/><a id="search-button" ng-href="/search/{{q}}">Search</a></label>
-</div>
-
 <md-content>
   <md-list>
     <md-list-item class="md-2-line" ng-repeat="classe in classes" ng-click="navigateTo(classe)">
