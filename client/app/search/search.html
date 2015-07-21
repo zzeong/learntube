@@ -6,7 +6,7 @@
 
 <md-content>
   <md-list>
-    <md-list-item class="md-2-line" ng-repeat="classe in classes">
+    <md-list-item class="md-2-line" ng-repeat="classe in classes" ng-click="navigateTo(classe)">
       <div class="md-list-item-text">
         <h3>{{ classe.snippet.title }}</h3>
         <h4>{{ classe.snippet.channelTitle }}</h4>

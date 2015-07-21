@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('SearchCtrl', function($scope, $http, $stateParams) {
+.controller('SearchCtrl', function($scope, $http, $stateParams, $state) {
   $scope.q = $stateParams.q;
 
   $http.get('https://www.googleapis.com/youtube/v3/search', {
@@ -14,5 +14,10 @@ angular.module('learntubeApp')
     }
   }).success(function(response) {
     $scope.classes = response.items; 
+    console.log($scope.classes);
   });
+
+  $scope.navigateTo = function(classe) {
+    $state.go('Summary', { cid: classe.id.playlistId });
+  };
 });
