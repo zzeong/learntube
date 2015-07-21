@@ -7,6 +7,8 @@ angular.module('learntubeApp')
       back: '/assets/images/back.svg',
     }
 
+    $scope.title = $state.current.name;
+
     $scope.leftIconChanger = function() {
       return $state.current.url === '/' ? path.menu : path.back;
     };
