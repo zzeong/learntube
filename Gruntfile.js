@@ -565,7 +565,7 @@ module.exports = function (grunt) {
             filePath = filePath.replace('/.tmp/', '');
             return '<link rel="stylesheet" href="' + filePath + '">';
           },
-          starttag: '<!-- injector:css By grunt-injector -->',
+          starttag: '<!-- injector:css -->',
           endtag: '<!-- endinjector -->'
         },
         files: {

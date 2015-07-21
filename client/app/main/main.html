@@ -1,8 +1,13 @@
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 
-<div id="buttons">
-  <label> <input id="query" type="text" ng-model="q" ng-init="q='cats'"/><a id="search-button" ng-href="/search/{{q}}">Search</a></label>
-</div>
-
 <md-content>
+  <div id="intro" md-theme="docs-dark" layout="column" layout-align="center center">
+    <h2 id="slogan" class="md-headline">All you need is knowledge</h2>
+    <form ng-submit="goSearch()">
+      <md-input-container md-no-float>
+        <md-icon md-svg-src="/assets/images/search.svg" ng-click="goSearch()"></md-icon>
+        <input ng-model="q" type="text" placeholder="Search anything">
+      </md-input-container>
+    </form>
+  </div>
 </md-content>

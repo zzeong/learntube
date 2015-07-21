@@ -1,2 +1,14 @@
 .toolbardemoBasicUsage md-toolbar md-icon.md-default-theme {
   color: white; }
+
+#intro {
+  background-image: url("/assets/images/intro_background.jpg");
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: 50% 0;
+  height: 250px;
+}
+
+#slogan {
+  color: #ffffff;
+}

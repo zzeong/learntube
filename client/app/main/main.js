@@ -3,7 +3,7 @@
 angular.module('learntubeApp')
   .config(function ($stateProvider) {
     $stateProvider
-      .state('main', {
+      .state('Home', {
         url: '/',
         templateUrl: 'app/main/main.html',
         controller: 'MainCtrl'
