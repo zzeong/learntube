@@ -2,26 +2,25 @@
 
 angular.module('learntubeApp')
 .controller('ToolbarCtrl', function ($scope, $location, $state, $window) {
-  var curUrl = $state.current.url,
-    path = {
+  var path = {
     menu: '/assets/images/menu.svg',
     back: '/assets/images/back.svg',
   };
 
 
-  $scope.title = $state.current.name;
+  $scope.stateNameCheck = function(name) {
+    return $state.current.name === name;
+  };
 
-  $scope.isHome = function() {
-    return curUrl === '/' ? true : false;
-  };
+  $scope.title = $scope.stateNameCheck('Search') ? $state.params.q : $state.current.name;
+
   $scope.leftIconChanger = function() {
-    return $scope.isHome() ? path.menu : path.back;
+    return $scope.stateNameCheck('Home') ? path.menu : path.back;
   };
-  $scope.back = function() {
-    $window.history.back(); 
-  };
+
+  $scope.back = function() { $window.history.back(); };
 })
-.config( function($mdThemingProvider){
+.config(function($mdThemingProvider){
   // Configure a dark theme with primary foreground yellow
   $mdThemingProvider.theme('docs-dark', 'default')
   .primaryPalette('yellow')
