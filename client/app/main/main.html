@@ -1,49 +1,17 @@
-<div ng-include="'components/toolbar/toolbar.html'"></div>
-
-<md-content>
-
-  <section layout="row" flex="">
-
-    <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
-
-      <md-toolbar class="md-theme-indigo">
-        <h1 class="md-toolbar-tools">Sidenav Left</h1>
-      </md-toolbar>
-      <md-content layout-padding="" ng-controller="LeftCtrl">
-        <md-button ng-click="close()" class="md-primary" hide-gt-md="">
-          Close Sidenav Left
-        </md-button>
-      </md-content>
-
-    </md-sidenav>
-
-    <md-content flex="" layout-padding="">
-
-      <div layout="column" layout-fill="" layout-align="top center">
-        <div>
-          <md-button ng-click="toggleLeft()" class="md-primary" hide-gt-md="">
-            Toggle left
-          </md-button>
-        </div>
-
+<div layout="row">
+  <div ng-include="'components/sidenav/sidenav.html'"></div>
+  <div flex>
+    <div ng-include="'components/toolbar/toolbar.html'"></div>
+    <md-content>
+      <div id="intro" md-theme="docs-dark" layout="column" layout-align="center center">
+        <h2 id="slogan" class="md-headline">All you need is knowledge</h2>
+        <form ng-submit="goSearch()">
+          <md-input-container md-no-float>
+            <md-icon md-svg-src="/assets/images/search.svg" ng-click="goSearch()"></md-icon>
+            <input ng-model="q" type="search" placeholder="Search anything">
+          </md-input-container>
+        </form>
       </div>
-
-      <div flex=""></div>
-
     </md-content>
-
-  </section>
-
-  <div id="intro" md-theme="docs-dark" layout="column" layout-align="center center">
-    <h2 id="slogan" class="md-headline">All you need is knowledge</h2>
-    <form ng-submit="goSearch()">
-      <md-input-container md-no-float>
-        <md-icon md-svg-src="/assets/images/search.svg" ng-click="goSearch()"></md-icon>
-        <input ng-model="q" type="search" placeholder="Search anything">
-      </md-input-container>
-    </form>
   </div>
-
-</md-content>
-
->>>>>>> add Sidenav demo code
+</div>
