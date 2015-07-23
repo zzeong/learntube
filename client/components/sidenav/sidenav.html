@@ -1,10 +1,19 @@
 <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-md')">
-  <md-toolbar>
-    <h1 class="md-toolbar-tools">Sidenav Left</h1>
-  </md-toolbar>
-  <md-content layout-padding="" ng-controller="SidenavCtrl">
-    <md-button ng-click="close()" class="md-primary" hide-gt-md="">
-      Close Sidenav Left
-    </md-button>
-  </md-content>
+  <div class="sidenav-account-area md-hue-1" ng-controller="SidenavDrawerCtrl">
+    <div class="image-cont">
+      <img ng-src="{{ getUserImage() }}" alt="Account image"/>
+    </div>
+    <div class="account-cont">
+      <md-button ng-hide="isLoggedIn()" class="md-raised" href="/login">Sign in</md-button>
+      <div class="inner-left-padding" ng-show="isLoggedIn()">
+        <p class="md-body-2">{{ getCurrentUser().name }}</p>
+        <p class="md-body-1">{{ getCurrentUser().email }}</p>
+      </div>
+    </div>
+  </div>
+  <md-list ng-show="isLoggedIn()" ng-controller="SidenavDrawerCtrl">
+    <md-list-item ng-repeat="listItem in personalList" ng-click="doPersonality(listItem)">
+      <p>{{ listItem }}</p>
+    </md-list-item>
+  </md-list>
 </md-sidenav>

@@ -19,11 +19,19 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
     padding: 0.2em 0;
 }
 
+
+// Override Angular Material Styles
+.md-body-2 {
+  font-weight: 700;
+}
+
+
 // Component styles are injected through grunt
 // injector
 @import 'account/login/login.scss';
 @import 'admin/admin.scss';
 @import 'main/main.scss';
 @import 'modal/modal.scss';
+@import 'sidenav/sidenav.scss';
 @import 'toolbar/toolbar.scss';
 // endinjector
