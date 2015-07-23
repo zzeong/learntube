@@ -44,12 +44,6 @@ var all = {
     }
   },
 
-  youtube: {
-    clientID: process.env.YOUTUBE_APP_ID || 'id',
-    clientSecret: process.env.YOUTUBE_APP_SECRET || 'secret',
-    callbackURL:  (process.env.DOMAIN || '') + '/auth/youtube/callback'
-  },
-
   google: {
     clientID:     process.env.GOOGLE_ID || 'id',
     clientSecret: process.env.GOOGLE_SECRET || 'secret',
