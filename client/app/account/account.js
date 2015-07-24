@@ -3,17 +3,17 @@
 angular.module('learntubeApp')
   .config(function ($stateProvider) {
     $stateProvider
-      .state('login', {
+      .state('Login', {
         url: '/login',
         templateUrl: 'app/account/login/login.html',
         controller: 'LoginCtrl'
       })
-      .state('signup', {
+      .state('Sign up', {
         url: '/signup',
         templateUrl: 'app/account/signup/signup.html',
         controller: 'SignupCtrl'
       })
-      .state('settings', {
+      .state('Settings', {
         url: '/settings',
         templateUrl: 'app/account/settings/settings.html',
         controller: 'SettingsCtrl',

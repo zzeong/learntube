@@ -47,7 +47,6 @@
     <![endif]-->
     <!-- build:js({client,node_modules}) app/vendor.js -->
       <!-- bower:js -->
-      <script src="bower_components/jquery/jquery.js"></script>
       <script src="bower_components/angular/angular.js"></script>
       <script src="bower_components/angular-resource/angular-resource.js"></script>
       <script src="bower_components/angular-cookies/angular-cookies.js"></script>
@@ -58,6 +57,7 @@
       <script src="bower_components/angular-animate/angular-animate.js"></script>
       <script src="bower_components/angular-aria/angular-aria.js"></script>
       <script src="bower_components/angular-material/angular-material.js"></script>
+      <script src="bower_components/angular-messages/angular-messages.js"></script>
       <!-- endbower -->
       <script src="socket.io-client/socket.io.js"></script>
     <!-- endbuild -->
@@ -80,15 +80,16 @@
           <script src="app/search/search.controller.js"></script>
           <script src="app/search/search.js"></script>
           <script src="components/auth/auth.service.js"></script>
+          <script src="components/auth/match.directive.js"></script>
+          <script src="components/auth/password.directive.js"></script>
+          <script src="components/auth/pwcheck.directive.js"></script>
           <script src="components/auth/user.service.js"></script>
           <script src="components/modal/modal.service.js"></script>
           <script src="components/mongoose-error/mongoose-error.directive.js"></script>
           <script src="components/sidenav/sidenav.controller.js"></script>
           <script src="components/socket/socket.service.js"></script>
           <script src="components/toolbar/toolbar.controller.js"></script>
-          <script src="components/youtube/youtube.service.js"></script>
           <!-- endinjector -->
         <!-- endbuild -->
-    <script src="https://apis.google.com/js/client.js?onload=googleApiClientReady"></script>
 </body>
 </html>

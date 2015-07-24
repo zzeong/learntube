@@ -4,6 +4,7 @@ angular.module('learntubeApp', [
   'ngCookies',
   'ngResource',
   'ngSanitize',
+  'ngMessages',
   'btford.socket-io',
   'ui.router',
   'ngMaterial'

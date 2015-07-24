@@ -18,7 +18,7 @@ angular.module('learntubeApp')
   };
   $scope.getUserImage = function() {
     var guestImgPath = '/assets/images/guest.png';
-    return $scope.isLoggedIn() ? $scope.getCurrentUser().google.image.url : guestImgPath;
+    return _.has($scope.getCurrentUser(), 'google') ? $scope.getCurrentUser().google.image.url : guestImgPath;
   };
 
   $scope.doPersonality = function(personalItem) {

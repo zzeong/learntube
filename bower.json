@@ -13,7 +13,7 @@
     "angular-socket-io": "~0.6.0",
     "angular-ui-router": "~0.2.15",
     "angular-material": "master",
-    "jquery": "1.8.2"
+    "angular-messages": "~1.4.3"
   },
   "devDependencies": {
     "angular-mocks": ">=1.2.*",
