@@ -1,17 +1,29 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('ToolbarCtrl', function ($scope, $location, $state, $window, $mdUtil, $mdSidenav, $log) {
+.controller('ToolbarCtrl', function ($scope, $location, $state, $window, $mdUtil, $mdSidenav, $log, Auth) {
   var path = {
     menu: '/assets/images/menu.svg',
     back: '/assets/images/back.svg',
     clear: '/assets/imags/clear.svg',
-  };
-
-  var back = function() { $window.history.back(); },
+  },
+  back = function() { $window.history.back(); },
   toggleLeft = buildToggler('left');
 
+
   $scope.onSearching = false;
+  $scope.getCurrentUser = Auth.getCurrentUser;
+  $scope.isLoggedIn = Auth.isLoggedIn;
+  $scope.personalMenu = [{
+    name: 'Watched Contents',
+    url: '/'
+  }, {
+    name: 'Uploaded Contents',
+    url: '/'
+  }, {
+    name: 'Settings',
+    url: '/'
+  }];
   $scope.toggleSearchingState = function() {
     $scope.onSearching = !$scope.onSearching; 
     $scope.focusInput = true;
@@ -24,6 +36,14 @@ angular.module('learntubeApp')
   $scope.goSearch = function() { $state.go('Search', { q: $scope.q }); };
   $scope.leftTrigger = function() {
     $scope.stateNameCheck('Home') ? toggleLeft() : back();
+  };
+  $scope.getUserImgPath = function(user) {
+    var guestImgPath = '/assets/images/guest.png';
+    return _.has(user, 'google') ? user.google.image.url : guestImgPath;   
+  };
+  $scope.logout = function() {
+    Auth.logout();
+    $location.path('/');
   };
 
   /**
@@ -41,10 +61,4 @@ angular.module('learntubeApp')
     return debounceFn;
   }
 
-})
-.config(function($mdThemingProvider){
-  // Configure a dark theme with primary foreground yellow
-  $mdThemingProvider.theme('docs-dark', 'default')
-  .primaryPalette('yellow')
-  .dark();
 });

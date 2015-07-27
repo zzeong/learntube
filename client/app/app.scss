@@ -1,16 +1,13 @@
-//------ DISABLE BOOTSTRAP
-//$icon-font-path: "/bower_components/bootstrap-sass-official/vendor/assets/fonts/bootstrap/";
 $fa-font-path: "/bower_components/font-awesome/fonts";
-//------ END DISABLE BOOTSTRAP
 
-//------ DISABLE BOOTSTRAP
-//@import 'bootstrap-sass-official/vendor/assets/stylesheets/bootstrap';
-//------ END DISABLE BOOTSTRAP
 @import 'font-awesome/scss/font-awesome';
 
 /**
  * App-wide Styles
  */
+$md-border-radius: 4px;
+$md-account-img-size: 64px;
+$md-account-br-rd: $md-account-img-size / 2;
 
 .browsehappy {
     margin: 0.2em 0;
@@ -23,6 +20,16 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 // Override Angular Material Styles
 .md-body-2 {
   font-weight: 700;
+}
+// End Override -------------------
+
+.account-img {
+  width: $md-account-img-size;
+  height: $md-account-img-size;
+  border-radius: $md-account-br-rd;
+}
+md-toolbar .md-menu {
+  padding: 0;
 }
 
 

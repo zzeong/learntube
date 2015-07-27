@@ -667,6 +667,14 @@ module.exports = function (grunt) {
       ]);
     }
 
+    else if (target === 'client_watch') {
+      return grunt.task.run([
+        'test:client',
+        'watch:jsTest'
+      ]);
+
+    }
+
     else {
       grunt.task.run([
         'test:server',

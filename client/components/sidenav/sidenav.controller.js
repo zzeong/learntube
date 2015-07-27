@@ -5,9 +5,17 @@ angular.module('learntubeApp')
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.isAdmin = Auth.isAdmin;
   $scope.getCurrentUser = Auth.getCurrentUser;
-  $scope.personalList = ['Watched Contents', 'Uploaded Contents', 'Settings', 'Log out'];
+  $scope.personalMenu = [{
+    name: 'Watched Contents',
+    url: '/'
+  }, {
+    name: 'Uploaded Contents',
+    url: '/'
+  }, {
+    name: 'Settings',
+    url: '/'
+  }];
 
-  console.log($scope.getCurrentUser());
   $scope.logout = function() {
     Auth.logout();
     $location.path('/');
@@ -16,15 +24,11 @@ angular.module('learntubeApp')
   $scope.isActive = function(route) {
     return route === $location.path();
   };
+
   $scope.getUserImage = function() {
     var guestImgPath = '/assets/images/guest.png';
     return _.has($scope.getCurrentUser(), 'google') ? $scope.getCurrentUser().google.image.url : guestImgPath;
   };
-
-  $scope.doPersonality = function(personalItem) {
-    if(personalItem === 'Log out') { $scope.logout(); }
-  };
-
 })
 .controller('SidenavCtrl', function ($scope, $mdSidenav, $log) {
   $scope.close = function () {

@@ -9,6 +9,8 @@ module.exports = function(config) {
     // testing framework to use (jasmine/mocha/qunit/...)
     frameworks: ['jasmine'],
 
+    reporters: ['spec'],
+
     // list of files / patterns to load in the browser
     files: [
       'client/bower_components/jquery/dist/jquery.js',
@@ -24,6 +26,7 @@ module.exports = function(config) {
       'client/bower_components/angular-animate/angular-animate.js',
       'client/bower_components/angular-aria/angular-aria.js',
       'client/bower_components/angular-material/angular-material.js',
+      'client/bower_components/angular-messages/angular-messages.js',
       'client/app/app.js',
       'client/app/app.coffee',
       'client/app/**/*.js',
