@@ -79,6 +79,22 @@ module.exports = function (grunt) {
         ],
         tasks: ['newer:jshint:all', 'karma']
       },
+//      jshint: {
+//        files: [
+//          '<%= yeoman.client %>/{app,components}/**/*.js',
+//          '<%= yeoman.client %>/{app,components}/**/*.spec.js',
+//          '<%= yeoman.client %>/{app,components}/**/*.mock.js'
+//        ], 
+//        tasks: ['newer:jshint:all']
+//      },
+//      unitTest: {
+//        files: [
+//          '<%= yeoman.client %>/{app,components}/**/*.js',
+//          '<%= yeoman.client %>/{app,components}/**/*.spec.js',
+//          '<%= yeoman.client %>/{app,components}/**/*.mock.js'
+//        ], 
+//        tasks: ['karma']
+//      },
       injectSass: {
         files: [
           '<%= yeoman.client %>/{app,components}/**/*.{scss,sass}'],
@@ -232,7 +248,24 @@ module.exports = function (grunt) {
         src: '<%= yeoman.client %>/index.html',
         ignorePath: '<%= yeoman.client %>/',
         exclude: [/bootstrap-sass-official/, /bootstrap.js/, '/json3/', '/es5-shim/', /bootstrap.css/, /font-awesome.css/ ]
-      }
+      },
+      karma: {
+        devDependencies: true,
+        src: 'karma.conf.js',
+        ignorePath: '<%= yeoman.client %>/',
+        fileTypes: {
+          js: {
+            block: /(([\s\t]*)\/\/\s*bower:*(\S*))(\n|\r|.)*?(\/\/\s*endbower)/gi,
+            detect: {
+              js: /'(.*\.js)'/gi
+            },
+            replace: {
+              js: '\'<%= yeoman.client %>/{{filePath}}\','
+            }
+          }, 
+        },
+        exclude: [/angular-scenario/]
+      },
     },
 
     // Renames files for browser caching purposes
@@ -667,10 +700,10 @@ module.exports = function (grunt) {
       ]);
     }
 
-    else if (target === 'client_watch') {
+    else if (target === 'unit') {
       return grunt.task.run([
-        'test:client',
-        'watch:jsTest'
+        'test:client'
+        //'watch:unitTest'
       ]);
 
     }
