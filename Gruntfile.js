@@ -68,23 +68,24 @@ module.exports = function (grunt) {
         ],
         tasks: ['injector:css']
       },
+      wiredep: {
+        files: ['bower.json'], 
+        tasks: ['wiredep']
+      },
       mochaTest: {
         files: ['server/**/*.spec.js'],
         tasks: ['env:test', 'mochaTest']
       },
       jshint: {
         files: [
-          '<%= yeoman.client %>/{app,components}/**/*.js',
-          '<%= yeoman.client %>/{app,components}/**/*.spec.js',
-          '<%= yeoman.client %>/{app,components}/**/*.mock.js'
+          '<%= yeoman.client %>/{app,components}/**/*.js'
         ], 
         tasks: ['newer:jshint:all']
       },
       unitTest: {
         files: [
-          '<%= yeoman.client %>/{app,components}/**/*.js',
-          '<%= yeoman.client %>/{app,components}/**/*.spec.js',
-          '<%= yeoman.client %>/{app,components}/**/*.mock.js'
+          'karma.conf.js',
+          '<%= yeoman.client %>/{app,components}/**/*.js'
         ], 
         tasks: ['karma']
       },
@@ -113,6 +114,8 @@ module.exports = function (grunt) {
           '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.css',
           '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.html',
           
+          '<%= yeoman.client %>/index.html',
+
           '.tmp/{app,components}/**/*.js',
           
           '!{.tmp,<%= yeoman.client %>}{app,components}/**/*.spec.js',
