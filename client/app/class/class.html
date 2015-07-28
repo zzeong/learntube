@@ -1,4 +1,82 @@
+
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 
+<!-- 가장 처음 업로드된 강의 -->
+
+
+<!-- 클래스 소개 -->
 <md-content>
+<md-list>
+<md-list-item class="md-3-line">
+<div class="md-list-item-text">
+  <h3>{{classe.snippet.title}}</h3>
+  <h4>{{classe.snippet.channelTitle}}</h4>
+  <p>{{classe.snippet.description}}</p>
+  <a ng-click="feedLimit = feedLimit + 1">Show more...</a>
+</div>
+
+<md-divider></md-divider>
+</div>
+</md-list-item>
+</md-list>
 </md-content>
+
+
+<!-- 선생님 소개  -->
+<br>
+here is TUTOR AREA
+<br><br>
+<md-divider></md-divider>
+
+
+<!-- 클래스 내의 강의 목록 -->
+<h3>Lectures in this Class</h3>
+
+<script>var idx = 0;</script>
+
+<md-content>
+<md-list>
+<md-list-item class="md-3-line" ng-repeat="lecture in lecArr"> 
+
+<div class="md-list-item-text" >
+  
+
+ <!--  강의 썸네일  -->
+  <div id="lecture_img">
+    <img ng-src="{{ lecture.thumbnail }}" width="50" height="37.5">
+  </div>
+
+ <!--  강의 번호  -->
+  <div id="lecture_position">
+    <font size="1" maxlength="15">{{ lecture.position+1 }}.&nbsp</font>
+  </div>
+
+ <!--  강의 제목  -->
+  <div id="lecture_title">
+    <font size="1" maxlength="15">{{ lecture.lectureTitle }} /&nbsp</font>
+  </div>
+
+ <!--  강의 재생시간  -->
+ <div id="lecture_duration">
+   <font size="1" maxlength="15">{{ lecture.duration }}&nbsp</font>
+ </div> 
+
+</div>
+
+<md-divider></md-divider>
+
+
+
+</md-list-item>
+</md-list>
+</md-content>
+
+
+
+<style>
+  
+  #lecture_img, #lecture_title, #lecture_position, #lecture_duration{
+    float : left;
+  }
+
+</style>
