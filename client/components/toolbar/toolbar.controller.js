@@ -2,6 +2,17 @@
 
 angular.module('learntubeApp')
 .controller('ToolbarCtrl', function ($scope, $location, $state, $window, $mdUtil, $mdSidenav, $log, Auth) {
+  var buildToggler =  function (navID) {
+    var debounceFn =  $mdUtil.debounce(function(){
+      $mdSidenav(navID)
+      .toggle()
+      .then(function () {
+        $log.debug('toggle ' + navID + ' is done');
+      });
+    },200);
+    return debounceFn;
+  };
+
   var path = {
     menu: '/assets/images/menu.svg',
     back: '/assets/images/back.svg',
@@ -35,7 +46,8 @@ angular.module('learntubeApp')
   };
   $scope.goSearch = function() { $state.go('Search', { q: $scope.q }); };
   $scope.leftTrigger = function() {
-    $scope.stateNameCheck('Home') ? toggleLeft() : back();
+    var func = $scope.stateNameCheck('Home') ? toggleLeft : back;
+    func();
   };
   $scope.getUserImgPath = function(user) {
     var guestImgPath = '/assets/images/guest.png';
@@ -46,19 +58,5 @@ angular.module('learntubeApp')
     $location.path('/');
   };
 
-  /**
-   * Build handler to open/close a SideNav; when animation finishes
-   * report completion in console
-   */
-  function buildToggler(navID) {
-    var debounceFn =  $mdUtil.debounce(function(){
-      $mdSidenav(navID)
-      .toggle()
-      .then(function () {
-        $log.debug("toggle " + navID + " is done");
-      });
-    },200);
-    return debounceFn;
-  }
-
+  
 });

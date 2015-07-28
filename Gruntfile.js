@@ -72,29 +72,22 @@ module.exports = function (grunt) {
         files: ['server/**/*.spec.js'],
         tasks: ['env:test', 'mochaTest']
       },
-      jsTest: {
+      jshint: {
         files: [
+          '<%= yeoman.client %>/{app,components}/**/*.js',
           '<%= yeoman.client %>/{app,components}/**/*.spec.js',
           '<%= yeoman.client %>/{app,components}/**/*.mock.js'
-        ],
-        tasks: ['newer:jshint:all', 'karma']
+        ], 
+        tasks: ['newer:jshint:all']
       },
-//      jshint: {
-//        files: [
-//          '<%= yeoman.client %>/{app,components}/**/*.js',
-//          '<%= yeoman.client %>/{app,components}/**/*.spec.js',
-//          '<%= yeoman.client %>/{app,components}/**/*.mock.js'
-//        ], 
-//        tasks: ['newer:jshint:all']
-//      },
-//      unitTest: {
-//        files: [
-//          '<%= yeoman.client %>/{app,components}/**/*.js',
-//          '<%= yeoman.client %>/{app,components}/**/*.spec.js',
-//          '<%= yeoman.client %>/{app,components}/**/*.mock.js'
-//        ], 
-//        tasks: ['karma']
-//      },
+      unitTest: {
+        files: [
+          '<%= yeoman.client %>/{app,components}/**/*.js',
+          '<%= yeoman.client %>/{app,components}/**/*.spec.js',
+          '<%= yeoman.client %>/{app,components}/**/*.mock.js'
+        ], 
+        tasks: ['karma']
+      },
       injectSass: {
         files: [
           '<%= yeoman.client %>/{app,components}/**/*.{scss,sass}'],
@@ -626,6 +619,12 @@ module.exports = function (grunt) {
     this.async();
   });
 
+  grunt.registerTask('watch:nonTest', function() {
+    delete grunt.config.data.watch.jshint;
+    delete grunt.config.data.watch.unitTest;
+    grunt.task.run('watch');
+  });
+
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'env:all', 'env:prod', 'express:prod', 'wait', 'open', 'express-keepalive']);
@@ -655,7 +654,7 @@ module.exports = function (grunt) {
       'express:dev',
       'wait',
       'open',
-      'watch'
+      'watch:nonTest'
     ]);
   });
 
@@ -663,6 +662,7 @@ module.exports = function (grunt) {
     grunt.log.warn('The `server` task has been deprecated. Use `grunt serve` to start a server.');
     grunt.task.run(['serve']);
   });
+
 
   grunt.registerTask('test', function(target) {
     if (target === 'server') {
@@ -702,10 +702,16 @@ module.exports = function (grunt) {
 
     else if (target === 'unit') {
       return grunt.task.run([
-        'test:client'
-        //'watch:unitTest'
+        'test:client',
+        'watch:unitTest'
       ]);
+    }
 
+    else if (target === 'js') {
+      return grunt.task.run([
+        'newer:jshint',
+        'watch:jshint'
+      ]); 
     }
 
     else {
