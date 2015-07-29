@@ -42,4 +42,12 @@ describe('Controller: LectureCtrl는', function () {
     $httpBackend.flush();
     expect($scope.item).toEqual(dummy.items[0]); 
   }));
+
+  it('필기 에디터를 토글할 수 있어야 한다', inject(function() {
+    expect($scope.isNoteOn).toBe(false); 
+    $scope.toggleNote();
+    expect($scope.isNoteOn).toBe(true);
+    $scope.toggleNote();
+    expect($scope.isNoteOn).toBe(false);
+  }));
 });

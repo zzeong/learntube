@@ -12,5 +12,10 @@ angular.module('learntubeApp')
   }).success(function(response) {
     $scope.item = response.items[0];
   });
+
+  $scope.isNoteOn = false;
+  $scope.toggleNote = function() {
+    $scope.isNoteOn = !$scope.isNoteOn; 
+  };
 });
 

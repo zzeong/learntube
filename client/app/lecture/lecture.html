@@ -8,8 +8,15 @@
 
 <div class="content-width content-all">
   <div>
-    <md-content class="video-info-panel">
+    <md-content class="video-info-panel" layout-padding>
       <h1 class="md-title">{{ item.snippet.title }}</h1>
+      <div class="md-actions" layout="row" layout-align="end center">
+        <md-button class="md-raised" ng-click="toggleNote()">Note</md-button>
+        <md-button class="md-raised md-primary">Complete</md-button>
+      </div> 
     </md-content>
+  </div>
+  <div ng-show="isNoteOn">
+    <textarea id="note-editor" name="note-editor" ckeditor></textarea>
   </div>
 </div>
