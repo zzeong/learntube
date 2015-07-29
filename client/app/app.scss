@@ -9,19 +9,13 @@ $md-border-radius: 4px;
 $md-account-img-size: 64px;
 $md-account-br-rd: $md-account-img-size / 2;
 
-.browsehappy {
-    margin: 0.2em 0;
-    background: #ccc;
-    color: #000;
-    padding: 0.2em 0;
-}
+$resposive-width: 959px;
+$content-max-width: 1200px;
 
 
-// Override Angular Material Styles
-.md-body-2 {
-  font-weight: 700;
+body {
+  background: #eceff1;
 }
-// End Override -------------------
 
 .account-img {
   width: $md-account-img-size;
@@ -30,6 +24,12 @@ $md-account-br-rd: $md-account-img-size / 2;
 }
 md-toolbar .md-menu {
   padding: 0;
+}
+
+.content-width {
+  max-width: 100%;
+  width: $content-max-width;
+  margin: 0 auto;
 }
 
 

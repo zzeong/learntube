@@ -1,7 +1,6 @@
 'use strict';
 
-describe('Controller: ToolbarCtrl는', function () {
-
+describe('Controller: ToolbarCtrl는', function () { 
   // load the controller's module
   beforeEach(module('learntubeApp')); 
   var ToolbarCtrl, $scope;
@@ -33,7 +32,7 @@ describe('Controller: ToolbarCtrl는', function () {
     expect($scope.leftIconChanger()).toEqual(menuIconPath);
   }));
 
-  it('로그인 상태에서 회원 이미지를 보여주어야 한다', inject(function(Auth) {
+  it('로그인 상태에서 회원 이미지를 보여주어야 한다', inject(function() {
     var user = {
       google: {
         image: { url: 'https://foo.com/foo.jpg' } 
@@ -42,7 +41,7 @@ describe('Controller: ToolbarCtrl는', function () {
     expect($scope.getUserImgPath(user)).toMatch(/https:\/\/*/);
   }));
   
-  it('로그인 상태에서 비구글 회원은 guest 이미지를 보여주어야 한다', inject(function(Auth) {
+  it('로그인 상태에서 비구글 회원은 guest 이미지를 보여주어야 한다', inject(function() {
     var user = {}; 
     expect($scope.getUserImgPath(user)).toBe('/assets/images/guest.png');
   }));

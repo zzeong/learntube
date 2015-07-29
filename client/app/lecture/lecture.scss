@@ -1,5 +1,7 @@
+$panel-offset: 10px;
+
 .embed-item-limit-width {
-  margin: 10px auto 0 auto; 
+  margin: $panel-offset auto 0 auto; 
   max-width: 640px; 
 
   .embed-responsive {
@@ -24,8 +26,15 @@
   border: 0;
 }
 
+.content-all {
+  margin-top: $panel-offset;
+}
+
 @media (max-width: 959px) {
   .embed-item-limit-width {
     margin: 0 auto;
+  }
+  .content-all {
+    margin-top: 0;
   }
 }
