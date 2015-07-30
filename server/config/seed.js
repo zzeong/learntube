@@ -6,6 +6,7 @@
 'use strict';
 
 var Thing = require('../api/thing/thing.model');
+var Note = require('../api/note/note.model');
 var User = require('../api/user/user.model');
 
 Thing.find({}).remove(function() {
@@ -14,8 +15,7 @@ Thing.find({}).remove(function() {
     info : 'Integration with popular tools such as Bower, Grunt, Karma, Mocha, JSHint, Node Inspector, Livereload, Protractor, Jade, Stylus, Sass, CoffeeScript, and Less.'
   }, {
     name : 'Server and Client integration',
-    info : 'Built with a powerful and fun stack: MongoDB, Express, AngularJS, and Node.'
-  }, {
+    info : 'Built with a powerful and fun stack: MongoDB, Express, AngularJS, and Node.' }, {
     name : 'Smart Build System',
     info : 'Build system ignores `spec` files, allowing you to keep tests alongside code. Automatic injection of scripts and styles into your index.html'
   },  {
@@ -35,7 +35,12 @@ User.find({}).remove(function() {
     provider: 'local',
     name: 'Test User',
     email: 'test@test.com',
-    password: 'test'
+    password: 'test',
+    notes: [{
+      videoId: 'sMKoNBRZM1M',
+      hash: '4j2',
+      url: 'http://www.google.com'
+    }]
   }, {
     provider: 'local',
     role: 'admin',

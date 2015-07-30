@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('LectureCtrl', function($scope, $stateParams, $http) {
+.controller('LectureCtrl', function($scope, $stateParams, $http, Auth) {
   $scope.videoId = $stateParams.vid;
   $http.get('https://www.googleapis.com/youtube/v3/videos', {
     params: {
@@ -16,6 +16,19 @@ angular.module('learntubeApp')
   $scope.isNoteOn = false;
   $scope.toggleNote = function() {
     $scope.isNoteOn = !$scope.isNoteOn; 
+  };
+  $scope.doneNote = function() {
+    var params = {
+      email: Auth.getCurrentUser().email,
+      videoId: $scope.videoId,
+      note: $scope.note
+    };
+
+    $http.post('/api/notes', {
+      params: params
+    }).success(function(response) {
+      console.log(response);
+    });
   };
 });
 

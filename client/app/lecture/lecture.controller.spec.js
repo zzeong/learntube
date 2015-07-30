@@ -35,7 +35,7 @@ describe('Controller: LectureCtrl는', function () {
     params = _.map(params, function(val, key) {
       return key + '=' + val; 
     }).join('&');
-    
+
     $httpBackend = _$httpBackend_;
     $httpBackend.expectGET('https://www.googleapis.com/youtube/v3/videos?' + params)
     .respond(dummy);
@@ -50,4 +50,13 @@ describe('Controller: LectureCtrl는', function () {
     $scope.toggleNote();
     expect($scope.isNoteOn).toBe(false);
   }));
+
+  describe('필기 완료 버튼을 누르면', function() {
+    beforeEach(inject(function (_$httpBackend_) {
+      var res = { status: 'success' };
+      $httpBackend = _$httpBackend_; 
+      $httpBackend.expectPOST('/api/notes')
+      .respond(res);
+    }));
+  });
 });

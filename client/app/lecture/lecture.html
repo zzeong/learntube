@@ -17,6 +17,9 @@
     </md-content>
   </div>
   <div ng-show="isNoteOn">
-    <textarea id="note-editor" name="note-editor" ckeditor></textarea>
+    <form ng-submit="doneNote()">
+      <textarea id="note" name="note" ng-model="note" ckeditor></textarea>
+      <md-button type="submit" class="md-raised">Done</md-button>
+    </form>
   </div>
 </div>
