@@ -1,7 +1,13 @@
 
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 
-<!-- 가장 처음 업로드된 강의 -->
+<!-- 클래스에 가장 처음 업로드된 강의 -->
+
+  <div class="embed-item-limit-width">
+    <div class="embed-responsive embed-responsive-16by9">
+      <youtube-video class="embed-responsive-item" video-id="firstVideoId"></youtube-video>
+    </div>
+  </div>
 
 
 <!-- 클래스 소개 -->
@@ -11,8 +17,28 @@
 <div class="md-list-item-text">
   <h3>{{classe.snippet.title}}</h3>
   <h4>{{classe.snippet.channelTitle}}</h4>
-  <p>{{classe.snippet.description}}</p>
-  <a ng-click="feedLimit = feedLimit + 1">Show more...</a>
+
+
+  <!-- 더보기 구현  -->
+
+   <!--  change()에서 return한 true,false에 의해 class명을 바꾸자.  -->
+    <div class="box">
+      <div ng-class="{'textBefore': !show, 'textAfter': show}">
+        <p>{{desc}}</p>
+      </div>  
+    </div> 
+
+  <!-- 버튼을 누르면 change()함수를 돌리자. -->
+    <div id="changeBtn">
+      <p ng-click="change()" ng-bind-html="content"></p>
+    </div>
+
+</div>
+
+<!-- 기다려 -->
+
+
+
 </div>
 
 <md-divider></md-divider>
@@ -23,43 +49,52 @@
 
 
 <!-- 선생님 소개  -->
-<br>
-here is TUTOR AREA
-<br><br>
+<md-content style="margin-top:3px">
+<div class="tutor_thumbnail" style="float:left; margin-right:15px; margin-left:15px">
+  <img ng-src="{{ channel.snippet.thumbnails.default.url }}"  style="border-radius:45px">
+</div>
+
+<div class="tutor" style="padding-top:15px; padding-bottom:35px">
+  <font size="2">TUTOR</font><br>
+  <font size="5" maxlength="15">{{ channel.snippet.title }}.&nbsp</font>
+</div>
+
+<div class="tutor" style="margin-left:15px">
+ <font size="1" maxlength="15">{{ channel.snippet.description }}.&nbsp</font>
+</div>
+</md-content>
 <md-divider></md-divider>
 
 
 <!-- 클래스 내의 강의 목록 -->
 <h3>Lectures in this Class</h3>
 
-<script>var idx = 0;</script>
-
 <md-content>
 <md-list>
 <md-list-item class="md-3-line" ng-repeat="lecture in lecArr"> 
 
 <div class="md-list-item-text" >
-  
+
 
  <!--  강의 썸네일  -->
-  <div id="lecture_img">
-    <img ng-src="{{ lecture.thumbnail }}" width="50" height="37.5">
-  </div>
+ <div id="lecture_img">
+  <img ng-src="{{ lecture.thumbnail }}" width="64" height="36">
+</div>
 
- <!--  강의 번호  -->
-  <div id="lecture_position">
-    <font size="1" maxlength="15">{{ lecture.position+1 }}.&nbsp</font>
-  </div>
+<!--  강의 번호  -->
+<div id="lecture_position">
+  <font size="1" maxlength="15">{{ lecture.position+1 }}.&nbsp</font>
+</div>
 
- <!--  강의 제목  -->
-  <div id="lecture_title">
-    <font size="1" maxlength="15">{{ lecture.lectureTitle }} /&nbsp</font>
-  </div>
+<!--  강의 제목  -->
+<div id="lecture_title">
+  <font size="1" maxlength="15">{{ lecture.lectureTitle }} /&nbsp</font>
+</div>
 
- <!--  강의 재생시간  -->
- <div id="lecture_duration">
-   <font size="1" maxlength="15">{{ lecture.duration }}&nbsp</font>
- </div> 
+<!--  강의 재생시간  -->
+<div id="lecture_duration">
+ <font size="1" maxlength="15">{{ lecture.duration }}&nbsp</font>
+</div> 
 
 </div>
 
@@ -74,7 +109,7 @@ here is TUTOR AREA
 
 
 <style>
-  
+
   #lecture_img, #lecture_title, #lecture_position, #lecture_duration{
     float : left;
   }
