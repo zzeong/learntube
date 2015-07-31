@@ -9,7 +9,7 @@ module.exports = function(config) {
     // testing framework to use (jasmine/mocha/qunit/...)
     frameworks: ['jasmine'],
 
-    reporters: ['spec'],
+    reporters: ['spec', 'coverage'],
 
     // list of files / patterns to load in the browser
     files: [
@@ -48,6 +48,7 @@ module.exports = function(config) {
       '**/*.html': 'html2js',
       'client/app/**/*.js': 'babel',
       '**/*.coffee': 'coffee',
+      'client/{app,components}/**/!(*spec).js': 'coverage'
     },
 
     ngHtml2JsPreprocessor: {
@@ -70,7 +71,12 @@ module.exports = function(config) {
         return file.originalPath;
       }
     },
-    
+
+    coverageReporter: {
+      type : 'html',
+      dir : 'coverage/'
+    },
+
 
     // list of files / patterns to exclude
     exclude: [],

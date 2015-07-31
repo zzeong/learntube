@@ -9,3 +9,4 @@ dist
 npm-debug.log
 *.sw[op]
 _*
+coverage/
