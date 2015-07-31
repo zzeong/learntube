@@ -1,64 +1,49 @@
 'use strict';
 
 
-// 재생목록에 대한 정보 받아오기 (title, channelTitle, description)
 var app = angular.module('learntubeApp')
-.controller('ClassCtrl', function($scope, $http, $stateParams) {
+.controller('ClassCtrl', function($scope, $http, $stateParams, $state) {
 
-  $http.get('https://www.googleapis.com/youtube/v3/playlists', {
-    params: {
-      key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
-      part: 'snippet',
-      id: 'PL9B61DEF63FC19BD9'
-    }
-  }).success(function(response) {
-    $scope.classe = response.items[0];
-    console.log($scope.classe);
+// 재생목록에 대한 정보 받아오기 (title, channelTitle, description)
+$http.get('https://www.googleapis.com/youtube/v3/playlists', {
+  params: {
+    key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
+    part: 'snippet',
+    id: 'PLgyxPQqhtaiu2smdVB7JO5zlh99yTmp35'
+  }
+}).success(function(response) {
+  $scope.classe = response.items[0];
+  console.log($scope.classe);
 
-    $scope.desc = $scope.classe.snippet.description;
-
-    // show function구현
-    //var change = true;    
-
-    $scope.content="view more";
-
-    $scope.change = function(){
-      //$scope.show = ($scope.show) ? false : true;
-      $scope.show = !$scope.show;
-
-        if($scope.show === false){
-          $scope.content="view more";
-        }else{
-          $scope.content="simple view";
-        }
-        return $scope.show; 
-
-        };
-
-    });
+  $scope.desc = $scope.classe.snippet.description;
 
   
 
+});
+
+
+
 // 채널에 대한 정보 받아오기 (title, thumbnail, description)
 
-  $http.get('https://www.googleapis.com/youtube/v3/channels', {
-    params: {
-      key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
-      part: 'snippet',
-      id: 'UCzw-C7fNfs018R1FzIKnlaA'
-    }
-  }).success(function(response) {
-    $scope.channel = response.items[0];
-    console.log($scope.channel);
-  });
+$http.get('https://www.googleapis.com/youtube/v3/channels', {
+  params: {
+    key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
+    part: 'snippet',
+    id: 'UCzw-C7fNfs018R1FzIKnlaA'
+  }
+}).success(function(response) {
+  $scope.channel = response.items[0];
+  console.log($scope.channel);
+});
+
 
 // 재생목록 아이템에 대한 정보 받아오기 (thumbnail, position, title)
 $http.get('https://www.googleapis.com/youtube/v3/playlistItems', {
   params: {
     key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
     part: 'snippet',
-    playlistId: 'PL9B61DEF63FC19BD9',
-    maxResults: '10'
+    playlistId: 'PLgyxPQqhtaiu2smdVB7JO5zlh99yTmp35',
+    maxResults: '30' 
   }
 }).success(function(response) {
   $scope.playlist_item = response.items;
@@ -69,17 +54,19 @@ $http.get('https://www.googleapis.com/youtube/v3/playlistItems', {
 
 
     // Master GURU's beautiful code!
-    var foo = $scope.playlist_item.map(function(el) {
+    // (재생목록에 속한 모든 동영상의 아이디를 ,로 구분하여 foo에 저장)
+    var list = $scope.playlist_item.map(function(el) {
       return el.snippet.resourceId.videoId;
     }).join(',');
-    console.log(foo);
+    console.log(list);
 
             // 비디오 아이템에 대한 정보 받아오기 (duration)
+            // (비공개 동영상도 여기까지는 전달된다)
             $http.get('https://www.googleapis.com/youtube/v3/videos', {
               params: {
                 key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
                 part: 'contentDetails',
-                id: foo
+                id: list
               }
             }).success(function(response) {
               $scope.playlist_info = response.items;
@@ -90,12 +77,24 @@ $http.get('https://www.googleapis.com/youtube/v3/playlistItems', {
                 $scope.lecArr = [];
 
                 for(var idx=0; idx<$scope.playlist_item.length; idx++){
-                  
+
                   $scope.lecObj  = {};
-                  $scope.lecObj.thumbnail = $scope.playlist_item[idx].snippet.thumbnails.default.url;
-                  $scope.lecObj.position =  $scope.playlist_item[idx].snippet.position;
-                  $scope.lecObj.lectureTitle = $scope.playlist_item[idx].snippet.title;
-                  $scope.lecObj.duration = $scope.playlist_info[idx].contentDetails.duration;
+
+                  if($scope.playlist_item[idx].snippet.description === 'This video is private.'){
+                    $scope.lecObj.thumbnail = 'http://static-2.nexusmods.com/15/mods/130/images/thumbnails/59126-0-1433258627.png';
+                    $scope.lecObj.position =  $scope.playlist_item[idx].snippet.position;
+                    $scope.lecObj.lectureTitle = 'Private Video';
+                    $scope.lecObj.duration = ''; 
+                    console.log('비디오 에러 발생! : ' + (idx+1) + '번째 동영상');
+                  }/*else if($scope.playlist_info[idx].contentDetails.duration === ){
+                  
+                  }*/else{                  
+                    $scope.lecObj.thumbnail = $scope.playlist_item[idx].snippet.thumbnails.default.url;
+                    $scope.lecObj.position =  $scope.playlist_item[idx].snippet.position;
+                    $scope.lecObj.lectureTitle = $scope.playlist_item[idx].snippet.title;
+                    $scope.lecObj.duration = $scope.playlist_info[idx].contentDetails.duration;
+                    $scope.lecObj.videoId = $scope.playlist_item[idx].snippet.resourceId.videoId;
+                  }
 
                   $scope.lecArr.push($scope.lecObj);
 
@@ -104,14 +103,44 @@ $http.get('https://www.googleapis.com/youtube/v3/playlistItems', {
 
               });
 
-          });
+});
 
 // 새로운 배열을 만들어서, 그걸 repeat돌리자
 // 타이틀을 빼오고, 재생시간을 빼와서 object배열로. 
 
-                
 
-               
+    // show function구현
+    //var change = true;    
 
-});
+    $scope.show=false;
+    $scope.show2=false;
+    $scope.content="view more";
+    $scope.content2="view more";
+
+
+    // javascript에서는 primitive type의 parameter를 받았을 때, 
+    // 그것을 참조하는 것이 아니라 '복사' 하기 때문에 showProp으로
+    // 다르게 받았다. 
+    
+
+    $scope.changeDesc = function(contentProp, showProp){
+      $scope[showProp] = !$scope[showProp];
+
+      if($scope[showProp] === false){
+        $scope[contentProp]="view more";
+      }else{
+        $scope[contentProp]="simple view";
+      }
+      return $scope[showProp]; 
+
+    }; 
+
+
+    $scope.navigateTo = function(lecture) {
+      console.log(lecture.videoId);
+      $state.go('Lecture', { lid: lecture.videoId });
+    };
+
+
+  });
 

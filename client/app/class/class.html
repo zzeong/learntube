@@ -19,8 +19,7 @@
   <h4>{{classe.snippet.channelTitle}}</h4>
 
 
-  <!-- 더보기 구현  -->
-
+  <!-- 클래스 소개 더보기 -->
    <!--  change()에서 return한 true,false에 의해 class명을 바꾸자.  -->
     <div class="box">
       <div ng-class="{'textBefore': !show, 'textAfter': show}">
@@ -29,8 +28,8 @@
     </div> 
 
   <!-- 버튼을 누르면 change()함수를 돌리자. -->
-    <div id="changeBtn">
-      <p ng-click="change()" ng-bind-html="content"></p>
+    <div id="classdescChangeBtn">
+      <p ng-click="changeDesc('content', 'show')" ng-bind-html="content"></p>
     </div>
 
 </div>
@@ -56,13 +55,24 @@
 
 <div class="tutor" style="padding-top:15px; padding-bottom:35px">
   <font size="2">TUTOR</font><br>
-  <font size="5" maxlength="15">{{ channel.snippet.title }}.&nbsp</font>
+  <font size="5" maxlength="15">{{ channel.snippet.title }}.&nbsp </font>
 </div>
 
-<div class="tutor" style="margin-left:15px">
- <font size="1" maxlength="15">{{ channel.snippet.description }}.&nbsp</font>
-</div>
-</md-content>
+
+<!-- 선생님 소개 (채널 소개) 더보기 -->
+<!--  change()에서 return한 true,false에 의해 class명을 바꾸자.  -->
+    <div class="box">
+      <div ng-class="{'textBefore': !show2, 'textAfter': show2}">
+        <p class="tutorDesc">{{ channel.snippet.description }} asndfnihbqihbdkkjhbxzcvbhkkjnd noausndibi ojqndkbfqhibd vnzcnvoubqihbdksbcjzcvniqouhjnflsjnaiv niabdihbkjx,zmbvi ibnqdfojnpadijvijnlajnsdihbfaishd </p>
+      </div>  
+    </div> 
+
+  <!-- 버튼을 누르면 change()함수를 돌리자. -->
+    <div id="tutordesChangeBtn">
+      <p ng-click="changeDesc('content2', 'show2')" ng-bind-html="content2"></p>
+    </div>
+
+
 <md-divider></md-divider>
 
 
@@ -71,40 +81,42 @@
 
 <md-content>
 <md-list>
-<md-list-item class="md-3-line" ng-repeat="lecture in lecArr"> 
+<md-list-item class="md-3-line" ng-repeat="lecture in lecArr" ng-click="navigateTo(lecture)"> 
 
 <div class="md-list-item-text" >
 
+  <!--  강의 번호  -->
+  <div id="lecture_position">
+    <font size="1" maxlength="15">{{ lecture.position+1 }}.&nbsp</font>
+  </div>
+  
+   <!--  강의 썸네일  -->
+   <div id="lecture_img">
+    <img ng-src="{{ lecture.thumbnail }}" width="64" height="36">
+  </div>
 
- <!--  강의 썸네일  -->
- <div id="lecture_img">
-  <img ng-src="{{ lecture.thumbnail }}" width="64" height="36">
-</div>
+  <!--  강의 제목  -->
+  <div id="lecture_title">
+    <font size="1" maxlength="15">{{ lecture.lectureTitle }} /&nbsp</font>
+  </div>
 
-<!--  강의 번호  -->
-<div id="lecture_position">
-  <font size="1" maxlength="15">{{ lecture.position+1 }}.&nbsp</font>
-</div>
-
-<!--  강의 제목  -->
-<div id="lecture_title">
-  <font size="1" maxlength="15">{{ lecture.lectureTitle }} /&nbsp</font>
-</div>
-
-<!--  강의 재생시간  -->
-<div id="lecture_duration">
- <font size="1" maxlength="15">{{ lecture.duration }}&nbsp</font>
-</div> 
+  <!--  강의 재생시간  -->
+  <div id="lecture_duration">
+   <font size="1" maxlength="15">{{ lecture.duration }}&nbsp</font>
+  </div> 
 
 </div>
 
 <md-divider></md-divider>
 
-
-
 </md-list-item>
 </md-list>
 </md-content>
+
+  <!-- 클래스의 동영상 더보기 -->
+  <div id="">
+    <p ng-click="">Load more</p>
+  </div>
 
 
 
