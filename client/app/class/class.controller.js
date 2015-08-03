@@ -1,7 +1,7 @@
 'use strict';
 
 
-var app = angular.module('learntubeApp')
+angular.module('learntubeApp')
 .controller('ClassCtrl', function($scope, $http, $stateParams, $state) {
 
 // 재생목록에 대한 정보 받아오기 (title, channelTitle, description)
@@ -46,16 +46,16 @@ $http.get('https://www.googleapis.com/youtube/v3/playlistItems', {
     maxResults: '30' 
   }
 }).success(function(response) {
-  $scope.playlist_item = response.items;
-  console.log($scope.playlist_item);
+  $scope.playlistItem = response.items;
+  console.log($scope.playlistItem);
 
     // position == 0인 동영상의 ID가져오기
-    $scope.firstVideoId = $scope.playlist_item[0].snippet.resourceId.videoId;
+    $scope.firstVideoId = $scope.playlistItem[0].snippet.resourceId.videoId;
 
 
     // Master GURU's beautiful code!
     // (재생목록에 속한 모든 동영상의 아이디를 ,로 구분하여 foo에 저장)
-    var list = $scope.playlist_item.map(function(el) {
+    var list = $scope.playlistItem.map(function(el) {
       return el.snippet.resourceId.videoId;
     }).join(',');
     console.log(list);
@@ -69,31 +69,31 @@ $http.get('https://www.googleapis.com/youtube/v3/playlistItems', {
                 id: list
               }
             }).success(function(response) {
-              $scope.playlist_info = response.items;
-              console.log($scope.playlist_info);
+              $scope.playlistInfo = response.items;
+              console.log($scope.playlistInfo);
 
 
                 // 필요한 정보 (thumbnail, position, title, duration을 얻기 위한 객체 배열생성)
                 $scope.lecArr = [];
 
-                for(var idx=0; idx<$scope.playlist_item.length; idx++){
+                for(var idx=0; idx<$scope.playlistItem.length; idx++){
 
                   $scope.lecObj  = {};
 
-                  if($scope.playlist_item[idx].snippet.description === 'This video is private.'){
+                  if($scope.playlistItem[idx].snippet.description === 'This video is private.'){
                     $scope.lecObj.thumbnail = 'http://static-2.nexusmods.com/15/mods/130/images/thumbnails/59126-0-1433258627.png';
-                    $scope.lecObj.position =  $scope.playlist_item[idx].snippet.position;
+                    $scope.lecObj.position =  $scope.playlistItem[idx].snippet.position;
                     $scope.lecObj.lectureTitle = 'Private Video';
                     $scope.lecObj.duration = ''; 
                     console.log('비디오 에러 발생! : ' + (idx+1) + '번째 동영상');
-                  }/*else if($scope.playlist_info[idx].contentDetails.duration === ){
+                  }/*else if($scope.playlistInfo[idx].contentDetails.duration === ){
                   
                   }*/else{                  
-                    $scope.lecObj.thumbnail = $scope.playlist_item[idx].snippet.thumbnails.default.url;
-                    $scope.lecObj.position =  $scope.playlist_item[idx].snippet.position;
-                    $scope.lecObj.lectureTitle = $scope.playlist_item[idx].snippet.title;
-                    $scope.lecObj.duration = $scope.playlist_info[idx].contentDetails.duration;
-                    $scope.lecObj.videoId = $scope.playlist_item[idx].snippet.resourceId.videoId;
+                    $scope.lecObj.thumbnail = $scope.playlistItem[idx].snippet.thumbnails.default.url;
+                    $scope.lecObj.position =  $scope.playlistItem[idx].snippet.position;
+                    $scope.lecObj.lectureTitle = $scope.playlistItem[idx].snippet.title;
+                    $scope.lecObj.duration = $scope.playlistInfo[idx].contentDetails.duration;
+                    $scope.lecObj.videoId = $scope.playlistItem[idx].snippet.resourceId.videoId;
                   }
 
                   $scope.lecArr.push($scope.lecObj);
@@ -114,8 +114,8 @@ $http.get('https://www.googleapis.com/youtube/v3/playlistItems', {
 
     $scope.show=false;
     $scope.show2=false;
-    $scope.content="view more";
-    $scope.content2="view more";
+    $scope.content='view more';
+    $scope.content2='view more';
 
 
     // javascript에서는 primitive type의 parameter를 받았을 때, 
@@ -127,9 +127,9 @@ $http.get('https://www.googleapis.com/youtube/v3/playlistItems', {
       $scope[showProp] = !$scope[showProp];
 
       if($scope[showProp] === false){
-        $scope[contentProp]="view more";
+        $scope[contentProp]='view more';
       }else{
-        $scope[contentProp]="simple view";
+        $scope[contentProp]='simple view';
       }
       return $scope[showProp]; 
 
