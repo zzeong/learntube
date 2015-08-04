@@ -78,7 +78,11 @@ module.exports = function (grunt) {
       },
       jshint: {
         files: [
-          '<%= yeoman.client %>/{app,components}/**/*.js'
+          '<%= yeoman.client %>/{app,components}/**/*.js',
+          '!<%= yeoman.client %>/{app,components}/**/*.spec.js',
+          '!<%= yeoman.client %>/{app,components}/**/*.mock.js',
+          'server/**/*.js',
+          '!server/**/*.spec.js'
         ], 
         tasks: ['newer:jshint:all']
       },
