@@ -37,8 +37,9 @@ angular.module('learntubeApp', [
     return {
       // Add authorization token to headers
       request: function (config) {
+        var isExternalReq = /^http/.test(config.url);
         config.headers = config.headers || {};
-        if ($cookieStore.get('token')) {
+        if ($cookieStore.get('token') && !isExternalReq) {
           config.headers.Authorization = 'Bearer ' + $cookieStore.get('token');
         }
         return config;
