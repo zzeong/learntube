@@ -7,7 +7,7 @@ var authTypes = ['github', 'twitter', 'facebook', 'google'];
 
 
 //var NoteSchema = mongoose.model('Note').schema;
-var NoteSchema = require('../note/note.model');
+var NoteSchema = require('./note/note.model');
 var UserSchema = new Schema({
   name: String,
   email: { type: String, lowercase: true },

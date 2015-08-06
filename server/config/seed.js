@@ -5,8 +5,8 @@
 
 'use strict';
 
-var Note = require('../api/note/note.model');
 var User = require('../api/user/user.model');
+var Note = require('../api/user/note/note.model');
 
 User.find({}).remove(function() {
   User.create({
@@ -16,8 +16,9 @@ User.find({}).remove(function() {
     password: 'test',
     notes: [{
       videoId: 'sMKoNBRZM1M',
-      hash: '4j2',
-      url: 'http://www.google.com'
+      hash: '7121cd645707ec47efa33393028473c7',
+      url: 'https://learntubebucket.s3.amazonaws.com/test@test.com/7121cd645707ec47efa33393028473c7',
+      s3Path: '/test@test.com/7121cd645707ec47efa33393028473c7',
     }]
   }, {
     provider: 'local',
