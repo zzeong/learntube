@@ -1,8 +1,10 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('LectureCtrl', function($scope, $stateParams, $http, Auth) {
+.controller('LectureCtrl', function($scope, $stateParams, $http, Auth, Note, $log) {
   $scope.videoId = $stateParams.lid;
+  $scope.isNoteOn = false;
+
   $http.get('https://www.googleapis.com/youtube/v3/videos', {
     params: {
       key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
@@ -13,30 +15,22 @@ angular.module('learntubeApp')
     $scope.item = response.items[0];
   });
 
-  $http.get('/api/notes', {
-    params: {
-      email: Auth.getCurrentUser().email,
-      videoId: $scope.videoId
-    } 
-  }).success(function(response) {
-    console.log(response);
+  var noteId = Note.prototype.getNoteId($scope.videoId);
+  Note.get({ nid: noteId }, function(response) {
+    $log.info(response); 
   });
 
-  $scope.isNoteOn = false;
   $scope.toggleNote = function() {
     $scope.isNoteOn = !$scope.isNoteOn; 
   };
   $scope.doneNote = function() {
     var params = {
-      email: Auth.getCurrentUser().email,
       videoId: $scope.videoId,
-      note: $scope.note
+      contents: $scope.note
     };
 
-    $http.post('/api/notes', {
-      params: params
-    }).success(function(response) {
-      console.log(response);
+    Note.create(params, function(response) {
+      $log.info(response); 
     });
   };
 });
