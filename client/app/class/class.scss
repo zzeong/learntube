@@ -1,22 +1,26 @@
 
 
+ #lecture_img, #lecture_title, #lecture_position, #lecture_duration{
+    float : left;
+  }
 
+  /* view more css */
  .box .textBefore{
         position:                   relative;
-        font-family:                sans-serif;
+        font-family:               sans-serif;
         display:                    block;
         width:                      auto;
         height:                     4em;
-        overflow:                   hidden;
+        overflow:                  hidden;
     }
 
   .box .textAfter{
         position:                   relative;
-        font-family:                sans-serif;
+        font-family:               sans-serif;
         display:                    block;
         width:                      auto;
         height:                     auto;
-        overflow:                   hidden;
+        overflow:                  hidden;
     }
 
   .tutorDesc{
@@ -36,7 +40,66 @@
     -webkit-margin-end: 0px;
   }
 
- /*  .box{
-    margin-left:15px;
-  } */
+
+
+
+
+// reponsive web 
+@media (min-width: $resposive-width){
+
+
+    .firstLecture{
+        width:660px;    
+        height: 390px;
+        margin: 0 auto;
+        background-color: white;
+    }
+
+    .test{
+        float:left;
+    }
+
+    .classIntro{
+        margin-left:660px;
+        width: 420px;
+        height: 390px;
+        background-color: white;
+    }
+
+    .tutorIntro{
+        width: 440px;
+        float:right;
+    }
+
+    .thumbAndTitle{
+        margin-top:20px;
+        margin-right:15px;
+        margin-left:50px;
+        height:500px;
+    }
+
+    .thumbnail{
+        float:left;
+        padding-right:20px;
+    }
+
+    .channelTitle{
+        padding-top:15px;
+        padding-bottom:35px;
+    }
+
+    .tutorDescDiv{
+    }
+
+    .youtubeVideo{
+        right: 210px;
+        top: 10px;
+
+    }
+
+    .lectureList{
+        width: 640px;
+    }
+
+}
 
