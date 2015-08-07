@@ -83,6 +83,14 @@ $http.get('https://www.googleapis.com/youtube/v3/playlistItems', {
                 }
 
 
+              // 재귀함수 호출해야 하는 지점
+              if(response1.nextPageToken === undefined){
+                console.log('it is done');
+
+              }else{
+                console.log('lets go to getLectureList');
+                getLectureList(response1.nextPageToken);
+              }
 
               // 받아온 모든 동영상을 날짜순으로 정렬 (lecArr ▶ lecArrSorting)
               // ★ lodash의 사용 ★
@@ -133,6 +141,17 @@ $http.get('https://www.googleapis.com/youtube/v3/playlistItems', {
 
 
 
+// 채널에 대한 정보 받아오기 (title, thumbnail, description)
+
+$http.get('https://www.googleapis.com/youtube/v3/channels', {
+  params: {
+    key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
+    part: 'snippet',
+    id: 'UCzw-C7fNfs018R1FzIKnlaA'
+  }
+}).success(function(response) {
+  $scope.channel = response.items[0];
+  console.log($scope.channel);
 });
 
 
