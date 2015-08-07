@@ -83,6 +83,11 @@ $http.get('https://www.googleapis.com/youtube/v3/playlistItems', {
                 }
 
 
+
+              // 받아온 모든 동영상을 날짜순으로 정렬 (lecArr ▶ lecArrSorting)
+              // ★ lodash의 사용 ★
+              $scope.lecArrSorting = _.sortBy($scope.lecArr, function(el) {
+                return el.date;
               });
 
               // 전체 재생시간 변수생성
@@ -113,6 +118,8 @@ $http.get('https://www.googleapis.com/youtube/v3/playlistItems', {
               $scope.totalDurationObj.sec = (totalDuration%60);
 
 
+              //position == 0인 동영상의 ID가져오기
+              $scope.firstVideoId = $scope.lecArrSorting[0].videoId; 
 
              
             });
