@@ -26,6 +26,9 @@ angular.module('learntubeApp')
 
   Note.prototype.getNoteId = function(vid) {
     var me = Auth.getCurrentUser();
+
+    if(!_.has(me, 'notes')) { return; }
+
     return me.notes.filter(function(note) {
       return note.videoId === vid;
     }).pop()._id;

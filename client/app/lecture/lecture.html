@@ -16,6 +16,17 @@
       </div> 
     </md-content>
   </div>
+  <md-divider></md-divider>
+  <div>
+    <md-content layout-padding>
+      <img class="avatar" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image"/>
+      <div>
+        <p class="md-subhead">{{ getCurrentUser().name }}</p>
+      </div>
+      <md-divider md-inset></md-divider>
+      <note-viewer contents="contents"></note-viewer>
+    </md-content>
+  </div>
   <div ng-show="isNoteOn">
     <form ng-submit="doneNote()">
       <textarea id="note" name="note" ng-model="note" ckeditor></textarea>

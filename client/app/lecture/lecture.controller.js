@@ -4,6 +4,7 @@ angular.module('learntubeApp')
 .controller('LectureCtrl', function($scope, $stateParams, $http, Auth, Note, $log) {
   $scope.videoId = $stateParams.lid;
   $scope.isNoteOn = false;
+  $scope.getCurrentUser = Auth.getCurrentUser;
 
   $http.get('https://www.googleapis.com/youtube/v3/videos', {
     params: {
@@ -16,13 +17,17 @@ angular.module('learntubeApp')
   });
 
   var noteId = Note.prototype.getNoteId($scope.videoId);
-  Note.get({ nid: noteId }, function(response) {
-    $log.info(response); 
-  });
+  if(noteId) {
+    Note.get({ nid: noteId }, function(response) {
+      $log.info(response); 
+      $scope.contents = response.contents;
+    });
+  }
 
   $scope.toggleNote = function() {
     $scope.isNoteOn = !$scope.isNoteOn; 
   };
+
   $scope.doneNote = function() {
     var params = {
       videoId: $scope.videoId,
@@ -32,6 +37,11 @@ angular.module('learntubeApp')
     Note.create(params, function(response) {
       $log.info(response); 
     });
+  };
+
+  $scope.getUserImgPath = function(user) {
+    var guestImgPath = '/assets/images/guest.png';
+    return _.has(user, 'google') ? user.google.image.url : guestImgPath;   
   };
 });
 
