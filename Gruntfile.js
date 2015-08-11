@@ -73,7 +73,7 @@ module.exports = function (grunt) {
         tasks: ['wiredep']
       },
       mochaTest: {
-        files: ['server/**/*.spec.js'],
+        files: ['server/**/*.js'],
         tasks: ['env:test', 'mochaTest']
       },
       jshint: {
@@ -629,6 +629,7 @@ module.exports = function (grunt) {
   grunt.registerTask('watch:nonTest', function() {
     delete grunt.config.data.watch.jshint;
     delete grunt.config.data.watch.unitTest;
+    delete grunt.config.data.watch.mochaTest;
     grunt.task.run('watch');
   });
 
@@ -676,7 +677,14 @@ module.exports = function (grunt) {
       return grunt.task.run([
         'env:all',
         'env:test',
-        'mochaTest'
+        'mochaTest',
+      ]);
+    }
+    
+    else if (target === 'mocha') {
+      return grunt.task.run([
+        'test:server',
+        'watch:mochaTest'
       ]);
     }
 
@@ -750,7 +758,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', [
     'newer:jshint',
-    'test',
     'build'
   ]);
 };
