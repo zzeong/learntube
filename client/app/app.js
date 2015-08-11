@@ -17,6 +17,11 @@ angular.module('learntubeApp', [
     $locationProvider.html5Mode(true);
     $httpProvider.interceptors.push('authInterceptor');
   })
+  .config(function($mdThemingProvider) {
+    $mdThemingProvider.theme('default')
+    .primaryPalette('cyan')
+    .accentPalette('lime');  
+  })
 
   .directive('focusMe', function($timeout) {
     return {
