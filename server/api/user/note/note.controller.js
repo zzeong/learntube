@@ -60,8 +60,6 @@ exports.create = function(req, res) {
     if(err) { return handleError(res, err); }
     if(!user) { return res.status(404).send('Not Found'); }
 
-    //var p = req.body.params;
-
     var hash = createRandomHash();
     var uploadedPath = '/' + user.email + '/' + hash;
 
