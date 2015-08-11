@@ -55,7 +55,7 @@ describe('Note sub-docs in User Model', function() {
 describe('REST API:', function() {
   var id, nid, noteContents;
 
-  this.timeout(3000);
+  this.timeout(5000);
 
   describe('POST /api/users/:id/notes', function() {
     var user;
