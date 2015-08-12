@@ -24,6 +24,20 @@ angular.module('learntubeApp')
     });
   }
 
+  $scope.completeLecture = function() {
+    $http.post('/api/users/' + $scope.getCurrentUser()._id + '/classes/', {
+      userId: $scope.getCurrentUser()._id
+    }).success(function(response) {
+      console.log(response);
+      var classe = response;
+      $http.post('/api/users/' + $scope.getCurrentUser()._id + '/classes/' + classe._id + '/lectures/', {
+        videoId: $scope.videoId
+      }).success(function() {
+        $log.info('Saved Lecture');  
+      });
+    });
+  };
+
   $scope.toggleNote = function() {
     $scope.isNoteOn = !$scope.isNoteOn; 
   };
