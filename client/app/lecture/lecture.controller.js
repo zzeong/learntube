@@ -49,9 +49,10 @@ angular.module('learntubeApp')
     };
 
     Note.create(params, function(response) {
-      $log.info(response); 
+      $log.info(response.message); 
     });
   };
+
 
   $scope.getUserImgPath = function(user) {
     var guestImgPath = '/assets/images/guest.png';
