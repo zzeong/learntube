@@ -7,6 +7,7 @@ var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
+router.use('/:id/classes', require('./class'));
 router.use('/:id/notes', require('./note'));
 
 router.get('/', auth.hasRole('admin'), controller.index);
