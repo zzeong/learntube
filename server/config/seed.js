@@ -7,6 +7,7 @@
 
 var User = require('../api/user/user.model');
 var Note = require('../api/user/note/note.model');
+var Class = require('../api/user/class/class.model');
 
 User.find({}).remove(function() {
   User.create({
@@ -26,8 +27,30 @@ User.find({}).remove(function() {
     name: 'Admin',
     email: 'admin@admin.com',
     password: 'admin'
-  }, function() {
-      console.log('finished populating users');
-    }
-  );
+  }, function(err, user) {
+
+    Class.find({}).remove(function() {
+      Class.create({
+        userId: user._id,
+        playlistId: 'PLFgquLnL59akz2EQlObY3Ac3aC68xfSU6',
+        lectures: [{
+          videoId: 'RgKAFK5djSk'
+        }, {
+          videoId: '_mVJJvx04_w'
+        }]
+      }, {
+        userId: user._id,
+        playlistId: 'PL8fVUTBmJhHJDAtZwiIOooPRurN0hna-j',
+        lectures: [{
+          videoId: '1ZLN9AzxVa8'
+        }, {
+          videoId: 'pTYyg5aDWAM'
+        }]
+      }, function() {
+        console.log('finished seeding');
+      });
+    });
+
+  });
 });
+
