@@ -20,9 +20,11 @@ describe('Controller: WatchedContentsCtrl', function () {
       $httpBackend = _$httpBackend_; 
 
       resultItems = [{
+        _id: 'qw',
         userId: '123',
         playlistId: 'Q1W2'
       }, {
+        _id: 'qf',
         userId: '123',
         playlistId: 'E3R4'
       }];
@@ -44,6 +46,7 @@ describe('Controller: WatchedContentsCtrl', function () {
       $httpBackend.when('GET',/https\:\/\/www\.googleapis\.com\/youtube\/v3\/playlists\?.*/)
       .respond(youtubeResult);
       $httpBackend.when('GET', /\/api\/users\/classes/).respond(resultItems);
+      $httpBackend.when('DELETE', /\/api\/users\/classes\/.*/).respond();
     }));
 
     it('should get all classes from class API at first', function() {
@@ -53,6 +56,19 @@ describe('Controller: WatchedContentsCtrl', function () {
       $httpBackend.flush();
 
       expect(angular.equals($rootScope.classes, refinedData)).toBe(true);
+    });
+
+    it('should have 1 decreased classes after to delete class', function() {
+      var controller = createController(); 
+      $httpBackend.expectGET(/\/api\/users\/classes/);
+      $httpBackend.expectGET(/https\:\/\/www\.googleapis\.com\/youtube\/v3\/playlists\?.*/);
+      $httpBackend.flush();
+
+      var beforeLength = $rootScope.classes.length;
+      $httpBackend.expectDELETE(/\/api\/users\/classes\/.*/);
+      $rootScope.deleteClass(refinedData[0]);
+      $httpBackend.flush();
+      expect($rootScope.classes.length).toEqual(beforeLength - 1);
     });
   });
 });

@@ -23,4 +23,10 @@ angular.module('learntubeApp')
       });
     });
   });
+
+  $scope.deleteClass = function(classe) {
+    ClassAPI.remove({ cid: classe._id }, function() {
+        _.remove($scope.classes, classe);
+    });
+  };
 });
