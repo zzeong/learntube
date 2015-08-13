@@ -1,0 +1,7 @@
+@media (min-width: 600px) {
+  .watched-class-card {
+    $card-width: 333.33px;
+    width: $card-width;
+    display: inline-flex;
+  }
+}
