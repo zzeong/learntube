@@ -32,6 +32,31 @@ User.find({}).remove(function() {
     Class.find({}).remove(function() {
       Class.create({
         userId: user._id,
+        playlistId: 'PLmtapKaZsgZt3g_uAPJbsMWdkVsznn_2R',
+        lectures: [{
+          videoId: 'W_k2EB33s7A'
+        }, {
+          videoId: 'B5HkW--GAQ8'
+        }]
+      }, {
+        userId: user._id,
+        playlistId: 'PLFgquLnL59akz2EQlObY3Ac3aC68xfSU6',
+        lectures: [{
+          videoId: 'RgKAFK5djSk'
+        }, {
+          videoId: '_mVJJvx04_w'
+        }]
+      }, {
+
+        userId: user._id,
+        playlistId: 'PLmtapKaZsgZt3g_uAPJbsMWdkVsznn_2R',
+        lectures: [{
+          videoId: 'W_k2EB33s7A'
+        }, {
+          videoId: 'B5HkW--GAQ8'
+        }]
+      }, {
+        userId: user._id,
         playlistId: 'PLFgquLnL59akz2EQlObY3Ac3aC68xfSU6',
         lectures: [{
           videoId: 'RgKAFK5djSk'
