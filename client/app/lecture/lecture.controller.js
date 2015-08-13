@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('LectureCtrl', function($scope, $stateParams, $http, Auth, Note, $log) {
+.controller('LectureCtrl', function($scope, $stateParams, $http, Auth, NoteAPI, $log) {
   $scope.videoId = $stateParams.lid;
   $scope.isNoteOn = false;
   $scope.getCurrentUser = Auth.getCurrentUser;
@@ -16,10 +16,10 @@ angular.module('learntubeApp')
     $scope.item = response.items[0];
   });
 
-  var noteId = Note.prototype.getNoteId($scope.videoId);
+  var noteId = NoteAPI.prototype.getNoteId($scope.videoId);
   if(noteId) {
-    Note.get({ nid: noteId }, function(response) {
-      $log.info(response); 
+    NoteAPI.get({ nid: noteId }, function(response) {
+      $log.info(response.message); 
       $scope.contents = response.contents;
     });
   }
@@ -28,7 +28,6 @@ angular.module('learntubeApp')
     $http.post('/api/users/' + $scope.getCurrentUser()._id + '/classes/', {
       userId: $scope.getCurrentUser()._id
     }).success(function(response) {
-      console.log(response);
       var classe = response;
       $http.post('/api/users/' + $scope.getCurrentUser()._id + '/classes/' + classe._id + '/lectures/', {
         videoId: $scope.videoId
@@ -48,7 +47,7 @@ angular.module('learntubeApp')
       contents: $scope.note
     };
 
-    Note.create(params, function(response) {
+    NoteAPI.create(params, function(response) {
       $log.info(response.message); 
     });
   };

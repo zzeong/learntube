@@ -68,7 +68,7 @@ describe('Controller: LectureCtrl', function () {
       expect($rootScope.item).toEqual(resultItems.items[0]); 
     }));
 
-    it('should receive note which user have written from Note API', inject(function(Note, _$log_) {
+    it('should receive note which user have written from Note API', inject(function(_$log_) {
       $httpBackend.expectGET('https://www.googleapis.com/youtube/v3/videos?' + params)
       var controller = createController();
       $httpBackend.flush();
