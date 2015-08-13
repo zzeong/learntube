@@ -70,6 +70,57 @@ describe('REST API:', function() {
     });
   });
 
+  describe('GET /api/users/:id/classes/', function() {
+    var classes, cid;
+
+    beforeEach(function(done) {
+      classes = [{
+        userId: id,
+        playlistId: 'Q1W2'
+      }, {
+        userId: id,
+        playlistId: 'E3R4'
+      }];
+
+      Class.remove().exec(); 
+      Class.create(classes, function(err) {
+        if(err) { return handleError(res, err); }
+        done();
+      });
+    });
+
+    it('should return 200', function(done) {
+      request(app)
+      .get('/api/users/' + id + '/classes/')
+      .expect(200)
+      .end(function(err, res) {
+        if(err) { return done(err); }
+        done();
+      });
+    });
+
+    it('should return JSON array', function(done) {
+      request(app)
+      .get('/api/users/' + id + '/classes/')
+      .expect('Content-Type', /json/)
+      .end(function(err, res) {
+        if(err) { return done(err); } 
+        res.body.should.be.instanceof(Array);
+        done();
+      });
+    });
+
+    it('should get all classes that have 2 items', function(done) {
+      request(app) 
+      .get('/api/users/' + id + '/classes/')
+      .end(function(err, res) {
+        if(err) { return done(err); } 
+        res.body.should.have.length(2);
+        done();
+      });
+    });
+  });
+
   describe('DELETE /api/users/:id/classes/:cid', function() {
     var classData, cid;
 

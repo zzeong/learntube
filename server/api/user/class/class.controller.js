@@ -16,6 +16,10 @@ var Class = require('./class.model');
 
 // Get list of classes
 exports.index = function(req, res) {
+  Class.find(function (err, classes) {
+    if(err) { return handleError(res, err); }
+    return res.status(200).json(classes);
+  });
 };
 
 // Get a single classe
@@ -48,6 +52,15 @@ exports.update = function(req, res) {
 
 // Deletes a classe from the DB.
 exports.destroy = function(req, res) {
+  Class.findById(req.params.cid, function (err, classe) {
+    if(err) { return handleError(res, err); }
+    if(!classe) { return res.status(404).send(err); }
+
+    classe.remove(function(err) {
+      if(err) { return handleError(res, err); }
+      return res.status(204).send();
+    });
+  });
 };
 
 function handleError(res, err) {
