@@ -16,7 +16,7 @@ var Class = require('./class.model');
 
 // Get list of classes
 exports.index = function(req, res) {
-  Class.find(function (err, classes) {
+  Class.find({ userId: req.params.id }, function (err, classes) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(classes);
   });
@@ -37,7 +37,6 @@ exports.create = function(req, res) {
     if(err) { return handleError(res, err) }
     if(!classe) {
       return Class.create(data, function(createErr, createdClass) {
-        console.log('createdClass' + createdClass);
         if(createErr) { return handleError(res, createErr); }
         return res.status(201).json(createdClass);
       }); 
