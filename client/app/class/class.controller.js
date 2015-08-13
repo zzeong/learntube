@@ -8,11 +8,12 @@ angular.module('learntubeApp')
     params: {
       key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
       part: 'snippet',
-      id: 'PLUBHG05jxN4XEfc9Oj8sNwsquFoyfNMaf'
+      id: $scope.playlistId
     }
   }).success(function(response) {
     $scope.classe = response.items[0];
     $scope.desc = $scope.classe.snippet.description;
+    $scope.channelId = $scope.classe.snippet.channelId;
 
     getLectureList();
 
@@ -28,7 +29,7 @@ angular.module('learntubeApp')
       params: {
         key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
         part: 'snippet',
-        playlistId: 'PLUBHG05jxN4XEfc9Oj8sNwsquFoyfNMaf',
+        playlistId: $scope.playlistId,
         maxResults: '10' ,
         pageToken: pageToken
       }
@@ -148,7 +149,7 @@ angular.module('learntubeApp')
     params: {
       key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
       part: 'snippet',
-      id: 'UCzw-C7fNfs018R1FzIKnlaA'
+      id: $scope.channelId
     }
   }).success(function(response) {
     $scope.channel = response.items[0];
