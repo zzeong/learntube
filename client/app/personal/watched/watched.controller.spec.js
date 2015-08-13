@@ -14,7 +14,7 @@ describe('Controller: WatchedContentsCtrl', function () {
   }));
 
   describe('with HTTP', function() {
-    var $httpBackend, resultItems, youtubeResult, params; 
+    var $httpBackend, resultItems, youtubeResult, params, refinedData; 
 
     beforeEach(inject(function(_$httpBackend_) {
       $httpBackend = _$httpBackend_; 
@@ -26,8 +26,11 @@ describe('Controller: WatchedContentsCtrl', function () {
         userId: '123',
         playlistId: 'E3R4'
       }];
-
       youtubeResult = { items: [{}, {}] };
+      refinedData = resultItems.map(function(el, i) {
+        el.item = youtubeResult.items[i];
+        return el;
+      });
 
       params = _.map({
         key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
@@ -40,7 +43,6 @@ describe('Controller: WatchedContentsCtrl', function () {
 
       $httpBackend.when('GET',/https\:\/\/www\.googleapis\.com\/youtube\/v3\/playlists\?.*/)
       .respond(youtubeResult);
-
       $httpBackend.when('GET', /\/api\/users\/classes/).respond(resultItems);
     }));
 
@@ -49,8 +51,8 @@ describe('Controller: WatchedContentsCtrl', function () {
       $httpBackend.expectGET(/\/api\/users\/classes/);
       $httpBackend.expectGET(/https\:\/\/www\.googleapis\.com\/youtube\/v3\/playlists\?.*/);
       $httpBackend.flush();
-      expect(angular.equals($rootScope.myClasses, resultItems)).toBe(true);
-      expect(angular.equals($rootScope.classes, youtubeResult.items)).toBe(true);
+
+      expect(angular.equals($rootScope.classes, refinedData)).toBe(true);
     });
   });
 });

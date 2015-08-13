@@ -3,9 +3,9 @@
 angular.module('learntubeApp')
 .controller('WatchedContentsCtrl', function($scope, $http, ClassAPI) {
   ClassAPI.query(function(response) {
-    $scope.myClasses = response; 
+    $scope.classes = response; 
 
-    var playlistIds = $scope.myClasses.map(function(el) {
+    var playlistIds = $scope.classes.map(function(el) {
       return el.playlistId;
     }).join(',');
 
@@ -17,8 +17,10 @@ angular.module('learntubeApp')
         fields: 'items(snippet(title,thumbnails))',
       }
     }).success(function(responseFromYT) {
-      $scope.classes = responseFromYT.items;
+      $scope.classes = $scope.classes.map(function(el, i) {
+        el.item = responseFromYT.items[i];
+        return el;
+      });
     });
-
   });
 });
