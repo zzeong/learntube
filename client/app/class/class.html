@@ -42,6 +42,9 @@
               <p ng-click="changeDesc('content', 'show')" ng-bind-html="content"></p>
             </div>
 
+            <div class="md-actions" layout="row" layout-align="end center">
+              <md-button class="md-raised" ng-show="isLoggedIn()" ng-click="addClass()">Add Class</md-button>
+            </div>
           </div>
         </md-list-item>
       </md-list>

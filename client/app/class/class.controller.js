@@ -1,7 +1,15 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('ClassCtrl', function($scope, $http, $stateParams, $state) {
+.controller('ClassCtrl', function($scope, $http, $stateParams, $state, ClassAPI, $log, Auth) {
+  $scope.isLoggedIn = Auth.isLoggedIn;
+  $scope.playlistId = $stateParams.cid;
+
+  $scope.addClass = function() {
+    ClassAPI.create({ playlistId: $scope.playlistId }, function() {
+      $log.info('Saved Lecture');
+    });
+  };
 
   // 재생목록에 대한 정보 받아오기 (title, channelTitle, description)
   $http.get('https://www.googleapis.com/youtube/v3/playlists', {
