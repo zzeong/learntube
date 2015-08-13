@@ -1,4 +1,4 @@
-'use strict'
+'use strict';
 
 angular.module('learntubeApp')
 .controller('ClassCtrl', function($scope, $http, $stateParams, $state) {
