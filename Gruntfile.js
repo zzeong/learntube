@@ -79,12 +79,9 @@ module.exports = function (grunt) {
       jshint: {
         files: [
           '<%= yeoman.client %>/{app,components}/**/*.js',
-          '!<%= yeoman.client %>/{app,components}/**/*.spec.js',
-          '!<%= yeoman.client %>/{app,components}/**/*.mock.js',
-          'server/**/*.js',
-          '!server/**/*.spec.js'
+          'server/**/*.js'
         ], 
-        tasks: ['newer:jshint:all']
+        tasks: ['jshint']
       },
       unitTest: {
         files: [
@@ -724,7 +721,7 @@ module.exports = function (grunt) {
 
     else if (target === 'js') {
       return grunt.task.run([
-        'newer:jshint',
+        'jshint',
         'watch:jshint'
       ]); 
     }
