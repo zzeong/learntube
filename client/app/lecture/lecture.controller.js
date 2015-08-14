@@ -4,6 +4,10 @@ angular.module('learntubeApp')
 .controller('LectureCtrl', function($scope, $stateParams, $http, Auth, NoteAPI, $log) {
   $scope.videoId = $stateParams.vid;
   $scope.playlistId = $stateParams.pid;
+  $scope.playerVars = {
+    listType: 'playlist',
+    list: $scope.playlistId
+  };
   $scope.isNoteOn = false;
   $scope.getCurrentUser = Auth.getCurrentUser;
 
