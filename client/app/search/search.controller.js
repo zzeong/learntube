@@ -18,6 +18,6 @@ angular.module('learntubeApp')
   });
 
   $scope.navigateTo = function(classe) {
-    $state.go('Summary', { cid: classe.id.playlistId });
+    $state.go('Summary', { pid: classe.id.playlistId });
   };
 });
