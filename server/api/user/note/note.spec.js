@@ -63,9 +63,23 @@ describe('REST API:', function() {
   });
 
 
-
-
   describe('GET /api/users/:id/notes', function() {
+
+    it('should return queried notes', function(done) {
+      request(app)
+      .get('/api/users/' + id + '/notes')
+      .query({ videoId: videoId })
+      .end(function(err, res) {
+        if(err) { return done(err); } 
+        res.body.should.have.instanceof(Array);
+        res.body.should.have.length(1);
+        done();
+      });
+    });
+
+  });
+
+  describe('GET /api/users/:id/notes/:nid', function() {
 
     it('should return note contents equal to contents which have been saved when note is gotten', function(done) {
       request(app)
@@ -118,5 +132,7 @@ describe('REST API:', function() {
         done(); 
       });
     });
+
   });
+
 });

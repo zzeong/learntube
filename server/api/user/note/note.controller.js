@@ -14,6 +14,7 @@ var crypto = require('crypto');
 var knox = require('knox');
 var User = require('../user.model');
 var Note = require('./note.model');
+var Promise = require('promise');
 
 var awsClient = knox.createClient({
   key: process.env.AWSAccessKeyId,
@@ -26,10 +27,39 @@ var createRandomHash = function() {
   return crypto.createHash('md5').update(id).digest('hex');
 };
 
+var getDataFromS3 = function(path) {
+  return new Promise(function(resolve) {
+    awsClient.get(path).on('response', function(resFromS3){
+      console.log('[S3]:GET ' + resFromS3.statusCode);
+      console.log('[S3]:GET ' + resFromS3.headers);
+      resFromS3.setEncoding('utf8');
+      resFromS3.on('data', resolve);
+    }).end();
+  });
+};
+
 
 // Get list of NoteSchema
 exports.index = function(req, res) {
+  var data = _.assign(req.query, { userId: req.params.id });
 
+  Note.find(data, function(err, notes) {
+    if(err) { return handleError(res, err); } 
+    //var note = notes[0];
+
+    Promise.all(notes.map(function(note) {
+      return getDataFromS3(note.s3Path).then(function(contents) {
+        return {
+          _id: note._id,
+          message: 'gotten',
+          contents: contents
+        };
+      });
+    })).then(function(results) {
+      return res.status(200).json(results);  
+    });
+
+  });
 };
 
 
