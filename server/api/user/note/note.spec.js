@@ -95,27 +95,8 @@ describe('REST API:', function() {
         done();
       });
     });
-  });
-
-
-
-  describe('GET /api/users/:id/notes/find', function() {
-
-    it('should return finded note contents that was asked with videoId', function(done) {
-      request(app)
-      .get('/api/users/' + id + '/notes/query')
-      .query({ videoId: videoId })
-      .end(function(err, res) {
-        if(err) { return done(err); } 
-        res.body.should.have.property('contents');
-        done();
-      });
-    });
 
   });
-
-
-
 
 
   describe('DELETE /api/users/:id/notes/:nid', function() {

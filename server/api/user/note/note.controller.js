@@ -104,28 +104,6 @@ exports.create = function(req, res) {
 };
 
 
-exports.query = function(req, res) {
-  Note.find({ userId: req.params.id, videoId: req.query.videoId }, function(err, notes) {
-    if(err) { return handleError(res, err); } 
-    var note = notes[0];
-
-    awsClient.get(note.s3Path).on('response', function(resFromS3){
-      console.log('[S3]:GET ' + resFromS3.statusCode);
-      console.log('[S3]:GET ' + resFromS3.headers);
-      resFromS3.setEncoding('utf8');
-      resFromS3.on('data', function(chunk){
-        return res.status(200).json({
-          message: 'gotten',
-          contents: chunk
-        });
-      });
-    }).end();
-
-  });
-};
-
-
-
 
 // Get a single note
 exports.show = function(req, res) {

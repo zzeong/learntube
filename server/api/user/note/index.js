@@ -6,7 +6,6 @@ var controller = require('./note.controller');
 var router = express.Router({ mergeParams: true });
 
 router.get('/', controller.index);
-router.get('/query', controller.query);
 router.get('/:nid', controller.show);
 router.post('/', controller.create);
 router.put('/:nid', controller.update);
