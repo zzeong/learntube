@@ -16,18 +16,6 @@ var userData = {
   password: 'password',
 };
 
-// 임의 노트
-var noteData = {
-  videoId: 'sMKoNBRZM1M',
-  hash: '7121cd645707ec47efa33393028473c7',
-  url: 'https://learntubebucket.s3.amazonaws.com/test@test.com/7121cd645707ec47efa33393028473c7',
-  s3Path: '/test@test.com/7121cd645707ec47efa33393028473c7',
-};
-
-
-
-
-
 
 describe('REST API:', function() {
   var id, nid, noteContents;
@@ -70,32 +58,6 @@ describe('REST API:', function() {
       });
     });
 
-
-
-
-
-
-
-    // 여기는 일단 패스. (문맥상 어울리지 않는 테스트)
-    xit('should save uploaded s3 path which is equal to what is combined email and hash', function(done) {
-      // NoteSchema에서 nid로 note를 찾아 콜백함수의 note에 할당한다. 
-      note.findById(nid, function(err, resNote) {
-        if(err) { return done(err); }
-
-        // noteDoc의 s3Path가 uploadedPath와 일치해야 한다. 
-        
-        // var noteDoc = note.id(nid);  ▶ 얘가 필요없는 이유. 
-        // 이유는 뭐냐면, s3Path와 hash와 같은 정보는 NoteSchema에 있는 것들인데, 
-        // 위에 Note.으로 이미 NoteSchema에 접근을 했단말이야. 
-        // 그리고 그 결과로 note에 받아왔고. 즉!
-        // noteDoc이 결국 note와 완전 똑같은녀석이란 말이지. 
-        // 그러니깐 noteDoc을 따로 선언해서 뭔가를 할당할 필요가 없어졌어. 
-        var uploadedPath = '/' + userInfo.email + '/' + resNote.hash;
-
-        resNote.s3Path.should.equal(uploadedPath);
-        done();
-      });
-    });
   });
 
 
@@ -127,7 +89,6 @@ describe('REST API:', function() {
 
 
   describe('DELETE /api/users/:id/notes/:nid', function() {
-    //var note, nid, user, id, noteContents;
 
     it('should return "removed" message when note is removed', function(done) {
       request(app)
