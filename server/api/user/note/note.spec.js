@@ -18,17 +18,19 @@ var userData = {
 
 
 describe('REST API:', function() {
-  var id, nid, noteContents;
+  var id, nid, noteContents, videoId;
 
   this.timeout(5000);
 
   before(function(done){
-      User.remove().exec();
-      var user = new User(userData);
-      user.save(function(err) {
-        id = user._id;
-        done();
-      });
+    videoId = 'sMKoNBRZM1M';
+
+    User.remove().exec();
+    var user = new User(userData);
+    user.save(function(err) {
+      id = user._id;
+      done();
+    });
 
   });
 
@@ -41,7 +43,7 @@ describe('REST API:', function() {
 
     it('should return saved note when note is saved', function(done) {
       var params = {
-        videoId: 'sMKoNBRZM1M',
+        videoId: videoId,
         contents: noteContents
       };
 
@@ -51,9 +53,9 @@ describe('REST API:', function() {
       .expect(201)  // 201은 성공했다는 뜻
       .expect('Content-Type', /json/)
       .end(function (err, res) {
-          if(err) { return done(err); }
-          should.exist(res.body._id);
-          nid = res.body._id;
+        if(err) { return done(err); }
+        should.exist(res.body._id);
+        nid = res.body._id;
         done();
       });
     });
@@ -71,18 +73,32 @@ describe('REST API:', function() {
       .expect(200)
       .expect('Content-Type', /json/)
       .end(function(err, res) {
-          if(err) { return done(err); }  
-          res.body.should.have.property('message');
-          res.body.should.have.property('contents');
-          res.body.message.should.equal('gotten');
-          res.body.contents.should.equal(noteContents);
-          done();
+        if(err) { return done(err); }  
+        res.body.should.have.property('message');
+        res.body.should.have.property('contents');
+        res.body.message.should.equal('gotten');
+        res.body.contents.should.equal(noteContents);
+        done();
       });
     });
   });
 
 
 
+  describe('GET /api/users/:id/notes/find', function() {
+
+    it('should return finded note contents that was asked with videoId', function(done) {
+      request(app)
+      .get('/api/users/' + id + '/notes/query')
+      .query({ videoId: videoId })
+      .end(function(err, res) {
+        if(err) { return done(err); } 
+        res.body.should.have.property('contents');
+        done();
+      });
+    });
+
+  });
 
 
 
