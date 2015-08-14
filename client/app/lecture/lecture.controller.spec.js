@@ -2,7 +2,7 @@
 
 describe('Controller: LectureCtrl', function () {
   beforeEach(module('learntubeApp')); 
-  var LectureCtrl, $rootScope, createController;
+  var $rootScope, createController;
 
   beforeEach(inject(function ($injector) {
     $rootScope = $injector.get('$rootScope');
@@ -14,12 +14,13 @@ describe('Controller: LectureCtrl', function () {
   }));
 
   it('should get video id in URI-parameter', inject(function($stateParams) {
-    var controller = createController();
+    createController();
     expect($rootScope.videoId).toBe($stateParams.vid);
   }));
 
+
   it('should be able to toggle note editor', inject(function() {
-    var controller = createController();
+    createController();
     expect($rootScope.isNoteOn).toBe(false); 
     $rootScope.toggleNote();
     expect($rootScope.isNoteOn).toBe(true);
@@ -61,16 +62,16 @@ describe('Controller: LectureCtrl', function () {
     });
 
 
-    it('should assign item which YouTube API responsed to scope item', inject(function($stateParams) {
+    it('should assign item which YouTube API responsed to scope item', inject(function() {
       $httpBackend.expectGET('https://www.googleapis.com/youtube/v3/videos?' + params);
-      var controller = createController();
+      createController();
       $httpBackend.flush();
       expect($rootScope.item).toEqual(resultItems.items[0]); 
     }));
 
     it('should receive note which user have written from Note API', inject(function(_$log_) {
-      $httpBackend.expectGET('https://www.googleapis.com/youtube/v3/videos?' + params)
-      var controller = createController();
+      $httpBackend.expectGET('https://www.googleapis.com/youtube/v3/videos?' + params);
+      createController();
       $httpBackend.flush();
       $rootScope.videoId = '234';
       $rootScope.note = '<h1>Hi</h1>';
@@ -83,8 +84,8 @@ describe('Controller: LectureCtrl', function () {
     }));
 
     it('should save current lecture with class', inject(function(_$log_) {
-      $httpBackend.expectGET('https://www.googleapis.com/youtube/v3/videos?' + params)
-      var controller = createController();
+      $httpBackend.expectGET('https://www.googleapis.com/youtube/v3/videos?' + params);
+      createController();
       $httpBackend.flush();
 
       $httpBackend.expectPOST(/\/api\/users\/.*\/classes/);

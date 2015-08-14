@@ -50,7 +50,7 @@ describe('Controller: WatchedContentsCtrl', function () {
     }));
 
     it('should get all classes from class API at first', function() {
-      var controller = createController(); 
+      createController(); 
       $httpBackend.expectGET(/\/api\/users\/classes/);
       $httpBackend.expectGET(/https\:\/\/www\.googleapis\.com\/youtube\/v3\/playlists\?.*/);
       $httpBackend.flush();
@@ -59,7 +59,7 @@ describe('Controller: WatchedContentsCtrl', function () {
     });
 
     it('should have 1 decreased classes after to delete class', function() {
-      var controller = createController(); 
+      createController(); 
       $httpBackend.expectGET(/\/api\/users\/classes/);
       $httpBackend.expectGET(/https\:\/\/www\.googleapis\.com\/youtube\/v3\/playlists\?.*/);
       $httpBackend.flush();

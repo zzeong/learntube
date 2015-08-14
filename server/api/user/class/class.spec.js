@@ -83,8 +83,8 @@ describe('REST API:', function() {
       }];
 
       Class.remove().exec(); 
-      Class.create(classes, function(err) {
-        if(err) { return handleError(res, err); }
+      Class.create(classes, function(err, res) {
+        if(err) { return done(err); }
         done();
       });
     });
