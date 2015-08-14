@@ -195,7 +195,7 @@ angular.module('learntubeApp')
 
   $scope.navigateTo = function(lecture) {
     console.log(lecture.videoId);
-    $state.go('Lecture', { lid: lecture.videoId });
+    $state.go('Lecture', { cid: $scope.playlistId,  lid: lecture.videoId });
   };
 
 
