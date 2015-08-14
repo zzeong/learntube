@@ -70,7 +70,6 @@ describe('REST API:', function() {
     });
   });
 
-<<<<<<< Updated upstream
   describe('GET /api/users/:id/classes/', function() {
     var classes, cid;
 
@@ -123,9 +122,6 @@ describe('REST API:', function() {
   });
 
   describe('DELETE /api/users/:id/classes/:cid', function() {
-=======
-  xdescribe('DELETE /api/users/:id/classes/:cid', function() {
->>>>>>> Stashed changes
     var classData, cid;
 
     beforeEach(function(done) {
