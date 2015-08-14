@@ -12,7 +12,7 @@
     </div>
   </div>
   <md-list ng-show="isLoggedIn()" ng-controller="SidenavDrawerCtrl">
-    <md-list-item ng-repeat="item in personalMenu" ng-href="{{ item.url }}">
+    <md-list-item ng-repeat="item in personalMenu" ng-click="navTo(item.url)">
       <p>{{ item.name }}</p>
     </md-list-item>
     <md-divider></md-divider>

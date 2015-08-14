@@ -27,7 +27,7 @@ angular.module('learntubeApp')
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.personalMenu = [{
     name: 'Watched Contents',
-    url: '/'
+    url: '/watched'
   }, {
     name: 'Uploaded Contents',
     url: '/'

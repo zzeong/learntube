@@ -7,7 +7,7 @@ angular.module('learntubeApp')
   $scope.getCurrentUser = Auth.getCurrentUser;
   $scope.personalMenu = [{
     name: 'Watched Contents',
-    url: '/'
+    url: '/watched'
   }, {
     name: 'Uploaded Contents',
     url: '/'
@@ -28,6 +28,10 @@ angular.module('learntubeApp')
   $scope.getUserImage = function() {
     var guestImgPath = '/assets/images/guest.png';
     return _.has($scope.getCurrentUser(), 'google') ? $scope.getCurrentUser().google.image.url : guestImgPath;
+  };
+
+  $scope.navTo = function(url) {
+    $location.path(url);
   };
 })
 .controller('SidenavCtrl', function ($scope, $mdSidenav, $log) {
