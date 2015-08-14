@@ -27,34 +27,14 @@ var createRandomHash = function() {
 };
 
 
-// Get list of notes
+// Get list of NoteSchema
 exports.index = function(req, res) {
+  
 };
 
-// Get a single note
-exports.show = function(req, res) {
-  User.findById(req.params.id, function(err, user) {
-    if(err) { return handleError(res, err); }
-    if(!user) { return res.status(404).send('Not Found'); }
-
-    var noteDoc = user.notes.id(req.params.nid);
-
-    awsClient.get(noteDoc.s3Path).on('response', function(resFromS3){
-      console.log('[S3]:GET ' + resFromS3.statusCode);
-      console.log('[S3]:GET ' + resFromS3.headers);
-      resFromS3.setEncoding('utf8');
-      resFromS3.on('data', function(chunk){
-        return res.status(200).json({
-          message: 'gotten',
-          contents: chunk
-        });
-      });
-    }).end();
-
-  });
-};
 
 // Creates a new note in the DB.
+// req = 요청 api / res = 받아온 정보. 즉 우리가 서버에 던질 것. 맞나?
 exports.create = function(req, res) {
   User.findById(req.params.id, function(err, user) {
     if(err) { return handleError(res, err); }
@@ -74,21 +54,17 @@ exports.create = function(req, res) {
         console.log('[S3]:PUT saved to %s', reqToS3.url);
       }
 
-      var note = {
+      var noteObj = new Note({
         videoId: req.body.videoId,
         hash: hash,
         url: reqToS3.url,
         s3Path: uploadedPath
-      };
+      });
 
-      user.notes.push(note);
-      var nid = _.last(user.notes)._id;
-      user.save(function (err) {
-        if(err) { return handleError(res, err); }
-        return res.status(201).json({
-          nid: nid,
-          message: 'saved'
-        });
+      // push대신 save method
+      noteObj.save(function(err){
+        if(err){return handleError(res, err);}
+        return res.status(201).json(noteObj);
       });
     });
 
@@ -96,26 +72,67 @@ exports.create = function(req, res) {
   });
 };
 
+
+
+
+// Get a single note
+exports.show = function(req, res) {
+
+  // 노트를 찾는다
+  Note.findById(req.params.nid, function(err, note) {
+    // 에러처리
+    if(err) { return handleError(res, err); }
+    if(!note) { return res.status(404).send('Not Found'); }
+
+    // noteDoc을 만들필요가 없어서 주석처리. 
+    // var noteDoc = Note.id(res.note.nid);
+
+    awsClient.get(note.s3Path).on('response', function(resFromS3){
+      console.log('[S3]:GET ' + resFromS3.statusCode);
+      console.log('[S3]:GET ' + resFromS3.headers);
+      resFromS3.setEncoding('utf8');
+      resFromS3.on('data', function(chunk){
+        return res.status(200).json({
+          message: 'gotten',
+          contents: chunk
+        });
+      });
+    }).end();
+
+  });
+};
+
+
+
+
 // Updates an existing note in the DB.
 exports.update = function(req, res) {
+
 };
+
+
+
+
 
 // Deletes a note from the DB.
 exports.destroy = function(req, res) {
-  User.findById(req.params.id, function (err, user) {
+  Note.findById(req.params.nid, function (err, note) {
     if(err) { return handleError(res, err); }
-    if(!user) { return res.status(404).send('Not Found'); }
+    if(!note) { return note.status(404).send('Not Found'); }
 
-    var noteDoc = user.notes.id(req.params.nid);
-
-    awsClient.del(noteDoc.s3Path).on('response', function(resFromS3){
+    awsClient.del(note.s3Path).on('response', function(resFromS3){
       console.log('[S3]:DELETE ' + res.statusCode);
       console.log('[S3]:DELETE ' + res.headers);
-      user.notes.id(req.params.nid).remove();
-      user.save(function (err) {
+      note.remove(function(err){
+        if(err){ return handleError(res,err); }
+        return res.status(200).json({message: 'removed' });
+      });
+
+/*      Note.save(function (err) {
         if(err) { return handleError(res, err); }
         return res.status(200).json({ message: 'removed' });
-      });
+      });*/
+    
     }).end();
 
   });

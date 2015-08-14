@@ -6,6 +6,7 @@ var crypto = require('crypto');
 var authTypes = ['github', 'twitter', 'facebook', 'google'];
 
 var NoteSchema = require('./note/note.model');
+
 var UserSchema = new Schema({
   name: String,
   email: { type: String, lowercase: true },
@@ -18,7 +19,6 @@ var UserSchema = new Schema({
   salt: String,
   google: {},
   github: {},
-  notes: [NoteSchema]
 });
 
 /**
