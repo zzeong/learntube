@@ -20,7 +20,7 @@ var userData = {
 describe('REST API:', function() {
   var id, nid, noteContents, videoId;
 
-  this.timeout(5000);
+  this.timeout(10000);
 
   before(function(done){
     videoId = 'sMKoNBRZM1M';
