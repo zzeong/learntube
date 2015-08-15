@@ -4,6 +4,7 @@ angular.module('learntubeApp')
 .controller('ClassCtrl', function($scope, $http, $stateParams, $state, ClassAPI, $log, Auth) {
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.playlistId = $stateParams.pid;
+  $scope.go = $state.go;
 
   $scope.addClass = function() {
     ClassAPI.create({ playlistId: $scope.playlistId }, function() {
@@ -191,13 +192,6 @@ angular.module('learntubeApp')
     return $scope[showProp]; 
 
   }; 
-
-
-  $scope.navigateTo = function(lecture) {
-    console.log(lecture.videoId);
-    $state.go('Lecture', { pid: $scope.playlistId,  vid: lecture.videoId });
-  };
-
 
 });
 

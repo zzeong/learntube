@@ -3,6 +3,7 @@
 angular.module('learntubeApp')
 .controller('SearchCtrl', function($scope, $http, $stateParams, $state) {
   $scope.q = $stateParams.q;
+  $scope.go = $state.go;
 
   $http.get('https://www.googleapis.com/youtube/v3/search', {
     params: {
@@ -14,10 +15,6 @@ angular.module('learntubeApp')
     }
   }).success(function(response) {
     $scope.classes = response.items; 
-    console.log($scope.classes);
   });
 
-  $scope.navigateTo = function(classe) {
-    $state.go('Summary', { pid: classe.id.playlistId });
-  };
 });

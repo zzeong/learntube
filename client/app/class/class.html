@@ -104,7 +104,7 @@
     <md-content>
       <h3>Lectures in this Class</h3>
       <md-list>
-        <md-list-item class="md-3-line" ng-repeat="lecture in lecArrSorting" ng-click="navigateTo(lecture)"> 
+        <md-list-item class="md-3-line" ng-repeat="lecture in lecArrSorting" ng-click="go('Lecture', { pid: playlistId, vid: lecture.videoId })"> 
 
           <div class="md-list-item-text content-width">
 

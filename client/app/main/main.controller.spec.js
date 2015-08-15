@@ -15,7 +15,4 @@ describe('Controller: MainCtrl', function () {
     });
   }));
 
-  it('scope에 검색 기본값을 가지고 있어야 한다', function() {
-    //expect(scope.q).toBe('cats');
-  });
 });
