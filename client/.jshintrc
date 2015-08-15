@@ -32,6 +32,7 @@
     "it": true,
     "xit": true,
     "expect": true,
+    "spyOn": true,
     "browser": true,
     "element": true,
     "by": true,
