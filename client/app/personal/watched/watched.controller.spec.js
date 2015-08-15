@@ -14,61 +14,70 @@ describe('Controller: WatchedContentsCtrl', function () {
   }));
 
   describe('with HTTP', function() {
-    var $httpBackend, resultItems, youtubeResult, params, refinedData; 
+    var $httpBackend, res;
 
-    beforeEach(inject(function(_$httpBackend_) {
+    beforeEach(inject(function(_$httpBackend_, Auth) {
       $httpBackend = _$httpBackend_; 
 
-      resultItems = [{
-        _id: 'qw',
-        userId: '123',
-        playlistId: 'Q1W2'
-      }, {
-        _id: 'qf',
-        userId: '123',
-        playlistId: 'E3R4'
-      }];
-      youtubeResult = { items: [{}, {}] };
-      refinedData = resultItems.map(function(el, i) {
-        el.item = youtubeResult.items[i];
-        return el;
-      });
+      var userData = { 
+        __v: 0,
+        _id: 'QWER',
+        email: 'test@test.com',
+        name: 'Test User',
+        provider: 'local',
+        role: 'user'
+      };
 
-      params = _.map({
-        key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
-        part: 'snippet,contentDetails',
-        id:'Q1W2,E3R4',
-        fields: 'items(snippet(title,thumbnails))',
-      }, function(val, key) {
-        return key + '=' + val; 
-      }).join('&');
+      res = {
+        classQuery: [{
+          _id: 'QWER',
+          userId: '123',
+          playlistId: 'Q1W2'
+        }, {
+          _id: 'QWER',
+          userId: '123',
+          playlistId: 'E3R4'
+        }],
+        youtube: { items: [{}, {}] },
+      };
 
-      $httpBackend.when('GET',/https\:\/\/www\.googleapis\.com\/youtube\/v3\/playlists\?.*/)
-      .respond(youtubeResult);
-      $httpBackend.when('GET', /\/api\/users\/classes/).respond(resultItems);
-      $httpBackend.when('DELETE', /\/api\/users\/classes\/.*/).respond();
+      $httpBackend.when('POST', '/auth/local').respond({ token: 'myToken' });
+      $httpBackend.when('GET', '/api/users/me').respond(userData);
+
+      Auth.login({ email: 'test@test.com', password: 'test' }); 
+      $httpBackend.flush();
+
+
+      $httpBackend.when('GET', /https\:\/\/www\.googleapis\.com\/youtube\/v3\/playlists\?.*/).respond(res.youtube);
+      $httpBackend.when('GET', /\/api\/users\/.*\/classes/).respond(res.classQuery);
+      $httpBackend.when('DELETE', /\/api\/users\/.*\/classes\/.*/).respond();
     }));
 
-    it('should get all classes from class API at first', function() {
+
+    it('should get all classes', function() {
       createController(); 
-      $httpBackend.expectGET(/\/api\/users\/classes/);
+
+      $httpBackend.expectGET(/\/api\/users\/.*\/classes/);
       $httpBackend.expectGET(/https\:\/\/www\.googleapis\.com\/youtube\/v3\/playlists\?.*/);
       $httpBackend.flush();
 
-      expect(angular.equals($rootScope.classes, refinedData)).toBe(true);
+      expect($rootScope.classes[0]._id).toEqual('QWER');
+      expect($rootScope.classes[0].item).toBeDefined();
     });
 
     it('should have 1 decreased classes after to delete class', function() {
       createController(); 
-      $httpBackend.expectGET(/\/api\/users\/classes/);
-      $httpBackend.expectGET(/https\:\/\/www\.googleapis\.com\/youtube\/v3\/playlists\?.*/);
+
       $httpBackend.flush();
 
       var beforeLength = $rootScope.classes.length;
-      $httpBackend.expectDELETE(/\/api\/users\/classes\/.*/);
-      $rootScope.deleteClass(refinedData[0]);
+      $rootScope.deleteClass($rootScope.classes[0]);
+
+      $httpBackend.expectDELETE(/\/api\/users\/.*\/classes\/.*/);
       $httpBackend.flush();
+
       expect($rootScope.classes.length).toEqual(beforeLength - 1);
     });
+
   });
 });
