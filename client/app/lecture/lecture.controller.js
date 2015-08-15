@@ -52,6 +52,9 @@ angular.module('learntubeApp')
     };
 
     NoteAPI.create(params, function() {
+      NoteAPI.query({ videoId: $scope.videoId }, function(notes) {
+        $scope.notes = notes;
+      });
     });
   };
 
