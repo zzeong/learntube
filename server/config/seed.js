@@ -23,24 +23,31 @@ User.find({}).remove(function() {
     password: 'admin'
   }, function(err, user) {
 
+    // Note Test URL: http://localhost:9000/class/PL2jcQseI9PWJoKqqIhOyNE9r_F4IpCf4t/lecture/5G229--2HJ4
     Note.find({}).remove(function() {
       Note.create({
         userId: user._id,
-        videoId: 'e_ElR6OkQvY',
+        videoId: '5G229--2HJ4',
         hash: '7121cd645707ec47efa33393028473c7',
         url: 'https://learntubebucket.s3.amazonaws.com/test@test.com/7121cd645707ec47efa33393028473c7',
         s3Path: '/test@test.com/7121cd645707ec47efa33393028473c7',
+      }, {
+        userId: user._id,
+        videoId: '5G229--2HJ4',
+        hash: 'a868c19f55558a2a349193ff9d1f2fce',
+        url: 'https://learntubebucket.s3.amazonaws.com/test@test.com/a868c19f55558a2a349193ff9d1f2fce',
+        s3Path: '/test@test.com/a868c19f55558a2a349193ff9d1f2fce',
       }); 
     });
 
     Class.find({}).remove(function() {
       Class.create({
         userId: user._id,
-        playlistId: 'PLmtapKaZsgZt3g_uAPJbsMWdkVsznn_2R',
+        playlistId: 'PL2jcQseI9PWJoKqqIhOyNE9r_F4IpCf4t',
         lectures: [{
-          videoId: 'W_k2EB33s7A'
+          videoId: '-SQIlNb3cWM'
         }, {
-          videoId: 'B5HkW--GAQ8'
+          videoId: '5G229--2HJ4'
         }]
       }, {
         userId: user._id,
@@ -51,7 +58,6 @@ User.find({}).remove(function() {
           videoId: '_mVJJvx04_w'
         }]
       }, {
-
         userId: user._id,
         playlistId: 'PLmtapKaZsgZt3g_uAPJbsMWdkVsznn_2R',
         lectures: [{
