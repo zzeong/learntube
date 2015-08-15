@@ -10,6 +10,7 @@ angular.module('learntubeApp')
   };
   $scope.isNoteOn = false;
   $scope.getCurrentUser = Auth.getCurrentUser;
+  $scope.isLoggedIn = Auth.isLoggedIn;
 
   $http.get('https://www.googleapis.com/youtube/v3/videos', {
     params: {
@@ -21,11 +22,9 @@ angular.module('learntubeApp')
     $scope.item = response.items[0];
   });
 
-  var noteId = NoteAPI.prototype.getNoteId($scope.videoId);
-  if(noteId) {
-    NoteAPI.get({ nid: noteId }, function(response) {
-      $log.info(response.message); 
-      $scope.contents = response.contents;
+  if($scope.isLoggedIn()) {
+    NoteAPI.query({ videoId: $scope.videoId }, function(notes) {
+      $scope.notes = notes;
     });
   }
 
@@ -52,8 +51,7 @@ angular.module('learntubeApp')
       contents: $scope.note
     };
 
-    NoteAPI.create(params, function(response) {
-      $log.info(response.message); 
+    NoteAPI.create(params, function() {
     });
   };
 

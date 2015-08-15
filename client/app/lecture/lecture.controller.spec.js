@@ -29,9 +29,20 @@ describe('Controller: LectureCtrl', function () {
   }));
 
   describe('with HTTP', function() {
-    var youtubeReqHandler, $httpBackend, params, resultItems;
-    beforeEach(inject(function(_$httpBackend_) {
+    var $httpBackend, $cookieStore, resultItems;
+
+    beforeEach(inject(function(_$httpBackend_, _$cookieStore_, Auth, $stateParams) {
       $httpBackend = _$httpBackend_;
+      $cookieStore = _$cookieStore_;
+
+      var userData = { 
+        __v: 0,
+        _id: 'QWER',
+        email: 'test@test.com',
+        name: 'Test User',
+        provider: 'local',
+        role: 'user'
+      };
 
       resultItems = {
         items: [{
@@ -41,58 +52,73 @@ describe('Controller: LectureCtrl', function () {
         }] 
       };
 
-      params = _.map({
-        key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
-        part: 'snippet,contentDetails'
-      }, function(val, key) {
-        return key + '=' + val; 
-      }).join('&');
+      $httpBackend.when('POST', '/auth/local').respond({ token: 'myToken' });
+      $httpBackend.when('GET', '/api/users/me').respond(userData);
 
-      youtubeReqHandler = $httpBackend.when('GET','https://www.googleapis.com/youtube/v3/videos?' + params)
-      .respond(resultItems);
+      Auth.login({ email: 'test@test.com', password: 'test' }); 
+      $stateParams.vid = '2rde3';
+      $httpBackend.flush();
 
-      $httpBackend.when('POST', '/api/users/notes').respond({ message: 'success' });
+      $httpBackend.when('GET', /https\:\/\/www\.googleapis\.com\/youtube\/v3\/videos\?.*/).respond(resultItems);
+      $httpBackend.when('POST', /\/api\/users\/.*\/notes/).respond({ message: 'success' });
+      $httpBackend.when('GET', /\/api\/users\/.*\/notes.*/).respond([{ _id: 'QWER', contents: '<h1>Hello</h1>' }]);
       $httpBackend.when('POST', /\/api\/users\/.*\/classes/).respond({ _id: 'QWER'  });
-      $httpBackend.when('POST', /\/api\/users\/.*\/classes\/.*\/lectures/).respond({ _id: 'QWERT' });
+      $httpBackend.when('POST', /\/api\/users\/.*\/classes\/.*\/lectures/).respond({ _id: 'QWER' });
     })); 
 
     afterEach(function() {
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
+      $cookieStore.remove('token'); 
     });
 
 
     it('should assign item which YouTube API responsed to scope item', inject(function() {
-      $httpBackend.expectGET('https://www.googleapis.com/youtube/v3/videos?' + params);
       createController();
+      $httpBackend.expectGET(/https\:\/\/www\.googleapis\.com\/youtube\/v3\/videos\?.*/);
       $httpBackend.flush();
+
       expect($rootScope.item).toEqual(resultItems.items[0]); 
     }));
 
-    it('should receive note which user have written from Note API', inject(function(_$log_) {
-      $httpBackend.expectGET('https://www.googleapis.com/youtube/v3/videos?' + params);
+    it('should get notes which user have been saving', inject(function() {
       createController();
-      $httpBackend.flush();
-      $rootScope.videoId = '234';
-      $rootScope.note = '<h1>Hi</h1>';
-      $httpBackend.expectPOST('/api/users/notes');
-      var $log = _$log_;
+      $httpBackend.expectGET(/\/api\/users\/.*\/notes\?videoId=2rde3/);
+      $httpBackend.flush(); 
 
-      $rootScope.doneNote();
-      $httpBackend.flush();
-      expect($log.info.logs).toContain(['success']);
+      expect($rootScope.notes.length).toEqual(1);
+      expect($rootScope.notes[0].contents).toEqual('<h1>Hello</h1>');
+      expect($rootScope.notes[0]._id).toEqual('QWER');
     }));
 
-    it('should save current lecture with class', inject(function(_$log_) {
-      $httpBackend.expectGET('https://www.googleapis.com/youtube/v3/videos?' + params);
+
+    it('should send note and get refreshed notes', inject(function() {
       createController();
       $httpBackend.flush();
+
+      $rootScope.notes = null;
+
+      $rootScope.videoId = '2rde3';
+      $rootScope.note = '<h1>Hi</h1>';
+      $rootScope.doneNote();
+
+      $httpBackend.expectPOST(/\/api\/users\/.*\/notes/);
+      $httpBackend.expectGET(/\/api\/users\/.*\/notes\?videoId=2rde3/);
+      $httpBackend.flush();
+      expect($rootScope.notes).toBeDefined();
+      expect($rootScope.notes.length).toEqual(1);
+    }));
+
+    it('should save current lecture with class', inject(function($log) {
+      createController();
+      $httpBackend.flush();
+
+      $rootScope.completeLecture();
 
       $httpBackend.expectPOST(/\/api\/users\/.*\/classes/);
       $httpBackend.expectPOST(/\/api\/users\/.*\/classes\/.*\/lectures/);
-      var $log = _$log_;
-      $rootScope.completeLecture();
       $httpBackend.flush();
+
       expect($log.info.logs).toContain(['Saved Lecture']);
     }));
   });

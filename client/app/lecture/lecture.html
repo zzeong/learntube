@@ -7,6 +7,7 @@
 </div>
 
 <div class="content-width content-all">
+
   <div>
     <md-content class="video-info-panel" layout-padding>
       <h1 class="md-title">{{ item.snippet.title }}</h1>
@@ -16,21 +17,25 @@
       </div> 
     </md-content>
   </div>
+
   <md-divider></md-divider>
-  <div>
-    <md-content layout-padding>
+
+  <div ng-if="isLoggedIn()">
+    <md-content layout-padding ng-repeat="note in notes">
       <img class="avatar" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image"/>
       <div>
         <p class="md-subhead">{{ getCurrentUser().name }}</p>
       </div>
       <md-divider md-inset></md-divider>
-      <note-viewer contents="contents"></note-viewer>
+      <note-viewer contents="note.contents"></note-viewer>
     </md-content>
   </div>
+
   <div ng-show="isNoteOn">
     <form ng-submit="doneNote()">
       <textarea id="note" name="note" ng-model="note" ckeditor></textarea>
       <md-button type="submit" class="md-raised">Done</md-button>
     </form>
   </div>
+
 </div>
