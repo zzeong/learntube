@@ -17,9 +17,9 @@ angular.module('learntubeApp')
         fields: 'items(snippet(title,thumbnails))',
       }
     }).success(function(responseFromYT) {
-      $scope.classes = $scope.classes.map(function(el, i) {
-        el.item = responseFromYT.items[i];
-        return el;
+      $scope.classes = $scope.classes.map(function(classe, i) {
+        classe.item = responseFromYT.items[i];
+        return classe;
       });
     });
   });
