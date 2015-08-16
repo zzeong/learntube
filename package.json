@@ -29,6 +29,7 @@
     "socketio-jwt": "^3.0.0"
   },
   "devDependencies": {
+    "blanket": "^1.1.7",
     "connect-livereload": "~0.4.0",
     "grunt": "~0.4.4",
     "grunt-angular-templates": "^0.5.4",
