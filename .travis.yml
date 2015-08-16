@@ -1,9 +1,12 @@
 language: node_js
 node_js:
-  - '0.10'
-  - '0.11'
+- '0.10'
+- '0.11'
 before_script:
-  - npm install -g bower grunt-cli
-  - gem install sass
-  - bower install
+- npm install -g bower grunt-cli
+- gem install sass
+- bower install
 services: mongodb
+before_install:
+- openssl aes-256-cbc -K $encrypted_a7a13d2aff9e_key -iv $encrypted_a7a13d2aff9e_iv
+  -in local.env.js.enc -out server/config/local.env.js -d
