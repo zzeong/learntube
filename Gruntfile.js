@@ -739,6 +739,7 @@ module.exports = function (grunt) {
 
     else {
       grunt.task.run([
+        'jshint',
         'test:server',
         'test:client'
       ]);
