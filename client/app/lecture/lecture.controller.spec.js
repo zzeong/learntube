@@ -61,9 +61,10 @@ describe('Controller: LectureCtrl', function () {
 
       $httpBackend.when('GET', /https\:\/\/www\.googleapis\.com\/youtube\/v3\/videos\?.*/).respond(resultItems);
       $httpBackend.when('POST', /\/api\/users\/.*\/notes/).respond({ message: 'success' });
-      $httpBackend.when('GET', /\/api\/users\/.*\/notes.*/).respond([{ _id: 'QWER', contents: '<h1>Hello</h1>' }]);
-      $httpBackend.when('POST', /\/api\/users\/.*\/classes/).respond({ _id: 'QWER'  });
-      $httpBackend.when('POST', /\/api\/users\/.*\/classes\/.*\/lectures/).respond({ _id: 'QWER' });
+      $httpBackend.when('GET', /\/api\/users\/.*\/notes.*/).respond([{ _id: 'ASDF', contents: '<h1>Hello</h1>' }]);
+      $httpBackend.when('DELETE', /\/api\/users\/.*\/notes\/.*/).respond({ message: 'removed' });
+      $httpBackend.when('POST', /\/api\/users\/.*\/classes/).respond({ _id: 'QAWS'  });
+      $httpBackend.when('POST', /\/api\/users\/.*\/classes\/.*\/lectures/).respond({ _id: 'ZXCV' });
     })); 
 
     afterEach(function() {
@@ -88,7 +89,7 @@ describe('Controller: LectureCtrl', function () {
 
       expect($rootScope.notes.length).toEqual(1);
       expect($rootScope.notes[0].contents).toEqual('<h1>Hello</h1>');
-      expect($rootScope.notes[0]._id).toEqual('QWER');
+      expect($rootScope.notes[0]._id).toEqual('ASDF');
     }));
 
 
@@ -109,6 +110,21 @@ describe('Controller: LectureCtrl', function () {
       expect($rootScope.notes.length).toEqual(1);
     }));
 
+
+    it('should delete listed note and have notes', function() {
+      createController();
+      $httpBackend.flush();
+
+      var beforeLength = $rootScope.notes.length;
+      $rootScope.deleteNote({ _id: 'ASDF' });
+      
+      $httpBackend.expectDELETE(/\/api\/users\/.*\/notes\/ASDF/);
+      $httpBackend.flush();
+
+      expect($rootScope.notes.length).toEqual(beforeLength - 1);
+    });
+
+
     it('should save current lecture with class', inject(function($log) {
       createController();
       $httpBackend.flush();
@@ -121,5 +137,6 @@ describe('Controller: LectureCtrl', function () {
 
       expect($log.info.logs).toContain(['Saved Lecture']);
     }));
+
   });
 });

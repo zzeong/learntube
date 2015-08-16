@@ -45,6 +45,12 @@ angular.module('learntubeApp')
     $scope.isNoteOn = !$scope.isNoteOn; 
   };
 
+  $scope.deleteNote = function(note) {
+    NoteAPI.remove({ nid: note._id }, function() {
+      _.remove($scope.notes, note);
+    });
+  };
+
   $scope.doneNote = function() {
     var params = {
       videoId: $scope.videoId,
