@@ -54,10 +54,13 @@ angular.module('learntubeApp')
   $scope.doneNote = function() {
     var params = {
       videoId: $scope.videoId,
-      contents: $scope.note
+      contents: $scope.noteContents
     };
 
     NoteAPI.create(params, function() {
+      $scope.noteContents = '';
+      $scope.toggleNote();
+
       NoteAPI.query({ videoId: $scope.videoId }, function(notes) {
         $scope.notes = notes;
       });
