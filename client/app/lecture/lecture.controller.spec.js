@@ -62,6 +62,7 @@ describe('Controller: LectureCtrl', function () {
       $httpBackend.when('GET', /https\:\/\/www\.googleapis\.com\/youtube\/v3\/videos\?.*/).respond(resultItems);
       $httpBackend.when('POST', /\/api\/users\/.*\/notes/).respond({ _id: 'NQWER' });
       $httpBackend.when('GET', /\/api\/users\/.*\/notes.*/).respond([{ _id: 'NQWER', contents: '<h1>Hello</h1>' }]);
+      $httpBackend.when('PUT', /\/api\/users\/.*\/notes\/.*/).respond({ _id: 'NQWER' });
       $httpBackend.when('DELETE', /\/api\/users\/.*\/notes\/.*/).respond({ _id: 'NQWER' });
       $httpBackend.when('POST', /\/api\/users\/.*\/classes/).respond({ _id: 'QAWS'  });
       $httpBackend.when('POST', /\/api\/users\/.*\/classes\/.*\/lectures/).respond({ _id: 'ZXCV' });
@@ -80,6 +81,13 @@ describe('Controller: LectureCtrl', function () {
       $httpBackend.flush();
 
       expect($rootScope.item).toEqual(resultItems.items[0]); 
+    }));
+
+    it('should provide editing status to notes', inject(function() {
+      createController();
+      $httpBackend.flush();
+
+      expect($rootScope.notes[0].isEditing).toBeFalsy();
     }));
 
     it('should get notes which user have been saving', inject(function() {
@@ -108,6 +116,21 @@ describe('Controller: LectureCtrl', function () {
       expect($rootScope.notes).toBeDefined();
       expect($rootScope.notes.length).toEqual(beforeLength + 1);
     }));
+
+    it('should update note', function() {
+      createController();
+      $httpBackend.flush();
+
+      var note = {
+        _id: 'NQWER',
+        contents: '<h1>Updated</h1>'
+      }; 
+      $rootScope.updateNote(note);
+
+      $httpBackend.expectPUT(/\/api\/users\/.*\/notes\/NQWER/);
+      $httpBackend.flush();
+      expect($rootScope.notes[0].contents).toEqual('<h1>Updated</h1>');
+    });
 
 
     it('should delete listed note and have notes', function() {

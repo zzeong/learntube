@@ -21,24 +21,38 @@
   <md-divider></md-divider>
 
   <div ng-if="isLoggedIn()">
+
     <md-content layout-padding ng-repeat="note in notes">
-      <img class="avatar" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image"/>
-      <div>
-        <p class="md-subhead">{{ getCurrentUser().name }}</p>
-      </div>
-      <md-divider md-inset></md-divider>
-      <note-viewer contents="note.contents"></note-viewer>
+      <div ng-hide="note.isEditing">
+        <img class="avatar" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image"/>
+        <div>
+          <p class="md-subhead">{{ getCurrentUser().name }}</p>
+        </div>
 
-      <div class="md-actions" layout="row" layout-align="end center">
-        <md-button class="md-raised md-warn" ng-click="deleteNote(note)">Delete</md-button>
+        <md-divider md-inset></md-divider>
+
+        <note-viewer contents="note.contents"></note-viewer>
+
+        <div class="md-actions" layout="row" layout-align="end center">
+          <md-button class="md-raised" ng-click="editNote(note)">Edit</md-button>
+          <md-button class="md-raised md-warn" ng-click="deleteNote(note)">Delete</md-button>
+        </div>
       </div>
 
+      <div ng-if="note.isEditing">
+        <form ng-submit="updateNote(note)">
+          <textarea ng-model="note.contents" ckeditor></textarea>
+          <md-button type="submit" class="md-raised">Update</md-button>
+        </form>
+      </div>
     </md-content>
+
+
   </div>
 
   <div ng-show="isNoteOn">
     <form ng-submit="doneNote()">
-      <textarea id="note" name="note" ng-model="noteContents" ckeditor></textarea>
+      <textarea id="newNote" ng-model="noteContents" ckeditor></textarea>
       <md-button type="submit" class="md-raised">Done</md-button>
     </form>
   </div>

@@ -22,9 +22,20 @@ angular.module('learntubeApp')
     $scope.item = response.items[0];
   });
 
+  var keepNoteSoundly = function(note, src) {
+    if(typeof src !== 'undefined') { _.assign(note, src); }
+
+    if(!_.has(note, 'isEditing')) {
+      note.isEditing = false;
+    }
+    return note;
+  };
+
   if($scope.isLoggedIn()) {
     NoteAPI.query({ videoId: $scope.videoId }, function(notes) {
-      $scope.notes = notes;
+      $scope.notes = notes.map(function(note) {
+        return keepNoteSoundly(note);
+      });
     });
   }
 
@@ -45,10 +56,25 @@ angular.module('learntubeApp')
     $scope.isNoteOn = !$scope.isNoteOn; 
   };
 
+  $scope.editNote = function(note) {
+    note.isEditing = true;
+  };
+
   $scope.deleteNote = function(note) {
     NoteAPI.remove({ nid: note._id }, function(res) {
       _.remove($scope.notes, { _id: res._id });
     });
+  };
+
+  $scope.updateNote = function(note) {
+    NoteAPI.update({ nid: note._id }, { contents: note.contents }, function(res) {
+      $scope.notes = $scope.notes.map(function(elNote) {
+        if(elNote._id === res._id) {
+          return keepNoteSoundly(res, { contents: note.contents });
+        }
+        return elNote;
+      });
+    }); 
   };
 
   $scope.doneNote = function() {
