@@ -6,7 +6,7 @@ angular.module('learntubeApp')
     require: '?ngModel',
     restrict: 'A',
     link: function(scope, elem, attrs, ngModel) {
-      var ck = CKEDITOR.replace(attrs.id); 
+      var ck = CKEDITOR.replace(elem[0]); 
 
       if(!ngModel) { return; }
 
