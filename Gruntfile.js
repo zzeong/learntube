@@ -74,7 +74,7 @@ module.exports = function (grunt) {
       },
       mochaTest: {
         files: ['server/**/*.js'],
-        tasks: ['env:test', 'mochaTest']
+        tasks: ['env:test', 'mochaTest:test']
       },
       jshint: {
         files: [
@@ -478,12 +478,12 @@ module.exports = function (grunt) {
       test: {
         options: {
           reporter: 'spec',
-          require: 'coverage/blanket',
         },
         src: ['server/**/*.spec.js'],
       },
       coverage: {
         options: {
+          require: 'coverage/blanket',
           reporter: 'html-cov',
           quiet: true,
           captureFile: 'coverage/mocha/coverage.html'
@@ -685,7 +685,7 @@ module.exports = function (grunt) {
       return grunt.task.run([
         'env:all',
         'env:test',
-        'mochaTest',
+        'mochaTest:test',
       ]);
     }
     
