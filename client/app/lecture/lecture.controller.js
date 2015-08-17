@@ -46,8 +46,8 @@ angular.module('learntubeApp')
   };
 
   $scope.deleteNote = function(note) {
-    NoteAPI.remove({ nid: note._id }, function() {
-      _.remove($scope.notes, note);
+    NoteAPI.remove({ nid: note._id }, function(res) {
+      _.remove($scope.notes, { _id: res._id });
     });
   };
 
@@ -57,13 +57,15 @@ angular.module('learntubeApp')
       contents: $scope.noteContents
     };
 
-    NoteAPI.create(params, function() {
+    NoteAPI.create(params, function(res) {
+      var note = keepNoteSoundly(res, {
+        contents: $scope.noteContents,
+      });
+
+      $scope.notes.push(note);
+
       $scope.noteContents = '';
       $scope.toggleNote();
-
-      NoteAPI.query({ videoId: $scope.videoId }, function(notes) {
-        $scope.notes = notes;
-      });
     });
   };
 

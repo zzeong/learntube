@@ -60,9 +60,9 @@ describe('Controller: LectureCtrl', function () {
       $httpBackend.flush();
 
       $httpBackend.when('GET', /https\:\/\/www\.googleapis\.com\/youtube\/v3\/videos\?.*/).respond(resultItems);
-      $httpBackend.when('POST', /\/api\/users\/.*\/notes/).respond({ message: 'success' });
-      $httpBackend.when('GET', /\/api\/users\/.*\/notes.*/).respond([{ _id: 'ASDF', contents: '<h1>Hello</h1>' }]);
-      $httpBackend.when('DELETE', /\/api\/users\/.*\/notes\/.*/).respond({ message: 'removed' });
+      $httpBackend.when('POST', /\/api\/users\/.*\/notes/).respond({ _id: 'NQWER' });
+      $httpBackend.when('GET', /\/api\/users\/.*\/notes.*/).respond([{ _id: 'NQWER', contents: '<h1>Hello</h1>' }]);
+      $httpBackend.when('DELETE', /\/api\/users\/.*\/notes\/.*/).respond({ _id: 'NQWER' });
       $httpBackend.when('POST', /\/api\/users\/.*\/classes/).respond({ _id: 'QAWS'  });
       $httpBackend.when('POST', /\/api\/users\/.*\/classes\/.*\/lectures/).respond({ _id: 'ZXCV' });
     })); 
@@ -89,25 +89,24 @@ describe('Controller: LectureCtrl', function () {
 
       expect($rootScope.notes.length).toEqual(1);
       expect($rootScope.notes[0].contents).toEqual('<h1>Hello</h1>');
-      expect($rootScope.notes[0]._id).toEqual('ASDF');
+      expect($rootScope.notes[0]._id).toEqual('NQWER');
     }));
 
 
-    it('should send note and get refreshed notes', inject(function() {
+    it('should save note and push refreshed notes', inject(function() {
       createController();
       $httpBackend.flush();
 
-      $rootScope.notes = null;
+      var beforeLength = $rootScope.notes.length;
 
       $rootScope.videoId = '2rde3';
       $rootScope.note = '<h1>Hi</h1>';
       $rootScope.doneNote();
 
       $httpBackend.expectPOST(/\/api\/users\/.*\/notes/);
-      $httpBackend.expectGET(/\/api\/users\/.*\/notes\?videoId=2rde3/);
       $httpBackend.flush();
       expect($rootScope.notes).toBeDefined();
-      expect($rootScope.notes.length).toEqual(1);
+      expect($rootScope.notes.length).toEqual(beforeLength + 1);
     }));
 
 
@@ -116,9 +115,9 @@ describe('Controller: LectureCtrl', function () {
       $httpBackend.flush();
 
       var beforeLength = $rootScope.notes.length;
-      $rootScope.deleteNote({ _id: 'ASDF' });
+      $rootScope.deleteNote({ _id: 'NQWER' });
       
-      $httpBackend.expectDELETE(/\/api\/users\/.*\/notes\/ASDF/);
+      $httpBackend.expectDELETE(/\/api\/users\/.*\/notes\/NQWER/);
       $httpBackend.flush();
 
       expect($rootScope.notes.length).toEqual(beforeLength - 1);
