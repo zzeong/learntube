@@ -100,6 +100,34 @@ describe('REST API:', function() {
   });
 
 
+  describe('PUT /api/users/:id/notes/:nid', function() {
+    before(function(done) {
+      noteContents = '<h1>UPDATED CONTENTS</h1>';
+      done();
+    });
+
+ 
+    it('should return updated note', function(done) {
+      var params = {
+        videoId: videoId,
+        contents: noteContents
+      };
+
+      request(app)
+      .put('/api/users/' + id + '/notes/' + nid)
+      .send(params)
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end(function(err, res) {
+        if(err) { return done(err); } 
+        res.body.should.have.property('_id');
+        res.body._id.should.equal(nid);
+        done();
+      });
+    });
+  });
+
+
   describe('DELETE /api/users/:id/notes/:nid', function() {
 
     it('should return "removed" message when note is removed', function(done) {

@@ -133,10 +133,28 @@ exports.show = function(req, res) {
 
 
 
-
 // Updates an existing note in the DB.
 exports.update = function(req, res) {
+  Note.findById(req.params.nid, function(err, note) {
+    if(err) { return handleError(res, err); }
+    if(!note) { return res.status(404).send('Not Found'); }
 
+    var reqToS3 = awsClient.put(note.s3Path, {
+      'x-amz-acl': 'private',
+      'Content-Length': Buffer.byteLength(req.body.contents),
+      'Content-Type': 'text/html'
+    });
+
+    reqToS3.on('response', function(resFromS3) {
+      if(200 === +resFromS3.statusCode) {
+        console.log('[S3]:PUT saved to %s', reqToS3.url);
+      }
+
+      return res.status(200).json({ _id: note._id });
+    });
+
+    reqToS3.end(req.body.contents);
+  });
 };
 
 
