@@ -54,7 +54,7 @@ describe('REST API:', function() {
       .expect('Content-Type', /json/)
       .end(function (err, res) {
         if(err) { return done(err); }
-        should.exist(res.body._id);
+        res.body.should.have.property('_id');
         nid = res.body._id;
         done();
       });
@@ -73,6 +73,8 @@ describe('REST API:', function() {
         if(err) { return done(err); } 
         res.body.should.have.instanceof(Array);
         res.body.should.have.length(1);
+        res.body[0].should.have.property('_id');
+        res.body[0].should.have.property('contents');
         done();
       });
     });
@@ -88,9 +90,8 @@ describe('REST API:', function() {
       .expect('Content-Type', /json/)
       .end(function(err, res) {
         if(err) { return done(err); }  
-        res.body.should.have.property('message');
+        res.body.should.have.property('_id');
         res.body.should.have.property('contents');
-        res.body.message.should.equal('gotten');
         res.body.contents.should.equal(noteContents);
         done();
       });
@@ -108,8 +109,8 @@ describe('REST API:', function() {
       .expect('Content-Type', /json/)
       .end(function(err, res) {
         if(err) { return done(err); }
-        res.body.should.have.property('message');
-        res.body.message.should.equal('removed');
+        res.body.should.have.property('_id');
+        res.body._id.should.equal(nid);
         done(); 
       });
     });

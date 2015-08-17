@@ -51,7 +51,6 @@ exports.index = function(req, res) {
       return getDataFromS3(note.s3Path).then(function(contents) {
         return {
           _id: note._id,
-          message: 'gotten',
           contents: contents
         };
       });
@@ -84,7 +83,7 @@ exports.create = function(req, res) {
         console.log('[S3]:PUT saved to %s', reqToS3.url);
       }
 
-      var noteObj = new Note({
+      var note = new Note({
         userId: req.params.id,
         videoId: req.body.videoId,
         hash: hash,
@@ -93,9 +92,9 @@ exports.create = function(req, res) {
       });
 
       // push대신 save method
-      noteObj.save(function(err){
+      note.save(function(err){
         if(err){return handleError(res, err);}
-        return res.status(201).json(noteObj);
+        return res.status(201).json({ _id: note._id });
       });
     });
 
@@ -123,7 +122,7 @@ exports.show = function(req, res) {
       resFromS3.setEncoding('utf8');
       resFromS3.on('data', function(chunk){
         return res.status(200).json({
-          message: 'gotten',
+          _id: note._id,
           contents: chunk
         });
       });
@@ -153,9 +152,10 @@ exports.destroy = function(req, res) {
     awsClient.del(note.s3Path).on('response', function(resFromS3){
       console.log('[S3]:DELETE ' + res.statusCode);
       console.log('[S3]:DELETE ' + res.headers);
+      var removedId = note._id;
       note.remove(function(err){
         if(err){ return handleError(res,err); }
-        return res.status(200).json({message: 'removed' });
+        return res.status(200).json({ _id: removedId });
       });
 
       /*      Note.save(function (err) {
