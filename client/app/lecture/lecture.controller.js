@@ -59,6 +59,9 @@ angular.module('learntubeApp')
   $scope.editNote = function(note) {
     note.isEditing = true;
   };
+  $scope.cancelEditing = function(note) {
+    note.isEditing = false; 
+  };
 
   $scope.deleteNote = function(note) {
     NoteAPI.remove({ nid: note._id }, function(res) {

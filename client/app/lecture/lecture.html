@@ -42,6 +42,7 @@
       <div ng-if="note.isEditing">
         <form ng-submit="updateNote(note)">
           <textarea ng-model="note.contents" ckeditor></textarea>
+          <md-button class="md-raised md-warn" ng-click="cancelEditing(note)">Cancel</md-button>
           <md-button type="submit" class="md-raised">Update</md-button>
         </form>
       </div>
