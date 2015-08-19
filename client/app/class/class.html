@@ -22,124 +22,124 @@
   <!-- 클래스 소개 -->
   <div class="classIntro">
     <md-content>
-      <md-list>
-        <md-list-item class="md-3-line">
-          <div class="md-list-item-text content-width">
-            <h3>{{classe.snippet.title}}</h3>
-            <h4>{{classe.snippet.channelTitle}}</h4>
-            <h4>Total playtime : {{totalDurationObj.min}}' {{totalDurationObj.sec}}''</h4>
+    <md-list>
+    <md-list-item class="md-3-line">
+    <div class="md-list-item-text content-width">
+      <h3>{{classe.snippet.title}}</h3>
+      <h4>{{classe.snippet.channelTitle}}</h4>
+      <h4>Total playtime : {{ totalDurationObj.hour }}H&nbsp{{totalDurationObj.min}}M&nbsp{{totalDurationObj.sec}}S</h4>
 
-            <!-- 클래스 소개 더보기 -->
-            <!--  change()에서 return한 true,false에 의해 class명을 바꾸자.  -->
-            <div class="box">
-              <div ng-class="{'textBefore': !show, 'textAfter': show}">
-                <p>{{desc}}</p>
-              </div>  
-            </div> 
-
-            <!-- 버튼을 누르면 change()함수를 돌리자. -->
-            <div id="classdescChangeBtn">
-              <p ng-click="changeDesc('content', 'show')" ng-bind-html="content"></p>
-            </div>
-
-            <div class="md-actions" layout="row" layout-align="end center">
-              <md-button class="md-raised" ng-show="isLoggedIn()" ng-click="addClass()">Add Class</md-button>
-            </div>
-          </div>
-        </md-list-item>
-      </md-list>
-    </md-content>
-  </div>
-
-
-
-
-
-
-
-  <!-- 선생님 소개  -->
-  <div class="tutorIntro">
-    <md-content>
-
-      <!-- 선생님 썸네일 (채널 대표 이미지) -->
-      <div class="thumbAndTitle">
-        <div class="thumbnail">
-          <img ng-src="{{ channel.snippet.thumbnails.default.url }}"  style="border-radius:45px">
+      <!-- 클래스 소개 더보기 -->
+      <!--  change()에서 return한 true,false에 의해 class명을 바꾸자.  -->
+      <div class="box">
+        <div ng-class="{'textBefore': !show, 'textAfter': show}">
+          <p>{{desc}}</p>
         </div>
-        <!-- 체널 타이틀 -->  
-        <div class="channelTitle">
-          <font size="2">TUTOR</font><br>
-          <font size="5" maxlength="15">{{ channel.snippet.title }}.&nbsp </font>
-        </div>
-
-        <!-- 선생님 소개 (채널 소개) 더보기 -->
-        <!--  change()에서 return한 true,false에 의해 class명을 바꾸자.  -->
-        <div class="tutorDescDiv">
-          <div class="box content-width">
-            <div ng-class="{'textBefore': !show2, 'textAfter': show2}">
-              <p class="tutorDesc">{{ channel.snippet.description }} asndfnihbqihbdkkjhbxzcvbhkkjnd noausndibi ojqndkbfqhibd vnzcnvoubqihbdksbcjzcvniqouhjnflsjnaiv niabdihbkjx,zmbvi ibnqdfojnpadijvijnlajnsdihbfaishd </p>
-            </div>  
-          </div> 
-
-          <!-- 버튼을 누르면 change()함수를 돌리자. -->
-          <div id="tutordesChangeBtn">
-            <p ng-click="changeDesc('content2', 'show2')" ng-bind-html="content2"></p>
-          </div>
-        </div>
-
       </div>
-    </md-content>
-  </div>
 
+      <!-- 버튼을 누르면 change()함수를 돌리자. -->
+      <div id="classdescChangeBtn">
+        <p ng-click="changeDesc('content', 'show')" ng-bind-html="content"></p>
+      </div>
 
-
-
-
-
-
-
-  <!-- 클래스 내의 강의 목록 -->
-
-  <div class="lectureList">
-    <md-content>
-      <h3>Lectures in this Class</h3>
-      <md-list>
-        <md-list-item class="md-3-line" ng-repeat="lecture in lecArrSorting" ng-click="go('Lecture', { pid: playlistId, vid: lecture.videoId })"> 
-
-          <div class="md-list-item-text content-width">
-
-            <!--  강의 번호  -->
-            <div id="lecture_position">
-              <font size="1" maxlength="15">{{ lecture.index }}.&nbsp&nbsp</font>
-            </div>
-
-            <!--  강의 썸네일  -->
-            <div id="lecture_img">
-              <img ng-src="{{ lecture.thumbnail }}" width="64" height="36">
-            </div>
-
-            <!--  강의 제목  -->
-            <div id="lecture_title">
-              <font size="1" maxlength="15">&nbsp&nbsp{{ lecture.lectureTitle }} /&nbsp&nbsp</font>
-            </div>
-
-            <!--  강의 재생시간  -->
-            <div style="float:right">
-              <p size="1" maxlength="15">{{ lecture.duration }}&nbsp</p>
-            </div> 
-
-          </div>
-
-          <md-divider></md-divider>
-        </md-list-item>
-      </md-list>
-    </md-content>
-
-    <!-- 클래스의 동영상 더보기 -->
-    <div id="">
-      <p ng-click="">Load more</p>
+      <div class="md-actions" layout="row" layout-align="end center">
+        <md-button class="md-raised" ng-show="isLoggedIn()" ng-click="addClass()">Add Class</md-button>
+      </div>
     </div>
+  </md-list-item>
+</md-list>
+</md-content>
+</div>
+
+
+
+
+
+
+
+<!-- 선생님 소개  -->
+<div class="tutorIntro">
+  <md-content>
+
+  <!-- 선생님 썸네일 (채널 대표 이미지) -->
+  <div class="thumbAndTitle">
+    <div class="thumbnail">
+      <img ng-src="{{ channel.snippet.thumbnails.default.url }}"  style="border-radius:45px">
+    </div>
+    <!-- 체널 타이틀 -->
+    <div class="channelTitle">
+      <font size="2">TUTOR</font><br>
+      <font size="5" maxlength="15">{{ channel.snippet.title }}.&nbsp </font>
+    </div>
+
+    <!-- 선생님 소개 (채널 소개) 더보기 -->
+    <!--  change()에서 return한 true,false에 의해 class명을 바꾸자.  -->
+    <div class="tutorDescDiv">
+      <div class="box content-width">
+        <div ng-class="{'textBefore': !show2, 'textAfter': show2}">
+          <p class="tutorDesc">{{ channel.snippet.description }} asndfnihbqihbdkkjhbxzcvbhkkjnd noausndibi ojqndkbfqhibd vnzcnvoubqihbdksbcjzcvniqouhjnflsjnaiv niabdihbkjx,zmbvi ibnqdfojnpadijvijnlajnsdihbfaishd </p>
+        </div>
+      </div>
+
+      <!-- 버튼을 누르면 change()함수를 돌리자. -->
+      <div id="tutordesChangeBtn">
+        <p ng-click="changeDesc('content2', 'show2')" ng-bind-html="content2"></p>
+      </div>
+    </div>
+
   </div>
+</md-content>
+</div>
+
+
+
+
+
+
+
+
+<!-- 클래스 내의 강의 목록 -->
+
+<div class="lectureList">
+  <md-content>
+  <h3>Lectures in this Class</h3>
+  <md-list>
+  <md-list-item class="md-3-line" ng-repeat="lecture in lecArrSorting" ng-click="go('Lecture', { pid: playlistId, vid: lecture.videoId })">
+
+  <div class="md-list-item-text content-width">
+
+    <!--  강의 번호  -->
+    <div id="lecture_position">
+      <font size="1" maxlength="15">{{ lecture.index }}.&nbsp&nbsp</font>
+    </div>
+
+    <!--  강의 썸네일  -->
+    <div id="lecture_img">
+      <img ng-src="{{ lecture.thumbnail }}" width="64" height="36">
+    </div>
+
+    <!--  강의 제목  -->
+    <div id="lecture_title">
+      <font size="1" maxlength="15">&nbsp&nbsp{{ lecture.lectureTitle }}</font>
+    </div>
+
+    <!--  강의 재생시간  -->
+    <div style="float:right">
+      <p size="1" maxlength="15">{{ lecture.ptM }}&nbsp{{ lecture.ptS }}&nbsp</p>
+    </div>
+
+  </div>
+
+  <md-divider></md-divider>
+</md-list-item>
+</md-list>
+</md-content>
+
+<!-- 클래스의 동영상 더보기 -->
+<div id="">
+  <p ng-click="">Load more</p>
+</div>
+</div>
 
 
 
