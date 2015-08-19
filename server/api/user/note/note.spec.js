@@ -31,11 +31,12 @@ describe('REST API:', function() {
       id = user._id;
       done();
     });
-
   });
 
+
+
+
   describe('POST /api/users/:id/notes', function() {
-    // before는 it보다 먼저 실행되는 구문
     before(function(done) {
       noteContents = '<h1>NOTE API TEST</h1>';
       done();
@@ -50,7 +51,7 @@ describe('REST API:', function() {
       request(app)
       .post('/api/users/' + id + '/notes')
       .send(params)
-      .expect(201)  // 201은 성공했다는 뜻
+      .expect(201)
       .expect('Content-Type', /json/)
       .end(function (err, res) {
         if(err) { return done(err); }
@@ -59,18 +60,18 @@ describe('REST API:', function() {
         done();
       });
     });
-
   });
 
 
-  describe('GET /api/users/:id/notes', function() {
 
+
+  describe('GET /api/users/:id/notes', function() {
     it('should return queried notes', function(done) {
       request(app)
       .get('/api/users/' + id + '/notes')
       .query({ videoId: videoId })
       .end(function(err, res) {
-        if(err) { return done(err); } 
+        if(err) { return done(err); }
         res.body.should.have.instanceof(Array);
         res.body.should.have.length(1);
         res.body[0].should.have.property('_id');
@@ -78,25 +79,25 @@ describe('REST API:', function() {
         done();
       });
     });
-
   });
 
-  describe('GET /api/users/:id/notes/:nid', function() {
 
+
+
+  describe('GET /api/users/:id/notes/:nid', function() {
     it('should return note contents equal to contents which have been saved when note is gotten', function(done) {
       request(app)
       .get('/api/users/' + id + '/notes/' + nid)
       .expect(200)
       .expect('Content-Type', /json/)
       .end(function(err, res) {
-        if(err) { return done(err); }  
+        if(err) { return done(err); }
         res.body.should.have.property('_id');
         res.body.should.have.property('contents');
         res.body.contents.should.equal(noteContents);
         done();
       });
     });
-
   });
 
 
@@ -106,7 +107,7 @@ describe('REST API:', function() {
       done();
     });
 
- 
+
     it('should return updated note', function(done) {
       var params = {
         videoId: videoId,
@@ -119,7 +120,7 @@ describe('REST API:', function() {
       .expect(200)
       .expect('Content-Type', /json/)
       .end(function(err, res) {
-        if(err) { return done(err); } 
+        if(err) { return done(err); }
         res.body.should.have.property('_id');
         res.body._id.should.equal(nid);
         done();
@@ -129,7 +130,6 @@ describe('REST API:', function() {
 
 
   describe('DELETE /api/users/:id/notes/:nid', function() {
-
     it('should return "removed" message when note is removed', function(done) {
       request(app)
       .delete('/api/users/' + id + '/notes/' + nid)
@@ -139,10 +139,8 @@ describe('REST API:', function() {
         if(err) { return done(err); }
         res.body.should.have.property('_id');
         res.body._id.should.equal(nid);
-        done(); 
+        done();
       });
     });
-
   });
-
 });

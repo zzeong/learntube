@@ -44,7 +44,7 @@ exports.index = function(req, res) {
   var data = _.assign(req.query, { userId: req.params.id });
 
   Note.find(data, function(err, notes) {
-    if(err) { return handleError(res, err); } 
+    if(err) { return handleError(res, err); }
     //var note = notes[0];
 
     Promise.all(notes.map(function(note) {
@@ -55,7 +55,7 @@ exports.index = function(req, res) {
         };
       });
     })).then(function(results) {
-      return res.status(200).json(results);  
+      return res.status(200).json(results);
     });
 
   });
@@ -63,7 +63,6 @@ exports.index = function(req, res) {
 
 
 // Creates a new note in the DB.
-// req = 요청 api / res = 받아온 정보. 즉 우리가 서버에 던질 것. 맞나?
 exports.create = function(req, res) {
   User.findById(req.params.id, function(err, user) {
     if(err) { return handleError(res, err); }
@@ -91,7 +90,6 @@ exports.create = function(req, res) {
         s3Path: uploadedPath
       });
 
-      // push대신 save method
       note.save(function(err){
         if(err){return handleError(res, err);}
         return res.status(201).json({ _id: note._id });
@@ -107,14 +105,10 @@ exports.create = function(req, res) {
 // Get a single note
 exports.show = function(req, res) {
 
-  // 노트를 찾는다
   Note.findById(req.params.nid, function(err, note) {
-    // 에러처리
     if(err) { return handleError(res, err); }
     if(!note) { return res.status(404).send('Not Found'); }
 
-    // noteDoc을 만들필요가 없어서 주석처리. 
-    // var noteDoc = Note.id(res.note.nid);
 
     awsClient.get(note.s3Path).on('response', function(resFromS3){
       console.log('[S3]:GET ' + resFromS3.statusCode);
@@ -176,13 +170,7 @@ exports.destroy = function(req, res) {
         return res.status(200).json({ _id: removedId });
       });
 
-      /*      Note.save(function (err) {
-              if(err) { return handleError(res, err); }
-              return res.status(200).json({ message: 'removed' });
-              });*/
-
     }).end();
-
   });
 };
 
