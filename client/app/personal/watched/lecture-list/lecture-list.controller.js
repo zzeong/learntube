@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('LectureListCtrl', function($scope, $http, $stateParams, $state, $log) {
+.controller('LectureListCtrl', function($scope, $http) {
 
- getLectureList();
+
 
   $scope.lecArr = [];
 
@@ -139,9 +139,10 @@ angular.module('learntubeApp')
 
       });
 
-      // line 43 (getLectureList method)
+    // line 43 (getLectureList method)
     }
 
+    getLectureList();
 
   });
 
