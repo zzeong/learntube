@@ -29,6 +29,7 @@ module.exports = function(config) {
       'client/bower_components/angular-messages/angular-messages.js',
       'client/bower_components/angular-youtube-mb/src/angular-youtube-embed.js',
       'client/bower_components/ckeditor/ckeditor.js',
+      'client/bower_components/angular-google-gapi/angular-google-gapi.min.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'client/app/app.js',

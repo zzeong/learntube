@@ -36,6 +36,7 @@
     "browser": true,
     "element": true,
     "by": true,
-    "CKEDITOR": true
+    "CKEDITOR": true,
+    "gapi": true
   }
 }

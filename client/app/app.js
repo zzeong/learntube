@@ -8,7 +8,8 @@ angular.module('learntubeApp', [
   'btford.socket-io',
   'ui.router',
   'ngMaterial',
-  'youtube-embed'
+  'youtube-embed',
+  'angular-google-gapi'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider
@@ -65,7 +66,11 @@ angular.module('learntubeApp', [
     };
   })
 
-  .run(function ($rootScope, $location, Auth) {
+  .run(function ($rootScope, $location, Auth, GApi, GAuth, GoogleConst) {
+    GApi.load('youtube','v3');
+    GAuth.setClient(GoogleConst.oauth.clientId);
+    GAuth.setScope(GoogleConst.oauth.scope);
+
     // Redirect to login if route requires auth and you're not logged in
     $rootScope.$on('$stateChangeStart', function (event, next) {
       Auth.isLoggedInAsync(function(loggedIn) {
