@@ -7,7 +7,7 @@
         <img ng-src="{{ item.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
         <div class="md-list-item-text">
           <h3>{{ item.snippet.title }}</h3>
-          <p>{{ item.contentDetails.duration }}</p>
+          <p>{{ item.contentDetails.duration | humanable }}</p>
         </div>
       </md-list-item>
     </md-list>

@@ -9,4 +9,15 @@ angular.module('learntubeApp')
       return item.status.privacyStatus === 'public'; 
     });
   };
+})
+.filter('humanable', function() {
+  return function(string) {
+    if(typeof string === 'undefined') { return true; }
+    var filtered = string.match(/(\d+)(?=[MHS])/ig);
+    if(filtered.length === 1) { filtered.unshift('0'); }
+
+    return filtered.map(function(time){
+      return ('0' + time).slice(-2);
+    }).join(':');
+  };
 });
