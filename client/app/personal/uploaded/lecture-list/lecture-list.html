@@ -3,7 +3,7 @@
 <div class="content-width">
   <md-content>
     <md-list>
-      <md-list-item class="md-2-line" ng-repeat="item in playlistItems">
+      <md-list-item class="md-2-line" ng-repeat="item in playlistItems | onlyPublic">
         <img ng-src="{{ item.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
         <div class="md-list-item-text">
           <h3>{{ item.snippet.title }}</h3>
