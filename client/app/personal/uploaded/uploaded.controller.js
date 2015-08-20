@@ -2,6 +2,8 @@
 
 angular.module('learntubeApp')
 .controller('UploadedContentsCtrl', function(GApi, GAuth, GoogleConst, $state, $scope) {
+  $scope.go = $state.go;
+
   GAuth.login().then(function() {
     GApi.executeAuth('youtube', 'playlists.list', {
       part: 'snippet',
