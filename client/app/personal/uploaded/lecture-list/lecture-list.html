@@ -1,5 +1,15 @@
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 
 <div class="content-width">
-
+  <md-content>
+    <md-list>
+      <md-list-item class="md-2-line" ng-repeat="item in playlistItems">
+        <img ng-src="{{ item.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
+        <div class="md-list-item-text">
+          <h3>{{ item.snippet.title }}</h3>
+          <p>{{ item.contentDetails.duration }}</p>
+        </div>
+      </md-list-item>
+    </md-list>
+  </md-content>
 </div>
