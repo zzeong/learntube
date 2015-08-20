@@ -2,7 +2,67 @@
 
 <div class="content-width">
 
-  <div>
-    Here is lecture-list
+  <md-divider></md-divider>
+  <div class="graph">
+    <img src="../../../assets/images/graph.png" width="360">
+  <md-divider></md-divider>
   </div>
+
+  <!-- 클래스 내의 강의 목록 -->
+
+  <div class="lectureList">
+    <md-content>
+    <md-list>
+    <md-list-item class="md-3-line" ng-repeat="lecture in lecArrSorting" ng-click="go('Lecture', { pid: playlistId, vid: lecture.videoId })">
+
+    <div class="md-list-item-text content-width">
+
+      <!--  강의 번호  -->
+      <div id="lecture_position">
+        <font size="1" maxlength="15">{{ lecture.index }}.&nbsp&nbsp</font>
+      </div>
+
+      <!--  강의 썸네일  -->
+      <div id="lecture_img">
+        <img ng-src="{{ lecture.thumbnail }}" width="64" height="36">
+      </div>
+
+      <!--  강의 제목  -->
+      <div id="lecture_title">
+        <font size="1" maxlength="15">&nbsp&nbsp{{ lecture.lectureTitle }}</font>
+      </div>
+
+      <!--  강의 재생시간  -->
+      <div style="float:right">
+        <p size="1" maxlength="15">{{ lecture.ptM }}{{ lecture.ptS }}</p>
+      </div>
+
+    </div>
+
+    <md-divider></md-divider>
+  </md-list-item>
+</md-list>
+</md-content>
+
+<!-- 클래스의 동영상 더보기 -->
+<div id="">
+  <p ng-click="">Load more</p>
+</div>
+</div>
+
+
+
+  <!-- <md-content class="md-padding">
+
+    <md-card class="watched-class-card" ng-repeat="classe in classes">
+      <img ng-src="{{ classe.item.snippet.thumbnails.high.url }}" class="md-card-image" alt="Class Image">
+      <md-card-content>
+        <h2 class="md-title">{{ classe.item.snippet.title }}</h2>
+      </md-card-content>
+      <div class="md-actions" layout="row" layout-align="end center">
+        <md-button ng-click="deleteClass(classe)">Delete</md-button>
+      </div>
+    </md-card>
+
+  </md-content> -->
 </div>
