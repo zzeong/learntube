@@ -154,11 +154,11 @@ angular.module('learntubeApp')
             var min = time[0];
             var sec = time[1];
 
-            $scope.lecArrSorting[k].ptM = min + "'";
+            $scope.lecArrSorting[k].ptM = min + '\'';
             if (sec === '') {
               $scope.lecArrSorting[k].ptS = '';
             } else {
-              $scope.lecArrSorting[k].ptS = sec + "''";
+              $scope.lecArrSorting[k].ptS = sec + '\'\'';
             }
 
             if (sec === '') {
