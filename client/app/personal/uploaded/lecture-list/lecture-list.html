@@ -1,15 +1,19 @@
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 
 <div class="content-width">
-  <md-content>
-    <md-list>
-      <md-list-item class="md-2-line" ng-repeat="item in playlistItems | onlyPublic">
-        <img ng-src="{{ item.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
-        <div class="md-list-item-text">
-          <h3>{{ item.snippet.title }}</h3>
-          <p>{{ item.contentDetails.duration | humanable }}</p>
-        </div>
-      </md-list-item>
-    </md-list>
+
+  <md-content class="md-padding">
+    <div class="content-inner">
+      <md-list>
+        <md-list-item class="md-2-line" ng-repeat="item in playlistItems | onlyPublic">
+          <img class="lecture-thumb" ng-src="{{ item.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
+          <div class="md-list-item-text">
+            <h3>{{ item.snippet.title | limitTo:40 }}{{ item.snippet.title.length > 40 ? '...' : '' }}</h3>
+            <p>{{ item.contentDetails.duration | humanable }}</p>
+          </div>
+        </md-list-item>
+      </md-list>
+    </div>
   </md-content>
+
 </div>
