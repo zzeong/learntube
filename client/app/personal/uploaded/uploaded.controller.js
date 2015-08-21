@@ -8,6 +8,7 @@ angular.module('learntubeApp')
     GApi.executeAuth('youtube', 'playlists.list', {
       part: 'snippet',
       mine: true,
+      maxResults: 50,
     })
     .then(function(res) {
       $scope.classes = res.items.map(function(item) {
