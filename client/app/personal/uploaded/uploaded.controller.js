@@ -19,7 +19,7 @@ angular.module('learntubeApp')
     });
   });
 
-  $scope.showAdvanced = function(ev) {
+  $scope.showDialog = function(ev) {
     $mdDialog.show({
       controller: function($scope, $mdDialog) {
         $scope.cancel = function() {
