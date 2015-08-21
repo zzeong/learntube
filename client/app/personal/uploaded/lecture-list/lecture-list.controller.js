@@ -8,7 +8,7 @@ angular.module('learntubeApp')
     var listItems = [];
     var deferred = $q.defer();
 
-    var recurse = function(nextToken) {
+    (function recurse(nextToken) {
       var params = {
         part: 'snippet,status',
         playlistId: $scope.playlistId,
@@ -27,9 +27,7 @@ angular.module('learntubeApp')
           deferred.resolve(listItems);
         }
       }); 
-    };
-
-    recurse();
+    })();
 
     return deferred.promise;
   };
