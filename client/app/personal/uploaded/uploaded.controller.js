@@ -14,6 +14,8 @@ angular.module('learntubeApp')
       $scope.classes = res.items.map(function(item) {
         return { item: item };
       });
+    }, function(res) {
+      $log.error(res); 
     });
   });
 
@@ -37,6 +39,8 @@ angular.module('learntubeApp')
             },
           }).then(function(res) {
             $mdDialog.hide(res);
+          }, function(res) {
+            $log.error(res); 
           });
         };
       },
@@ -47,6 +51,8 @@ angular.module('learntubeApp')
     })
     .then(function(res) {
       $scope.classes.unshift({ item: res });
+    }, function(res) {
+      $log.error(res);
     });
   };
 
