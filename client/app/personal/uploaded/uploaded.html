@@ -1,6 +1,11 @@
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 
 <div class="content-width">
+
+  <md-button class="md-fab fab-fix" aria-label="Add class" ng-click="showAdvanced($event)">
+    <md-icon md-svg-src="assets/images/add.svg"></md-icon>
+  </md-button>
+
   <md-content class="md-padding">
 
     <md-card class="watched-class-card" ng-repeat="classe in classes" ng-click="go('UploadedLectureList', { pid: classe.item.id })">
@@ -14,4 +19,5 @@
     </md-card>
 
   </md-content>
+
 </div>

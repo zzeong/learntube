@@ -13,6 +13,7 @@ $resposive-width: 959px;
 $content-max-width: 1080px;
 $content-padding: 70px;
 $content-inner-width: $content-max-width - ($content-padding * 2);
+$dialog-width: 600px;
 
 $avatar-size: 40px;
 $avatar-border-radius: $avatar-size / 2;
@@ -56,6 +57,17 @@ md-toolbar .md-menu {
   margin-top: 8px;
   margin-bottom: 8px;
   margin-right: 16px;
+}
+
+.fab-fix {
+  $offset: 24px;
+  position: fixed;
+  right: $offset;
+  bottom: $offset;
+}
+
+.dialog-width {
+  width: $dialog-width;
 }
 
 

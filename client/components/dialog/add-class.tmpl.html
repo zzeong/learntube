@@ -1,0 +1,29 @@
+<md-dialog class="dialog-width" aria-label="New class">
+  <form ng-submit="addClass(newClass)">
+
+    <md-dialog-content>
+      <h2 class="md-title">New Class</h2>
+
+      <md-input-container>
+        <label>Class Title</label>
+        <input required name="name" ng-model="newClass.title">
+      </md-input-container>
+
+      <md-input-container>
+        <label>Description</label>
+        <textarea name="desc" ng-model="newClass.desc" columns="1" md-maxlength="200"></textarea>
+      </md-input-container>
+    </md-dialog-content>
+
+    <div class="md-actions" layout="row">
+      <md-button class="md-warn" ng-click="cancel()" >
+        Cancel
+      </md-button>
+      <md-button type="submit">
+        Add
+      </md-button>
+    </div>
+
+  </form>
+</md-dialog>
+
