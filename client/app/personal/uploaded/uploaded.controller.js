@@ -56,4 +56,14 @@ angular.module('learntubeApp')
     });
   };
 
+  $scope.deleteClass = function(classe) {
+    GApi.executeAuth('youtube', 'playlists.delete', {
+      id: classe.item.id, 
+    }).then(function() {
+      _.remove($scope.classes, classe);
+    }, function(res) {
+      $log.error(res);
+    });
+  };
+
 });
