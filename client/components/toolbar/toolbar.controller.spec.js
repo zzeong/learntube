@@ -9,7 +9,7 @@ describe('Controller: ToolbarCtrl', function () {
     $controller('ToolbarCtrl', { $scope: $scope });
   }));
 
-  it('검색 상태를 전환시켜야 한다', inject(function() {
+  it('should change searching status', inject(function() {
     var onSearching = $scope.onSearching;
     $scope.toggleSearchingState();
 
@@ -17,18 +17,19 @@ describe('Controller: ToolbarCtrl', function () {
     expect($scope.onSearching).toEqual(!onSearching);
   }));
 
-  it('Home이 아닌 페이지에서는 Toolbar 왼쪽 기능 버튼이 back이 되어야 한다', inject(function($state) {
+  it('should makes left function be back button in NOT main page', inject(function($state) {
     $state.current.name = 'NotHome';
     var backIconPath = '/assets/images/back.svg';
     expect($scope.leftIconChanger()).toEqual(backIconPath);
   }));
-  it('Home 페이지에서는 Toolbar 왼쪽 기능 버튼이 menu가 되어야 한다', inject(function($state) {
+
+  it('should makes left function be menu button in main page', inject(function($state) {
     $state.current.name = 'Home';
     var menuIconPath = '/assets/images/menu.svg';
     expect($scope.leftIconChanger()).toEqual(menuIconPath);
   }));
 
-  it('로그인 상태에서 회원 이미지를 보여주어야 한다', inject(function() {
+  it('should shows an account image when a google user logged in', inject(function() {
     var user = {
       google: {
         image: { url: 'https://foo.com/foo.jpg' } 
@@ -37,7 +38,7 @@ describe('Controller: ToolbarCtrl', function () {
     expect($scope.getUserImgPath(user)).toMatch(/https:\/\/*/);
   }));
   
-  it('로그인 상태에서 비구글 회원은 guest 이미지를 보여주어야 한다', inject(function() {
+  it('should shows a guest image when a local user logged in', inject(function() {
     var user = {}; 
     expect($scope.getUserImgPath(user)).toBe('/assets/images/guest.png');
   }));
