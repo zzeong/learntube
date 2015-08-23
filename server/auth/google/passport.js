@@ -14,6 +14,9 @@ exports.setup = function (User, config) {
         'google.id': profile.id
       }, function(err, user) {
         if (!user) {
+          profile._json.accessToken = accessToken;
+          profile._json.refreshToken = refreshToken;
+
           user = new User({
             name: profile.displayName,
             email: profile.emails[0].value,

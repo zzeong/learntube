@@ -1,22 +1,11 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('UploadedContentsCtrl', function(GApi, GAuth, GoogleConst, $state, $scope, $mdDialog, $log) {
+.controller('UploadedContentsCtrl', function($state, $scope, $mdDialog, $log, $http) {
   $scope.go = $state.go;
 
-  GAuth.login().then(function() {
-    GApi.executeAuth('youtube', 'playlists.list', {
-      part: 'snippet',
-      mine: true,
-      maxResults: 50,
-    })
-    .then(function(res) {
-      $scope.classes = res.items.map(function(item) {
-        return { item: item };
-      });
-    }, function(res) {
-      $log.error(res); 
-    });
+  $http.get('/api/youtube/uploaded/').then(function(res) {
+    $scope.classes = res.data;
   });
 
   $scope.showDialog = function(ev) {
@@ -26,19 +15,19 @@ angular.module('learntubeApp')
           $mdDialog.cancel();
         };
         $scope.addClass = function(classe) {
-          GApi.executeAuth('youtube', 'playlists.insert', {
+          $http.post('/api/youtube/uploaded', {
             part: 'snippet,status',
             resource: {
               snippet: {
                 title: classe.title,
                 description: classe.desc,
-              },
+              }, 
               status: {
-                privacyStatus: 'public',
+                privacyStatus: 'public', 
               },
-            },
+            }, 
           }).then(function(res) {
-            $mdDialog.hide(res);
+            $mdDialog.hide(res.data);
           }, function(res) {
             $log.error(res); 
           });
@@ -49,20 +38,18 @@ angular.module('learntubeApp')
       targetEvent: ev,
       clickOutsideToClose: true
     })
-    .then(function(res) {
-      $scope.classes.unshift({ item: res });
+    .then(function(item) {
+      $scope.classes.unshift(item);
     }, function(res) {
       $log.error(res);
     });
   };
 
   $scope.deleteClass = function(classe) {
-    GApi.executeAuth('youtube', 'playlists.delete', {
-      id: classe.item.id, 
-    }).then(function() {
-      _.remove($scope.classes, classe);
+    $http.delete('/api/youtube/uploaded/' + classe.id).then(function() {
+      _.remove($scope.classes, classe); 
     }, function(res) {
-      $log.error(res);
+      $log.error(res); 
     });
   };
 
