@@ -27,13 +27,13 @@ angular.module('learntubeApp')
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.personalMenu = [{
     name: 'Watched Contents',
-    url: '/watched'
+    url: '/watched',
   }, {
     name: 'Uploaded Contents',
-    url: '/'
+    url: '/uploaded',
   }, {
     name: 'Settings',
-    url: '/'
+    url: '/',
   }];
   $scope.toggleSearchingState = function() {
     $scope.onSearching = !$scope.onSearching; 

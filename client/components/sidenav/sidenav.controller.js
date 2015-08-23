@@ -7,13 +7,13 @@ angular.module('learntubeApp')
   $scope.getCurrentUser = Auth.getCurrentUser;
   $scope.personalMenu = [{
     name: 'Watched Contents',
-    url: '/watched'
+    url: '/watched',
   }, {
     name: 'Uploaded Contents',
-    url: '/'
+    url: '/uploaded',
   }, {
     name: 'Settings',
-    url: '/'
+    url: '/',
   }];
 
   $scope.logout = function() {
