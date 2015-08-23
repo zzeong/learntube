@@ -1,16 +1,12 @@
 'use strict';
 
-describe('Controller: ToolbarCtrl는', function () { 
-  // load the controller's module
+describe('Controller: ToolbarCtrl', function () { 
   beforeEach(module('learntubeApp')); 
-  var ToolbarCtrl, $scope;
+  var $scope;
 
-  // Initialize the controller and a mock scope
-  beforeEach(inject(function ($controller, $rootScope) {
-    $scope = $rootScope.$new();
-    ToolbarCtrl = $controller('ToolbarCtrl', {
-      $scope: $scope
-    });
+  beforeEach(inject(function ($controller) {
+    $scope = {};
+    $controller('ToolbarCtrl', { $scope: $scope });
   }));
 
   it('검색 상태를 전환시켜야 한다', inject(function() {
