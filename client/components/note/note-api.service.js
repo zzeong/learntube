@@ -3,8 +3,8 @@
 angular.module('learntubeApp')
 .factory('NoteAPI', function(Auth, $resource) {
   return $resource('/api/users/:id/notes/:nid', {
-    id: '@_id',
-    nid: '@_nid',
+    id: '@id',
+    nid: '@nid',
   }, {
     query: {
       method: 'GET',

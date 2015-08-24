@@ -3,8 +3,8 @@
 angular.module('learntubeApp')
 .factory('ClassAPI', function(Auth, $resource) {
   return $resource('/api/users/:id/classes/:cid', {
-    id: '@_id',
-    cid: '@_cid',
+    id: '@id',
+    cid: '@cid',
   }, {
     query: {
       method: 'GET',
