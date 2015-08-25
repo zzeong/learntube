@@ -49,6 +49,7 @@ var all = {
     clientSecret: process.env.GOOGLE_SECRET || 'secret',
     callbackURL:  (process.env.DOMAIN || '') + '/auth/google/callback',
     maxResults: 50,
+    serverKey: 'AIzaSyBQVxlBd8w_jm7ucPo9r8iO6g5rQwVnw7o',
   }
 };
 

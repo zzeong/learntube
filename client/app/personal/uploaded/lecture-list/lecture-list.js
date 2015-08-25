@@ -5,6 +5,6 @@ angular.module('learntubeApp')
   $stateProvider.state('UploadedLectureList', {
     url: '/uploaded/lecture-list/:pid',
     templateUrl: 'app/personal/uploaded/lecture-list/lecture-list.html',
-    controller: 'UploadedLectureList',
+    controller: 'UploadedLectureListCtrl',
   });
 });

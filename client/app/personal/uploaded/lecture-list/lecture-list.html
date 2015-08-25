@@ -5,11 +5,11 @@
   <md-content class="md-padding">
     <div class="content-inner">
       <md-list>
-        <md-list-item class="md-2-line" ng-repeat="item in playlistItems | onlyPublic">
-          <img class="lecture-thumb" ng-src="{{ item.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
+        <md-list-item class="md-2-line" ng-repeat="lecture in lectureList | onlyPublic">
+          <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
           <div class="md-list-item-text">
-            <h3>{{ item.snippet.title | limitTo:40 }}{{ item.snippet.title.length > 40 ? '...' : '' }}</h3>
-            <p>{{ item.contentDetails.duration | humanable }}</p>
+            <h3>{{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
+            <p>{{ lecture.contentDetails.duration | humanable }}</p>
           </div>
         </md-list-item>
       </md-list>
