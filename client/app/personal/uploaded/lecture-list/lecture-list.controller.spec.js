@@ -34,6 +34,12 @@ describe('Controller: UploadedLectureListCtrl', function() {
         status: {},
       }];
 
+      var classes = [{
+        snippet: {}, 
+        status: {},
+      }];
+
+      $httpBackend.when('GET', /\/api\/youtube\/classes\?.*/).respond(classes);
       $httpBackend.when('GET', /\/api\/youtube\/lecture-list\?.*/).respond(lecturelist);
     }));
 
@@ -54,7 +60,16 @@ describe('Controller: UploadedLectureListCtrl', function() {
       $httpBackend.flush();
     }));
 
-    it('should get lecture list when user entered', function() {
+    it('should get class summary when user entered the page', function() {
+      createController(); 
+      $httpBackend.expectGET(/\/api\/youtube\/classes\?.*/);
+      $httpBackend.flush();
+
+      expect($scope.summary.snippet).toBeDefined();
+      expect($scope.summary.status).toBeDefined();
+    });
+
+    it('should get lecture list when user entered the page', function() {
       createController();   
       $httpBackend.expectGET(/\/api\/youtube\/lecture-list\?.*/);
       $httpBackend.flush();

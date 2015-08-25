@@ -3,6 +3,11 @@
 <div class="content-width">
 
   <md-content class="md-padding">
+    <div class="content-inner lecture-list-summary">
+      <h2 class="md-headline">{{ summary.snippet.title }}</h2>
+      <p class="md-body-1">{{ summary.snippet.description }}</p>
+    </div>
+    <md-divider></md-divider>
     <div class="content-inner">
       <md-list>
         <md-list-item class="md-2-line" ng-repeat="lecture in lectureList | onlyPublic">
