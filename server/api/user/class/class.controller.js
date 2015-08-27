@@ -16,7 +16,10 @@ var Class = require('./class.model');
 
 // Get list of classes
 exports.index = function(req, res) {
-  Class.find({ userId: req.params.id }, function (err, classes) {
+
+  var data = _.assign(req.query, {userId:req.params.id});
+
+  Class.find( data, function (err, classes) {
     if(err) { return handleError(res, err); }
     return res.status(200).json(classes);
   });
@@ -29,7 +32,7 @@ exports.show = function(req, res) {
 // Creates a new classe in the DB.
 exports.create = function(req, res) {
   var data = {
-    userId: req.params.id, 
+    userId: req.params.id,
     playlistId: req.body.playlistId
   };
 
@@ -39,7 +42,7 @@ exports.create = function(req, res) {
       return Class.create(data, function(createErr, createdClass) {
         if(createErr) { return handleError(res, createErr); }
         return res.status(201).json(createdClass);
-      }); 
+      });
     }
     return res.status(200).json(classe);
   });

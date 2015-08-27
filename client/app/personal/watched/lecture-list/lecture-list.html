@@ -1,4 +1,5 @@
 <div ng-include="'components/toolbar/toolbar.html'"></div>
+<script src='components/util/custom.filter.js'></script>
 
 <div class="content-width">
 
@@ -9,7 +10,8 @@
   <div class="lectureList">
     <md-content>
     <md-list>
-    <md-list-item class="md-3-line" ng-repeat="lecture in lecArrSorting" ng-click="go('Lecture', { pid: playlistId, vid: lecture.videoId })">
+    <md-list-item class="md-3-line"  ng-class="{highlight: lecture.highlight}" ng-repeat="lecture in lecArrSorting" ng-click="go('Lecture', { pid: playlistId, vid: lecture.videoId })">
+
 
     <div class="md-list-item-text content-width">
 
@@ -20,17 +22,17 @@
 
       <!--  강의 썸네일  -->
       <div id="lecture_img">
-        <img ng-src="{{ lecture.thumbnail }}" width="64" height="36">
+        <img ng-src="{{ lecture.snippet.thumbnails.default.url }}" width="64" height="36">
       </div>
 
       <!--  강의 제목  -->
       <div id="lecture_title">
-        <font size="1" maxlength="15">&nbsp&nbsp{{ lecture.lectureTitle }}</font>
+        <font size="1" maxlength="15">&nbsp&nbsp{{ lecture.snippet.title }}</font>
       </div>
 
       <!--  강의 재생시간  -->
       <div style="float:right">
-        <p size="1" maxlength="15">{{ lecture.ptM }}{{ lecture.ptS }}</p>
+        <p size="1" maxlength="15">{{ lecture.contentDetails.duration | humanable }}</p>
       </div>
 
     </div>
