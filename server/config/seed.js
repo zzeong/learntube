@@ -37,7 +37,7 @@ User.find({}).remove(function() {
         hash: 'a868c19f55558a2a349193ff9d1f2fce',
         url: 'https://learntubebucket.s3.amazonaws.com/test@test.com/a868c19f55558a2a349193ff9d1f2fce',
         s3Path: '/test@test.com/a868c19f55558a2a349193ff9d1f2fce',
-      }); 
+      });
     });
 
     Class.find({}).remove(function() {
@@ -51,11 +51,13 @@ User.find({}).remove(function() {
         }]
       }, {
         userId: user._id,
-        playlistId: 'PLFgquLnL59akz2EQlObY3Ac3aC68xfSU6',
+        playlistId: 'PL9B61DEF63FC19BD9',
         lectures: [{
-          videoId: 'RgKAFK5djSk'
+          videoId: '1ZRb1we80kM'
         }, {
-          videoId: '_mVJJvx04_w'
+          videoId: '8pin-6JrdHY'
+        }, {
+          videoId: 'rJnICByeL8Q'
         }]
       }, {
         userId: user._id,
