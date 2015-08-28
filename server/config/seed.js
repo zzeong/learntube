@@ -27,13 +27,13 @@ User.find({}).remove(function() {
     Note.find({}).remove(function() {
       Note.create({
         userId: user._id,
-        videoId: '5G229--2HJ4',
+        videoId: '1ZRb1we80kM',
         hash: '7121cd645707ec47efa33393028473c7',
         url: 'https://learntubebucket.s3.amazonaws.com/test@test.com/7121cd645707ec47efa33393028473c7',
         s3Path: '/test@test.com/7121cd645707ec47efa33393028473c7',
       }, {
         userId: user._id,
-        videoId: '5G229--2HJ4',
+        videoId: 'rJnICByeL8Q',
         hash: 'a868c19f55558a2a349193ff9d1f2fce',
         url: 'https://learntubebucket.s3.amazonaws.com/test@test.com/a868c19f55558a2a349193ff9d1f2fce',
         s3Path: '/test@test.com/a868c19f55558a2a349193ff9d1f2fce',
