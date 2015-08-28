@@ -11,14 +11,6 @@ describe('Controller: UploadedLectureListCtrl', function() {
     };
   }));
 
-  it('should redirect non-login user to login page', inject(function($stateParams, $state) {
-    $stateParams.pid = 'FOOBAR';
-    spyOn($state, 'go'); 
-    createController();
-
-    expect($state.go).toHaveBeenCalled();
-  }));
-
 
   describe('with HTTP', function() {
     var $httpBackend; 
