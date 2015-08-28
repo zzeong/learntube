@@ -10,11 +10,18 @@
     <md-divider></md-divider>
     <div class="content-inner">
       <md-list>
-        <md-list-item class="md-2-line" ng-repeat="lecture in lectureList | onlyPublic">
+        <md-list-item class="md-2-line"
+          ng-repeat="lecture in lectureList | onlyPublic"
+          ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
           <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
           <div class="md-list-item-text">
             <h3>{{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
             <p>{{ lecture.contentDetails.duration | humanable }}</p>
+            <md-icon md-svg-icon="/assets/images/file_upload.svg"
+              ng-click="showDialog(lecture, $event)"
+              aria-label="Show Dialog"
+              class="md-secondary md-hue-3">
+            </md-icon>
           </div>
         </md-list-item>
       </md-list>

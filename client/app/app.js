@@ -9,7 +9,8 @@ angular.module('learntubeApp', [
   'ui.router',
   'ngMaterial',
   'youtube-embed',
-  'angular-google-gapi'
+  'angular-google-gapi',
+  'file-model'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

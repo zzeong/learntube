@@ -1,0 +1,25 @@
+<md-dialog class="dialog-width" aria-label="New class">
+  <form ng-submit="attachFile(file)">
+
+    <md-dialog-content>
+      <h2 class="md-title">Attach File</h2>
+
+      <md-input-container>
+        <label>File</label>
+        <input type="file" name="file" file-model="file">
+      </md-input-container>
+
+    </md-dialog-content>
+
+    <div class="md-actions" layout="row">
+      <md-button class="md-warn" ng-click="cancel()" >
+        Cancel
+      </md-button>
+      <md-button type="submit">
+        Add
+      </md-button>
+    </div>
+
+  </form>
+</md-dialog>
+

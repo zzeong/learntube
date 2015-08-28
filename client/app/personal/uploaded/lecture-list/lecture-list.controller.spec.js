@@ -15,8 +15,9 @@ describe('Controller: UploadedLectureListCtrl', function() {
   describe('with HTTP', function() {
     var $httpBackend; 
 
-    beforeEach(inject(function(_$httpBackend_) {
+    beforeEach(inject(function(_$httpBackend_, $stateParams) {
       $httpBackend = _$httpBackend_; 
+      $stateParams.pid = 'PL12A65DE93A8357D6';
 
       var lecturelist = [{
         snippet: {},
