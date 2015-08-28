@@ -23,8 +23,8 @@ exports.index = function(req, res) {
       part: 'snippet,status',
       mine: true,
       maxResults: config.google.maxResults,
-    }, function(err, resFromYT) {
-      return res.status(200).json(resFromYT.items);
+    }, function(err, response) {
+      return res.status(200).json(response.items);
     });
   });
 };
