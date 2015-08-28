@@ -12,6 +12,7 @@ module.exports = function(app) {
   // Insert routes below
   app.use('/api/users', require('./api/user'));
   app.use('/api/youtube', require('./api/youtube'));
+  app.use('/api/s3', require('./api/s3'));
 
   app.use('/auth', require('./auth'));
   

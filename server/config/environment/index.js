@@ -44,6 +44,12 @@ var all = {
     }
   },
 
+  aws: {
+    accessKeyId: process.env.AWSAccessKeyId || 'id',
+    secretKey: process.env.AWSSecretKey || 'secret',
+    s3Bucket: process.env.AWSS3Bucket || '',
+  },
+
   google: {
     clientID:     process.env.GOOGLE_ID || 'id',
     clientSecret: process.env.GOOGLE_SECRET || 'secret',
