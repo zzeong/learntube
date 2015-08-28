@@ -2,9 +2,9 @@
  * Using Rails-like standard naming convention for endpoints.
  * GET     /lectures              ->  index
  * POST    /lectures              ->  create
- * GET     /lectures/:cid          ->  show
- * PUT     /lectures/:cid          ->  update
- * DELETE  /lectures/:cid          ->  destroy
+ * GET     /lectures/:lid          ->  show
+ * PUT     /lectures/:lid          ->  update
+ * DELETE  /lectures/:lid          ->  destroy
  */
 
 'use strict';
@@ -31,7 +31,7 @@ exports.create = function(req, res) {
 
     classe.lectures.push({ videoId: req.body.videoId });
     classe.save(function(saveErr, savedClass) {
-      if(err) { return handleError(res, saveErr); } 
+      if(err) { return handleError(res, saveErr); }
       return res.status(201).json(savedClass);
     });
   });
