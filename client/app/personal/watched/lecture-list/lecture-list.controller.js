@@ -2,8 +2,8 @@
 
 angular.module('learntubeApp')
 .controller('WatchedLectureListCtrl', function($scope, $stateParams, Auth, $state, $http, $log, ClassAPI) {
+  $scope.playlistId = $stateParams.pid;
 
-  $scope.playlistId = 'PL9B61DEF63FC19BD9';
   if(!Auth.isLoggedIn()) { $state.go('Login'); }
 
   // 강의들을 가져오기 위한 api사용

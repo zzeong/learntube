@@ -4,7 +4,7 @@
   <md-content class="md-padding">
 
     <md-card class="watched-class-card" ng-repeat="classe in classes">
-      <img ng-src="{{ classe.item.snippet.thumbnails.high.url }}" class="md-card-image" alt="Class Image">
+      <img ng-src="{{ classe.item.snippet.thumbnails.high.url }}" ng-click="go('WatchedLectureList', { pid: classe.playlistId })" class="md-card-image" alt="Class Image">
       <md-card-content>
         <h2 class="md-title">{{ classe.item.snippet.title }}</h2>
       </md-card-content>

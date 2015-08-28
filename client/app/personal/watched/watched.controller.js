@@ -1,7 +1,9 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('WatchedContentsCtrl', function($scope, $http, ClassAPI) {
+.controller('WatchedContentsCtrl', function($scope, $http, ClassAPI, $state) {
+  $scope.go = $state.go;
+
   ClassAPI.query(function(response) {
     $scope.classes = response; 
 
