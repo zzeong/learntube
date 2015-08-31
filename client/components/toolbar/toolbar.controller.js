@@ -17,9 +17,9 @@ angular.module('learntubeApp')
     menu: '/assets/images/menu.svg',
     back: '/assets/images/back.svg',
     clear: '/assets/imags/clear.svg',
-  },
-  back = function() { $window.history.back(); },
-  toggleLeft = buildToggler('left');
+  };
+  var back = function() { $window.history.back(); };
+  var toggleLeft = buildToggler('left');
 
 
   $scope.onSearching = false;
