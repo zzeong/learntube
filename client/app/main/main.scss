@@ -1,3 +1,10 @@
+@mixin placeholder($color) {
+  &:placeholder { color: $color; }
+  &::placeholder { color: $color; }
+  &:input-placeholder { color: $color; }
+  &::input-placeholder { color: $color; }
+}
+
 .toolbardemoBasicUsage md-toolbar md-icon.md-default-theme {
   color: white; }
 
@@ -10,11 +17,23 @@
 }
 
 #slogan {
-  font-size: 56px;
-  font-weight: 400;
-  letter-spacing: -0.005em;
-  line-height: 56px;
-  color: #ffffff;
+  color: rgba(255, 255, 255, 0.87);
+  margin: 1.15rem 0;
+}
+
+.main-search-cont {
+  background-color: rgba(255, 255, 255, 0.4);
+  border-radius: 4px;
+  padding: 8px 10px;
+
+  input {
+    @include placeholder(rgba(0, 0, 0, 0.56));
+    color: rgba(0, 0, 0, 0.87);
+    min-width: 500px;
+    background-color: transparent;
+    outline: 0;
+    border: none;
+  }
 }
 
 @media (max-width: 959px) {
@@ -27,4 +46,11 @@
     font-weight: 400;
     line-height: 32px;
   }
+
+  .main-search-cont {
+    input {
+      min-width: 200px;
+    }
+  }
+
 }

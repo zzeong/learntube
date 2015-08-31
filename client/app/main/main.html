@@ -4,13 +4,16 @@
     <div ng-include="'components/toolbar/toolbar.html'"></div>
     <md-content>
       <div id="intro" layout="column" layout-align="center center">
-        <h2 id="slogan">All you need is knowledge</h2>
+
+        <h2 id="slogan" class="md-display-2"><strong>All you need is knowledge</strong></h2>
+
         <form ng-submit="go('Search', { q: q })">
-          <md-input-container md-no-float>
+          <div class="main-search-cont">
+            <input class="md-body-1" ng-model="q" type="search" placeholder="Search anything"/>
             <md-icon md-svg-src="/assets/images/search.svg" ng-click="go('Search', { q: q })"></md-icon>
-            <input ng-model="q" type="search" placeholder="Search anything">
-          </md-input-container>
+          </div>
         </form>
+
       </div>
     </md-content>
   </div>
