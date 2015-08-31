@@ -9,13 +9,13 @@
     <h2 ng-hide="onSearching" hide-gt-md>
       <span>{{ title }}</span>
     </h2>
-    <form ng-submit="goSearch()" ng-show="onSearching" hide-gt-md>
+    <form ng-submit="go('Search', { q: q })" ng-show="onSearching" hide-gt-md>
       <input id="query" type="search" ng-model="q" focus-me="focusInput"/>
     </form>
 
     <span flex>
-      <div class="web-search-cont">
-        <form ng-submit="goSearch()" hide-sm hide-md>
+      <div class="web-search-cont" ng-show="!stateNameCheck('Home')">
+        <form ng-submit="go('Search', { q: q })" hide-sm hide-md>
           <input type="search" ng-model="q"/>
         </form>
       </div>
