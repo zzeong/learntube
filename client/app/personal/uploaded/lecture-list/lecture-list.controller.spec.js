@@ -53,6 +53,12 @@ describe('Controller: UploadedLectureListCtrl', function() {
       $httpBackend.flush();
     }));
 
+    afterEach(inject(function(Auth) {
+      $httpBackend.verifyNoOutstandingExpectation();
+      $httpBackend.verifyNoOutstandingRequest();
+      Auth.logout(); 
+    }));
+
     it('should get class summary when user entered the page', function() {
       createController(); 
       $httpBackend.expectGET(/\/api\/youtube\/classes\?.*/);

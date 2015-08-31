@@ -26,6 +26,13 @@ describe('Controller: WatchedContentsCtrl', function () {
     $controller('WatchedContentsCtrl', {'$scope' : $scope });
   }));
 
+
+  afterEach(inject(function(Auth) {
+    $httpBackend.verifyNoOutstandingExpectation();
+    $httpBackend.verifyNoOutstandingRequest();
+    Auth.logout(); 
+  }));
+
   describe('with HTTP', function() {
 
     beforeEach(function() {
@@ -46,6 +53,7 @@ describe('Controller: WatchedContentsCtrl', function () {
       $httpBackend.when('GET', /\/api\/users\/.*\/classes/).respond(res.classQuery);
       $httpBackend.when('DELETE', /\/api\/users\/.*\/classes\/.*/).respond();
     });
+
 
 
     it('should get all classes', function() {
