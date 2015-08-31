@@ -1,13 +1,11 @@
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 
-<div class="content-width">
+<md-button class="md-fab fab-fix" aria-label="Add class" ng-click="showDialog($event)">
+  <md-icon md-svg-src="assets/images/add.svg"></md-icon>
+</md-button>
 
-  <md-button class="md-fab fab-fix" aria-label="Add class" ng-click="showDialog($event)">
-    <md-icon md-svg-src="assets/images/add.svg"></md-icon>
-  </md-button>
-
-  <md-content class="md-padding">
-
+<md-content>
+  <div class="content-width" layout-padding>
     <md-card class="watched-class-card" ng-repeat="classe in classes | onlyPublic">
       <img ng-src="{{ classe.snippet.thumbnails.high.url }}" ng-click="go('UploadedLectureList', { pid: classe.id })" class="md-card-image" alt="Class Image">
       <md-card-content>
@@ -17,7 +15,5 @@
         <md-button class="md-warn" ng-click="deleteClass(classe)">Delete</md-button>
       </div>
     </md-card>
-
-  </md-content>
-
-</div>
+  </div>
+</md-content>
