@@ -23,7 +23,10 @@ User.find({}).remove(function() {
     password: 'admin'
   }, function(err, user) {
 
-    // Note Test URL: http://localhost:9000/class/PL2jcQseI9PWJoKqqIhOyNE9r_F4IpCf4t/lecture/5G229--2HJ4
+    /* Note Test URL:
+     * http://localhost:9000/class/PL9B61DEF63FC19BD9/lecture/1ZRb1we80kM
+     * http://localhost:9000/class/PL9B61DEF63FC19BD9/lecture/rJnICByeL8Q
+     */
     Note.find({}).remove(function() {
       Note.create({
         userId: user._id,
