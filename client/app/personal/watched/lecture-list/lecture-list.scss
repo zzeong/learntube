@@ -1,5 +1,4 @@
-
-@media (min-width: 600px) {
+@media (min-width: $responsive-width) {
   .highlight {
     background-color: #FFF56E;
   }

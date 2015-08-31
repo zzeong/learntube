@@ -30,7 +30,7 @@ $panel-offset: 10px;
   margin-top: $panel-offset;
 }
 
-@media (max-width: 959px) {
+@media (max-width: $responsive-width) {
   .embed-item-limit-width {
     margin: 0 auto;
   }

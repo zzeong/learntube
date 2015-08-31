@@ -1,6 +1,6 @@
-@media (min-width: 600px) {
+@media (min-width: $responsive-width) {
   .watched-class-card {
-    $card-width: 333.33px;
+    $card-width: 344px;
     width: $card-width;
     display: inline-flex;
   }
