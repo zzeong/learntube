@@ -1,61 +1,63 @@
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 
-<div class="embed-item-limit-width">
-  <div class="embed-responsive embed-responsive-16by9">
-    <youtube-video class="embed-responsive-item" video-id="videoId" player-vars="playerVars"></youtube-video>
+<md-content>
+
+  <div class="embed-item-limit-width">
+    <div class="embed-responsive embed-responsive-16by9">
+      <youtube-video class="embed-responsive-item" video-id="videoId" player-vars="playerVars"></youtube-video>
+    </div>
   </div>
-</div>
 
-<div class="content-width content-all">
+  <div class="content-width content-background content-top-mt">
 
-  <div>
-    <md-content class="video-info-panel" layout-padding>
+    <div class="video-info-panel md-padding">
       <h1 class="md-title">{{ item.snippet.title }}</h1>
       <div class="md-actions" layout="row" layout-align="end center">
         <md-button class="md-raised" ng-click="toggleNote()">Note</md-button>
         <md-button class="md-raised md-primary" ng-click="completeLecture()">Complete</md-button>
       </div> 
-    </md-content>
-  </div>
+    </div>
 
-  <md-divider></md-divider>
+    <md-divider></md-divider>
 
-  <div ng-if="isLoggedIn()">
+    <div ng-if="isLoggedIn()">
 
-    <md-content layout-padding ng-repeat="note in notes">
-      <div ng-hide="note.isEditing">
-        <img class="avatar" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image"/>
-        <div>
-          <p class="md-subhead">{{ getCurrentUser().name }}</p>
+      <div class="md-padding" ng-repeat="note in notes">
+        <div ng-hide="note.isEditing">
+          <div class="note-item">
+            <img class="avatar" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image"/>
+            <div class="userinfo">
+              <p class="md-subhead">{{ getCurrentUser().name }}</p>
+            </div>
+          </div>
+
+          <md-divider></md-divider>
+
+          <note-viewer contents="note.contents"></note-viewer>
+
+          <div class="md-actions" layout="row" layout-align="end center">
+            <md-button class="md-raised" ng-click="editNote(note)">Edit</md-button>
+            <md-button class="md-raised md-warn" ng-click="deleteNote(note)">Delete</md-button>
+          </div>
         </div>
 
-        <md-divider md-inset></md-divider>
-
-        <note-viewer contents="note.contents"></note-viewer>
-
-        <div class="md-actions" layout="row" layout-align="end center">
-          <md-button class="md-raised" ng-click="editNote(note)">Edit</md-button>
-          <md-button class="md-raised md-warn" ng-click="deleteNote(note)">Delete</md-button>
+        <div ng-if="note.isEditing">
+          <form ng-submit="updateNote(note)">
+            <textarea ng-model="note.contents" ckeditor></textarea>
+            <md-button class="md-raised md-warn" ng-click="cancelEditing(note)">Cancel</md-button>
+            <md-button type="submit" class="md-raised">Update</md-button>
+          </form>
         </div>
       </div>
 
-      <div ng-if="note.isEditing">
-        <form ng-submit="updateNote(note)">
-          <textarea ng-model="note.contents" ckeditor></textarea>
-          <md-button class="md-raised md-warn" ng-click="cancelEditing(note)">Cancel</md-button>
-          <md-button type="submit" class="md-raised">Update</md-button>
-        </form>
-      </div>
-    </md-content>
+    </div>
 
+    <div ng-show="isNoteOn">
+      <form ng-submit="doneNote()">
+        <textarea id="newNote" ng-model="noteContents" ckeditor></textarea>
+        <md-button type="submit" class="md-raised">Done</md-button>
+      </form>
+    </div>
 
   </div>
-
-  <div ng-show="isNoteOn">
-    <form ng-submit="doneNote()">
-      <textarea id="newNote" ng-model="noteContents" ckeditor></textarea>
-      <md-button type="submit" class="md-raised">Done</md-button>
-    </form>
-  </div>
-
-</div>
+</md-content>

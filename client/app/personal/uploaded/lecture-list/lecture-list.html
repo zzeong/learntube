@@ -1,13 +1,15 @@
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 
-<div class="content-width">
+<md-content>
+  <div class="content-width content-background" layout-padding>
 
-  <md-content class="md-padding">
     <div class="content-inner lecture-list-summary">
       <h2 class="md-headline">{{ summary.snippet.title }}</h2>
       <p class="md-body-1">{{ summary.snippet.description }}</p>
     </div>
+
     <md-divider></md-divider>
+
     <div class="content-inner">
       <md-list>
         <md-list-item class="md-2-line"
@@ -26,6 +28,7 @@
         </md-list-item>
       </md-list>
     </div>
-  </md-content>
 
-</div>
+  </div>
+</md-content>
+

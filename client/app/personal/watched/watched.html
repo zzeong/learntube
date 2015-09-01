@@ -1,8 +1,8 @@
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 
-<div class="content-width">
-  <md-content class="md-padding">
+<md-content>
 
+  <div class="content-width" layout-padding>
     <md-card class="watched-class-card" ng-repeat="classe in classes">
       <img ng-src="{{ classe.item.snippet.thumbnails.high.url }}" ng-click="go('WatchedLectureList', { pid: classe.playlistId })" class="md-card-image" alt="Class Image">
       <md-card-content>
@@ -12,6 +12,6 @@
         <md-button class="md-warn" ng-click="deleteClass(classe)">Delete</md-button>
       </div>
     </md-card>
+  </div>
 
-  </md-content>
-</div>
+</md-content>

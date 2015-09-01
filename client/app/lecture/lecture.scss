@@ -26,15 +26,31 @@ $panel-offset: 10px;
   border: 0;
 }
 
-.content-all {
+.content-top-mt {
   margin-top: $panel-offset;
 }
+
+.note-item {
+  margin-bottom: 10px;
+  .avatar {
+    margin: 0;
+  }
+  .userinfo {
+    margin-left: $avatar-size; 
+    p {
+      margin: 0;
+      padding: 0 20px;
+      line-height: $avatar-size;
+    }
+  }
+}
+
 
 @media (max-width: $responsive-width) {
   .embed-item-limit-width {
     margin: 0 auto;
   }
-  .content-all {
+  .content-top-mt {
     margin-top: 0;
   }
 }
