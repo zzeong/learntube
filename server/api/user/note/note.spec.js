@@ -18,12 +18,13 @@ var userData = {
 
 
 describe('REST API:', function() {
-  var id, nid, noteContents, videoId;
+  var id, nid, noteContents, videoId, playlistId;
 
   this.timeout(10000);
 
   before(function(done){
     videoId = 'sMKoNBRZM1M';
+    playlistId = 'SHEWILLLOVEME';
 
     User.remove().exec();
     var user = new User(userData);
@@ -45,6 +46,7 @@ describe('REST API:', function() {
     it('should return saved note when note is saved', function(done) {
       var params = {
         videoId: videoId,
+        playlistId: playlistId,
         contents: noteContents
       };
 
@@ -70,6 +72,8 @@ describe('REST API:', function() {
       request(app)
       .get('/api/users/' + id + '/notes')
       .query({ videoId: videoId })
+      .expect(200)
+      .expect('Content-Type', /json/)
       .end(function(err, res) {
         if(err) { return done(err); }
         res.body.should.have.instanceof(Array);
@@ -81,7 +85,25 @@ describe('REST API:', function() {
     });
   });
 
+  describe('GET /api/users/:id/notes/meta', function() {
+    it('should return meta data of notes which don\'t contain note contents', function(done) {
+      request(app)
+      .get('/api/users/' + id + '/notes/meta')
+      .query({ playlistId: playlistId })
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end(function(err, res) {
+        if(err) { return done(err); } 
+        res.body.should.have.instanceof(Array);
+        res.body.should.have.length(1);
+        res.body[0].should.have.property('_id');
+        res.body[0].should.have.property('videoId');
+        res.body[0].should.not.have.property('contents');
+        done();
+      });
+    });
 
+  });
 
 
   describe('GET /api/users/:id/notes/:nid', function() {

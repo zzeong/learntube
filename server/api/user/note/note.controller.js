@@ -61,6 +61,15 @@ exports.index = function(req, res) {
   });
 };
 
+exports.meta = function(req, res) {
+  Note.find(req.query, function(err, notes) {
+    if(err) { return handleError(res, err); } 
+    if(!notes) { return res.status(404).send('Not Found'); }
+    
+    return res.status(200).json(notes);
+  });
+};
+
 
 // Creates a new note in the DB.
 exports.create = function(req, res) {
@@ -85,6 +94,7 @@ exports.create = function(req, res) {
       var note = new Note({
         userId: req.params.id,
         videoId: req.body.videoId,
+        playlistId: req.body.playlistId,
         hash: hash,
         url: reqToS3.url,
         s3Path: uploadedPath
