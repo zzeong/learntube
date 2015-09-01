@@ -83,6 +83,7 @@ angular.module('learntubeApp')
   $scope.doneNote = function() {
     var params = {
       videoId: $scope.videoId,
+      playlistId: $scope.playlistId,
       contents: $scope.noteContents
     };
 

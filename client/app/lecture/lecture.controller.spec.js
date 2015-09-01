@@ -100,6 +100,7 @@ describe('Controller: LectureCtrl', function () {
       var beforeLength = $scope.notes.length;
 
       $scope.videoId = '2rde3';
+      $scope.playlistId = 'SHEWILLLOVEME';
       $scope.note = '<h1>Hi</h1>';
       $scope.doneNote();
 
