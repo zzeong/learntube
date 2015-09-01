@@ -12,7 +12,7 @@ describe('REST API:', function() {
       request(app)
       .get('/api/youtube/lecture-list/')
       .query({
-        max: 15,
+        max: 30,
         playlistId: 'PL9cwsTrgI6FFxBon4flET37aW2QJP7l9S',
       })
       .expect(200)
