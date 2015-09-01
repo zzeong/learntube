@@ -10,6 +10,7 @@ var NoteSchema = new Schema({
   	ref: 'User'
   },
   videoId: String,
+  playlistId: String,
   created: { type: Date, default: Date.now },
   hash: String,
   url: String,
