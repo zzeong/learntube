@@ -13,7 +13,6 @@ angular.module('learntubeApp')
     },
   }).then(function(res){
     $scope.lectureList = res.data;
-    // console.log($scope.lectureList);
 
     // lecArrSorting구성
     $scope.lecArrSorting = _.sortBy($scope.lectureList, function(el){
@@ -39,7 +38,7 @@ angular.module('learntubeApp')
     ClassAPI.query({playlistId: $scope.playlistId}, function(response){
       var SeenLectures = response[0].lectures; // response = json형태의 lectures
 
-      // Highlight처리를 위한 비교 (전체 동영상 목록 <=> DB상의 동영상 목록)
+      // Highlight처리를 위한 비교
       for(var i=0; i<$scope.lecArrSorting.length; i++){
         for(var s=0; s<SeenLectures.length; s++){
           if($scope.lecArrSorting[i].snippet.resourceId.videoId === SeenLectures[s].videoId){
@@ -47,7 +46,6 @@ angular.module('learntubeApp')
           }
         }
       }
-    console.log($scope.lecArrSorting);
     }, function(err){
       $log.error(err);
     });
@@ -55,23 +53,20 @@ angular.module('learntubeApp')
 
     // DB에서 필기 목록 가져오기 (Note)
     NoteAPI.meta({playlistId: $scope.playlistId}, function(response){
-      console.log(response);
 
       var NotenLectures = [];
       for(var i=0; i<response.length; i++){
         NotenLectures[i] = response[i].videoId;
       }
 
-      for(var i=0; i<$scope.lecArrSorting.length; i++){
+      // 필기 아이콘 처리를 위한 비교
+      for(var k=0; k<$scope.lecArrSorting.length; k++){
         for(var s=0; s<NotenLectures.length; s++){
-          if($scope.lecArrSorting[i].snippet.resourceId.videoId === NotenLectures[s]){
-            $scope.lecArrSorting[i].noteIconVisible = true;
+          if($scope.lecArrSorting[k].snippet.resourceId.videoId === NotenLectures[s]){
+            $scope.lecArrSorting[k].noteIconVisible = true;
           }
         }
       }
-
-
-
     }, function(err){
       $log.error(err);
     });
