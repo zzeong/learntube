@@ -4,9 +4,8 @@
   <div class="content-width" layout-padding>
 
     <md-list>
-      <div>
+      <div ng-repeat="lecture in lecArrSorting | onlyPublic">
         <md-list-item class="md-2-line"
-          ng-repeat="lecture in lecArrSorting | onlyPublic"
           ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })" ng-class="{highlight: lecture.highlight}">
           <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
 
@@ -19,7 +18,7 @@
           </div>
 
           <md-icon md-svg-src="assets/images/note.svg"
-            ng-click="showNote()"
+            ng-click="showNote(lecture)"
             aria-label="Show note"
             class="md-secondary"
             ng-class="{ noteIconHide: !lecture.noteIconVisible, noteIconShow: lecture.noteIconVisible }">
@@ -27,6 +26,10 @@
 
           <md-divider></md-divider>
         </md-list-item>
+
+        <div ng-if="isSelected(lecture)" ng-repeat="note in lecture.notes">
+          <note-viewer contents="note.contents"></note-viewer>
+        </div>
       </div>
     </md-list>
 

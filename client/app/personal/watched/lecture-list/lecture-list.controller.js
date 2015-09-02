@@ -71,6 +71,20 @@ angular.module('learntubeApp')
       $log.error(err);
     });
 
+    $scope.showNote = function(lecture) {
+      $scope.selectedLecture = lecture;
+      if(_.has(lecture, 'notes')) { return; }
+
+      NoteAPI.query({
+        videoId: lecture.snippet.resourceId.videoId
+      }, function(notes) {
+        lecture.notes = notes;
+      });
+    };
+    $scope.isSelected = function(lecture) {
+      return $scope.selectedLecture === lecture; 
+    };
+
   });
 
 });
