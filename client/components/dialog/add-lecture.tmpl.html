@@ -1,0 +1,47 @@
+<md-dialog class="dialog-width add-lecture-tmpl" aria-label="Add lecture">
+
+    <md-tabs md-border-bottom>
+
+      <md-tab label="Search videos">
+        <md-content class="md-padding">
+
+          <form ng-submit="search()">
+            <md-input-container class="search-box">
+              <label>Search</label>
+              <input type="search" ng-model="query"/>
+            </md-input-container>
+          </form>
+
+          <md-list>
+            <md-list-item class="md-2-line md-hue-1" ng-class="{ selected: video.selected }" ng-repeat="video in searched" ng-click="selectVideo(video)">
+              <img class="lecture-thumb" ng-src="{{ video.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
+              <div class="md-list-item-text">
+                <h3>{{ video.snippet.title | limitTo:30 }}{{ video.snippet.title.length > 40 ? '...' : '' }}</h3>
+              </div>
+            </md-list-item>
+          </md-list>
+
+        </md-content>
+      </md-tab>
+
+
+      <md-tab label="My videos">
+        <md-content class="md-padding">
+        </md-content>
+      </md-tab>
+
+    </md-tabs>
+
+    <form ng-submit="addLecture()">
+      <div class="md-actions" layout="row">
+        <md-button type="button" class="md-warn" ng-click="cancel()" >
+          Cancel
+        </md-button>
+        <md-button type="submit">
+          Add
+        </md-button>
+      </div>
+    </form>
+
+</md-dialog>
+

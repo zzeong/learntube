@@ -1,9 +1,10 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('UploadedLectureListCtrl', function($scope, $stateParams, Auth, $state, $http, $log, $mdDialog, $q, $mdToast) {
+.controller('UploadedLectureListCtrl', function($scope, $stateParams, Auth, $state, $http, $log, $mdDialog, $q, $mdToast, GApi, GoogleConst) {
   $scope.playlistId = $stateParams.pid;
   $scope.go = $state.go;
+  var scope = $scope;
 
   var onRejected = function(err) { $log.error(err); };
 
@@ -119,6 +120,63 @@ angular.module('learntubeApp')
       showToast('File uploaded');
       $log.info(uploaded);
     }, onRejected);
+  };
+
+  $scope.showLectureDialog = function(lecture, ev) {
+    $mdDialog.show({
+      controller: function($scope, $mdDialog) {
+        $scope.search = function() {
+          GApi.execute('youtube', 'search.list', {
+            key: GoogleConst.browserKey,
+            part: 'snippet',
+            q: $scope.query,
+            maxResults: 50,
+            type: 'video',
+          }).then(function(res) {
+            $scope.searched = res.items;
+          }, onRejected);
+        };
+
+        $scope.selectVideo = function(video) {
+          if($scope.selectedVideo) {
+            $scope.selectedVideo.selected = false;
+          }
+          $scope.selectedVideo = video; 
+          video.selected = true;
+        };
+
+        $scope.cancel = function() {
+          $mdDialog.cancel();
+        };
+
+        $scope.addLecture = function() {
+          $http.post('/api/youtube/lecture', {
+            snippet: {
+              playlistId: scope.playlistId,
+              resourceId: {
+                kind: $scope.selectedVideo.id.kind,
+                videoId: $scope.selectedVideo.id.videoId
+              }
+            }
+          })
+          .then(function(res) {
+            if(res.status === 201) {
+              scope.lectureList.push(res.data);
+              $mdDialog.hide();
+            }
+          }, onRejected);
+
+        };
+      },
+      templateUrl: 'components/dialog/add-lecture.tmpl.html',
+      parent: angular.element(document.body),
+      targetEvent: ev,
+      clickOutsideToClose: true
+    })
+    .then(function() {
+      showToast('Lecture added');
+    }, onRejected);
+
   };
 
 });
