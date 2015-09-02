@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('ClassCtrl', function($scope, $http, $stateParams, $state, ClassAPI, $log, Auth) {
+.controller('ClassCtrl', function($scope, $http, $stateParams, $state, ClassAPI, $log, Auth, $filter) {
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.playlistId = $stateParams.pid;
   $scope.go = $state.go;
@@ -54,8 +54,7 @@ angular.module('learntubeApp')
       },
     }).then(function(res){
 
-     $scope.lectureList = res.data;
-    // console.log($scope.lectureList);
+      $scope.lectureList = res.data;
 
     // lecArrSorting구성
     $scope.lecArrSorting = _.sortBy($scope.lectureList, function(el){
@@ -63,13 +62,28 @@ angular.module('learntubeApp')
     });
 
 
+    $scope.totalPlaytime=0;
 
     // 동영상 번호 부여 (오래된 동영상 -> 최근 동영상)
     for(var i=0; i<$scope.lecArrSorting.length; i++){
       $scope.lecArrSorting[i].index = i+1;
       // 동영상 비교하기 위한 속성 부여
       $scope.lecArrSorting[i].highlight = false;
+
+      // duration에 humanable filter적용
+      $scope.lecArrSorting[i].contentDetails.duration = $filter('humanable')($scope.lecArrSorting[i].contentDetails.duration);
+
+      // duration을 split
+      var durationSplit = $scope.lecArrSorting[i].contentDetails.duration.split(':');
+
+      // 분, 초를 모두 합해 totalPlaytime계산
+      $scope.totalPlaytime += parseInt(durationSplit[0])*60 + parseInt(durationSplit[1]);
     }
+
+    // 실제 시, 분, 초 구하기
+    $scope.playtimeHour = parseInt($scope.totalPlaytime/3600);
+    $scope.playtimeMin = parseInt(($scope.totalPlaytime%3600)/60);
+    $scope.playtimeSec = parseInt(($scope.totalPlaytime%3600)%60);
 
     // index가 마지막인 영상의 ID
     $scope.firstVideoId = $scope.lecArrSorting[$scope.lecArrSorting.length-1].snippet.resourceId.videoId;
@@ -78,27 +92,4 @@ angular.module('learntubeApp')
 
 
 
-    // show function구현
-    //var change = true;
-    $scope.show = false;
-    $scope.show2 = false;
-    $scope.content = 'view more';
-    $scope.content2 = 'view more';
-
-
-    // javascript에서는 primitive type의 parameter를 받았을 때,
-    // 그것을 참조하는 것이 아니라 '복사' 하기 때문에 showProp으로
-    // 다르게 받았다.
-    $scope.changeDesc = function(contentProp, showProp) {
-      $scope[showProp] = !$scope[showProp];
-
-      if ($scope[showProp] === false) {
-        $scope[contentProp] = 'view more';
-      } else {
-        $scope[contentProp] = 'view less';
-      }
-      return $scope[showProp];
-
-    };
-
-  });
+});
