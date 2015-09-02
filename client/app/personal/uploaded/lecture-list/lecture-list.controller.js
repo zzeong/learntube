@@ -91,7 +91,7 @@ angular.module('learntubeApp')
     $log.error(err); 
   });
 
-  $scope.showDialog = function(lecture, ev) {
+  $scope.showFileDialog = function(lecture, ev) {
     $mdDialog.show({
       controller: function($scope, $mdDialog) {
         $scope.cancel = function() {
