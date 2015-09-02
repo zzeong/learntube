@@ -4,7 +4,6 @@ var _ = require('lodash');
 var google = require('googleapis');
 var youtube = google.youtube('v3');
 var config = require('../../../config/environment');
-var User = require('../../user/user.model');
 var OAuth2 = google.auth.OAuth2;
 var oauth2Client = new OAuth2(config.google.clientID, config.google.clientSecret, config.google.callbackURL);
 
