@@ -20,12 +20,17 @@ angular.module('learntubeApp')
       params: { id: Auth.getCurrentUser()._id }
     },
     remove: {
-      method: 'DELETE', 
+      method: 'DELETE',
       params: { id: Auth.getCurrentUser()._id }
     },
     update: {
-      method: 'PUT', 
+      method: 'PUT',
       params: { id: Auth.getCurrentUser()._id }
     },
+    meta: {
+      method: 'GET',
+      params: { id: Auth.getCurrentUser()._id, nid: 'meta' },
+      isArray: true
+    }
   });
 });

@@ -1,49 +1,32 @@
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 
-<div class="content-width">
-
-  <md-divider></md-divider>
-
-  <!-- 클래스 내의 강의 목록 -->
-
-  <div class="lectureList">
-    <md-content>
-    <md-list>
-    <md-list-item class="md-3-line"  ng-class="{highlight: lecture.highlight}" ng-repeat="lecture in lecArrSorting" ng-click="go('Lecture', { pid: playlistId, vid: lecture.videoId })">
+<md-content>
 
 
-    <div class="md-list-item-text content-width">
+<md-list>
+  <div class="lectureList content-width">
+  <md-list-item class="md-2-line"
+    ng-repeat="lecture in lecArrSorting | onlyPublic"
+    ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })" ng-class="{highlight: lecture.highlight}">
+    <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
 
-      <!--  강의 번호  -->
-      <div id="lecture_position">
-        <font size="1" maxlength="15">{{ lecture.index }}.&nbsp&nbsp</font>
+    <div class="md-list-item-text">
+      <div style="float:left; height:30px">
+        <h3>{{ lecture.index }}.&nbsp</h3>
       </div>
-
-      <!--  강의 썸네일  -->
-      <div id="lecture_img">
-        <img ng-src="{{ lecture.snippet.thumbnails.default.url }}" width="64" height="36">
-      </div>
-
-      <!--  강의 제목  -->
-      <div id="lecture_title">
-        <font size="1" maxlength="15">&nbsp&nbsp{{ lecture.snippet.title }}</font>
-      </div>
-
-      <!--  강의 재생시간  -->
-      <div style="float:right">
-        <p size="1" maxlength="15">{{ lecture.contentDetails.duration | humanable }}</p>
-      </div>
-
+      <h3>{{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
+      <p>{{ lecture.contentDetails.duration }}</p>
     </div>
 
-    <md-divider></md-divider>
+    <div ng-class="{noteIconHide: !lecture.noteIconVisible}" ng-class="{noteIconShow: lecture.noteIconVisible}">
+      <img ng-src="assets/images/note.svg">
+    </div>
+
+  <md-divider></md-divider>
+  </div>
   </md-list-item>
 </md-list>
-</md-content>
 
-<!-- 클래스의 동영상 더보기 -->
-<div id="">
-  <p ng-click="">Load more</p>
-</div>
-</div>
-</div>
+
+
+</md-content>
