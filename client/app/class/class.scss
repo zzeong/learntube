@@ -1,33 +1,33 @@
 
 
- #lecture_img, #lecture_title, #lecture_position, #lecture_duration{
+ #lecture-img, #lecture-title, #lecture-position{
     float : left;
   }
 
   /* view more css */
  .box .textBefore{
-        position:                   relative;
-        font-family:               sans-serif;
-        display:                    block;
-        width:                      auto;
-        height:                     4em;
-        overflow:                  hidden;
+        position: relative;
+        p-family: sans-serif;
+        display: block;
+        width: auto;
+        height: 4em;
+        overflow: hidden;
     }
 
   .box .textAfter{
-        position:                   relative;
-        font-family:               sans-serif;
-        display:                    block;
-        width:                      auto;
-        height:                     auto;
-        overflow:                  hidden;
+        position: relative;
+        p-family: sans-serif;
+        display: block;
+        width: auto;
+        height: auto;
+        overflow: hidden;
     }
 
   .tutorDesc{
     color: rgba(0,0,0,0.54);
 
-    font-size: 14px;
-    font-weight: 500;
+    p-size: 14px;
+    p-weight: 500;
     letter-spacing: 0.01em;
     line-height: 24px;
     margin: 0 0 0px 0;
@@ -41,18 +41,62 @@
   }
 
 
+    .teacher-icon{
+      float: left;
+    }
 
 
+  .align{
+    vertical-align: middle;
+    height: 40px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    margin-left: 20px;
 
-// reponsive web 
+  }
+
+  .font-light-300{
+    font-weight: 300;
+  }
+
+  .font-light-400{
+    font-weight: 400;
+  }
+
+// reponsive web
 @media (min-width: $responsive-width){
 
+    .middle{
+      padding-left: 20px;
+      padding-top: 18px;
+      margin-top: 0px;
+    }
+
+    .headContents{
+      height: 400px;
+      background-color: white;
+      padding-left: 10px;
+      padding-top: 10px;
+    }
+
+    .ng-binding{
+      margin-top: 0px;
+    }
+
+    .descBox{
+      height: 260px;
+    }
+
+    .chIntroDiv{
+      width: 375px;
+      padding-left: 20px;
+      padding-top: 10px;
+    }
 
     .firstLecture{
-        width:660px;    
+        width:660px;
         height: 390px;
         margin: 0 auto;
-        background-color: white;
     }
 
     .test{
@@ -63,19 +107,19 @@
         margin-left:660px;
         width: 420px;
         height: 390px;
-        background-color: white;
     }
 
     .tutorIntro{
-        width: 440px;
+        width: 420px;
         float:right;
     }
 
     .thumbAndTitle{
         margin-top:20px;
         margin-right:15px;
-        margin-left:50px;
+        margin-left:30px;
         height:500px;
+        //width: 420px;
     }
 
     .thumbnail{
@@ -85,7 +129,6 @@
 
     .channelTitle{
         padding-top:15px;
-        padding-bottom:35px;
     }
 
     .tutorDescDiv{
@@ -98,7 +141,13 @@
     }
 
     .lectureList{
-        width: 640px;
+        width: 660px;
+    }
+
+
+
+    .minibox{
+      width: 150px;
     }
 
 }
