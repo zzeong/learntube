@@ -4,6 +4,7 @@ var express = require('express');
 var router = express.Router();
 
 router.use('/lecture-list', require('./lecture-list'));
+router.use('/lecture', require('./lecture'));
 router.use('/uploaded', require('./uploaded'));
 router.use('/classes', require('./classes'));
 
