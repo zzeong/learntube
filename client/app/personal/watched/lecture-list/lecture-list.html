@@ -1,35 +1,34 @@
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 
 <md-content>
+  <div class="content-width" layout-padding>
 
+    <md-list>
+      <div>
+        <md-list-item class="md-2-line"
+          ng-repeat="lecture in lecArrSorting | onlyPublic"
+          ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })" ng-class="{highlight: lecture.highlight}">
+          <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
 
-  <md-list>
-    <div class="lectureList content-width">
-      <md-list-item class="md-2-line"
-        ng-repeat="lecture in lecArrSorting | onlyPublic"
-        ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })" ng-class="{highlight: lecture.highlight}">
-        <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
-
-        <div class="md-list-item-text">
-          <div style="float:left; height:30px">
-            <h3>{{ lecture.index }}.&nbsp</h3>
+          <div class="md-list-item-text">
+            <div style="float:left; height:30px">
+              <h3>{{ lecture.index }}.&nbsp</h3>
+            </div>
+            <h3>{{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
+            <p>{{ lecture.contentDetails.duration }}</p>
           </div>
-          <h3>{{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
-          <p>{{ lecture.contentDetails.duration }}</p>
-        </div>
 
-        <md-icon md-svg-src="assets/images/note.svg"
-          ng-click="showNote()"
-          aria-label="Show note"
-          class="md-secondary"
-          ng-class="{ noteIconHide: !lecture.noteIconVisible, noteIconShow: lecture.noteIconVisible }">
-        </md-icon>
+          <md-icon md-svg-src="assets/images/note.svg"
+            ng-click="showNote()"
+            aria-label="Show note"
+            class="md-secondary"
+            ng-class="{ noteIconHide: !lecture.noteIconVisible, noteIconShow: lecture.noteIconVisible }">
+          </md-icon>
 
-        <md-divider></md-divider>
-      </md-list-item>
-    </div>
-  </md-list>
+          <md-divider></md-divider>
+        </md-list-item>
+      </div>
+    </md-list>
 
-
-
+  </div>
 </md-content>
