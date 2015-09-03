@@ -138,11 +138,11 @@ angular.module('learntubeApp')
         };
 
         $scope.selectVideo = function(video) {
-          if($scope.selectedVideo) {
-            $scope.selectedVideo.selected = false;
-          }
           $scope.selectedVideo = video; 
-          video.selected = true;
+        };
+
+        $scope.isSelected = function(video) {
+          return $scope.selectedVideo === video; 
         };
 
         $scope.cancel = function() {

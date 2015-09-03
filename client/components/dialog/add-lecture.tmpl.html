@@ -13,7 +13,7 @@
           </form>
 
           <md-list>
-            <md-list-item class="md-2-line md-hue-1" ng-class="{ selected: video.selected }" ng-repeat="video in searched" ng-click="selectVideo(video)">
+            <md-list-item class="md-2-line md-hue-1" ng-class="{ selected: isSelected(video) }" ng-repeat="video in searched" ng-click="selectVideo(video)">
               <img class="lecture-thumb" ng-src="{{ video.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
               <div class="md-list-item-text">
                 <h3>{{ video.snippet.title | limitTo:30 }}{{ video.snippet.title.length > 40 ? '...' : '' }}</h3>
