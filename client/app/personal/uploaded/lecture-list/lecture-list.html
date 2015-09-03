@@ -1,7 +1,7 @@
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 
 <md-button class="md-fab fab-fix" aria-label="Add lecture" ng-click="showLectureDialog($event)">
-  <md-icon md-svg-src="assets/images/add.svg"></md-icon>
+  <md-icon md-font-set="material-icons">add</md-icon>
 </md-button>
 
 <md-content>
@@ -23,10 +23,11 @@
           <div class="md-list-item-text">
             <h3>{{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
             <p>{{ lecture.contentDetails.duration | humanable }}</p>
-            <md-icon md-svg-icon="/assets/images/file_upload.svg"
+            <md-icon md-font-set="material-icons"
               ng-click="showFileDialog(lecture, $event)"
               aria-label="Show Dialog"
               class="md-secondary md-hue-3">
+              file_upload
             </md-icon>
           </div>
         </md-list-item>

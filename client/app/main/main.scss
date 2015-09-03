@@ -31,6 +31,15 @@
     outline: 0;
     border: none;
   }
+
+  .search-icon-button {
+    $size: 24px;
+    width: $size;
+    min-height: $size;
+    height: $size;
+    line-height: $size;
+    margin: 0;
+  }
 }
 
 @media (max-width: $responsive-width) {

@@ -10,7 +10,9 @@
         <form ng-submit="go('Search', { q: q })">
           <div class="main-search-cont">
             <input class="md-body-1" ng-model="q" type="search" placeholder="Search anything"/>
-            <md-icon md-svg-src="/assets/images/search.svg" ng-click="go('Search', { q: q })"></md-icon>
+            <md-button class="md-icon-button search-icon-button" aria-label="Search" ng-click="go('Search', { q: q })">
+              <md-icon md-font-set="material-icons">search</md-icon>
+            </md-button>
           </div>
         </form>
 
@@ -18,3 +20,4 @@
     </md-content>
   </div>
 </div>
+

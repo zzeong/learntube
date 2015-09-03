@@ -17,18 +17,6 @@ describe('Controller: ToolbarCtrl', function () {
     expect($scope.onSearching).toEqual(!onSearching);
   }));
 
-  it('should makes left function be back button in NOT main page', inject(function($state) {
-    $state.current.name = 'NotHome';
-    var backIconPath = '/assets/images/back.svg';
-    expect($scope.leftIconChanger()).toEqual(backIconPath);
-  }));
-
-  it('should makes left function be menu button in main page', inject(function($state) {
-    $state.current.name = 'Home';
-    var menuIconPath = '/assets/images/menu.svg';
-    expect($scope.leftIconChanger()).toEqual(menuIconPath);
-  }));
-
   it('should shows an account image when a google user logged in', inject(function() {
     var user = {
       google: {

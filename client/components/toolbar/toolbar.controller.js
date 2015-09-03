@@ -13,11 +13,6 @@ angular.module('learntubeApp')
     return debounceFn;
   };
 
-  var path = {
-    menu: '/assets/images/menu.svg',
-    back: '/assets/images/back.svg',
-    clear: '/assets/imags/clear.svg',
-  };
   var back = function() { $window.history.back(); };
   var toggleLeft = buildToggler('left');
 
@@ -41,9 +36,6 @@ angular.module('learntubeApp')
   };
   $scope.stateNameCheck = function(name) { return $state.current.name === name; };
   $scope.title = $scope.stateNameCheck('Search') ? $state.params.q : $state.current.name;
-  $scope.leftIconChanger = function() {
-    return $scope.stateNameCheck('Home') ? path.menu : path.back;
-  };
   $scope.goSearch = function() { $state.go('Search', { q: $scope.q }); };
   $scope.leftTrigger = function() {
     var func = $scope.stateNameCheck('Home') ? toggleLeft : back;

@@ -17,11 +17,12 @@
             <p>{{ lecture.contentDetails.duration }}</p>
           </div>
 
-          <md-icon md-svg-src="assets/images/note.svg"
+          <md-icon md-font-set="material-icons"
             ng-click="showNote(lecture)"
             aria-label="Show note"
             class="md-secondary"
             ng-class="{ noteIconHide: !lecture.noteIconVisible, noteIconShow: lecture.noteIconVisible }">
+            border_color
           </md-icon>
 
           <md-divider></md-divider>

@@ -1,7 +1,8 @@
 <md-toolbar ng-controller="ToolbarCtrl">
   <div class="md-toolbar-tools">
-    <md-button class="md-icon-button" aria-label="Settings" hide-gt-sm>
-      <md-icon md-svg-icon="{{ leftIconChanger() }}" ng-click="leftTrigger()"></md-icon>
+    <md-button class="md-icon-button" aria-label="Settings" ng-click="leftTrigger()" hide-gt-sm>
+      <md-icon ng-show="stateNameCheck('Home')" md-font-set="material-icons">menu</md-icon>
+      <md-icon ng-hide="stateNameCheck('Home')" md-font-set="material-icons">keyboard_backspace</md-icon>
     </md-button>
     <a href="/" id="logo" hide-sm>
       <img src="/assets/images/logo_transparent.png" show-gt-sm alt="logo"/>
