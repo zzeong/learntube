@@ -31,22 +31,10 @@ describe('REST API:', function() {
   });
 
   describe('POST /api/users/:id/uploaded', function() {
-    var token;  
 
     beforeEach(function(done) {
       Uploaded.remove().exec().then(function() {
-        request(app)
-        .post('/auth/local')
-        .send({
-          email: 'test@test.com',
-          password: 'password'
-        })
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end(function(err, res) {
-          token = res.body.token;
-          done();
-        });
+        done();
       });
     });
 
