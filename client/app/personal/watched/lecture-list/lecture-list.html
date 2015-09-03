@@ -1,38 +1,36 @@
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 
 <md-content>
-  <div class="content-width" layout-padding>
 
+<div class="content-width content-background" layout-padding>
+  <div class="content-inner">
     <md-list>
-      <div ng-repeat="lecture in lecArrSorting | onlyPublic">
-        <md-list-item class="md-2-line"
-          ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })" ng-class="{highlight: lecture.highlight}">
-          <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
+      <md-list-item class="md-2-line"
+        ng-repeat="lecture in lecArrSorting | onlyPublic"
+        ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })" ng-class="{highlight: lecture.highlight}">
 
-          <div class="md-list-item-text">
-            <div style="float:left; height:30px">
-              <h3>{{ lecture.index }}.&nbsp</h3>
-            </div>
-            <h3>{{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
-            <p>{{ lecture.contentDetails.duration }}</p>
-          </div>
+        <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
 
+        <div class="md-list-item-text">
+          <h3>{{ lecture.index }}.&nbsp{{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
+          <p>{{ lecture.contentDetails.duration }}</p>
           <md-icon md-font-set="material-icons"
             ng-click="showNote(lecture)"
             aria-label="Show note"
             class="md-secondary"
-            ng-class="{ noteIconHide: !lecture.noteIconVisible, noteIconShow: lecture.noteIconVisible }">
-            border_color
+            ng-show="lecture.noteIconVisible">
+            description
           </md-icon>
 
-          <md-divider></md-divider>
-        </md-list-item>
-
-        <div ng-if="isSelected(lecture)" ng-repeat="note in lecture.notes">
-          <note-viewer contents="note.contents"></note-viewer>
         </div>
-      </div>
-    </md-list>
+      </md-list-item>
 
+      <div ng-if="isSelected(lecture)" ng-repeat="note in lecture.notes">
+        <note-viewer contents="note.contents"></note-viewer>
+      </div>
+
+    </md-list>
   </div>
+</div>
+
 </md-content>
