@@ -1,5 +1,29 @@
-@media (min-width: $responsive-width) {
-  .highlight {
-    background-color: #FFF56E;
+
+
+  .lectureList{
+    width: 1080px;
+    background-color: white;
   }
-}
+
+  .align{
+    vertical-align: middle;
+    height: 40px;
+    padding-top: 10px;
+    padding-bottom: 5px;
+    margin-left: 20px;
+
+  }
+
+  .highlight {
+     background-color: #FFF56E;
+   }
+
+  .index{
+    float: left;
+    height: 30px;
+  }
+
+  @media (min-width: $responsive-width) {
+
+
+ }
