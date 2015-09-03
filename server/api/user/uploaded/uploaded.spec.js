@@ -111,5 +111,70 @@ describe('REST API:', function() {
     });
   });
 
+
+  describe.only('GET /api/users/:id/uploaded', function() {
+
+    beforeEach(function(done) {
+      Uploaded.remove().exec().then(function() {
+        request(app)
+        .post('/api/users/' + user._id + '/uploaded')
+        .send({
+          videoId: 'ASDF',
+          playlistId: 'QWER',
+          url: 'http://foo.com'
+        })
+        .expect(201)
+        .expect('Content-Type', /json/)
+        .end(function(err, res) {
+          if(err) { return done(err); } 
+          done();
+        });
+      });
+    }); 
+
+    afterEach(function(done) {
+      Uploaded.remove().exec().then(function() {
+        done(); 
+      });
+    });
+
+    it('should return uploads when query with playlistId', function(done) {
+      request(app)
+      .get('/api/users/' + user._id + '/uploaded')
+      .query({ playlistId: 'QWER' })
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end(function(err, res) {
+        if(err) { return done(err); } 
+        res.body.should.have.instanceof(Array);
+        res.body.should.have.length(1);
+        res.body[0].should.have.property('_id');
+        res.body[0].should.have.property('userId');
+        res.body[0].should.have.property('playlistId');
+        res.body[0].should.have.property('lectures');
+        res.body[0].lectures.should.have.length(1);
+        done();
+      });
+    });
+
+    it('should return uploads with no query', function(done) {
+      request(app)
+      .get('/api/users/' + user._id + '/uploaded')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .end(function(err, res) {
+        if(err) { return done(err); } 
+        res.body.should.have.instanceof(Array);
+        res.body.should.have.length(1);
+        res.body[0].should.have.property('_id');
+        res.body[0].should.have.property('userId');
+        res.body[0].should.have.property('playlistId');
+        res.body[0].should.have.property('lectures');
+        res.body[0].lectures.should.have.length(1);
+        done();
+      });
+    });
+  });
+
 });
 

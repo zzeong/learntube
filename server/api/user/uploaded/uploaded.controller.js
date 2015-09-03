@@ -4,6 +4,17 @@ var _ = require('lodash');
 var User = require('../user.model');
 var Uploaded = require('./uploaded.model');
 
+exports.index = function(req, res) {
+  var query = _.assign({ userId: req.params.id }, req.query);
+
+  Uploaded.find(query, function(err, uploads) {
+    if(err) { return handleError(res, err); } 
+    if(!uploads) { return res.status(404).send('Not Found'); }
+    
+    return res.status(200).json(uploads);
+  });
+};
+
 exports.create = function(req, res) {
   var pushAndSave = function(model, sub, request) {
     model[sub].push({
