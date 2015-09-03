@@ -29,21 +29,6 @@ exports.credential = function(req, res) {
 
 };
 
-exports.check = function(req, res) {
-  var s3 = new aws.S3(); 
-  var s3Params = {
-    Bucket: config.aws.s3Bucket,
-    Key: 'test@test.com/',
-  };
-
-  s3.headObject(s3Params, function(err, metadata) {
-    console.log(err); 
-    console.log(metadata); 
-    return res.status(200).send(metadata);
-  });
-};
-
-
 function handleError(res, err) {
   return res.status(500).send(err);
 }
