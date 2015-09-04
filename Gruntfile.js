@@ -626,6 +626,9 @@ module.exports = function (grunt) {
       },
     },
 
+    coveralls: {
+      src: 'coverage/{client,server}/unit/lcov.info'
+    },
   });
 
   // Used for delaying livereload until after server has restarted
@@ -764,7 +767,7 @@ module.exports = function (grunt) {
     else {
       grunt.task.run([
         'jshint',
-        'test:server',
+        'test:coverage:server',
         'test:client'
       ]);
     }
