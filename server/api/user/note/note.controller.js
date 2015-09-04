@@ -44,8 +44,7 @@ exports.index = function(req, res) {
   var data = _.assign(req.query, { userId: req.params.id });
 
   Note.find(data, function(err, notes) {
-    if(err) { return handleError(res, err); }
-    //var note = notes[0];
+    if(err) { return res.status(500).send(err); }
 
     Promise.all(notes.map(function(note) {
       return getDataFromS3(note.s3Path).then(function(contents) {
@@ -63,7 +62,7 @@ exports.index = function(req, res) {
 
 exports.meta = function(req, res) {
   Note.find(req.query, function(err, notes) {
-    if(err) { return handleError(res, err); } 
+    if(err) { return res.status(500).send(err); }
     if(!notes) { return res.status(404).send('Not Found'); }
     
     return res.status(200).json(notes);
@@ -74,7 +73,7 @@ exports.meta = function(req, res) {
 // Creates a new note in the DB.
 exports.create = function(req, res) {
   User.findById(req.params.id, function(err, user) {
-    if(err) { return handleError(res, err); }
+    if(err) { return res.status(500).send(err); }
     if(!user) { return res.status(404).send('Not Found'); }
 
     var hash = createRandomHash();
@@ -101,7 +100,7 @@ exports.create = function(req, res) {
       });
 
       note.save(function(err){
-        if(err){return handleError(res, err);}
+        if(err) { return res.status(500).send(err); }
         return res.status(201).json({ _id: note._id });
       });
     });
@@ -116,7 +115,7 @@ exports.create = function(req, res) {
 exports.show = function(req, res) {
 
   Note.findById(req.params.nid, function(err, note) {
-    if(err) { return handleError(res, err); }
+    if(err) { return res.status(500).send(err); }
     if(!note) { return res.status(404).send('Not Found'); }
 
 
@@ -140,7 +139,7 @@ exports.show = function(req, res) {
 // Updates an existing note in the DB.
 exports.update = function(req, res) {
   Note.findById(req.params.nid, function(err, note) {
-    if(err) { return handleError(res, err); }
+    if(err) { return res.status(500).send(err); }
     if(!note) { return res.status(404).send('Not Found'); }
 
     var reqToS3 = awsClient.put(note.s3Path, {
@@ -168,7 +167,7 @@ exports.update = function(req, res) {
 // Deletes a note from the DB.
 exports.destroy = function(req, res) {
   Note.findById(req.params.nid, function (err, note) {
-    if(err) { return handleError(res, err); }
+    if(err) { return res.status(500).send(err); }
     if(!note) { return note.status(404).send('Not Found'); }
 
     awsClient.del(note.s3Path).on('response', function(resFromS3){
@@ -176,7 +175,7 @@ exports.destroy = function(req, res) {
       console.log('[S3]:DELETE ' + res.headers);
       var removedId = note._id;
       note.remove(function(err){
-        if(err){ return handleError(res,err); }
+        if(err) { return res.status(500).send(err); }
         return res.status(200).json({ _id: removedId });
       });
 
@@ -184,6 +183,3 @@ exports.destroy = function(req, res) {
   });
 };
 
-function handleError(res, err) {
-  return res.status(500).send(err);
-}

@@ -20,7 +20,7 @@ exports.index = function(req, res) {
   var data = _.assign(req.query, {userId:req.params.id});
 
   Class.find( data, function (err, classes) {
-    if(err) { return handleError(res, err); }
+    if(err) { return res.status(500).send(err); }
     return res.status(200).json(classes);
   });
 };
@@ -37,10 +37,10 @@ exports.create = function(req, res) {
   };
 
   Class.findOne(data, function(err, classe) {
-    if(err) { return handleError(res, err) }
+    if(err) { return res.status(500).send(err); }
     if(!classe) {
       return Class.create(data, function(createErr, createdClass) {
-        if(createErr) { return handleError(res, createErr); }
+        if(createErr) { return res.status(500).send(createErr); }
         return res.status(201).json(createdClass);
       });
     }
@@ -55,16 +55,13 @@ exports.update = function(req, res) {
 // Deletes a classe from the DB.
 exports.destroy = function(req, res) {
   Class.findById(req.params.cid, function (err, classe) {
-    if(err) { return handleError(res, err); }
+    if(err) { return res.status(500).send(err); }
     if(!classe) { return res.status(404).send(err); }
 
     classe.remove(function(err) {
-      if(err) { return handleError(res, err); }
+      if(err) { return res.status(500).send(err); }
       return res.status(204).send();
     });
   });
 };
 
-function handleError(res, err) {
-  return res.status(500).send(err);
-}

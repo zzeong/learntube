@@ -69,12 +69,9 @@ exports.index = function(req, res) {
   getList(req)
   .then(function(list) {
     return applyDuration(req, list);
-  }, function(err) { return handleError(res, err); })
+  }, function(err) { return res.status(500).send(err); })
   .then(function(list) {
     return res.status(200).json(list); 
-  }, function(err) { return handleError(res, err); });
+  }, function(err) { return res.status(500).send(err); });
 };
 
-function handleError(res, err) {
-  return res.status(500).send(err);
-}

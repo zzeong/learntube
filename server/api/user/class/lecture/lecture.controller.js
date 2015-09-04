@@ -26,12 +26,12 @@ exports.show = function(req, res) {
 // Creates a new lecture in the DB.
 exports.create = function(req, res) {
   Class.findById(req.params.cid, function(err, classe) {
-    if(err) { return handleError(res, err); }
+    if(err){ return res.status(500).send(err); }
     if(!classe) { return res.status(404).send(err); }
 
     classe.lectures.push({ videoId: req.body.videoId });
     classe.save(function(saveErr, savedClass) {
-      if(err) { return handleError(res, saveErr); }
+      if(err){ return res.status(500).send(err); }
       return res.status(201).json(savedClass);
     });
   });
@@ -45,6 +45,3 @@ exports.update = function(req, res) {
 exports.destroy = function(req, res) {
 };
 
-function handleError(res, err) {
-  return res.status(500).send(err);
-}

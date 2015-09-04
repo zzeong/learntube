@@ -23,12 +23,9 @@ exports.credential = function(req, res) {
   var accessUrl = 'https://' + config.aws.s3Bucket + '.s3.amazonaws.com/' + s3Params.Key;
 
   s3.getSignedUrl('putObject', s3Params, function(err, url) { 
-    if(err){ handleError(res, err); }
+    if(err){ return res.status(500).send(err); }
     return res.status(200).json({ signedUrl: url, accessUrl: accessUrl });
   });
 
 };
 
-function handleError(res, err) {
-  return res.status(500).send(err);
-}

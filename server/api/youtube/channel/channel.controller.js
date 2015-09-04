@@ -15,12 +15,8 @@ exports.index = function(req, res) {
   };
 
   youtube.channels.list(params, function(err, response) {
-    if(err) { return handleError(res, err); }
+    if(err) { return res.status(500).send(err); }
     return res.status(200).json(response.items);
   });
 };
-
-function handleError(res, err) {
-  return res.status(500).send(err);
-}
 

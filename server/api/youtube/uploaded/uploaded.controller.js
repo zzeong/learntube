@@ -10,7 +10,7 @@ var oauth2Client = new OAuth2(config.google.clientID, config.google.clientSecret
 
 exports.index = function(req, res) {
   User.findById(req.user._id, function(err, user) {
-    if(err) { return handleError(res, err); } 
+    if(err) { return res.status(500).send(err); }
     if(!user) { return res.status(401).send('Not Found'); }
 
     oauth2Client.setCredentials({
@@ -24,7 +24,7 @@ exports.index = function(req, res) {
       mine: true,
       maxResults: config.google.maxResults,
     }, function(err, response) {
-      if(err) { return handleError(res, err); }
+      if(err) { return res.status(500).send(err); }
       return res.status(200).json(response.items);
     });
   });
@@ -32,7 +32,7 @@ exports.index = function(req, res) {
 
 exports.insert = function(req, res) {
   User.findById(req.user._id, function(err, user) {
-    if(err) { return handleError(res, err); }
+    if(err) { return res.status(500).send(err); }
     if(!user) { return res.status(401).send('Not Found'); } 
 
     oauth2Client.setCredentials({
@@ -42,7 +42,7 @@ exports.insert = function(req, res) {
 
     var params = _.assign({ auth: oauth2Client }, req.body);
     youtube.playlists.insert(params, function(err, resFromYT) {
-      if(err) { return handleError(res, err); }
+      if(err) { return res.status(500).send(err); }
       var item = resFromYT;
       return res.status(201).json(item);
     });
@@ -51,7 +51,7 @@ exports.insert = function(req, res) {
 
 exports.destroy = function(req, res) {
   User.findById(req.user._id, function(err, user) {
-    if(err) { return handleError(res, err); } 
+    if(err) { return res.status(500).send(err); }
     if(!user) { return res.status(401).send('Not Found'); } 
 
     oauth2Client.setCredentials({
@@ -63,12 +63,9 @@ exports.destroy = function(req, res) {
       auth: oauth2Client,
       id: req.params.pid,
     }, function(err) {
-      if(err) { return handleError(res, err); }
+      if(err) { return res.status(500).send(err); }
       return res.status(204).send('No Content');
     });
   });
 };
 
-function handleError(res, err) {
-  return res.status(500).send(err);
-}
