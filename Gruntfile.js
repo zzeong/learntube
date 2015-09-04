@@ -613,6 +613,19 @@ module.exports = function (grunt) {
         }
       }
     },
+
+    mocha_istanbul: {
+      unit: {
+        options: {
+          excludes: ['**/*.{spec,mock,integration}.js'],
+          reporter: 'spec',
+          mask: '**/*.spec.js',
+          coverageFolder: 'coverage/server/unit'
+        },
+        src: 'server'
+      },
+    },
+
   });
 
   // Used for delaying livereload until after server has restarted
@@ -677,7 +690,7 @@ module.exports = function (grunt) {
   });
 
 
-  grunt.registerTask('test', function(target) {
+  grunt.registerTask('test', function(target, option) {
     if (target === 'server') {
       return grunt.task.run([
         'env:all',
@@ -727,11 +740,14 @@ module.exports = function (grunt) {
       ]);
     }
 
-    else if (target === 'js') {
-      return grunt.task.run([
-        'jshint',
-        'watch:jshint'
-      ]); 
+    else if (target === 'coverage') {
+      if (option === 'server') {
+        return grunt.task.run([
+          'env:all',
+          'env:test',
+          'mocha_istanbul:unit'
+        ]);
+      }
     }
 
     else {
