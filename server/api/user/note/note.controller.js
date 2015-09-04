@@ -15,11 +15,12 @@ var knox = require('knox');
 var User = require('../user.model');
 var Note = require('./note.model');
 var Promise = require('promise');
+var config = require('../../../config/environment');
 
 var awsClient = knox.createClient({
-  key: process.env.AWSAccessKeyId,
-  secret: process.env.AWSSecretKey,
-  bucket: 'learntubebucket'
+  key: config.aws.accessKeyId,
+  secret: config.aws.secretKey,
+  bucket: config.aws.s3Bucket
 });
 
 var createRandomHash = function() {
