@@ -31,8 +31,7 @@ var createRandomHash = function() {
 var getDataFromS3 = function(path) {
   return new Promise(function(resolve) {
     awsClient.get(path).on('response', function(resFromS3){
-      console.log('[S3]:GET ' + resFromS3.statusCode);
-      console.log('[S3]:GET ' + resFromS3.headers);
+      console.log('[S3]:GET', resFromS3.statusCode, resFromS3.headers);
       resFromS3.setEncoding('utf8');
       resFromS3.on('data', resolve);
     }).end();
@@ -121,8 +120,7 @@ exports.show = function(req, res) {
 
 
     awsClient.get(note.s3Path).on('response', function(resFromS3){
-      console.log('[S3]:GET ' + resFromS3.statusCode);
-      console.log('[S3]:GET ' + resFromS3.headers);
+      console.log('[S3]:GET', resFromS3.statusCode, resFromS3.headers);
       resFromS3.setEncoding('utf8');
       resFromS3.on('data', function(chunk){
         return res.status(200).json({
@@ -172,8 +170,7 @@ exports.destroy = function(req, res) {
     if(!note) { return note.status(404).send('Not Found'); }
 
     awsClient.del(note.s3Path).on('response', function(resFromS3){
-      console.log('[S3]:DELETE ' + res.statusCode);
-      console.log('[S3]:DELETE ' + res.headers);
+      console.log('[S3]:DELETE', res.statusCode, res.headers);
       var removedId = note._id;
       note.remove(function(err){
         if(err) { return res.status(500).send(err); }
