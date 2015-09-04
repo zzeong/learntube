@@ -86,11 +86,32 @@ angular.module('learntubeApp')
     params: {
       playlistId: $scope.playlistId,
     }, 
-  }).then(function(res) {
+  })
+  .then(function(res) {
     $scope.lectureList = res.data;
+    return $http.get('/api/users/' + Auth.getCurrentUser()._id + '/uploaded', {
+      params: {
+        playlistId: $scope.playlistId, 
+      },
+    });
   }, function(err) {
     $log.error(err); 
-  });
+  })
+  .then(function(res) {
+    var files = res.data[0].lectures;
+    files.forEach(function(fileMeta) {
+      for(var i = 0; i < $scope.lectureList.length; i++) {
+        if($scope.lectureList[i].snippet.resourceId.videoId === fileMeta.videoId) {
+          $scope.lectureList[i].file = fileMeta;
+        }
+      }
+    });
+  }, onRejected);
+
+
+  $scope.haveUploadedFile = function(lecture) {
+    return 'file' in lecture;
+  };
 
   $scope.showFileDialog = function(lecture, ev) {
     $mdDialog.show({
@@ -106,8 +127,8 @@ angular.module('learntubeApp')
           .then(function(url) {
             return postToBack(url, lecture);
           }, onRejected)
-          .then(function(res) {
-            $mdDialog.hide(res.data); 
+          .then(function(uploaded) {
+            $mdDialog.hide(uploaded); 
           }, onRejected);
         };
       },
@@ -118,6 +139,7 @@ angular.module('learntubeApp')
     })
     .then(function(uploaded) {
       showToast('File uploaded');
+      lecture.file = uploaded.lectures;
       $log.info(uploaded);
     }, onRejected);
   };

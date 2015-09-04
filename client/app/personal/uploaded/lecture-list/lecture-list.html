@@ -23,10 +23,12 @@
           <div class="md-list-item-text">
             <h3>{{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
             <p>{{ lecture.contentDetails.duration | humanable }}</p>
+
             <md-icon md-font-set="material-icons"
               ng-click="showFileDialog(lecture, $event)"
-              aria-label="Show Dialog"
-              class="md-secondary md-hue-3">
+              aria-label="Show file dialog"
+              ng-class="{ 'md-primary': haveUploadedFile(lecture) }"
+              class="md-secondary md-hue-1">
               file_upload
             </md-icon>
           </div>

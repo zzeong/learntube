@@ -20,10 +20,13 @@ describe('Controller: UploadedLectureListCtrl', function() {
       $stateParams.pid = 'PL12A65DE93A8357D6';
 
       var lecturelist = [{
-        snippet: {},
+        snippet: { resourceId: { videoId: 'QWER' } },
         status: {},
       }, {
-        snippet: {},
+        snippet: { resourceId: { videoId: 'ASDF' } },
+        status: {},
+      }, {
+        snippet: { resourceId: { videoId: 'ZXCV' } },
         status: {},
       }];
 
@@ -32,8 +35,19 @@ describe('Controller: UploadedLectureListCtrl', function() {
         status: {},
       }];
 
+      var files = [{
+        lectures: [{
+          videoId: 'QWER',
+          s3Url: 'http://www.google.com',
+        }, {
+          videoId: 'ASDF',
+          s3Url: 'http://www.yahoo.com',
+        }]
+      }];
+
       $httpBackend.when('GET', /\/api\/youtube\/classes\?.*/).respond(classes);
       $httpBackend.when('GET', /\/api\/youtube\/lecture-list\?.*/).respond(lecturelist);
+      $httpBackend.when('GET', /\/api\/users\/.*\/uploaded\?.*/).respond(files);
     }));
 
     beforeEach(inject(function(Auth) {
@@ -73,9 +87,18 @@ describe('Controller: UploadedLectureListCtrl', function() {
       $httpBackend.expectGET(/\/api\/youtube\/lecture-list\?.*/);
       $httpBackend.flush();
 
-      expect($scope.lectureList.length).toEqual(2);
+      expect($scope.lectureList.length).toEqual(3);
       expect($scope.lectureList[0].snippet).toBeDefined();
       expect($scope.lectureList[0].status).toBeDefined();
+    });
+
+    it('should distinguish a lecture has a file or not', function() {
+      createController(); 
+      $httpBackend.expectGET(/\/api\/users\/.*\/uploaded\?.*/);
+      $httpBackend.flush();
+      expect($scope.haveUploadedFile($scope.lectureList[0])).toEqual(true);
+      expect($scope.haveUploadedFile($scope.lectureList[1])).toEqual(true);
+      expect($scope.haveUploadedFile($scope.lectureList[2])).toEqual(false);
     });
   });
 
