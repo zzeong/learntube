@@ -98,7 +98,8 @@ angular.module('learntubeApp')
     $log.error(err); 
   })
   .then(function(res) {
-    var files = res.data[0].lectures;
+    $scope.upload = res.data[0];
+    var files = $scope.upload.lectures;
     files.forEach(function(fileMeta) {
       for(var i = 0; i < $scope.lectureList.length; i++) {
         if($scope.lectureList[i].snippet.resourceId.videoId === fileMeta.videoId) {
@@ -119,6 +120,13 @@ angular.module('learntubeApp')
         $scope.haveUploadedFile = scope.haveUploadedFile;
         $scope.lecture = lecture;
 
+        $scope.deleteFile = function(lecture) {
+          $http.delete('/api/users/' + Auth.getCurrentUser()._id + '/uploaded/' + scope.upload._id + '/lectures/' + lecture.file._id)
+          .then(function() {
+            delete lecture.file;
+            showToast('File deleted');
+          }, onRejected);
+        };
         $scope.cancel = function() {
           $mdDialog.cancel();
         };
