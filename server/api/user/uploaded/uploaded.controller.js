@@ -9,7 +9,7 @@ exports.index = function(req, res) {
 
   Uploaded.find(query, function(err, uploads) {
     if(err) { return handleError(res, err); } 
-    if(!uploads) { return res.status(404).send('Not Found'); }
+    if(!uploads.length) { return res.status(404).send('Not Found'); }
     
     return res.status(200).json(uploads);
   });

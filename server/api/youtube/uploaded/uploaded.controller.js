@@ -24,6 +24,7 @@ exports.index = function(req, res) {
       mine: true,
       maxResults: config.google.maxResults,
     }, function(err, response) {
+      if(err) { return handleError(res, err); }
       return res.status(200).json(response.items);
     });
   });
@@ -41,6 +42,7 @@ exports.insert = function(req, res) {
 
     var params = _.assign({ auth: oauth2Client }, req.body);
     youtube.playlists.insert(params, function(err, resFromYT) {
+      if(err) { return handleError(res, err); }
       var item = resFromYT;
       return res.status(201).json(item);
     });
@@ -61,6 +63,7 @@ exports.destroy = function(req, res) {
       auth: oauth2Client,
       id: req.params.pid,
     }, function(err) {
+      if(err) { return handleError(res, err); }
       return res.status(204).send('No Content');
     });
   });
