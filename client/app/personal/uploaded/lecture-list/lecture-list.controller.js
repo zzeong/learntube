@@ -116,6 +116,9 @@ angular.module('learntubeApp')
   $scope.showFileDialog = function(lecture, ev) {
     $mdDialog.show({
       controller: function($scope, $mdDialog) {
+        $scope.haveUploadedFile = scope.haveUploadedFile;
+        $scope.lecture = lecture;
+
         $scope.cancel = function() {
           $mdDialog.cancel();
         };

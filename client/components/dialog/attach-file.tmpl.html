@@ -4,18 +4,23 @@
     <md-dialog-content>
       <h2 class="md-title">Attach File</h2>
 
-      <md-input-container>
-        <label>File</label>
-        <input type="file" name="file" file-model="file">
-      </md-input-container>
+      <input ng-hide="haveUploadedFile(lecture)" type="file" name="file" file-model="file">
 
+      <div ng-show="haveUploadedFile(lecture)">
+        <h3 class="md-subhead">Uploaded file</h3>
+        <a href="{{ lecture.file.s3Url }}" download>File download</a>
+      </div>
     </md-dialog-content>
 
     <div class="md-actions" layout="row">
+      <md-button type="button" class="md-warn" ng-disabled="!haveUploadedFile(lecture)">
+        Delete file
+      </md-button>
+      <span flex></span>
       <md-button type="button" class="md-warn" ng-click="cancel()" >
         Cancel
       </md-button>
-      <md-button type="submit">
+      <md-button type="submit" ng-disabled="haveUploadedFile(lecture)">
         Add
       </md-button>
     </div>
