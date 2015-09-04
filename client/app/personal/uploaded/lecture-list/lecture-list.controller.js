@@ -142,7 +142,9 @@ angular.module('learntubeApp')
     })
     .then(function(uploaded) {
       showToast('File uploaded');
-      lecture.file = uploaded.lectures;
+      lecture.file = uploaded.lectures.filter(function(fileMeta) {
+        return fileMeta.videoId === lecture.snippet.resourceId.videoId;
+      })[0];
       $log.info(uploaded);
     }, onRejected);
   };
