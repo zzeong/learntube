@@ -1,4 +1,4 @@
-'use strick';
+'use strict';
 
 var should = require('should');
 var app = require('../../../app');
@@ -112,7 +112,7 @@ describe('REST API:', function() {
   });
 
 
-  describe.only('GET /api/users/:id/uploaded', function() {
+  describe('GET /api/users/:id/uploaded', function() {
 
     beforeEach(function(done) {
       Uploaded.remove().exec().then(function() {
