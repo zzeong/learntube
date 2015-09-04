@@ -692,21 +692,28 @@ module.exports = function (grunt) {
 
   grunt.registerTask('test', function(target, option) {
     if (target === 'server') {
+      if(option === 'watch') {
+        return grunt.task.run([
+          'test:server',
+          'watch:mochaTest'
+        ]);
+      }
+
       return grunt.task.run([
         'env:all',
         'env:test',
         'mochaTest:test',
       ]);
     }
-    
-    else if (target === 'mocha') {
-      return grunt.task.run([
-        'test:server',
-        'watch:mochaTest'
-      ]);
-    }
 
     else if (target === 'client') {
+      if(option === 'watch') {
+        return grunt.task.run([
+          'test:client',
+          'watch:unitTest'
+        ]);
+      }
+
       return grunt.task.run([
         'clean:server',
         'env:all',
@@ -733,11 +740,15 @@ module.exports = function (grunt) {
       ]);
     }
 
-    else if (target === 'unit') {
-      return grunt.task.run([
-        'test:client',
-        'watch:unitTest'
-      ]);
+    else if (target === 'js') {
+      if(option === 'watch') {
+        return grunt.task.run([
+          'jshint',
+          'watch:jshint'
+        ]);
+      }
+
+      return grunt.task.run(['jshint']); 
     }
 
     else if (target === 'coverage') {
