@@ -488,15 +488,6 @@ module.exports = function (grunt) {
         },
         src: ['server/**/*.spec.js'],
       },
-      coverage: {
-        options: {
-          require: 'coverage/blanket',
-          reporter: 'html-cov',
-          quiet: true,
-          captureFile: 'coverage/mocha/coverage.html'
-        },
-        src: ['server/**/*.spec.js'],
-      }
     },
 
     protractor: {
