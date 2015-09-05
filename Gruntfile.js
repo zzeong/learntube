@@ -89,7 +89,7 @@ module.exports = function (grunt) {
           'karma.conf.js',
           '<%= yeoman.client %>/{app,components}/**/*.js'
         ], 
-        tasks: ['karma']
+        tasks: ['karma:debug']
       },
       injectSass: {
         files: ['<%= yeoman.client %>/{app,components}/**/*.{scss,sass}'],
@@ -469,10 +469,16 @@ module.exports = function (grunt) {
 
     // Test settings
     karma: {
-      unit: {
+      options: {
         configFile: 'karma.conf.js',
         singleRun: true
-      }
+      },
+      debug: {
+        reporters: ['spec'],
+      },
+      coverage: {
+        reporters: ['coverage'], 
+      },
     },
 
     mochaTest: {
@@ -724,7 +730,7 @@ module.exports = function (grunt) {
         'concurrent:test',
         'injector',
         'autoprefixer',
-        'karma'
+        'karma:debug'
       ]);
     }
 
@@ -761,13 +767,31 @@ module.exports = function (grunt) {
           'env:test',
           'mocha_istanbul:unit'
         ]);
+      } else if (option === 'client') {
+        return grunt.task.run([
+          'clean:server',
+          'env:all',
+          'injector:sass', 
+          'concurrent:test',
+          'injector',
+          'autoprefixer',
+          'karma:coverage'
+        ]);
       }
+    }
+
+    else if (target === 'ci') {
+      return grunt.task.run([
+        'jshint', 
+        'test:coverage:server',
+        'test:coverage:client'
+      ]);
     }
 
     else {
       grunt.task.run([
         'jshint',
-        'test:coverage:server',
+        'test:server',
         'test:client'
       ]);
     }

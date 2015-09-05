@@ -9,7 +9,8 @@ module.exports = function(config) {
     // testing framework to use (jasmine/mocha/qunit/...)
     frameworks: ['jasmine'],
 
-    reporters: ['spec', 'coverage'],
+    //reporters: ['spec', 'coverage'],
+    reporters: [],
 
     // list of files / patterns to load in the browser
     files: [
