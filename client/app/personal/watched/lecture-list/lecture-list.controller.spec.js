@@ -7,21 +7,21 @@ describe('Controller: WatchedLectureListCtrl', function() {
   beforeEach(inject(function($controller) {
     $scope = {};
     createController = function() {
-      return $controller('WatchedLectureListCtrl', { $scope: $scope }); 
+      return $controller('WatchedLectureListCtrl', { $scope: $scope });
     };
   }));
 
 
   describe('with HTTP', function() {
-    var $httpBackend; 
+    var $httpBackend;
 
     beforeEach(inject(function(_$httpBackend_, $stateParams) {
-      $httpBackend = _$httpBackend_; 
+      $httpBackend = _$httpBackend_;
       $stateParams.pid = 'PL12A65DE93A8357D6';
 
       var lecturelist = [{
         contentDetails: {
-          duration: 'PT39M30S' 
+          duration: 'PT39M30S'
         },
         snippet: {
           publishedAt: new Date('October 13, 2014 11:13:00'),
@@ -32,7 +32,7 @@ describe('Controller: WatchedLectureListCtrl', function() {
         status: {},
       }, {
         contentDetails: {
-          duration: 'PT39M30S' 
+          duration: 'PT39M30S'
         },
         snippet: {
           publishedAt: new Date('October 14, 2014 11:13:00'),
@@ -77,14 +77,23 @@ describe('Controller: WatchedLectureListCtrl', function() {
         videoId: 'SHELOVESME'
       }];
 
+      var watchedLectures = {
+        lectures : {
+          videoId : 'MYVIDEO1'
+        }
+      }
+
+
       $httpBackend.when('GET', /\/api\/youtube\/lecture-list\?.*/).respond(lecturelist);
       $httpBackend.when('GET', /\/api\/users\/.*\/notes\?.*/).respond(notes);
       $httpBackend.when('GET', /\/api\/users\/.*\/classes\?.*/).respond(classes);
       $httpBackend.when('GET', /\/api\/users\/.*\/notes\/meta\?.*/).respond(noteMeta);
+      $httpBackend.when('GET', /\/api\/users\/.*\/classes\/.*\/playlistId\?.*/).respond(watchedLectures);
+
     }));
 
     beforeEach(inject(function(Auth) {
-      var userData = { 
+      var userData = {
         __v: 0,
         _id: 'QWER',
         email: 'test@test.com',
@@ -93,21 +102,22 @@ describe('Controller: WatchedLectureListCtrl', function() {
         role: 'user'
       };
 
+
       $httpBackend.when('POST', '/auth/local').respond({ token: 'myToken' });
       $httpBackend.when('GET', '/api/users/me').respond(userData);
 
-      Auth.login({ email: 'test@test.com', password: 'test' }); 
+      Auth.login({ email: 'test@test.com', password: 'test' });
       $httpBackend.flush();
     }));
 
     afterEach(inject(function(Auth) {
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
-      Auth.logout(); 
+      Auth.logout();
     }));
 
     it('should show notes when existing note is selected', function() {
-      createController(); 
+      createController();
       $httpBackend.flush();
 
       var lecture = $scope.lectureList[0];
@@ -120,7 +130,7 @@ describe('Controller: WatchedLectureListCtrl', function() {
     });
 
     it('should show notes without request when same lecture is selected again', function() {
-      createController(); 
+      createController();
       $httpBackend.flush();
 
       var lecture = $scope.lectureList[0];
@@ -130,6 +140,17 @@ describe('Controller: WatchedLectureListCtrl', function() {
       $httpBackend.flush();
 
       $scope.showNote(lecture);
+    });
+
+    it('should show highlight mark on watched lectures', function(){
+      createController();
+      $httpBackend.expectGET(/\/api\/users\/.*\/classes\?.*/);
+      $httpBackend.flush();
+
+      var lecture = $scope.lectureList[0];
+      var lecture2 = $scope.watchedLectures[0];
+
+      expect(lecture.highlight).toEqual(true);
     });
 
   });

@@ -36,16 +36,12 @@ angular.module('learntubeApp')
 
     // DB에서 시청한 동영상 목록 가져오기 (seenLectures)
     ClassAPI.query({playlistId: $scope.playlistId}, function(response){
-      var seenLectures = response[0].lectures; // response = json형태의 lectures
+      $scope.watchedLectures = response[0].lectures; // response = json형태의 lectures
 
-      // Highlight처리를 위한 비교
-      for(var i=0; i<$scope.lecArrSorting.length; i++){
-        for(var s=0; s<seenLectures.length; s++){
-          if($scope.lecArrSorting[i].snippet.resourceId.videoId === seenLectures[s].videoId){
-            $scope.lecArrSorting[i].highlight = true;
-          }
-        }
-      }
+      // highlight처리를 위한 메소드
+      $scope.highlightLecture($scope.lecArrSorting, $scope.watchedLectures);
+
+
     }, function(err){
       $log.error(err);
     });
@@ -81,8 +77,21 @@ angular.module('learntubeApp')
         lecture.notes = notes;
       });
     };
+
     $scope.isSelected = function(lecture) {
       return $scope.selectedLecture === lecture;
+    };
+
+    $scope.highlightLecture = function(lectureList, watchedLectureList){
+      // Highlight처리를 위한 비교
+      for(var i=0; i<lectureList.length; i++){
+        for(var s=0; s<watchedLectureList.length; s++){
+          if(lectureList[i].snippet.resourceId.videoId === watchedLectureList[s].videoId){
+            // 여기에서 highlight = true로 변경
+            lectureList[i].highlight = true;
+          }
+        }
+      }
     };
 
   });
