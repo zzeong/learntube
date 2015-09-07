@@ -29,6 +29,7 @@ describe('REST API:', function() {
     User.remove().exec();
     var user = new User(userData);
     user.save(function(err) {
+      Note.remove().exec();
       id = user._id;
       done();
     });
