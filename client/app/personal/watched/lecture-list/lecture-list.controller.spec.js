@@ -81,7 +81,7 @@ describe('Controller: WatchedLectureListCtrl', function() {
         lectures : {
           videoId : 'MYVIDEO1'
         }
-      }
+      };
 
 
       $httpBackend.when('GET', /\/api\/youtube\/lecture-list\?.*/).respond(lecturelist);
@@ -148,7 +148,6 @@ describe('Controller: WatchedLectureListCtrl', function() {
       $httpBackend.flush();
 
       var lecture = $scope.lectureList[0];
-      var lecture2 = $scope.watchedLectures[0];
 
       expect(lecture.highlight).toEqual(true);
     });
