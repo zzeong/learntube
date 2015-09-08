@@ -10,7 +10,8 @@ angular.module('learntubeApp', [
   'ngMaterial',
   'youtube-embed',
   'angular-google-gapi',
-  'file-model'
+  'file-model',
+  'infinite-scroll'
 ])
   .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
     $urlRouterProvider

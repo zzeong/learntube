@@ -32,6 +32,7 @@ module.exports = function(config) {
       'client/bower_components/ckeditor/ckeditor.js',
       'client/bower_components/json3/lib/json3.js',
       'client/bower_components/lodash/dist/lodash.compat.js',
+      'client/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
       // endbower
       'client/app/app.js',

@@ -1,20 +1,37 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('SearchCtrl', function($scope, $http, $stateParams, $state) {
+.controller('SearchCtrl', function($scope, $http, $stateParams, $state, GApi, GoogleConst) {
   $scope.q = $stateParams.q;
   $scope.go = $state.go;
+  $scope.httpBusy = true;
 
-  $http.get('https://www.googleapis.com/youtube/v3/search', {
-    params: {
-      key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
+  var params = {
+      key: GoogleConst.browserKey,
       part: 'snippet',
       q: $scope.q,
       type: 'playlist',
-      maxResults: 20
-    }
-  }).success(function(response) {
-    $scope.classes = response.items; 
+      maxResults: 20,
+  };
+
+  GApi.execute('youtube', 'search.list', params)
+  .then(function(res) {
+    $scope.classes = res.items; 
+    $scope.pageToken = res.nextPageToken;
+    $scope.httpBusy = false;
   });
+
+  $scope.loadMore = function(token) {
+    if($scope.httpBusy) { return; }
+    $scope.httpBusy = true;
+    params.pageToken = token;
+
+    GApi.execute('youtube', 'search.list', params)
+    .then(function(res) {
+      $scope.classes = $scope.classes.concat(res.items);
+      $scope.pageToken = res.nextPageToken;
+      $scope.httpBusy = false;
+    });
+  };
 
 });
