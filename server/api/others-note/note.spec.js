@@ -48,7 +48,7 @@ describe('REST API:', function() {
     Note.remove().exec(); 
   });
 
-  describe.only('GET /api/notes', function() {
+  describe('GET /api/notes', function() {
     var params = {
       playlistId: 'asdf',
       contents: '<h1>HOORAY</h1>'
