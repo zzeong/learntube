@@ -19,6 +19,7 @@
   "globals": {
     "jQuery": true,
     "angular": true,
+    "jasmine": true,
     "console": true,
     "$": true,
     "_": true,
