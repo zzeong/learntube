@@ -623,9 +623,6 @@ module.exports = function (grunt) {
       },
     },
 
-    coveralls: {
-      src: 'coverage/{client,server}/unit/lcov.info'
-    },
   });
 
   // Used for delaying livereload until after server has restarted
