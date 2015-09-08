@@ -54,6 +54,24 @@ describe('Controller: LectureCtrl', function () {
         }] 
       };
 
+
+      var othersNotes = [{
+        userId: {
+          image: {
+            url: 'http://www.google.com' 
+          }, 
+        },
+        contents: 'Hi, Guys'
+      }, {
+        userId: {
+          image: {
+            url: 'http://www.google.co.kr' 
+          }, 
+        },
+        contents: 'Hi, Guys'
+      }];
+
+
       $httpBackend.when('GET', /https\:\/\/www\.googleapis\.com\/youtube\/v3\/videos\?.*/).respond(resultItems);
       $httpBackend.when('POST', /\/api\/users\/.*\/notes/).respond({ _id: 'NQWER' });
       $httpBackend.when('GET', /\/api\/users\/.*\/notes\??.*/).respond([{ _id: 'NQWER', contents: '<h1>Hello</h1>' }]);
@@ -61,7 +79,7 @@ describe('Controller: LectureCtrl', function () {
       $httpBackend.when('DELETE', /\/api\/users\/.*\/notes\/.*/).respond({ _id: 'NQWER' });
       $httpBackend.when('POST', /\/api\/users\/.*\/classes/).respond({ _id: 'QAWS'  });
       $httpBackend.when('POST', /\/api\/users\/.*\/classes\/.*\/lectures/).respond({ _id: 'ZXCV' });
-
+      $httpBackend.when('GET', /\/api\/others-notes\?.*/).respond(othersNotes);
     })); 
 
     afterEach(function() {
@@ -150,6 +168,14 @@ describe('Controller: LectureCtrl', function () {
 
       expect($log.info.logs).toContain(['Saved Lecture']);
     }));
+
+    it('should get notes which are written by others', function() {
+      $httpBackend.expectGET(/\/api\/others-notes\?.*/);
+      $httpBackend.flush();
+
+      expect($scope.othersNotes).toEqual(jasmine.any(Array));
+      expect($scope.othersNotes.length).toEqual(2);
+    });
 
   });
 });

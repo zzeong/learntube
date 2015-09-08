@@ -59,5 +59,20 @@
       </form>
     </div>
 
+    <div class="others-notes-cont">
+      <div class="md-padding" ng-repeat="note in othersNotes">
+        <div class="note-item">
+          <img class="avatar" ng-src="{{ note.userId.google.image.url }}" alt="Account Image"/>
+          <div class="userinfo">
+            <p class="md-subhead">{{ note.userId.name }}</p>
+          </div>
+        </div>
+
+        <md-divider></md-divider>
+
+        <note-viewer contents="note.contents"></note-viewer>
+      </div>
+    </div>
+
   </div>
 </md-content>

@@ -39,6 +39,13 @@ angular.module('learntubeApp')
     });
   }
 
+  $http.get('/api/others-notes', {
+    params: { videoId: $scope.videoId }
+  })
+  .then(function(res) {
+    $scope.othersNotes = res.data;
+  });
+
   $scope.completeLecture = function() {
     $http.post('/api/users/' + $scope.getCurrentUser()._id + '/classes/', {
       userId: $scope.getCurrentUser()._id
