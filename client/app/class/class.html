@@ -120,7 +120,6 @@
 
 
 
-
     <!-- 클래스 내의 강의 목록 -->
     <div class="middle">
       <h3>Lectures in this Class</h3>
@@ -128,7 +127,7 @@
 
 
     <div class="lectureList">
-      <div ng-repeat="lecture in lecArrSorting" ng-click="go('Lecture', { pid: playlistId, vid: lecture.videoId })">
+      <div ng-repeat="lecture in lectureList" ng-click="go('Lecture', { pid: playlistId, vid: lecture.videoId })">
 
         <div class="content-width align">
           <div style="width:600px; float:left">

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('ClassCtrl', function($scope, $http, $stateParams, $state, ClassAPI, $log, Auth, $filter, GoogleConst) {
+.controller('ClassCtrl', function($scope, $http, $stateParams, $state, ClassAPI, $log, Auth, $filter, GoogleConst, GApi) {
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.playlistId = $stateParams.pid;
   $scope.go = $state.go;
@@ -45,50 +45,63 @@ angular.module('learntubeApp')
 
 
 
+    var applyDuration = function(ids) {
+      return GApi.execute('youtube', 'videos.list', {
+        key: GoogleConst.browserKey,
+        part: 'contentDetails',
+        id: ids,
+        fields: 'items(contentDetails(duration))',
+      });
+    };
 
 
-    // 강의들을 가져오기 위한 api사용
-    $http.get('/api/youtube/lecture-list',{
-      params:{
-        playlistId: $scope.playlistId,
-      },
-    }).then(function(res){
+    GApi.execute('youtube', 'playlistItems.list', {
+      key: GoogleConst.browserKey,
+      part: 'snippet',
+      maxResults: 20,
+      playlistId: $scope.playlistId,
+      fields: 'items(contentDetails,snippet,status),nextPageToken',
+    })
+    .then(function(res) {
+      $scope.lectureList = res.items; 
+      var ids = res.items.map(function(item) {
+        return item.snippet.resourceId.videoId; 
+      }).join(','); 
 
-      $scope.lectureList = res.data;
+      return applyDuration(ids);
+    })
+    .then(function(res) {
+      $scope.lectureList.forEach(function(item, i) {
+        item.contentDetails = res.items[i].contentDetails; 
+      }); 
 
-    // lecArrSorting구성
-    $scope.lecArrSorting = _.sortBy($scope.lectureList, function(el){
-      return el.snippet.publishedAt;
+      $scope.totalPlaytime=0;
+
+      // 동영상 번호 부여 (오래된 동영상 -> 최근 동영상)
+      for(var i=0; i<$scope.lectureList.length; i++){
+        $scope.lectureList[i].index = i+1;
+        // 동영상 비교하기 위한 속성 부여
+        $scope.lectureList[i].highlight = false;
+
+        // duration에 humanable filter적용
+        $scope.lectureList[i].contentDetails.duration = $filter('humanable')($scope.lectureList[i].contentDetails.duration);
+
+        // duration을 split
+        var durationSplit = $scope.lectureList[i].contentDetails.duration.split(':');
+
+        // 분, 초를 모두 합해 totalPlaytime계산
+        $scope.totalPlaytime += parseInt(durationSplit[0])*60 + parseInt(durationSplit[1]);
+      }
+
+      // 실제 시, 분, 초 구하기
+      $scope.playtimeHour = parseInt($scope.totalPlaytime/3600);
+      $scope.playtimeMin = parseInt(($scope.totalPlaytime%3600)/60);
+      $scope.playtimeSec = parseInt(($scope.totalPlaytime%3600)%60);
+
+      // index가 마지막인 영상의 ID
+      $scope.firstVideoId = $scope.lectureList[$scope.lectureList.length-1].snippet.resourceId.videoId;
+
     });
-
-
-    $scope.totalPlaytime=0;
-
-    // 동영상 번호 부여 (오래된 동영상 -> 최근 동영상)
-    for(var i=0; i<$scope.lecArrSorting.length; i++){
-      $scope.lecArrSorting[i].index = i+1;
-      // 동영상 비교하기 위한 속성 부여
-      $scope.lecArrSorting[i].highlight = false;
-
-      // duration에 humanable filter적용
-      $scope.lecArrSorting[i].contentDetails.duration = $filter('humanable')($scope.lecArrSorting[i].contentDetails.duration);
-
-      // duration을 split
-      var durationSplit = $scope.lecArrSorting[i].contentDetails.duration.split(':');
-
-      // 분, 초를 모두 합해 totalPlaytime계산
-      $scope.totalPlaytime += parseInt(durationSplit[0])*60 + parseInt(durationSplit[1]);
-    }
-
-    // 실제 시, 분, 초 구하기
-    $scope.playtimeHour = parseInt($scope.totalPlaytime/3600);
-    $scope.playtimeMin = parseInt(($scope.totalPlaytime%3600)/60);
-    $scope.playtimeSec = parseInt(($scope.totalPlaytime%3600)%60);
-
-    // index가 마지막인 영상의 ID
-    $scope.firstVideoId = $scope.lecArrSorting[$scope.lecArrSorting.length-1].snippet.resourceId.videoId;
-
-  });
 
 
 
