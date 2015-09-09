@@ -10,7 +10,7 @@
     <div class="firstLecture test">
       <div class="embed-item-limit-width">
         <div class="embed-responsive embed-responsive-16by9">
-          <youtube-video class="embed-responsive-item" video-id="firstVideoId"></youtube-video>
+          <youtube-video class="embed-responsive-item" video-id="lectureList[0].snippet.resourceId.videoId"></youtube-video>
         </div>
       </div>
     </div>
@@ -133,7 +133,7 @@
           <div style="width:600px; float:left">
             <!--  강의 번호  -->
             <div id="lecture-position" style="width:25px">
-              <h5 size="1" maxlength="15">{{ lecture.index }}.&nbsp&nbsp</h5>
+              <h5 size="1" maxlength="15">{{ $index + 1 }}.&nbsp&nbsp</h5>
             </div>
 
             <!--  강의 썸네일  -->

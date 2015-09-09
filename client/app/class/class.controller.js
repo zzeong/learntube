@@ -98,9 +98,6 @@ angular.module('learntubeApp')
       $scope.playtimeMin = parseInt(($scope.totalPlaytime%3600)/60);
       $scope.playtimeSec = parseInt(($scope.totalPlaytime%3600)%60);
 
-      // index가 마지막인 영상의 ID
-      $scope.firstVideoId = $scope.lectureList[$scope.lectureList.length-1].snippet.resourceId.videoId;
-
     });
 
 
