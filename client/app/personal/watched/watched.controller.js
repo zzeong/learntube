@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('WatchedContentsCtrl', function($scope, $http, ClassAPI, $state) {
+.controller('WatchedContentsCtrl', function($scope, $http, ClassAPI, $state, GoogleConst) {
   $scope.go = $state.go;
 
   ClassAPI.query(function(response) {
@@ -13,7 +13,7 @@ angular.module('learntubeApp')
 
     $http.get('https://www.googleapis.com/youtube/v3/playlists', {
       params: {
-        key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
+        key: GoogleConst.browserKey,
         part: 'snippet',
         id: playlistIds,
         fields: 'items(snippet(title,thumbnails))',

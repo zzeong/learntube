@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('ClassCtrl', function($scope, $http, $stateParams, $state, ClassAPI, $log, Auth, $filter) {
+.controller('ClassCtrl', function($scope, $http, $stateParams, $state, ClassAPI, $log, Auth, $filter, GoogleConst) {
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.playlistId = $stateParams.pid;
   $scope.go = $state.go;
@@ -19,7 +19,7 @@ angular.module('learntubeApp')
     // 재생목록에 대한 정보 받아오기 (title, channelTitle, description)
     $http.get('https://www.googleapis.com/youtube/v3/playlists', {
       params: {
-        key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
+        key: GoogleConst.browserKey,
         part: 'snippet',
         id: $scope.playlistId
       }
@@ -31,7 +31,7 @@ angular.module('learntubeApp')
       // 채널에 대한 정보 받아오기 (title, thumbnail, description)
       $http.get('https://www.googleapis.com/youtube/v3/channels', {
         params: {
-          key: 'AIzaSyBUuJS30-hhEY8f_kMF3K3rX4qe_bkY3V8',
+          key: GoogleConst.browserKey,
           part: 'snippet',
           id: $scope.channelId
         }
