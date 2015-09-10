@@ -5,7 +5,6 @@ angular.module('learntubeApp', [
   'ngResource',
   'ngSanitize',
   'ngMessages',
-  'btford.socket-io',
   'ui.router',
   'ngMaterial',
   'youtube-embed',
