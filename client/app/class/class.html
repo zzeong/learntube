@@ -102,70 +102,49 @@
       </div>
     </div>
 
-
-
-
-
-<!--     <md-list-item class="md-2-line" ng-repeat="lecture in lecArrSorting">
-      <h5>{{ lecture.index }}</h5>
-      <img ng-src="{{ lecture.snippet.thumbnails.default.url }}" class="md-avatar">
-        <div class="md-list-item-text">
-          <h3>{{ lecture.snippet.title }}</h3>
-          <p>{{ lecture.contentDetails.duration }}</p>
-        </div>
-      </md-list-item>
-    -->
-
-
-
-
-
     <!-- 클래스 내의 강의 목록 -->
     <div class="middle">
       <h3>Lectures in this Class</h3>
     </div>
 
 
+
+    <md-list>
     <div class="lectureList">
-      <div ng-repeat="lecture in lectureList" ng-click="go('Lecture', { pid: playlistId, vid: lecture.videoId })">
 
-        <div class="content-width align">
-          <div style="width:600px; float:left">
-            <!--  강의 번호  -->
-            <div id="lecture-position" style="width:25px">
-              <h5 size="1" maxlength="15">{{ $index + 1 }}.&nbsp&nbsp</h5>
-            </div>
+      <md-list-item class="md-2-line"
+      ng-repeat="lecture in lectureList"
+      ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
 
-            <!--  강의 썸네일  -->
-            <div id="lecture-img">
-              <img ng-src="{{ lecture.snippet.thumbnails.default.url }}" width="64" height="36">
-            </div>
+      <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
 
-            <!--  강의 제목  -->
-            <div id="lecture-title">
-              <h5 class="font-light-400">&nbsp&nbsp{{ lecture.snippet.title }}</h5>
-            </div>
-          </div>
-
-          <!--  강의 재생시간  -->
-          <div>
-            <h5>{{ lecture.contentDetails.duration | humanable }}&nbsp</h5>
-          </div>
-          <br>
-
+      <div class="md-list-item-text">
+        <div class="lecture-index">
+          <span>{{ $index + 1 }}.&nbsp</span>
         </div>
-        <md-divider></md-divider>
 
+        <div class="lecture-title-div">
+          <div>
+            <h3>{{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
+          </div>
+
+          <div>
+            <span>{{ lecture.contentDetails.duration | humanable }}</span>
+          </div>
+        </div>
       </div>
-    </div>
 
-
-
-    <!-- 클래스의 동영상 더보기 -->
-    <div id="">
-      <p ng-click="">Load more</p>
-    </div>
+      <md-divider></md-divider>
+    </md-list-item>
   </div>
+</md-list>
+
+
+<!-- 클래스의 동영상 더보기 -->
+<div id="">
+  <p ng-click="">Load more</p>
+</div>
+</div>
 </div>
 </div>
 </md-content>

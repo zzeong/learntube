@@ -1,6 +1,6 @@
 
 
- #lecture-img, #lecture-title, #lecture-position{
+ #lecture-img, #lecture-position, .lecture-index{
     float : left;
   }
 
@@ -61,6 +61,10 @@
 
   .font-light-400{
     font-weight: 400;
+  }
+
+  .lecture-title-div{
+    padding-top:12px;
   }
 
 // reponsive web
