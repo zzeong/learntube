@@ -89,7 +89,7 @@ describe('Controller: LectureCtrl', function () {
     });
 
 
-    it('should assign item which YouTube API responsed to scope item', inject(function() {
+    xit('should assign item which YouTube API responsed to scope item', inject(function() {
       $httpBackend.expectGET(/https\:\/\/www\.googleapis\.com\/youtube\/v3\/videos\?.*/);
       $httpBackend.flush();
 

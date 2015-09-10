@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('WatchedContentsCtrl', function($scope, $http, ClassAPI, $state, GoogleConst) {
+.controller('WatchedContentsCtrl', function($scope, $http, ClassAPI, $state, GoogleConst, GApi) {
   $scope.go = $state.go;
 
   ClassAPI.query(function(response) {
@@ -11,14 +11,13 @@ angular.module('learntubeApp')
       return el.playlistId;
     }).join(',');
 
-    $http.get('https://www.googleapis.com/youtube/v3/playlists', {
-      params: {
-        key: GoogleConst.browserKey,
-        part: 'snippet',
-        id: playlistIds,
-        fields: 'items(snippet(title,thumbnails))',
-      }
-    }).success(function(responseFromYT) {
+    GApi.execute('youtube', 'playlists.list', {
+      key: GoogleConst.browserKey,
+      part: 'snippet',
+      id: playlistIds,
+      fields: 'items(snippet(title,thumbnails))',
+    })
+    .then(function(responseFromYT) {
       $scope.classes = $scope.classes.map(function(classe, i) {
         classe.item = responseFromYT.items[i];
         return classe;

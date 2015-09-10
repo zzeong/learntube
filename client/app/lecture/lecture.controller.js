@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('LectureCtrl', function($scope, $stateParams, $http, Auth, NoteAPI, $log, GoogleConst) {
+.controller('LectureCtrl', function($scope, $stateParams, $http, Auth, NoteAPI, $log, GoogleConst, GApi) {
   $scope.videoId = $stateParams.vid;
   $scope.playlistId = $stateParams.pid;
   $scope.playerVars = {
@@ -12,14 +12,13 @@ angular.module('learntubeApp')
   $scope.getCurrentUser = Auth.getCurrentUser;
   $scope.isLoggedIn = Auth.isLoggedIn;
 
-  $http.get('https://www.googleapis.com/youtube/v3/videos', {
-    params: {
-      key: GoogleConst.browserKey,
-      part: 'snippet,contentDetails',
-      id: $scope.videoId
-    }
-  }).success(function(response) {
-    $scope.item = response.items[0];
+  GApi.execute('youtube', 'videos.list', {
+    key: GoogleConst.browserKey,
+    part: 'snippet,contentDetails',
+    id: $scope.videoId
+  })
+  .then(function(res) {
+    $scope.item = res.items[0]; 
   });
 
   var keepNoteSoundly = function(note, src) {

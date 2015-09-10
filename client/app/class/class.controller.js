@@ -17,32 +17,25 @@ angular.module('learntubeApp')
 
 
     // 재생목록에 대한 정보 받아오기 (title, channelTitle, description)
-    $http.get('https://www.googleapis.com/youtube/v3/playlists', {
-      params: {
-        key: GoogleConst.browserKey,
-        part: 'snippet',
-        id: $scope.playlistId
-      }
-    }).success(function(response) {
-      $scope.classe = response.items[0];
+    GApi.execute('youtube', 'playlists.list', {
+      key: GoogleConst.browserKey,
+      part: 'snippet',
+      id: $scope.playlistId
+    })
+    .then(function(res) {
+      $scope.classe = res.items[0];
       $scope.desc = $scope.classe.snippet.description;
       $scope.channelId = $scope.classe.snippet.channelId;
 
-      // 채널에 대한 정보 받아오기 (title, thumbnail, description)
-      $http.get('https://www.googleapis.com/youtube/v3/channels', {
-        params: {
-          key: GoogleConst.browserKey,
-          part: 'snippet',
-          id: $scope.channelId
-        }
-      }).success(function(response) {
-        $scope.channel = response.items[0];
+      return GApi.execute('youtube', 'channels.list', {
+        key: GoogleConst.browserKey,
+        part: 'snippet',
+        id: $scope.channelId
       });
-
-
+    })
+    .then(function(res) {
+      $scope.channel = res.items[0]; 
     });
-
-
 
 
     var applyDuration = function(ids) {
