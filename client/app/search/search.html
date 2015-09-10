@@ -4,7 +4,7 @@
 
   <div class="content-width" layout-padding>
     <div infinite-scroll="loadMore(pageToken)"
-      infinite-scroll-disabled="httpBusy"
+      infinite-scroll-disabled="httpBusy || !pageToken"
       infinite-scroll-distance="1">
       <md-grid-list
         md-cols="2" md-cols-gt-md="3"

@@ -17,19 +17,18 @@ angular.module('learntubeApp')
   GApi.execute('youtube', 'search.list', params)
   .then(function(res) {
     $scope.classes = res.items; 
-    $scope.pageToken = res.nextPageToken;
+    $scope.pageToken = res.nextPageToken || null;
     $scope.httpBusy = false;
   });
 
   $scope.loadMore = function(token) {
-    if($scope.httpBusy) { return; }
     $scope.httpBusy = true;
     params.pageToken = token;
 
     GApi.execute('youtube', 'search.list', params)
     .then(function(res) {
       $scope.classes = $scope.classes.concat(res.items);
-      $scope.pageToken = res.nextPageToken;
+      $scope.pageToken = res.nextPageToken || null;
       $scope.httpBusy = false;
     });
   };
