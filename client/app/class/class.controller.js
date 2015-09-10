@@ -1,10 +1,11 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('ClassCtrl', function($scope, $http, $stateParams, $state, ClassAPI, $log, Auth, $filter, GoogleConst, GApi) {
+.controller('ClassCtrl', function($scope, $http, $stateParams, $state, ClassAPI, $log, Auth, $filter, GoogleConst, GApi, $q) {
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.playlistId = $stateParams.pid;
   $scope.go = $state.go;
+  $scope.httpBusy = true;
 
   $scope.addClass = function() {
     ClassAPI.create({
@@ -13,6 +14,28 @@ angular.module('learntubeApp')
       $log.info('Saved Lecture');
     });
   };
+  
+  $scope.loadMore = function(token) {
+    $scope.httpBusy = true;
+
+    GApi.execute('youtube', 'playlistItems.list', {
+      key: GoogleConst.browserKey,
+      part: 'snippet',
+      maxResults: 20,
+      playlistId: $scope.playlistId,
+      fields: 'items(contentDetails,snippet,status),nextPageToken',
+      pageToken: token
+    })
+    .then(function(res) {
+      $scope.pageToken = res.nextPageToken || null;
+      return applyDuration(res.items);
+    })
+    .then(function(list) {
+      $scope.lectureList = $scope.lectureList.concat(list);
+      $scope.httpBusy = false;
+    });
+  };
+
 
 
 
@@ -38,13 +61,25 @@ angular.module('learntubeApp')
     });
 
 
-    var applyDuration = function(ids) {
-      return GApi.execute('youtube', 'videos.list', {
+    var applyDuration = function(list) {
+      var deferred = $q.defer();
+      var ids = list.map(function(item) {
+        return item.snippet.resourceId.videoId; 
+      }).join(',');
+
+      GApi.execute('youtube', 'videos.list', {
         key: GoogleConst.browserKey,
         part: 'contentDetails',
         id: ids,
         fields: 'items(contentDetails(duration))',
-      });
+      }).then(function(response) {
+        list.forEach(function(item, i) {
+          item.contentDetails = response.items[i].contentDetails; 
+        }); 
+        deferred.resolve(list);
+      }, deferred.reject);
+
+      return deferred.promise;
     };
 
 
@@ -56,17 +91,15 @@ angular.module('learntubeApp')
       fields: 'items(contentDetails,snippet,status),nextPageToken',
     })
     .then(function(res) {
-      $scope.lectureList = res.items; 
-      var ids = res.items.map(function(item) {
-        return item.snippet.resourceId.videoId; 
-      }).join(','); 
-
-      return applyDuration(ids);
+      console.log(res);
+      $scope.pageToken = res.nextPageToken || null;
+      return applyDuration(res.items);
     })
-    .then(function(res) {
-      $scope.lectureList.forEach(function(item, i) {
-        item.contentDetails = res.items[i].contentDetails; 
-      }); 
+    .then(function(list) {
+      $scope.lectureList = list;
+      $scope.httpBusy = false;
     });
+
+
 
 });
