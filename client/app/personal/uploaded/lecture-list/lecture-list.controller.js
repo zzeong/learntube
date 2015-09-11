@@ -161,6 +161,17 @@ angular.module('learntubeApp')
   $scope.showLectureDialog = function(lecture, ev) {
     $mdDialog.show({
       controller: function($scope, $mdDialog) {
+        $scope.getMyVideos = function() {
+          if($scope.myVideos) { return; }
+
+          $http.get('/api/youtube/mine/videos', {
+            params: { withDuration: true }
+          })
+          .then(function(res) {
+            $scope.myVideos = res.data.items; 
+          }, onRejected);
+        };
+
         $scope.search = function() {
           GApi.execute('youtube', 'search.list', {
             key: GoogleConst.browserKey,
@@ -185,14 +196,14 @@ angular.module('learntubeApp')
           $mdDialog.cancel();
         };
 
-        $scope.addLecture = function() {
+        $scope.addLecture = function(video) {
           $http.post('/api/youtube/mine/playlistitems', {
             resource: {
               snippet: {
                 playlistId: scope.playlistId,
                 resourceId: {
-                  kind: $scope.selectedVideo.id.kind,
-                  videoId: $scope.selectedVideo.id.videoId
+                  kind: video.id.kind || 'youtube#video',
+                  videoId: video.id.videoId || video.snippet.resourceId.videoId
                 }
               }
             },
