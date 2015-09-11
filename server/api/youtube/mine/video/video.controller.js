@@ -32,6 +32,28 @@ exports.index = function(req, res) {
       resBody.pageToken = response.nextPageToken;
     }
 
+    if(req.query.withDuration) {
+      g.youtube('videos.list', {
+        auth: g.oauth2Client,
+        part: 'contentDetails',
+        id: resBody.items.map(function(item) {
+          return item.snippet.resourceId.videoId;
+        }).join(','),
+        fields: 'items(contentDetails(duration))',
+      })
+      .then(function(response) {
+        resBody.items.forEach(function(item, i) {
+          item.contentDetails = response.items[i].contentDetails;
+        });
+        return res.status(200).json(resBody);
+      }, function(error) {
+        return res.status(500).send(error); 
+      });
+
+      return;
+    }
+
+
     return res.status(200).json(resBody);
   }, function(error) {
     if(error) { return res.status(500).send(error); }
