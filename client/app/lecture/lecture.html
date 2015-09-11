@@ -20,6 +20,13 @@
 
     <md-divider></md-divider>
 
+    <div ng-show="isNoteOn">
+      <form ng-submit="doneNote()">
+        <textarea id="newNote" ng-model="noteContents" ckeditor></textarea>
+        <md-button type="submit" class="md-raised">Done</md-button>
+      </form>
+    </div>
+
     <div ng-if="isLoggedIn()">
 
       <div class="md-padding" ng-repeat="note in notes">
@@ -50,13 +57,6 @@
         </div>
       </div>
 
-    </div>
-
-    <div ng-show="isNoteOn">
-      <form ng-submit="doneNote()">
-        <textarea id="newNote" ng-model="noteContents" ckeditor></textarea>
-        <md-button type="submit" class="md-raised">Done</md-button>
-      </form>
     </div>
 
     <div class="others-notes-cont">
