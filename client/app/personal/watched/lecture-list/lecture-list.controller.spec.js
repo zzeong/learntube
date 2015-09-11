@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: WatchedLectureListCtrl', function() {
+xdescribe('Controller: WatchedLectureListCtrl', function() {
   beforeEach(module('learntubeApp'));
   var $scope, createController;
 

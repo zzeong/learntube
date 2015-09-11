@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: UploadedLectureListCtrl', function() {
+xdescribe('Controller: UploadedLectureListCtrl', function() {
   beforeEach(module('learntubeApp'));
   var $scope, createController;
 
