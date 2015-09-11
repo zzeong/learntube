@@ -19,7 +19,7 @@ exports.index = function(req, res) {
     return g.youtube('playlistItems.list', {
       auth: g.oauth2Client,
       part: 'id,snippet,status',
-      playlistId: response.contentDetails.relatedPlaylists.uploads,
+      playlistId: response.items[0].contentDetails.relatedPlaylists.uploads,
       maxResults: config.google.maxResults,
       fields: 'items(id,snippet,status),nextPageToken',
     });
