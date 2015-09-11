@@ -4,8 +4,8 @@ angular.module('learntubeApp')
 .controller('UploadedContentsCtrl', function($state, $scope, $mdDialog, $log, $http) {
   $scope.go = $state.go;
 
-  $http.get('/api/youtube/uploaded/').then(function(res) {
-    $scope.classes = res.data;
+  $http.get('/api/youtube/mine/playlists').then(function(res) {
+    $scope.classes = res.data.items;
   });
 
   $scope.showDialog = function(ev) {
@@ -15,8 +15,7 @@ angular.module('learntubeApp')
           $mdDialog.cancel();
         };
         $scope.addClass = function(classe) {
-          $http.post('/api/youtube/uploaded', {
-            part: 'snippet,status',
+          $http.post('/api/youtube/mine/playlists', {
             resource: {
               snippet: {
                 title: classe.title,
@@ -46,7 +45,10 @@ angular.module('learntubeApp')
   };
 
   $scope.deleteClass = function(classe) {
-    $http.delete('/api/youtube/uploaded/' + classe.id).then(function() {
+    $http.delete('/api/youtube/mine/playlists', {
+      params: { playlistId: classe.id }
+    })
+    .then(function() {
       _.remove($scope.classes, classe); 
     }, function(res) {
       $log.error(res); 

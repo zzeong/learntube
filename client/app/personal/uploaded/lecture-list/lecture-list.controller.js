@@ -72,23 +72,24 @@ angular.module('learntubeApp')
   };
 
 
-  $http.get('/api/youtube/classes', {
+  $http.get('/api/youtube/mine/playlists', {
     params: {
       playlistId: $scope.playlistId, 
     },
   }).then(function(res) {
-    $scope.summary = res.data[0];
+    $scope.summary = res.data.items[0];
   }, function(err) {
     $log.error(err);
   });
 
-  $http.get('/api/youtube/lecture-list', {
+  $http.get('/api/youtube/mine/playlistitems', {
     params: {
       playlistId: $scope.playlistId,
+      withDuration: true,
     }, 
   })
   .then(function(res) {
-    $scope.lectureList = res.data;
+    $scope.lectureList = res.data.items;
     return $http.get('/api/users/' + Auth.getCurrentUser()._id + '/uploaded', {
       params: {
         playlistId: $scope.playlistId, 
@@ -185,14 +186,18 @@ angular.module('learntubeApp')
         };
 
         $scope.addLecture = function() {
-          $http.post('/api/youtube/lecture', {
-            snippet: {
-              playlistId: scope.playlistId,
-              resourceId: {
-                kind: $scope.selectedVideo.id.kind,
-                videoId: $scope.selectedVideo.id.videoId
+          $http.post('/api/youtube/mine/playlistitems', {
+            resource: {
+              snippet: {
+                playlistId: scope.playlistId,
+                resourceId: {
+                  kind: $scope.selectedVideo.id.kind,
+                  videoId: $scope.selectedVideo.id.videoId
+                }
               }
-            }
+            },
+          }, { 
+            params: { withDuration: true }
           })
           .then(function(res) {
             if(res.status === 201) {

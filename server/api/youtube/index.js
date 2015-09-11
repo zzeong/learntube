@@ -3,9 +3,8 @@
 var express = require('express');
 var router = express.Router();
 
-router.use('/lecture-list', require('./lecture-list'));
-router.use('/lecture', require('./lecture'));
-router.use('/uploaded', require('./uploaded'));
-router.use('/classes', require('./classes'));
+router.use('/mine/playlists', require('./mine/playlist'));
+router.use('/mine/playlistitems', require('./mine/playlistitem'));
+router.use('/mine/videos', require('./mine/video'));
 
 module.exports = router;

@@ -1,18 +1,21 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('WatchedLectureListCtrl', function($scope, $stateParams, Auth, $state, $http, $log, ClassAPI, $filter, NoteAPI) {
+.controller('WatchedLectureListCtrl', function($scope, $stateParams, Auth, $state, $http, $log, ClassAPI, $filter, NoteAPI, GApi, GoogleConst) {
   $scope.playlistId = $stateParams.pid;
 
   if(!Auth.isLoggedIn()) { $state.go('Login'); }
 
   // 강의들을 가져오기 위한 api사용
-  $http.get('/api/youtube/lecture-list',{
-    params:{
-      playlistId: $scope.playlistId,
-    },
-  }).then(function(res){
-    $scope.lectureList = res.data;
+  GApi.execute('youtube', 'playlistItems.list', {
+    key: GoogleConst.browserKey, 
+    part: 'snippet,status',
+    maxResults: 20,
+    playlistId: $scope.playlistId,
+    fields: 'items(snippet,status),nextPageToken',
+  })
+  .then(function(res) {
+    $scope.lectureList = res.items;
 
     // lecArrSorting구성
     $scope.lecArrSorting = _.sortBy($scope.lectureList, function(el){
