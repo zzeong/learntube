@@ -8,7 +8,7 @@ angular.module('learntubeApp')
     listType: 'playlist',
     list: $scope.playlistId
   };
-  $scope.isNoteOn = false;
+  $scope.isEditorOn = false;
   $scope.getCurrentUser = Auth.getCurrentUser;
   $scope.isLoggedIn = Auth.isLoggedIn;
 
@@ -58,8 +58,8 @@ angular.module('learntubeApp')
     });
   };
 
-  $scope.toggleNote = function() {
-    $scope.isNoteOn = !$scope.isNoteOn; 
+  $scope.toggleEditor = function() {
+    $scope.isEditorOn = !$scope.isEditorOn; 
   };
 
   $scope.editNote = function(note) {
@@ -101,7 +101,7 @@ angular.module('learntubeApp')
       $scope.notes.push(note);
 
       $scope.noteContents = '';
-      $scope.toggleNote();
+      $scope.toggleEditor();
     });
   };
 

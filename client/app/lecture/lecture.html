@@ -13,14 +13,14 @@
     <div class="video-info-panel md-padding">
       <h1 class="md-title">{{ item.snippet.title }}</h1>
       <div class="md-actions" layout="row" layout-align="end center">
-        <md-button class="md-raised" ng-click="toggleNote()">Note</md-button>
+        <md-button class="md-raised" ng-click="toggleEditor()">Note</md-button> 
         <md-button class="md-raised md-primary" ng-click="completeLecture()">Complete</md-button>
       </div> 
     </div>
 
     <md-divider></md-divider>
 
-    <div ng-show="isNoteOn">
+    <div ng-show="isEditorOn">
       <form ng-submit="doneNote()">
         <textarea id="newNote" ng-model="noteContents" ckeditor></textarea>
         <md-button type="submit" class="md-raised">Done</md-button>

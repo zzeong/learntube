@@ -33,11 +33,11 @@ describe('Controller: LectureCtrl', function () {
 
 
   it('should be able to toggle note editor', inject(function() {
-    expect($scope.isNoteOn).toBe(false); 
-    $scope.toggleNote();
-    expect($scope.isNoteOn).toBe(true);
-    $scope.toggleNote();
-    expect($scope.isNoteOn).toBe(false);
+    expect($scope.isEditorOn).toBe(false); 
+    $scope.toggleEditor();
+    expect($scope.isEditorOn).toBe(true);
+    $scope.toggleEditor();
+    expect($scope.isEditorOn).toBe(false);
   }));
 
   describe('with HTTP', function() {
