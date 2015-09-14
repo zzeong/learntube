@@ -623,6 +623,17 @@ module.exports = function (grunt) {
       },
     },
 
+    apidoc: {
+      app: {
+        src: 'server/api/',
+        dest: 'apidoc/',
+        options: {
+          debug: true,
+          includeFilters: [ '.*\.controller\.js$' ],
+        },
+      }
+    },
+
   });
 
   // Used for delaying livereload until after server has restarted
@@ -784,6 +795,8 @@ module.exports = function (grunt) {
       ]);
     }
   });
+
+  grunt.registerTask('doc', ['apidoc']);
 
   grunt.registerTask('build', [
     'clean:dist',
