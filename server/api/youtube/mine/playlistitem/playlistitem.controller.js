@@ -6,6 +6,34 @@ var config = require('../../../../config/environment');
 var Promise = require('promise');
 
 
+/**
+ * @api {get} /api/youtube/mine/playlistitems Get my YouTube playlistItems
+ * @apiName GetMyPlaylistItems
+ * @apiGroup My playlist items
+ *
+ * @apiUse TokenAuth
+ *
+ * @apiParam {String} playlistId YouTube playlist id.
+ * @apiParam {Boolean} [withDuration=false] A flag for containing duration.
+ * @apiParamExample {json} Request-Example:
+ *     {
+ *       "playlistId": "PLDcnymzs18LWbmCFUlZie7VsxQ_FIF0_y"
+ *       "withDuration": true
+ *     }
+ *
+ * @apiSuccess {Array} items Set of [playlistItem resource](https://developers.google.com/youtube/v3/docs/playlistItems#resource).\
+ * A item of playlistItem resource **only** return `id`, `snippet`, `status` property (when `withDuration` is true in request params, `contentDetails` is added).
+ * @apiSuccess {String} pageToken Token which is needed when request for next items set.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 200 OK
+ *     {
+ *       "items": [
+ *         playlistItems_resource
+ *       ],
+ *       "pageToken": "DJGNdN"
+ *     }
+ */
 exports.index = function(req, res) {
   g.oauth2Client.setCredentials({
     access_token: req.user.google.accessToken,
@@ -55,6 +83,48 @@ exports.index = function(req, res) {
 };
 
 
+/**
+ * @api {post} /api/youtube/mine/playlistitems Create my YouTube playlistItem
+ * @apiName CreateMyPlaylistItem
+ * @apiGroup My playlist items
+ *
+ * @apiUse TokenAuth
+ *
+ * @apiParam {Object} resource **POST body**. It must be [playlistItem resource](https://developers.google.com/youtube/v3/docs/playlists#resource)
+ * which have `snippet.playlistId`, `snippet.resourceid.kind`, `snippet.resourceid.videoId`, `status.privacyStatus`.
+ * @apiParam {Boolean} [withDuration=false] A flag for containing duration.
+ * @apiParamExample {json} Request-Example:
+ *     BODY
+ *     { 
+ *       "resource": {
+ *         "snippet": {
+ *            "playlistId": "PLDcnymzs18LWbmCFUlZie7VsxQ_FIF0_y",
+ *            "resourceId": {
+ *              "kind": "youtube#video",
+ *              "videoId": "D8t8A8E_Tqc",
+ *            }
+ *         }, 
+ *         "status": {
+ *           "privacyStatus": "public"
+ *         }
+ *       }
+ *     }
+ *
+ *     PARAMS
+ *     {
+ *       "withDuration": true
+ *     }
+ *
+ *
+ * @apiSuccess (Success 201) {Object} playlistItem_resource Inserted [playlistItem resource](https://developers.google.com/youtube/v3/docs/playlistItems#resource).\
+ * A item of playlist resource **only** return `id`, `snippet`, `status` property.
+ *
+ * @apiSuccessExample Success-Response:
+ *     HTTP/1.1 201 OK
+ *     {
+ *       playlistItem_resource_properties
+ *     }
+ */
 exports.create = function(req, res) {
   g.oauth2Client.setCredentials({
     access_token: req.user.google.accessToken,
