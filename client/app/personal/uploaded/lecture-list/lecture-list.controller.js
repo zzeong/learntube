@@ -77,7 +77,11 @@ angular.module('learntubeApp')
       playlistId: $scope.playlistId, 
     },
   }).then(function(res) {
-    $scope.summary = res.data.items[0];
+    for(var i in res.data.items){
+      if(res.data.items[i].id === $scope.playlistId){
+        $scope.summary = res.data.items[i];
+      }
+    }
   }, function(err) {
     $log.error(err);
   });
