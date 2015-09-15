@@ -20,6 +20,7 @@
     "ngInfiniteScroll": "~1.2.1"
   },
   "devDependencies": {
+    "Blob": "*",
     "angular-mocks": ">=1.2.*"
   }
 }
