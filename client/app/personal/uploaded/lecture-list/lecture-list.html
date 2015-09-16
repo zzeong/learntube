@@ -11,40 +11,42 @@
     <h2 class="md-headline">{{ summary.snippet.title }}</h2>
     <div>
       <hm-read class="md-body-1" hmtext="{{ summary.snippet.description }}" hmlimit="400" hm-more-text="read more" hm-less-text="read less"></hm-read>
-    </div>
-  </br>
+    </div></br>
   </div>
 
-  <md-divider></md-divider>
+<md-divider></md-divider>
 
-  <div class="content-inner">
+<div class="content-inner">
 
-    <div ng-repeat="lecture in lectureList | onlyPublic">
-      <div class="checkboxStyle">
-        <md-checkbox ng-model="message.selected"></md-checkbox>
+  <md-button class="md-raised" ng-click="deleteLecture()">Button</md-button>
+
+  <div ng-repeat="lecture in lectureList | onlyPublic">
+
+    <div class="checkboxStyle">
+      <md-checkbox ng-click="toggleSelection(lecture.id)" value="lecture.id"></md-checkbox>
+    </div>
+
+    <div>
+      <md-list>
+      <md-list-item class="md-2-line"
+      ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
+      <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail"/>
+      <div class="md-list-item-text">
+        <h3>{{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
+        <p>{{ lecture.contentDetails.duration | humanable }}</p>
+
+        <md-icon md-font-set="material-icons"
+        ng-click="showFileDialog(lecture, $event)"
+        aria-label="Show file dialog"
+        ng-class="{ 'md-primary': haveUploadedFile(lecture) }"
+        class="md-secondary md-hue-1">
+        file_upload
+         </md-icon>
       </div>
-
-      <div>
-        <md-list>
-        <md-list-item class="md-2-line"
-        ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
-        <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
-        <div class="md-list-item-text">
-          <h3>{{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
-          <p>{{ lecture.contentDetails.duration | humanable }}</p>
-
-          <md-icon md-font-set="material-icons"
-          ng-click="showFileDialog(lecture, $event)"
-          aria-label="Show file dialog"
-          ng-class="{ 'md-primary': haveUploadedFile(lecture) }"
-          class="md-secondary md-hue-1">
-          file_upload
-        </md-icon>
-      </div>
-    </md-list-item>
-  </md-list>
-</div>
-</div>
+      </md-list-item>
+      </md-list>
+    </div>
+  </div>
 </div>
 
 </div>

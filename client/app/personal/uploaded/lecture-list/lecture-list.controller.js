@@ -94,6 +94,7 @@ angular.module('learntubeApp')
   })
   .then(function(res) {
     $scope.lectureList = res.data.items;
+    console.log($scope.lectureList);
     return $http.get('/api/users/' + Auth.getCurrentUser()._id + '/uploaded', {
       params: {
         playlistId: $scope.playlistId, 
@@ -232,6 +233,27 @@ angular.module('learntubeApp')
       showToast('Lecture added');
     }, onRejected);
 
+  };
+
+  $scope.selection = [];
+
+  $scope.deleteLecture = function(){
+    console.log('here is deleteLecture');
+    console.log($scope.selection);
+  };
+
+  $scope.toggleSelection = function toggleSelection(site) {
+    var idx = $scope.selection.indexOf(site);
+
+    // is currently selected
+    if (idx > -1) {
+      $scope.selection.splice(idx, 1);
+    }
+
+    // is newly selected
+    else {
+      $scope.selection.push(site);
+    }
   };
 
 });
