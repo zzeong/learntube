@@ -94,9 +94,7 @@ exports.create = function(req, res) {
         userId: req.params.id,
         videoId: req.body.videoId,
         playlistId: req.body.playlistId,
-        hash: hash,
         url: reqToS3.url,
-        s3Path: uploadedPath
       });
 
       note.save(function(err){

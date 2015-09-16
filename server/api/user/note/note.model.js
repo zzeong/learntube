@@ -12,9 +12,7 @@ var NoteSchema = new Schema({
   videoId: String,
   playlistId: String,
   created: { type: Date, default: Date.now },
-  hash: String,
   url: String,
-  s3Path: String,
 });
 
 module.exports = mongoose.model('Note', NoteSchema);
