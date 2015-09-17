@@ -51,7 +51,7 @@ angular.module('learntubeApp')
 
 
     // DB에서 필기 목록 가져오기 (Note)
-    NoteAPI.meta({playlistId: $scope.playlistId}, function(response){
+    NoteAPI.query({playlistId: $scope.playlistId}, function(response){
 
       var notenLectures = [];
       for(var i=0; i<response.length; i++){

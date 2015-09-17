@@ -41,16 +41,6 @@ exports.index = function(req, res) {
   });
 };
 
-exports.meta = function(req, res) {
-  Note.find(req.query, function(err, notes) {
-    if(err) { return res.status(500).send(err); }
-    if(!notes) { return res.status(404).send('Not Found'); }
-    
-    return res.status(200).json(notes);
-  });
-};
-
-
 exports.create = function(req, res) {
   User.findById(req.params.id, function(err, user) {
     if(err) { return res.status(500).send(err); }

@@ -43,14 +43,6 @@ xdescribe('Controller: WatchedLectureListCtrl', function() {
         status: {},
       }];
 
-      var notes = [{
-        _id: '!@#$',
-        contents: '<h1>SHEWILLLOVEME</h1>'
-      }, {
-        _id: 'SDFF',
-        contents: '<h1>IWILLLOVEHER</h1>'
-      }];
-
       var classes = [{
         _id: '!Q@W',
         lectures: [{
@@ -67,7 +59,7 @@ xdescribe('Controller: WatchedLectureListCtrl', function() {
         }],
       }];
 
-      var noteMeta = [{
+      var notes = [{
         _id: '!@#$',
         playlistId: 'PL12A65DE93A8357D6',
         videoId: 'ILOVEHER'
@@ -87,7 +79,6 @@ xdescribe('Controller: WatchedLectureListCtrl', function() {
       $httpBackend.when('GET', /\/api\/youtube\/lecture-list\?.*/).respond(lecturelist);
       $httpBackend.when('GET', /\/api\/users\/.*\/notes\?.*/).respond(notes);
       $httpBackend.when('GET', /\/api\/users\/.*\/classes\?.*/).respond(classes);
-      $httpBackend.when('GET', /\/api\/users\/.*\/notes\/meta\?.*/).respond(noteMeta);
       $httpBackend.when('GET', /\/api\/users\/.*\/classes\/.*\/playlistId\?.*/).respond(watchedLectures);
 
     }));

@@ -27,11 +27,6 @@ angular.module('learntubeApp')
       method: 'PUT',
       params: { id: Auth.getCurrentUser()._id }
     },
-    meta: {
-      method: 'GET',
-      params: { id: Auth.getCurrentUser()._id, nid: 'meta' },
-      isArray: true
-    },
     getContents: {
       method: 'GET',
       params: {

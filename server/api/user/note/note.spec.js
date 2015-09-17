@@ -108,27 +108,6 @@ describe('REST API:', function() {
     });
 
 
-    describe('/meta', function() {
-      it('should return meta data of notes which don\'t contain note contents', function(done) {
-        request(app)
-        .get('/api/users/' + id + '/notes/meta')
-        .query({ playlistId: playlistId })
-        .expect(200)
-        .expect('Content-Type', /json/)
-        .end(function(err, res) {
-          if(err) { return done(err); } 
-          res.body.should.have.instanceof(Array);
-          res.body.should.have.length(1);
-          res.body[0].should.have.property('_id');
-          res.body[0].should.have.property('videoId');
-          res.body[0].should.not.have.property('contents');
-          done();
-        });
-      });
-
-    });
-
-
     describe('/:nid', function() {
       it('should return specific note doc', function(done) {
         request(app)
