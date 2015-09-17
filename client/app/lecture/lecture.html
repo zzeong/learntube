@@ -40,7 +40,7 @@
 
           <md-divider></md-divider>
 
-          <note-viewer contents="note.contents"></note-viewer>
+          <iframe ng-if="shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
 
           <div class="md-actions" layout="row" layout-align="end center">
             <md-button class="md-raised" ng-click="editNote(note)">Edit</md-button>
@@ -70,7 +70,7 @@
 
         <md-divider></md-divider>
 
-        <note-viewer contents="note.contents"></note-viewer>
+        <iframe ng-if="shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
       </div>
     </div>
 

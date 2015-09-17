@@ -73,6 +73,12 @@ md-toolbar .md-menu {
   width: $dialog-width;
 }
 
+.note-contents-viewer {
+  border: none; 
+  width: 100%;
+}
+
+
 
 // Component styles are injected through grunt
 // injector
