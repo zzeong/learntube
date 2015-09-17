@@ -34,9 +34,9 @@ var populateNotes = function(user) {
       userId: user._id,
       videoId: id.video[parseInt(i / 2)],
       playlistId: id.playlist,
-      hash: bot[user.email].hash[i],
       url : 'https://learntubebucket.s3.amazonaws.com/' + user.email + '/' + bot[user.email].hash[i],
-      s3Path : '/' + user.email + '/' + bot[user.email].hash[i]
+      type: 'editor',
+      resourceType: 'text/html',
     }; 
   };
 

@@ -32,16 +32,16 @@ User.find({}).remove(function() {
         userId: user._id,
         videoId: '1ZRb1we80kM',
         playlistId: 'PL9B61DEF63FC19BD9',
-        hash: '7121cd645707ec47efa33393028473c7',
         url: 'https://learntubebucket.s3.amazonaws.com/test@test.com/7121cd645707ec47efa33393028473c7',
-        s3Path: '/test@test.com/7121cd645707ec47efa33393028473c7',
+        type: 'editor',
+        resourceType: 'text/html',
       }, {
         userId: user._id,
         videoId: 'rJnICByeL8Q',
         playlistId: 'PL9B61DEF63FC19BD9',
-        hash: 'a868c19f55558a2a349193ff9d1f2fce',
         url: 'https://learntubebucket.s3.amazonaws.com/test@test.com/a868c19f55558a2a349193ff9d1f2fce',
-        s3Path: '/test@test.com/a868c19f55558a2a349193ff9d1f2fce',
+        type: 'editor',
+        resourceType: 'text/html',
       });
     });
 
