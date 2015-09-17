@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('LectureCtrl', function($scope, $stateParams, $http, Auth, NoteAPI, $log, GoogleConst, GApi) {
+.controller('LectureCtrl', function($scope, $stateParams, $http, Auth, NoteAPI, $log, GoogleConst, GApi, Upload) {
   $scope.videoId = $stateParams.vid;
   $scope.playlistId = $stateParams.pid;
   $scope.playerVars = {
@@ -9,6 +9,7 @@ angular.module('learntubeApp')
     list: $scope.playlistId
   };
   $scope.isEditorOn = false;
+  $scope.isFileUploadOn = false;
   $scope.getCurrentUser = Auth.getCurrentUser;
   $scope.isLoggedIn = Auth.isLoggedIn;
 
@@ -20,6 +21,10 @@ angular.module('learntubeApp')
   .then(function(res) {
     $scope.item = res.items[0]; 
   });
+
+  var textToFile = function(text) {
+    return new Blob([text], {type: 'text/html'});
+  };
 
   var keepNoteSoundly = function(note, src) {
     if(typeof src !== 'undefined') { _.assign(note, src); }
@@ -37,6 +42,22 @@ angular.module('learntubeApp')
       });
     });
   }
+
+  var initializeNotePanel = function(type) {
+    if(type === 'file') {
+      $scope.noteFile = undefined;
+      if($scope.isFileUploadOn) {
+        $scope.toggleFileUpload();
+      }
+    } else if(type === 'editor') {
+      $scope.noteContents = '';
+      if($scope.isEditorOn) {
+        $scope.toggleEditor();
+      }
+    } else {
+      return;
+    }
+  };
 
   $http.get('/api/others-notes', {
     params: { videoId: $scope.videoId }
@@ -61,48 +82,71 @@ angular.module('learntubeApp')
   $scope.toggleEditor = function() {
     $scope.isEditorOn = !$scope.isEditorOn; 
   };
+  $scope.toggleFileUpload = function() {
+    $scope.isFileUploadOn = !$scope.isFileUploadOn; 
+  };
 
   $scope.editNote = function(note) {
-    note.isEditing = true;
+    NoteAPI.getContents({ nid: note._id }, function(res) {
+      note.contents = res.contents;
+      note.isEditing = true;
+    });
   };
+
   $scope.cancelEditing = function(note) {
     note.isEditing = false; 
   };
 
   $scope.deleteNote = function(note) {
-    NoteAPI.remove({ nid: note._id }, function(res) {
-      _.remove($scope.notes, { _id: res._id });
+    NoteAPI.remove({ nid: note._id }, function() {
+      _.remove($scope.notes, { _id: note._id });
     });
   };
 
   $scope.updateNote = function(note) {
-    NoteAPI.update({ nid: note._id }, { contents: note.contents }, function(res) {
-      $scope.notes = $scope.notes.map(function(elNote) {
-        if(elNote._id === res._id) {
-          return keepNoteSoundly(res, { contents: note.contents });
-        }
-        return elNote;
+    var file = textToFile(note.contents);
+
+    Upload.upload({
+      url: '/api/users/' + Auth.getCurrentUser()._id + '/notes/' + note._id,
+      method: 'PUT',
+      file: file
+    })
+    .then(function(res) {
+      $scope.notes = $scope.notes.map(function(note) {
+        if(note._id === res.data._id) { return keepNoteSoundly(res.data); }
+        return note;
       });
-    }); 
+    });
   };
 
-  $scope.doneNote = function() {
-    var params = {
-      videoId: $scope.videoId,
-      playlistId: $scope.playlistId,
-      contents: $scope.noteContents
-    };
+  $scope.doneNote = function(type, file) {
+    if(type === 'editor') {
+      file = textToFile(file);
+    }
 
-    NoteAPI.create(params, function(res) {
-      var note = keepNoteSoundly(res, {
-        contents: $scope.noteContents,
-      });
-
+    Upload.upload({
+      url: '/api/users/' + Auth.getCurrentUser()._id + '/notes',
+      method:'POST',
+      fields: {
+        videoId: $scope.videoId,
+        playlistId: $scope.playlistId,
+        type: type
+      },
+      file: file
+    })
+    .then(function(res) {
+      var note = keepNoteSoundly(res.data);
       $scope.notes.push(note);
 
-      $scope.noteContents = '';
-      $scope.toggleEditor();
+      initializeNotePanel(type);
     });
+  };
+
+  $scope.shouldBeEmbedded = function(note) {
+    if(note.resourceType.match(/^text\//)) {
+      return true;
+    }
+    return false;
   };
 
 

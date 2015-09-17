@@ -13,7 +13,26 @@
     <div class="video-info-panel md-padding">
       <h1 class="md-title">{{ item.snippet.title }}</h1>
       <div class="md-actions" layout="row" layout-align="end center">
-        <md-button class="md-raised" ng-click="toggleEditor()">Note</md-button> 
+        <md-menu>
+          <md-button class="md-raised" ng-click="$mdOpenMenu()">Note</md-button>
+
+          <md-menu-content width="3">
+            <md-menu-item>
+              <md-button ng-click="toggleEditor()">
+                <md-icon md-font-set="material-icons" md-menu-align-target>description</md-icon>
+                Web editor
+              </md-button>
+            </md-menu-item>
+
+            <md-menu-item>
+              <md-button ng-click="toggleFileUpload()">
+                <md-icon md-font-set="material-icons" md-menu-align-target>file_upload</md-icon>
+                File upload
+              </md-button>
+            </md-menu-item>
+          </md-menu-content>
+        </md-menu>
+
         <md-button class="md-raised md-primary" ng-click="completeLecture()">Complete</md-button>
       </div> 
     </div>
@@ -21,8 +40,15 @@
     <md-divider></md-divider>
 
     <div ng-show="isEditorOn">
-      <form ng-submit="doneNote()">
+      <form ng-submit="doneNote('editor', noteContents)">
         <textarea id="newNote" ng-model="noteContents" ckeditor></textarea>
+        <md-button type="submit" class="md-raised">Done</md-button>
+      </form>
+    </div>
+
+    <div class="md-padding" ng-show="isFileUploadOn">
+      <form ng-submit="doneNote('file', noteFile)">
+        <input type="file" ngf-select ng-model="noteFile"/>
         <md-button type="submit" class="md-raised">Done</md-button>
       </form>
     </div>
@@ -41,9 +67,10 @@
           <md-divider></md-divider>
 
           <iframe ng-if="shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
+          <img ng-if="!shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url }}" alt="My lecture note"/>
 
           <div class="md-actions" layout="row" layout-align="end center">
-            <md-button class="md-raised" ng-click="editNote(note)">Edit</md-button>
+            <md-button class="md-raised" ng-if="note.type === 'editor'" ng-click="editNote(note)">Edit</md-button>
             <md-button class="md-raised md-warn" ng-click="deleteNote(note)">Delete</md-button>
           </div>
         </div>
@@ -71,6 +98,7 @@
         <md-divider></md-divider>
 
         <iframe ng-if="shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
+        <img ng-if="!shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url }}" alt="My lecture note"/>
       </div>
     </div>
 

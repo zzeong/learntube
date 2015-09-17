@@ -2,7 +2,7 @@
 
 angular.module('learntubeApp')
 .factory('NoteAPI', function(Auth, $resource) {
-  return $resource('/api/users/:id/notes/:nid', {
+  return $resource('/api/users/:id/notes/:nid/:controller', {
     id: '@id',
     nid: '@nid',
   }, {
@@ -31,6 +31,13 @@ angular.module('learntubeApp')
       method: 'GET',
       params: { id: Auth.getCurrentUser()._id, nid: 'meta' },
       isArray: true
-    }
+    },
+    getContents: {
+      method: 'GET',
+      params: {
+        id: Auth.getCurrentUser()._id,
+        controller: 'get-contents'
+      },
+    },
   });
 });

@@ -74,8 +74,9 @@ describe('Controller: LectureCtrl', function () {
 
       $httpBackend.when('GET', /https\:\/\/www\.googleapis\.com\/youtube\/v3\/videos\?.*/).respond(resultItems);
       $httpBackend.when('POST', /\/api\/users\/.*\/notes/).respond({ _id: 'NQWER' });
-      $httpBackend.when('GET', /\/api\/users\/.*\/notes\??.*/).respond([{ _id: 'NQWER', contents: '<h1>Hello</h1>' }]);
-      $httpBackend.when('PUT', /\/api\/users\/.*\/notes\/.*/).respond({ _id: 'NQWER' });
+      $httpBackend.when('GET', /\/api\/users\/.*\/notes\?.*/).respond([{ _id: 'NQWER' }]);
+      $httpBackend.when('PUT', /\/api\/users\/.*\/notes\/.*/).respond({ _id: 'NQWER', });
+      $httpBackend.when('GET', /\/api\/users\/.*\/notes\/.*\/get-contents.*/).respond({ _id: 'NQWER', contents: '<h1>IHAVENOMONEY</h1>' });
       $httpBackend.when('DELETE', /\/api\/users\/.*\/notes\/.*/).respond({ _id: 'NQWER' });
       $httpBackend.when('POST', /\/api\/users\/.*\/classes/).respond({ _id: 'QAWS'  });
       $httpBackend.when('POST', /\/api\/users\/.*\/classes\/.*\/lectures/).respond({ _id: 'ZXCV' });
@@ -108,39 +109,43 @@ describe('Controller: LectureCtrl', function () {
       $httpBackend.flush(); 
 
       expect($scope.notes.length).toEqual(1);
-      expect($scope.notes[0].contents).toEqual('<h1>Hello</h1>');
       expect($scope.notes[0]._id).toEqual('NQWER');
     }));
 
 
-    it('should save note and push refreshed notes', inject(function() {
+    it('should save editor contents and push saved notes', inject(function() {
       $httpBackend.flush();
       var beforeLength = $scope.notes.length;
 
       $scope.videoId = '2rde3';
       $scope.playlistId = 'SHEWILLLOVEME';
-      $scope.note = '<h1>Hi</h1>';
-      $scope.doneNote();
+      $scope.noteContents = '<h1>Hi</h1>';
+
+      spyOn($scope, 'toggleEditor');
+      $scope.toggleEditor();
+      $scope.doneNote('editor', $scope.noteContents);
 
       $httpBackend.expectPOST(/\/api\/users\/.*\/notes/);
       $httpBackend.flush();
 
-      expect($scope.notes).toBeDefined();
       expect($scope.notes.length).toEqual(beforeLength + 1);
+      expect($scope.noteContents).toEqual('');
+      expect($scope.toggleEditor).toHaveBeenCalled();
     }));
 
-    it('should update note', function() {
+    it('should change the editor window to a note viewer when note is updated', function() {
       $httpBackend.flush();
 
       var note = {
         _id: 'NQWER',
-        contents: '<h1>Updated</h1>'
+        contents: '<h1>Updated</h1>',
+        isEditing: true
       }; 
       $scope.updateNote(note);
 
       $httpBackend.expectPUT(/\/api\/users\/.*\/notes\/NQWER/);
       $httpBackend.flush();
-      expect($scope.notes[0].contents).toEqual('<h1>Updated</h1>');
+      expect($scope.notes[0].isEditing).toEqual(false);
     });
 
 
@@ -175,6 +180,33 @@ describe('Controller: LectureCtrl', function () {
 
       expect($scope.othersNotes).toEqual(jasmine.any(Array));
       expect($scope.othersNotes.length).toEqual(2);
+    });
+
+    it('should show note as embedded', function() {
+      $httpBackend.flush();
+
+      var notes = [{
+        resourceType: 'text/html' 
+      }, {
+        resourceType: 'text/plain' 
+      }, {
+        resourceType: 'image/jpeg' 
+      }];
+
+      expect($scope.shouldBeEmbedded(notes[0])).toEqual(true);
+      expect($scope.shouldBeEmbedded(notes[1])).toEqual(true);
+      expect($scope.shouldBeEmbedded(notes[2])).toEqual(false);
+    });
+
+    it('should show editing area that have got note contents when a user edit the note', function() {
+      $httpBackend.flush(); 
+
+      var note = { _id: 'NQWER' };
+      $scope.editNote(note);
+      $httpBackend.flush(); 
+
+      expect(note.contents).toBeDefined();
+      expect(note.isEditing).toEqual(true);
     });
 
   });

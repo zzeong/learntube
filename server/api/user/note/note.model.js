@@ -11,6 +11,8 @@ var NoteSchema = new Schema({
   },
   videoId: String,
   playlistId: String,
+  type: String,
+  resourceType: String,
   created: { type: Date, default: Date.now },
   url: String,
 });

@@ -18,9 +18,9 @@ var userData = {
 
 
 describe('REST API:', function() {
-  var id, nid, noteContents, videoId, playlistId;
+  var id, noteContents, videoId, playlistId;
 
-  this.timeout(10000);
+  this.timeout(15000);
 
   before(function(done){
     videoId = 'sMKoNBRZM1M';
@@ -37,38 +37,61 @@ describe('REST API:', function() {
 
 
 
-
   describe('POST /api/users/:id/notes', function() {
-    before(function(done) {
-      noteContents = '<h1>NOTE API TEST</h1>';
-      done();
+    var nid;
+
+    afterEach(function(done) {
+      request(app)
+      .delete('/api/users/' + id + '/notes/' + nid)
+      .end(function(err, res) {
+        if(err) { return done(err); }
+        done();
+      });
     });
 
-    it('should return saved note when note is saved', function(done) {
-      var params = {
-        videoId: videoId,
-        playlistId: playlistId,
-        contents: noteContents
-      };
-
+    it('should return saved note id when note is saved', function(done) {
       request(app)
       .post('/api/users/' + id + '/notes')
-      .send(params)
-      .expect(201)
-      .expect('Content-Type', /json/)
-      .end(function (err, res) {
-        if(err) { return done(err); }
+      .field('playlistId', playlistId)
+      .field('videoId', videoId)
+      .field('type', 'editor')
+      .attach('file', 'test/fixtures/dummy.png')
+      .end(function(err, res) {
+        if(err) { return done(err); } 
         res.body.should.have.property('_id');
         nid = res.body._id;
         done();
       });
-    });
+    }); 
   });
 
 
-
-
   describe('GET /api/users/:id/notes', function() {
+    var nid;
+
+    before(function(done) {
+      request(app)
+      .post('/api/users/' + id + '/notes')
+      .field('playlistId', playlistId)
+      .field('videoId', videoId)
+      .field('type', 'editor')
+      .attach('file', 'test/fixtures/dummy.png')
+      .end(function(err, res) {
+        if(err) { return done(err); } 
+        nid = res.body._id;
+        done();
+      }); 
+    });
+
+    after(function(done) {
+      request(app)
+      .delete('/api/users/' + id + '/notes/' + nid)
+      .end(function(err, res) {
+        if(err) { return done(err); }
+        done();
+      });
+    });
+
     it('should return queried notes', function(done) {
       request(app)
       .get('/api/users/' + id + '/notes')
@@ -80,72 +103,86 @@ describe('REST API:', function() {
         res.body.should.have.instanceof(Array);
         res.body.should.have.length(1);
         res.body[0].should.have.property('_id');
-        res.body[0].should.have.property('contents');
-        done();
-      });
-    });
-  });
-
-  describe('GET /api/users/:id/notes/meta', function() {
-    it('should return meta data of notes which don\'t contain note contents', function(done) {
-      request(app)
-      .get('/api/users/' + id + '/notes/meta')
-      .query({ playlistId: playlistId })
-      .expect(200)
-      .expect('Content-Type', /json/)
-      .end(function(err, res) {
-        if(err) { return done(err); } 
-        res.body.should.have.instanceof(Array);
-        res.body.should.have.length(1);
-        res.body[0].should.have.property('_id');
-        res.body[0].should.have.property('videoId');
-        res.body[0].should.not.have.property('contents');
         done();
       });
     });
 
-  });
+
+    describe('/meta', function() {
+      it('should return meta data of notes which don\'t contain note contents', function(done) {
+        request(app)
+        .get('/api/users/' + id + '/notes/meta')
+        .query({ playlistId: playlistId })
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end(function(err, res) {
+          if(err) { return done(err); } 
+          res.body.should.have.instanceof(Array);
+          res.body.should.have.length(1);
+          res.body[0].should.have.property('_id');
+          res.body[0].should.have.property('videoId');
+          res.body[0].should.not.have.property('contents');
+          done();
+        });
+      });
+
+    });
 
 
-  describe('GET /api/users/:id/notes/:nid', function() {
-    it('should return note contents equal to contents which have been saved when note is gotten', function(done) {
-      request(app)
-      .get('/api/users/' + id + '/notes/' + nid)
-      .expect(200)
-      .expect('Content-Type', /json/)
-      .end(function(err, res) {
-        if(err) { return done(err); }
-        res.body.should.have.property('_id');
-        res.body.should.have.property('contents');
-        res.body.contents.should.equal(noteContents);
-        done();
+    describe('/:nid', function() {
+      it('should return note contents equal to contents which have been saved when note is got', function(done) {
+        request(app)
+        .get('/api/users/' + id + '/notes/' + nid)
+        .expect(200)
+        .expect('Content-Type', /json/)
+        .end(function(err, res) {
+          if(err) { return done(err); }
+          res.body.should.have.property('_id');
+          done();
+        });
       });
     });
   });
 
 
   describe('PUT /api/users/:id/notes/:nid', function() {
+    var nid;
+
     before(function(done) {
-      noteContents = '<h1>UPDATED CONTENTS</h1>';
-      done();
+      request(app)
+      .post('/api/users/' + id + '/notes')
+      .field('playlistId', playlistId)
+      .field('videoId', videoId)
+      .field('type', 'editor')
+      .attach('file', 'test/fixtures/dummy.png')
+      .end(function(err, res) {
+        if(err) { return done(err); } 
+        nid = res.body._id;
+        done();
+      }); 
     });
 
+    after(function(done) {
+      request(app)
+      .delete('/api/users/' + id + '/notes/' + nid)
+      .end(function(err, res) {
+        if(err) { return done(err); }
+        done();
+      });
+    });
 
     it('should return updated note', function(done) {
-      var params = {
-        videoId: videoId,
-        contents: noteContents
-      };
-
       request(app)
       .put('/api/users/' + id + '/notes/' + nid)
-      .send(params)
-      .expect(200)
+      .field('playlistId', playlistId)
+      .field('videoId', videoId)
+      .field('type', 'editor')
+      .attach('file', 'test/fixtures/dummy.png')
+      .expect(201)
       .expect('Content-Type', /json/)
       .end(function(err, res) {
         if(err) { return done(err); }
         res.body.should.have.property('_id');
-        res.body._id.should.equal(nid);
         done();
       });
     });
@@ -153,17 +190,32 @@ describe('REST API:', function() {
 
 
   describe('DELETE /api/users/:id/notes/:nid', function() {
+    var nid;
+
+    before(function(done) {
+      request(app)
+      .post('/api/users/' + id + '/notes')
+      .field('playlistId', playlistId)
+      .field('videoId', videoId)
+      .field('type', 'editor')
+      .attach('file', 'test/fixtures/dummy.png')
+      .end(function(err, res) {
+        if(err) { return done(err); } 
+        nid = res.body._id;
+        done();
+      }); 
+    });
+
     it('should return "removed" message when note is removed', function(done) {
       request(app)
       .delete('/api/users/' + id + '/notes/' + nid)
-      .expect(200)
-      .expect('Content-Type', /json/)
+      .expect(204)
       .end(function(err, res) {
         if(err) { return done(err); }
-        res.body.should.have.property('_id');
-        res.body._id.should.equal(nid);
         done();
       });
     });
   });
+
+
 });

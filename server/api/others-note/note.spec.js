@@ -2,10 +2,19 @@
 
 var _ = require('lodash');
 var should = require('should');
+var knox  = require('knox');
 var request = require('supertest');
+var url = require('url');
 var User = require('../user/user.model');
 var Note = require('../user/note/note.model');
+var config = require('../../config/environment');
 var app = require('../../app');
+
+var s3 = knox.createClient({
+  key: config.aws.accessKeyId,
+  secret: config.aws.secretKey,
+  bucket: config.aws.s3Bucket
+});
 
 
 describe('REST API:', function() {
@@ -16,7 +25,7 @@ describe('REST API:', function() {
     User.remove().exec(); 
     User.create({
       name: 'Fake User One',
-      email: 'test@test.com',
+      email: 'test1@test.com',
       password: 'password',
       provider: 'google',
       google: {
@@ -49,32 +58,49 @@ describe('REST API:', function() {
   });
 
   describe('GET /api/notes', function() {
+    this.timeout(15000);
     var params = {
       playlistId: 'asdf',
-      contents: '<h1>HOORAY</h1>'
     };
 
     before(function(done) {
       request(app)
       .post('/api/users/' + user1._id + '/notes')
-      .send(_.assign({ videoId: 'QWER1'}, params))
+      .field('playlistId', 'PLASDF')
+      .field('videoId', 'QWER1')
+      .attach('file', 'test/fixtures/dummy.png')
       .end(function(err, res) {
         if(err) { return done(err); } 
 
         request(app)
         .post('/api/users/' + user2._id + '/notes')
-        .send(_.assign({ videoId: 'QWER1'}, params))
+        .field('playlistId', 'PLASDF')
+        .field('videoId', 'QWER1')
+        .attach('file', 'test/fixtures/dummy.png')
         .end(function(err, res) {
           if(err) { return done(err); }
 
           request(app)
           .post('/api/users/' + user2._id + '/notes')
-          .send(_.assign({ videoId: 'QWER2'}, params))
+          .field('playlistId', 'PLASDF')
+          .field('videoId', 'QWER2')
+          .attach('file', 'test/fixtures/dummy.png')
           .end(function(err, res) {
             if(err) { return done(err); } 
             done();
           });
 
+        });
+      });
+    });
+
+    after(function(done) {
+      Note.find({ $or: [{ userId: user1._id }, { userId: user2._id }] }, function(err, notes) {
+        var items = notes.map(function(note) { return url.parse(note.url).pathname; });
+
+        s3.deleteMultiple(items, function(error, response) {
+          if(error) { return done(error); }
+          done();
         });
       });
     });

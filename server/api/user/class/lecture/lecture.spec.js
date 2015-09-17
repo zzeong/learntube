@@ -49,31 +49,11 @@ describe('REST API:', function() {
         });
       });
 
-      it('should return 201', function(done) {
-        request(app)
-        .post('/api/users/' + id + '/classes/' + cid + '/lectures/')
-        .send(params)
-        .expect(201)
-        .end(function(err, res) {
-          if(err) { return done(err); }
-          done(); 
-        });
-      });
-
-      it('should return json', function(done) {
-        request(app)
-        .post('/api/users/' + id + '/classes/' + cid + '/lectures/')
-        .send(params)
-        .expect('Content-Type', /json/)
-        .end(function(err, res) {
-          if(err) { return done(err); }
-          done(); 
-        });
-      });
-
       it('should return class which saved lecture', function(done) {
         request(app)
         .post('/api/users/' + id + '/classes/' + cid + '/lectures/')
+        .expect(201)
+        .expect('Content-Type', /json/)
         .send(params)
         .end(function (err, res) {
           if(err) { return done(err); } 
