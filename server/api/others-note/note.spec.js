@@ -57,7 +57,7 @@ describe('REST API:', function() {
     Note.remove().exec(); 
   });
 
-  describe('GET /api/notes', function() {
+  describe.only('GET /api/notes', function() {
     this.timeout(15000);
     var params = {
       playlistId: 'asdf',
@@ -95,7 +95,7 @@ describe('REST API:', function() {
     });
 
     after(function(done) {
-      Note.find({ $or: [{ userId: user1._id }, { userId: user2._id }] }, function(err, notes) {
+      Note.find({ userId: { $in: [user1._id, user2._id] }}, function(err, notes) {
         var items = notes.map(function(note) { return url.parse(note.url).pathname; });
 
         s3.deleteMultiple(items, function(error, response) {
