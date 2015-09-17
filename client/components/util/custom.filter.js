@@ -20,4 +20,9 @@ angular.module('learntubeApp')
       return ('0' + time).slice(-2);
     }).join(':');
   };
+})
+.filter('trustAsResourceUrl', function($sce) {
+  return function(val) {
+    return $sce.trustAsResourceUrl(val);
+  }; 
 });
