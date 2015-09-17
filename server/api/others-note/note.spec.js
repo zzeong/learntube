@@ -68,7 +68,7 @@ describe('REST API:', function() {
       .post('/api/users/' + user1._id + '/notes')
       .field('playlistId', 'PLASDF')
       .field('videoId', 'QWER1')
-      .attach('file', 'test/fixtures/dummy.png')
+      .attach('file', 'test/fixtures/dummy.html')
       .end(function(err, res) {
         if(err) { return done(err); } 
 
@@ -76,7 +76,7 @@ describe('REST API:', function() {
         .post('/api/users/' + user2._id + '/notes')
         .field('playlistId', 'PLASDF')
         .field('videoId', 'QWER1')
-        .attach('file', 'test/fixtures/dummy.png')
+        .attach('file', 'test/fixtures/dummy.html')
         .end(function(err, res) {
           if(err) { return done(err); }
 
@@ -84,7 +84,7 @@ describe('REST API:', function() {
           .post('/api/users/' + user2._id + '/notes')
           .field('playlistId', 'PLASDF')
           .field('videoId', 'QWER2')
-          .attach('file', 'test/fixtures/dummy.png')
+          .attach('file', 'test/fixtures/dummy.html')
           .end(function(err, res) {
             if(err) { return done(err); } 
             done();

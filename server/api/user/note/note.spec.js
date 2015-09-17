@@ -55,7 +55,7 @@ describe('REST API:', function() {
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
-      .attach('file', 'test/fixtures/dummy.png')
+      .attach('file', 'test/fixtures/dummy.html')
       .end(function(err, res) {
         if(err) { return done(err); } 
         res.body.should.have.property('_id');
@@ -75,7 +75,7 @@ describe('REST API:', function() {
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
-      .attach('file', 'test/fixtures/dummy.png')
+      .attach('file', 'test/fixtures/dummy.html')
       .end(function(err, res) {
         if(err) { return done(err); } 
         nid = res.body._id;
@@ -130,7 +130,7 @@ describe('REST API:', function() {
 
 
     describe('/:nid', function() {
-      it('should return note contents equal to contents which have been saved when note is got', function(done) {
+      it('should return specific note doc', function(done) {
         request(app)
         .get('/api/users/' + id + '/notes/' + nid)
         .expect(200)
@@ -139,6 +139,21 @@ describe('REST API:', function() {
           if(err) { return done(err); }
           res.body.should.have.property('_id');
           done();
+        });
+      });
+      
+      describe('/get-contents', function() {
+        it('should return note contents equal to contents which have been saved when note is got', function(done) {
+          request(app)
+          .get('/api/users/' + id + '/notes/' + nid + '/get-contents')
+          .expect(200)
+          .expect('Content-Type', /json/)
+          .end(function(err, res) {
+            if(err) { return done(err); }
+            res.body.should.have.property('_id');
+            res.body.should.have.property('contents');
+            done();
+          });
         });
       });
     });
@@ -154,7 +169,7 @@ describe('REST API:', function() {
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
-      .attach('file', 'test/fixtures/dummy.png')
+      .attach('file', 'test/fixtures/dummy.html')
       .end(function(err, res) {
         if(err) { return done(err); } 
         nid = res.body._id;
@@ -177,7 +192,7 @@ describe('REST API:', function() {
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
-      .attach('file', 'test/fixtures/dummy.png')
+      .attach('file', 'test/fixtures/dummy.html')
       .expect(201)
       .expect('Content-Type', /json/)
       .end(function(err, res) {
@@ -198,7 +213,7 @@ describe('REST API:', function() {
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
-      .attach('file', 'test/fixtures/dummy.png')
+      .attach('file', 'test/fixtures/dummy.html')
       .end(function(err, res) {
         if(err) { return done(err); } 
         nid = res.body._id;
