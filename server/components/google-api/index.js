@@ -9,13 +9,14 @@ var Promise = require('promise');
 
 
 exports.youtube = function(method, params) {
-  return new Promise(function(resolve, reject) {
-    var step = method.split('.');
-    youtube[step[0]][step[1]](params, function(err, res) {
-      if(err) { return reject(err); }
-      return resolve(res);
-    });
-  });
+
+	return new Promise(function(resolve, reject) {
+		var step = method.split('.');
+		youtube[step[0]][step[1]](params, function(err, res) {
+			if(err) { return reject(err); }
+			return resolve(res);
+		});
+	});
 };
 
 exports.oauth2Client = oauth2Client;

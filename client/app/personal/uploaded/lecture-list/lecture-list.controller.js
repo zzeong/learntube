@@ -14,7 +14,7 @@ angular.module('learntubeApp')
       .content(text)
       .position('top right')
       .hideDelay(3000)
-    );
+      );
   };
 
   var uploadFile = function(urls, file) {
@@ -154,96 +154,91 @@ angular.module('learntubeApp')
       targetEvent: ev,
       clickOutsideToClose: true
     })
-    .then(function(uploaded) {
-      showToast('File uploaded');
-      lecture.file = uploaded.lectures.filter(function(fileMeta) {
-        return fileMeta.videoId === lecture.snippet.resourceId.videoId;
-      })[0];
-      $log.info(uploaded);
-    }, onRejected);
-  };
+.then(function(uploaded) {
+  showToast('File uploaded');
+  lecture.file = uploaded.lectures.filter(function(fileMeta) {
+    return fileMeta.videoId === lecture.snippet.resourceId.videoId;
+  })[0];
+  $log.info(uploaded);
+}, onRejected);
+};
 
-  $scope.showLectureDialog = function(lecture, ev) {
-    $mdDialog.show({
-      controller: function($scope, $mdDialog) {
-        $scope.getMyVideos = function() {
-          if($scope.myVideos) { return; }
+$scope.showLectureDialog = function(lecture, ev) {
+  $mdDialog.show({
+    controller: function($scope, $mdDialog) {
+      $scope.getMyVideos = function() {
+        if($scope.myVideos) { return; }
 
-          $http.get('/api/youtube/mine/videos', {
-            params: { withDuration: true }
-          })
-          .then(function(res) {
-            $scope.myVideos = res.data.items; 
-          }, onRejected);
-        };
+        $http.get('/api/youtube/mine/videos', {
+          params: { withDuration: true }
+        })
+        .then(function(res) {
+          $scope.myVideos = res.data.items; 
+        }, onRejected);
+      };
 
-        $scope.search = function() {
-          GApi.execute('youtube', 'search.list', {
-            key: GoogleConst.browserKey,
-            part: 'snippet',
-            q: $scope.query,
-            maxResults: 50,
-            type: 'video',
-          }).then(function(res) {
-            $scope.searched = res.items;
-          }, onRejected);
-        };
+      $scope.search = function() {
+        GApi.execute('youtube', 'search.list', {
+          key: GoogleConst.browserKey,
+          part: 'snippet',
+          q: $scope.query,
+          maxResults: 50,
+          type: 'video',
+        }).then(function(res) {
+          $scope.searched = res.items;
+        }, onRejected);
+      };
 
-        $scope.selectVideo = function(video) {
-          $scope.selectedVideo = video; 
-        };
+      $scope.selectVideo = function(video) {
+        $scope.selectedVideo = video; 
+      };
 
-        $scope.isSelected = function(video) {
-          return $scope.selectedVideo === video; 
-        };
+      $scope.isSelected = function(video) {
+        return $scope.selectedVideo === video; 
+      };
 
-        $scope.cancel = function() {
-          $mdDialog.cancel();
-        };
+      $scope.cancel = function() {
+        $mdDialog.cancel();
+      };
 
-        $scope.addLecture = function(video) {
-          $http.post('/api/youtube/mine/playlistitems', {
-            resource: {
-              snippet: {
-                playlistId: scope.playlistId,
-                resourceId: {
-                  kind: video.id.kind || 'youtube#video',
-                  videoId: video.id.videoId || video.snippet.resourceId.videoId
-                }
+      $scope.addLecture = function(video) {
+        $http.post('/api/youtube/mine/playlistitems', {
+          resource: {
+            snippet: {
+              playlistId: scope.playlistId,
+              resourceId: {
+                kind: video.id.kind || 'youtube#video',
+                videoId: video.id.videoId || video.snippet.resourceId.videoId
               }
-            },
-          }, { 
-            params: { withDuration: true }
-          })
-          .then(function(res) {
-            if(res.status === 201) {
-              scope.lectureList.push(res.data);
-              $mdDialog.hide();
             }
-          }, onRejected);
+          },
+        }, { 
+          params: { withDuration: true }
+        })
+        .then(function(res) {
+          if(res.status === 201) {
+            scope.lectureList.push(res.data);
+            $mdDialog.hide();
+          }
+        }, onRejected);
 
-        };
-      },
-      templateUrl: 'components/dialog/add-lecture.tmpl.html',
-      parent: angular.element(document.body),
-      targetEvent: ev,
-      clickOutsideToClose: true
-    })
-    .then(function() {
-      showToast('Lecture added');
-    }, onRejected);
+      };
+    },
+    templateUrl: 'components/dialog/add-lecture.tmpl.html',
+    parent: angular.element(document.body),
+    targetEvent: ev,
+    clickOutsideToClose: true
+  })
+.then(function() {
+  showToast('Lecture added');
+}, onRejected);
 
-  };
+};
 
-  $scope.selection = [];
+$scope.selection = [];
 
-  $scope.deleteLecture = function(){
-    console.log('here is deleteLecture');
-    console.log($scope.selection);
-  };
-
-  $scope.toggleSelection = function toggleSelection(site) {
-    var idx = $scope.selection.indexOf(site);
+$scope.toggleSelection = function toggleSelection(site) {
+  var idx = $scope.selection.indexOf(site);
 
     // is currently selected
     if (idx > -1) {
@@ -256,4 +251,15 @@ angular.module('learntubeApp')
     }
   };
 
+
+
+  $scope.deleteLecture = function(){
+    $scope.selectionStr = $scope.selection.join();
+    $http.delete('/api/youtube/mine/playlistitems',{
+      params: { playlistItemId: $scope.selectionStr } 
+    });
+  };
+
+
 });
+

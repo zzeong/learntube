@@ -34,7 +34,7 @@ var Promise = require('promise');
  *       "pageToken": "DJGNdN"
  *     }
  */
-exports.index = function(req, res) {
+ exports.index = function(req, res) {
   g.oauth2Client.setCredentials({
     access_token: req.user.google.accessToken,
     refresh_token: req.user.google.refreshToken,
@@ -125,7 +125,7 @@ exports.index = function(req, res) {
  *       playlistItem_resource_properties
  *     }
  */
-exports.create = function(req, res) {
+ exports.create = function(req, res) {
   g.oauth2Client.setCredentials({
     access_token: req.user.google.accessToken,
     refresh_token: req.user.google.refreshToken,
@@ -170,15 +170,23 @@ exports.destroy = function(req, res) {
     refresh_token: req.user.google.refreshToken,
   });
 
-  var params = {
-    auth: g.oauth2Client, 
-    id: req.query.playlistItemId,
-  }; 
+  var playlistItemIdArr = req.query.playlistItemId.split(',');
 
-  g.youtube('playlistItems.delete', params)
-  .then(function() {
+  var promises = playlistItemIdArr.map(function(arrayItem) {
+
+    var params = {
+      auth: g.oauth2Client,
+      id: arrayItem,
+    };
+
+    return g.youtube('playlistItems.delete', params);
+  });
+
+  Promise.all(promises).then(function() {
     return res.status(204).send();
   }, function(error) {
-    return res.status(500).send(error); 
+    return res.status(500).send(error);
   });
+
+  
 };
