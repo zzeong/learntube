@@ -8,6 +8,7 @@
 var User = require('../api/user/user.model');
 var Note = require('../api/user/note/note.model');
 var Class = require('../api/user/class/class.model');
+var Rating = require('../api/rating/rating.model');
 
 User.find({}).remove(function() {
   User.create({
@@ -88,10 +89,39 @@ User.find({}).remove(function() {
         }, {
           videoId: 'pTYyg5aDWAM'
         }]
-      }, function() {
-        console.log('finished seeding');
       });
     });
+
+    Rating.find({}).remove(function() {
+      Rating.create({
+        playlistId: 'PLdN7Dwi6JGXsAASQgnsm34BBL6mQfQUKK',
+        points: 99
+      }, {
+        playlistId: 'PLyRIdnMFwruhaDX0FGe8od4VU20CD3dTC',
+        points: 61
+      }, {
+        playlistId: 'PLaNNx1k0ao1v8I2C8DAxXOayC3dG00xtj',
+        points: 71
+      }, {
+        playlistId: 'PLJAq9GpGx5BMdIUSwg53JX7LiuYW_EYvP',
+        points: 82
+      }, {
+        playlistId: 'PLcpoB2VESJmekv4lb3uZkMc5k7fyMSIzU',
+        points: 4
+      }, {
+        playlistId: 'PLl4T6p7km9da1BKEAGzloOQqDVw3ZB7SF',
+        points: 68
+      }, {
+        playlistId: 'PL6DB5987C212AC19F',
+        points: 8
+      }, {
+        playlistId: 'PLFVCbA-bmHb8_v54a9JNkNgZELYslC5wF',
+        points: 38
+      }, function() {
+        console.log('finishes seeding'); 
+      });
+    });
+
 
   });
 });
