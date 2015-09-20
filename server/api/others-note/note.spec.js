@@ -57,7 +57,7 @@ describe('REST API:', function() {
     Note.remove().exec(); 
   });
 
-  describe.only('GET /api/notes', function() {
+  describe('GET /api/notes', function() {
     this.timeout(15000);
     var params = {
       playlistId: 'asdf',
