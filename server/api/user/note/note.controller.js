@@ -15,6 +15,7 @@ var crypto = require('crypto');
 var knox = require('knox');
 var User = require('../user.model');
 var Note = require('./note.model');
+var Rating = require('../../rating/rating.model');
 var Promise = require('promise');
 var config = require('../../../config/environment');
 
@@ -69,7 +70,17 @@ exports.create = function(req, res) {
 
       note.save(function(error){
         if(error) { return res.status(500).send(error); }
-        return res.status(201).json(note);
+        
+        Rating.findOrCreate({
+          playlistId: note.playlistId
+        }, function(error, rating) {
+          if(error) { return res.status(500).send(error); }
+          rating.update({ $inc: { points: 1 }}, function(error) {
+            if(error) { return res.status(500).send(error); }
+            return res.status(201).json(note); 
+          });
+        });
+
       });
     });
   });
@@ -141,9 +152,23 @@ exports.destroy = function(req, res) {
     s3.del(note.s3Path).on('response', function(response){
       console.log('[S3]:DELETE', response.statusCode, response.headers);
 
-      note.remove(function(err){
-        if(err) { return res.status(500).send(err); }
-        return res.status(204).send();
+      note.remove(function(error){
+        if(error) { return res.status(500).send(error); }
+        Rating.findOneAndUpdate({
+          playlistId: note.playlistId
+        }, {
+          $inc: { points: -1 } 
+        }, {
+          new: true 
+        }, function(error, rating) {
+          if(rating.points < 1) {
+            return rating.remove(function(error) {
+              if(error) { return res.status(500).send(error); }
+              return res.status(204).send();
+            }); 
+          }
+          return res.status(204).send();
+        });
       });
     })
     .end();

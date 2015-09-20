@@ -6,15 +6,9 @@ var request = require('supertest');
 var mongoose = require('mongoose');
 var User = require('../user.model');
 var Note = require('./note.model');
+var Rating = require('../../rating/rating.model');
 
-
-// 임의 유저
-var userData = {
-  provider: 'local',
-  name: 'Fake User',
-  email: 'test@test.com',
-  password: 'password',
-};
+var Promise = mongoose.Promise = require('promise');
 
 
 describe('REST API:', function() {
@@ -26,15 +20,35 @@ describe('REST API:', function() {
     videoId = 'sMKoNBRZM1M';
     playlistId = 'SHEWILLLOVEME';
 
-    User.remove().exec();
-    var user = new User(userData);
-    user.save(function(err) {
-      Note.remove().exec();
+    Promise.all([
+      User.remove({}).exec(), 
+      Note.remove({}).exec(),
+      Rating.remove({}).exec()
+    ])
+    .then(function() {
+      var user = new User({
+        provider: 'local',
+        name: 'Fake User',
+        email: 'test@test.com',
+        password: 'password',
+      });
+      return user.save();
+    })
+    .then(function(user) {
       id = user._id;
       done();
     });
   });
 
+  after(function(done) {
+    Promise.all([
+      User.remove({}).exec(),
+      Note.remove({}).exec(),
+      Rating.remove({}).exec()
+    ]).then(function() {
+      done(); 
+    });
+  });
 
 
   describe('POST /api/users/:id/notes', function() {
@@ -45,7 +59,8 @@ describe('REST API:', function() {
       .delete('/api/users/' + id + '/notes/' + nid)
       .end(function(err, res) {
         if(err) { return done(err); }
-        done();
+        Rating.remove({}).exec();
+        done(); 
       });
     });
 
@@ -63,7 +78,57 @@ describe('REST API:', function() {
         done();
       });
     }); 
+
+    it('should create rating model with initial point', function(done) {
+      request(app)
+      .post('/api/users/' + id + '/notes')
+      .field('playlistId', playlistId)
+      .field('videoId', videoId)
+      .field('type', 'editor')
+      .attach('file', 'test/fixtures/dummy.html')
+      .expect(201)
+      .expect('Content-Type', /json/)
+      .end(function(err, res) {
+        if(err) { return done(err); } 
+        nid = res.body._id;
+        Rating.findOne({ playlistId: playlistId }, function(err, rating) {
+          if(err) { return done(err); }
+          should.exist(rating); 
+          rating.points.should.be.equal(1);
+          done();
+        });
+      });
+    });
+
+    it('should increase class rating points', function(done) {
+      Rating.create({
+        playlistId: playlistId,
+        points: 1
+      }, function(err, rating) {
+        if(err) { return done(err); }
+
+        request(app)
+        .post('/api/users/' + id + '/notes')
+        .field('playlistId', playlistId)
+        .field('videoId', videoId)
+        .field('type', 'editor')
+        .attach('file', 'test/fixtures/dummy.html')
+        .expect(201)
+        .expect('Content-Type', /json/)
+        .end(function(err, res) {
+          if(err) { return done(err); } 
+          nid = res.body._id;
+          Rating.findOne({ playlistId: playlistId }, function(err, rating) {
+            if(err) { return done(err); }
+            rating.points.should.be.equal(2);
+            done();
+          });
+        });
+      });
+
+    });
   });
+
 
 
   describe('GET /api/users/:id/notes', function() {
@@ -186,7 +251,7 @@ describe('REST API:', function() {
   describe('DELETE /api/users/:id/notes/:nid', function() {
     var nid;
 
-    before(function(done) {
+    beforeEach(function(done) {
       request(app)
       .post('/api/users/' + id + '/notes')
       .field('playlistId', playlistId)
@@ -200,13 +265,61 @@ describe('REST API:', function() {
       }); 
     });
 
-    it('should return "removed" message when note is removed', function(done) {
+    afterEach(function(done) {
+      Promise.all([
+        Note.remove({}).exec(),
+        Rating.remove({}).exec()
+      ])
+      .then(function() {
+        done();
+      });
+    });
+
+    it('should return 204 status code when note is removed', function(done) {
       request(app)
       .delete('/api/users/' + id + '/notes/' + nid)
       .expect(204)
       .end(function(err, res) {
         if(err) { return done(err); }
         done();
+      });
+    });
+
+    it('should decrease class rating points', function(done) {
+      Rating.findOneAndUpdate({
+        playlistId: playlistId
+      }, {
+        $inc: { points: 2 }
+      }, function(err) {
+        if(err) { return done(err); }
+
+        request(app)
+        .delete('/api/users/' + id + '/notes/' + nid)
+        .expect(204)
+        .end(function(err, res) {
+          if(err) { return done(err); } 
+
+          Rating.findOne({ playlistId: playlistId }, function(err, rating) {
+            if(err) { return done(err); }
+            rating.points.should.be.equal(2);
+            done();
+          });
+        });
+      });
+    });
+
+    it('should remove a rating doc when class have no notes', function(done) {
+      request(app)
+      .delete('/api/users/' + id + '/notes/' + nid)
+      .expect(204)
+      .end(function(err, res) {
+        if(err) { return done(err); } 
+
+        Rating.findOne({ playlistId: playlistId }, function(err, rating) {
+          if(err) { return done(err); } 
+          should.not.exist(rating);
+          done();
+        });
       });
     });
   });

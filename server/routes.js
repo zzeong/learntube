@@ -14,6 +14,7 @@ module.exports = function(app) {
   app.use('/api/others-notes', require('./api/others-note'));
   app.use('/api/youtube', require('./api/youtube'));
   app.use('/api/s3', require('./api/s3'));
+  app.use('/api/classes', require('./api/class'));
 
   app.use('/auth', require('./auth'));
   
