@@ -147,7 +147,7 @@ exports.update = function(req, res) {
 exports.destroy = function(req, res) {
   Note.findById(req.params.nid, function (err, note) {
     if(err) { return res.status(500).send(err); }
-    if(!note) { return note.status(404).send('Not Found'); }
+    if(!note) { return res.status(404).send('Not Found'); }
 
     s3.del(note.s3Path).on('response', function(response){
       console.log('[S3]:DELETE', response.statusCode, response.headers);
