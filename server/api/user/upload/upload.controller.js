@@ -3,53 +3,58 @@
 var _ = require('lodash');
 var User = require('../user.model');
 var Upload = require('./upload.model');
+var mongoose = require('mongoose');
+
+mongoose.Promise = require('promise');
+
+
+var handleError = function(res, statusCode) {
+  statusCode = statusCode || 500;
+  return function(err) {
+    res.status(statusCode).send(err);
+  };
+}
+
 
 exports.index = function(req, res) {
   var query = _.assign({ userId: req.params.id }, req.query);
 
-  Upload.find(query, function(err, uploads) {
-    if(err) { return res.status(500).send(err); }
+  Upload.find(query).exec()
+  .then(function(uploads) {
     if(!uploads.length) { return res.status(404).send('Not Found'); }
-    
     return res.status(200).json(uploads);
-  });
+  })
+  .catch(handleError(res));
 };
 
 exports.create = function(req, res) {
-  var pushAndSave = function(model, sub, request) {
-    model[sub].push({
-      videoId: request.body.videoId, 
-      url: request.body.url
-    }); 
-
-    return model.save(function(err) {
-      if(err) { return res.status(500).send(err); }
-      return res.status(201).json(model);
-    });    
-  };
-
-  User.findById(req.params.id, function(err, user) {
-    if(err) { return res.status(500).send(err); }
+  User.findById(req.params.id).exec()
+  .then(function(user) {
     if(!user) { return res.status(404).send('Not Found'); }
 
-    Upload.findOne({
+    var query = {
       userId: req.params.id,
       playlistId: req.body.playlistId
-    }, function(err, upload) {
-      if(err) { return res.status(500).send(err); }
-      if(!upload) {
-        upload = new Upload({
-          userId: req.params.id,
-          playlistId: req.body.playlistId,
-          url: req.body.url,
-        });
+    };
 
-        pushAndSave(upload, 'lectures', req);
-        return;
-      }
-
-      pushAndSave(upload, 'lectures', req);
+    return Upload.findOneAndUpdate(query, {
+      $setOnInsert: query
+    }, {
+      new: true,
+      upsert: true
+    })
+    .exec();
+  })
+  .then(function(upload) {
+    upload.lectures.push({
+      videoId: req.body.videoId, 
+      url: req.body.url
     });
-  });
+    return upload.save();
+  })
+  .then(function(upload) {
+    return res.status(201).json(upload); 
+  })
+  .catch(handleError(res));
 };
 

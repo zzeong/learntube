@@ -7,41 +7,51 @@ var mongoose = require('mongoose');
 var User = require('../user.model');
 var Upload = require('./upload.model');
 
+mongoose.Promise = require('promise');
+
+
+var just = function(done) {
+  return function(results) {
+    done(); 
+  };
+};
+
 describe('REST API:', function() {
   var user;
 
   before(function(done) {
-    User.remove().exec().then(function() {
+    User.remove({}).exec()
+    .then(function() {
       user = new User({
         name: 'Fake User',
         email: 'test@test.com',
         password: 'password'
       });
 
-      user.save(function() {
-        done();
-      });
-    });
+      return user.save();
+    })
+    .then(just(done))
+    .catch(done);
   });
 
   after(function(done) {
-    User.remove().exec().then(function() {
-      done(); 
-    });
+    User.remove({}).exec()
+    .then(just(done))
+    .catch(done);
   });
 
   describe('POST /api/users/:id/uploads', function() {
 
     beforeEach(function(done) {
-      Upload.remove().exec().then(function() {
-        done();
-      });
+      Upload.remove({}).exec()
+      .then(just(done))
+      .catch(done);
     });
 
     afterEach(function(done) {
-      Upload.remove().exec().then(function() {
-        done(); 
-      });
+      Upload.remove({}).exec()
+      .then(just(done))
+      .catch(done);
     });
 
     it('should return created \'upload model doc\'', function(done) {
@@ -62,10 +72,12 @@ describe('REST API:', function() {
         res.body.should.have.property('lectures');
         res.body.lectures.should.have.length(1);
 
-        Upload.find({}, function(err, uploads) {
+        Upload.find({}).exec()
+        .then(function(uploads) {
           uploads.should.have.length(1);
           done();
-        });
+        })
+        .catch(done);
       });
     });
 
@@ -80,9 +92,8 @@ describe('REST API:', function() {
         }]
       });
 
-      upload.save(function(err) {
-        if(err) { return done(err); }
-
+      upload.save()
+      .then(function(err) {
         request(app)
         .post('/api/users/' + user._id + '/uploads')
         .send({
@@ -100,11 +111,14 @@ describe('REST API:', function() {
           res.body.should.have.property('lectures');
           res.body.lectures.should.have.length(2);
 
-          Upload.find({}, function(err, uploads) {
+          Upload.find({}).exec()
+          .then(function(uploads) {
             uploads.should.have.length(1);
             done();
-          });
-        });
+          })
+          .catch(done);
+        })
+        .catch(done);
 
       });
 
@@ -115,7 +129,8 @@ describe('REST API:', function() {
   describe('GET /api/users/:id/uploads', function() {
 
     beforeEach(function(done) {
-      Upload.remove().exec().then(function() {
+      Upload.remove({}).exec()
+      .then(function() {
         request(app)
         .post('/api/users/' + user._id + '/uploads')
         .send({
@@ -133,9 +148,8 @@ describe('REST API:', function() {
     }); 
 
     afterEach(function(done) {
-      Upload.remove().exec().then(function() {
-        done(); 
-      });
+      Upload.remove({}).exec()
+      .then(just(done));
     });
 
     it('should return uploads when query with playlistId', function(done) {
