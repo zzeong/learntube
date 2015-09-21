@@ -193,9 +193,16 @@ var seedUpload = function(users) {
 };
 
 
-/* Note Test URL:
+
+
+/**
+ * Note Test URL:
  * http://localhost:9000/class/PL9B61DEF63FC19BD9/lecture/1ZRb1we80kM
  * http://localhost:9000/class/PL9B61DEF63FC19BD9/lecture/rJnICByeL8Q
+ *
+ * Upload Test URL:
+ * http://localhost:9000/class/PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx/lecture/miUYEpXDitc
+ * http://localhost:9000/class/PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx/lecture/F-xd3G0PW0k
  */
 Promise.all([
   User.remove({}).exec(),
