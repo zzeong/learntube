@@ -173,7 +173,24 @@ var seedRating = function() {
   }]);
 };
 
+var seedUpload = function(users) {
+  var hashes = [
+   '2bd6387e8333e63dec3e1cea9617accb',  
+   '24ebf6590e230c823d1afd1dd01911e2'
+  ];
 
+  return Upload.create([{
+    userId: users[2]._id,
+    playlistId: 'PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx',
+    lectures: [{
+      videoId: 'miUYEpXDitc',
+      url: 'https://learntubebucket.s3.amazonaws.com/' + users[2].email + '/' + hashes[0],
+    }, {
+      videoId: 'F-xd3G0PW0k',
+      url: 'https://learntubebucket.s3.amazonaws.com/' + users[2].email + '/' + hashes[1],
+    }],
+  }]);
+};
 
 
 /* Note Test URL:
@@ -192,6 +209,7 @@ Promise.all([
   return Promise.all([
     seedNote(users),
     seedClass(users),
+    seedUpload(users),
     seedRating()
   ]);
 })
