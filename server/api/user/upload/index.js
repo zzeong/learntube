@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var controller = require('./uploaded.controller');
+var controller = require('./upload.controller');
 
 var router = express.Router({ mergeParams: true });
 

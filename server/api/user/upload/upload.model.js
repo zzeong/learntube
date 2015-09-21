@@ -4,7 +4,7 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var LectureSchema = require('./lecture/lecture.model');
-var UploadedSchema = new Schema({
+var UploadSchema = new Schema({
     userId: {
       type: mongoose.Schema.Types.ObjectId, 
       ref: 'User'
@@ -13,4 +13,4 @@ var UploadedSchema = new Schema({
     lectures: [LectureSchema],
 });
 
-module.exports = mongoose.model('Uploaded', UploadedSchema);
+module.exports = mongoose.model('Upload', UploadSchema);

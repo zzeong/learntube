@@ -9,7 +9,7 @@ var router = express.Router();
 
 router.use('/:id/classes', require('./class'));
 router.use('/:id/notes', require('./note'));
-router.use('/:id/uploaded', require('./uploaded'));
+router.use('/:id/uploads', require('./upload'));
 
 router.get('/', auth.hasRole('admin'), controller.index);
 router.delete('/:id', auth.hasRole('admin'), controller.destroy);

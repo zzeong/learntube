@@ -2,12 +2,12 @@
 
 var _ = require('lodash');
 var User = require('../user.model');
-var Uploaded = require('./uploaded.model');
+var Upload = require('./upload.model');
 
 exports.index = function(req, res) {
   var query = _.assign({ userId: req.params.id }, req.query);
 
-  Uploaded.find(query, function(err, uploads) {
+  Upload.find(query, function(err, uploads) {
     if(err) { return res.status(500).send(err); }
     if(!uploads.length) { return res.status(404).send('Not Found'); }
     
@@ -32,23 +32,23 @@ exports.create = function(req, res) {
     if(err) { return res.status(500).send(err); }
     if(!user) { return res.status(404).send('Not Found'); }
 
-    Uploaded.findOne({
+    Upload.findOne({
       userId: req.params.id,
       playlistId: req.body.playlistId
-    }, function(err, uploaded) {
+    }, function(err, upload) {
       if(err) { return res.status(500).send(err); }
-      if(!uploaded) {
-        uploaded = new Uploaded({
+      if(!upload) {
+        upload = new Upload({
           userId: req.params.id,
           playlistId: req.body.playlistId,
           s3Url: req.body.url,
         });
 
-        pushAndSave(uploaded, 'lectures', req);
+        pushAndSave(upload, 'lectures', req);
         return;
       }
 
-      pushAndSave(uploaded, 'lectures', req);
+      pushAndSave(upload, 'lectures', req);
     });
   });
 };

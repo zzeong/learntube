@@ -1,7 +1,7 @@
 'use strict';
 
 var User = require('../../user.model');
-var Uploaded = require('../uploaded.model');
+var Upload = require('../upload.model');
 var config = require('../../../../config/environment');
 var knox = require('knox');
 var url = require('url');
@@ -13,7 +13,7 @@ var awsClient = knox.createClient({
 });
 
 exports.destroy = function(req, res) {
-  Uploaded.findById(req.params.uid, function(err, upload) {
+  Upload.findById(req.params.uid, function(err, upload) {
     if(err) { return res.status(500).send(); }
     if(!upload) { return res.status(404).send('Not Found'); }
 

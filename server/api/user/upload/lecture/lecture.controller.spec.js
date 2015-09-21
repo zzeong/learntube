@@ -5,7 +5,7 @@ var app = require('../../../../app');
 var request = require('supertest');
 var mongoose = require('mongoose');
 var User = require('../../user.model');
-var Uploaded = require('../uploaded.model');
+var Upload = require('../upload.model');
 var config = require('../../../../config/environment');
 var knox = require('knox');
 
@@ -32,9 +32,9 @@ describe('REST API:', function() {
     });
   });
 
-  describe('DELETE /api/users/:id/uploaded/lectures', function() {
+  describe('DELETE /api/users/:id/uploads/lectures', function() {
     this.timeout(5000);
-    var uploaded;
+    var upload;
 
     beforeEach(function(done) {
       var awsClient = knox.createClient({
@@ -43,7 +43,7 @@ describe('REST API:', function() {
         bucket: config.aws.s3Bucket
       });
 
-      Uploaded.remove().exec().then(function() {
+      Upload.remove().exec().then(function() {
         var string = 'hello';
 
         var request = awsClient.put('/test/foo.txt', {
@@ -54,7 +54,7 @@ describe('REST API:', function() {
         
         request.on('response', function(res) {
           if(200 === +res.statusCode) {
-            uploaded = new Uploaded({
+            upload = new Upload({
               userId: user._id,
               playlistId: 'PL34d',
               lectures: [{
@@ -63,7 +63,7 @@ describe('REST API:', function() {
               }]
             });
 
-            uploaded.save(function(err) {
+            upload.save(function(err) {
               done();
             });
           }
@@ -74,14 +74,14 @@ describe('REST API:', function() {
     });
 
     afterEach(function(done) {
-      Uploaded.remove().exec().then(function() {
+      Upload.remove().exec().then(function() {
         done(); 
       });
     });
 
     it('should return 204 when lecture sub-doc is removed', function(done) {
       request(app)
-      .delete('/api/users/' + user._id + '/uploaded/' + uploaded._id + '/lectures/' + uploaded.lectures[0]._id)
+      .delete('/api/users/' + user._id + '/uploads/' + upload._id + '/lectures/' + upload.lectures[0]._id)
       .expect(204)
       .end(function(err, res) {
         if(err) { return done(err); } 
