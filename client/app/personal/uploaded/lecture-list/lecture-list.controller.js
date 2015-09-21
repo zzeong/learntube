@@ -40,7 +40,7 @@ angular.module('learntubeApp')
   var postToBack = function(url, lecture) {
     var deferred = $q.defer();
 
-    $http.post('/api/users/' + Auth.getCurrentUser()._id + '/uploaded', {
+    $http.post('/api/users/' + Auth.getCurrentUser()._id + '/uploads', {
       videoId: lecture.snippet.resourceId.videoId,
       playlistId: $scope.playlistId,
       url: url
@@ -95,7 +95,7 @@ angular.module('learntubeApp')
   .then(function(res) {
     $scope.lectureList = res.data.items;
     console.log($scope.lectureList);
-    return $http.get('/api/users/' + Auth.getCurrentUser()._id + '/uploaded', {
+    return $http.get('/api/users/' + Auth.getCurrentUser()._id + '/uploads', {
       params: {
         playlistId: $scope.playlistId, 
       },
@@ -127,7 +127,7 @@ angular.module('learntubeApp')
         $scope.lecture = lecture;
 
         $scope.deleteFile = function(lecture) {
-          $http.delete('/api/users/' + Auth.getCurrentUser()._id + '/uploaded/' + scope.upload._id + '/lectures/' + lecture.file._id)
+          $http.delete('/api/users/' + Auth.getCurrentUser()._id + '/uploads/' + scope.upload._id + '/lectures/' + lecture.file._id)
           .then(function() {
             delete lecture.file;
             showToast('File deleted');

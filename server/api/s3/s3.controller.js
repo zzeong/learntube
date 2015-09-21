@@ -15,7 +15,7 @@ exports.credential = function(req, res) {
   var s3 = new aws.S3(); 
   var s3Params = { 
     Bucket: config.aws.s3Bucket, 
-    Key: req.user.email + '/uploaded/' + getHash(req.query.fileName),
+    Key: req.user.email + '/uploads/' + getHash(req.query.fileName),
     Expires: 300, 
     ContentType: req.query.fileType, 
     ACL: 'public-read'

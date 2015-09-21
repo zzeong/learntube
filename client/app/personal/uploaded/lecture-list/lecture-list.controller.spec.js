@@ -47,7 +47,7 @@ xdescribe('Controller: UploadedLectureListCtrl', function() {
 
       $httpBackend.when('GET', /\/api\/youtube\/classes\?.*/).respond(classes);
       $httpBackend.when('GET', /\/api\/youtube\/lecture-list\?.*/).respond(lecturelist);
-      $httpBackend.when('GET', /\/api\/users\/.*\/uploaded\?.*/).respond(files);
+      $httpBackend.when('GET', /\/api\/users\/.*\/uploads\?.*/).respond(files);
     }));
 
     beforeEach(inject(function(Auth) {
@@ -94,7 +94,7 @@ xdescribe('Controller: UploadedLectureListCtrl', function() {
 
     it('should distinguish a lecture has a file or not', function() {
       createController(); 
-      $httpBackend.expectGET(/\/api\/users\/.*\/uploaded\?.*/);
+      $httpBackend.expectGET(/\/api\/users\/.*\/uploads\?.*/);
       $httpBackend.flush();
       expect($scope.haveUploadedFile($scope.lectureList[0])).toEqual(true);
       expect($scope.haveUploadedFile($scope.lectureList[1])).toEqual(true);
