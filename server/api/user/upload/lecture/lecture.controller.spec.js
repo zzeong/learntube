@@ -59,7 +59,7 @@ describe('REST API:', function() {
               playlistId: 'PL34d',
               lectures: [{
                 videoId: 'ASDF',
-                s3Url: request.url
+                url: request.url
               }]
             });
 

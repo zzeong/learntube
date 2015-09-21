@@ -19,7 +19,7 @@ exports.destroy = function(req, res) {
 
     var lecture = upload.lectures.id(req.params.lid);
 
-    awsClient.del(url.parse(lecture.s3Url).path).on('response', function(response) {
+    awsClient.del(url.parse(lecture.url).pathname).on('response', function(response) {
       console.log('[S3]:DELETE', response.statusCode, response.headers);
       lecture.remove();
       upload.save(function(err) {

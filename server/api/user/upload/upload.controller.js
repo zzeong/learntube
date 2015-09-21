@@ -19,7 +19,7 @@ exports.create = function(req, res) {
   var pushAndSave = function(model, sub, request) {
     model[sub].push({
       videoId: request.body.videoId, 
-      s3Url: request.body.url
+      url: request.body.url
     }); 
 
     return model.save(function(err) {
@@ -41,7 +41,7 @@ exports.create = function(req, res) {
         upload = new Upload({
           userId: req.params.id,
           playlistId: req.body.playlistId,
-          s3Url: req.body.url,
+          url: req.body.url,
         });
 
         pushAndSave(upload, 'lectures', req);

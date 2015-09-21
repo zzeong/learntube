@@ -5,7 +5,7 @@ var Schema = mongoose.Schema;
 
 var LectureSchema = new Schema({
   videoId: String,
-  s3Url: String,
+  url: String,
 });
 
 module.exports = LectureSchema;
