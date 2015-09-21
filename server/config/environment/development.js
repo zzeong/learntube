@@ -8,5 +8,6 @@ module.exports = {
     uri: 'mongodb://localhost/learntube-dev'
   },
 
-  seedDB: true
+  seedDB: true,
+  seedWithOAuth: true
 };

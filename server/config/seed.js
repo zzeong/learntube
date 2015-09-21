@@ -26,30 +26,82 @@ var initialUser = function() {
     name: 'Admin',
     email: 'admin@admin.com',
     password: 'admin'
+  }, {
+    provider: 'google',
+    role: 'user',
+    name: 'Jieun Lee',
+    email: 'learntubebot01@gmail.com'
+  }, {
+    provider: 'google',
+    role: 'user',
+    name: 'Seyfried Amanda',
+    email: 'learntubebot02@gmail.com'
   }]);
 };
 
-var seedNote = function(user) {
-  return Note.create({
-    userId: user._id,
+var seedNote = function(users) {
+  var bot = {
+    'learntubebot01@gmail.com': {
+      hash: [
+        'ac67da4d3c844e72f0607b0ef4aff541',
+        'eb42fc364af000dd9af888532ce63226',
+        '4fa0e346807233f7f4c18cb6c35afec1',
+        'fe8cf8d21a24376a1263b2267a77c87a'
+      ]
+    }, 
+    'learntubebot02@gmail.com': {
+      hash: [
+        '2fb8aad5086a0a6fe9967829017fb4c2',
+        'a37fa88288dc8e2acfb9d69715131e01',
+        '5295158d2070c6d600521c5667dd63b8',
+        '4c757fe906a459a8283c830d67466358'
+      ]
+    }, 
+  };
+
+  var createDoc = function(user, i) {
+    var id = {
+      playlist: 'PL9B61DEF63FC19BD9',
+      video: ['1ZRb1we80kM', 'rJnICByeL8Q']
+    };
+
+    return {
+      userId: user._id,
+      videoId: id.video[parseInt(i / 2)],
+      playlistId: id.playlist,
+      url : 'https://learntubebucket.s3.amazonaws.com/' + user.email + '/' + bot[user.email].hash[i],
+      type: 'editor',
+      resourceType: 'text/html',
+    }; 
+  };
+
+  var docs = [{
+    userId: users[0]._id,
     videoId: '1ZRb1we80kM',
     playlistId: 'PL9B61DEF63FC19BD9',
-    url: 'https://learntubebucket.s3.amazonaws.com/test@test.com/7121cd645707ec47efa33393028473c7',
+    url: 'https://learntubebucket.s3.amazonaws.com/' + users[0].email + '/7121cd645707ec47efa33393028473c7',
     type: 'editor',
     resourceType: 'text/html',
   }, {
-    userId: user._id,
+    userId: users[0]._id,
     videoId: 'rJnICByeL8Q',
     playlistId: 'PL9B61DEF63FC19BD9',
-    url: 'https://learntubebucket.s3.amazonaws.com/test@test.com/a868c19f55558a2a349193ff9d1f2fce',
+    url: 'https://learntubebucket.s3.amazonaws.com/' + users[0].email + '/a868c19f55558a2a349193ff9d1f2fce',
     type: 'editor',
     resourceType: 'text/html',
-  });
+  }]; 
+  
+  for(var i = 0; i < 4; i++) {
+    docs.push(createDoc(users[2], i));
+    docs.push(createDoc(users[3], i));
+  }
+
+  return Note.create(docs);
 };
 
-var seedClass = function(user) {
+var seedClass = function(users) {
   return Class.create([{
-    userId: user._id,
+    userId: users[0]._id,
     playlistId: 'PL2jcQseI9PWJoKqqIhOyNE9r_F4IpCf4t',
     lectures: [{
       videoId: '-SQIlNb3cWM'
@@ -57,7 +109,7 @@ var seedClass = function(user) {
       videoId: '5G229--2HJ4'
     }]
   }, {
-    userId: user._id,
+    userId: users[0]._id,
     playlistId: 'PL9B61DEF63FC19BD9',
     lectures: [{
       videoId: '1ZRb1we80kM'
@@ -67,7 +119,7 @@ var seedClass = function(user) {
       videoId: 'rJnICByeL8Q'
     }]
   }, {
-    userId: user._id,
+    userId: users[0]._id,
     playlistId: 'PLmtapKaZsgZt3g_uAPJbsMWdkVsznn_2R',
     lectures: [{
       videoId: 'W_k2EB33s7A'
@@ -75,7 +127,7 @@ var seedClass = function(user) {
       videoId: 'B5HkW--GAQ8'
     }]
   }, {
-    userId: user._id,
+    userId: users[0]._id,
     playlistId: 'PLFgquLnL59akz2EQlObY3Ac3aC68xfSU6',
     lectures: [{
       videoId: 'RgKAFK5djSk'
@@ -83,7 +135,7 @@ var seedClass = function(user) {
       videoId: '_mVJJvx04_w'
     }]
   }, {
-    userId: user._id,
+    userId: users[0]._id,
     playlistId: 'PL8fVUTBmJhHJDAtZwiIOooPRurN0hna-j',
     lectures: [{
       videoId: '1ZLN9AzxVa8'
@@ -138,13 +190,13 @@ Promise.all([
 .then(initialUser)
 .then(function(users) {
   return Promise.all([
-    seedNote(users[0]),
-    seedClass(users[0]),
+    seedNote(users),
+    seedClass(users),
     seedRating()
   ]);
 })
 .then(function() {
-  console.log('Finish seeing');
+  console.log('Finish seeding');
 })
 .catch(function(err) {
   console.error(err); 
