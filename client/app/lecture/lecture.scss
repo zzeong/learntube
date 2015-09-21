@@ -45,6 +45,19 @@ $panel-offset: 10px;
   }
 }
 
+.float-left{
+  float: left;
+}
+
+.lecture-details-item{
+  margin-bottom: 0px;
+  margin-top: 0px;
+  padding-bottom: 10px;
+}
+
+.detailsFooter{
+  padding-top: 10px; 
+}
 
 @media (max-width: $responsive-width) {
   .embed-item-limit-width {

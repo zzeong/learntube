@@ -2,105 +2,135 @@
 
 <md-content>
 
-  <div class="embed-item-limit-width">
-    <div class="embed-responsive embed-responsive-16by9">
-      <youtube-video class="embed-responsive-item" video-id="videoId" player-vars="playerVars"></youtube-video>
+<div class="embed-item-limit-width">
+  <div class="embed-responsive embed-responsive-16by9">
+    <youtube-video class="embed-responsive-item" video-id="videoId" player-vars="playerVars"></youtube-video>
+  </div>
+</div>
+
+<div class="content-width content-background content-top-mt">
+
+  <div class="video-info-panel md-padding">
+    <div layout="row" layout-wrap>
+      <div flex="750">
+        <h1 class="md-title" style="width:800px">{{ item.snippet.title }}</h1>
+      </div flex="50">
+      <div>
+        <i class="material-icons" ng-click="showDetails()">arrow_drop_down</i>
+      </div>
+    </div>
+    <div ng-show="details">
+      <p>{{ item.snippet.description }}</p>
+      <span class="lecture-details-item md-body-2">Channel : </span>
+      <span class="md-body-1">{{ item.snippet.channelTitle }}</span><br>
+      <span class="lecture-details-item">Hits : </span>
+      <span class="md-body-1">{{ item.statistics.viewCount }}</span><br>
+      <span class="lecture-det  ails-item md-body-2">Upload : </span>
+      <span class="md-body-1">{{ publishedDate }}</span><br>
+      
+      <div class="detailsFooter" layout="row" layout-wrap>
+        <div flex="700">
+          <i class="material-icons float-left fa-lg">thumb_up&nbsp</i>
+          <span class="lecture-details-item like float-left  md-body-1">{{ item.statistics.likeCount }}&nbsp&nbsp</span>
+          <i class="material-icons float-left fa-lg">thumb_down&nbsp</i>
+          <span class="lecture-details-item float-left dislike md-body-1">{{ item.statistics.dislikeCount }}</span>
+        </div>
+        <div>
+          <h5 class="lecture-details-item float-left">Download Materails</h5>
+          <i class="material-icons fa-lg">file_download</i>
+        </div>
+      </div>
+
+    </div>
+    <div class="md-actions" layout="row" layout-align="end center">
+      <md-menu>
+      <md-button class="md-raised" ng-click="$mdOpenMenu()">Note</md-button>
+
+      <md-menu-content width="3">
+      <md-menu-item>
+      <md-button ng-click="toggleEditor()">
+      <md-icon md-font-set="material-icons" md-menu-align-target>description</md-icon>
+      Web editor
+    </md-button>
+  </md-menu-item>
+
+  <md-menu-item>
+  <md-button ng-click="toggleFileUpload()">
+  <md-icon md-font-set="material-icons" md-menu-align-target>file_upload</md-icon>
+  File upload
+</md-button>
+</md-menu-item>
+</md-menu-content>
+</md-menu>
+
+<md-button class="md-raised md-primary" ng-click="completeLecture()">Complete</md-button>
+</div> 
+</div>
+
+<md-divider></md-divider>
+
+<div ng-show="isEditorOn">
+  <form ng-submit="doneNote('editor', noteContents)">
+    <textarea id="newNote" ng-model="noteContents" ckeditor></textarea>
+    <md-button type="submit" class="md-raised">Done</md-button>
+  </form>
+</div>
+
+<div class="md-padding" ng-show="isFileUploadOn">
+  <form ng-submit="doneNote('file', noteFile)">
+    <input type="file" ngf-select ng-model="noteFile"/>
+    <md-button type="submit" class="md-raised">Done</md-button>
+  </form>
+</div>
+
+<div ng-if="isLoggedIn()">
+
+  <div class="md-padding" ng-repeat="note in notes">
+    <div ng-hide="note.isEditing">
+      <div class="note-item">
+        <img class="avatar" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image"/>
+        <div class="userinfo">
+          <p class="md-subhead">{{ getCurrentUser().name }}</p>
+        </div>
+      </div>
+
+      <md-divider></md-divider>
+
+      <iframe ng-if="shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
+      <img ng-if="!shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url }}" alt="My lecture note"/>
+
+      <div class="md-actions" layout="row" layout-align="end center">
+        <md-button class="md-raised" ng-if="note.type === 'editor'" ng-click="editNote(note)">Edit</md-button>
+        <md-button class="md-raised md-warn" ng-click="deleteNote(note)">Delete</md-button>
+      </div>
+    </div>
+
+    <div ng-if="note.isEditing">
+      <form ng-submit="updateNote(note)">
+        <textarea ng-model="note.contents" ckeditor></textarea>
+        <md-button class="md-raised md-warn" ng-click="cancelEditing(note)">Cancel</md-button>
+        <md-button type="submit" class="md-raised">Update</md-button>
+      </form>
     </div>
   </div>
 
-  <div class="content-width content-background content-top-mt">
+</div>
 
-    <div class="video-info-panel md-padding">
-      <h1 class="md-title">{{ item.snippet.title }}</h1>
-      <div class="md-actions" layout="row" layout-align="end center">
-        <md-menu>
-          <md-button class="md-raised" ng-click="$mdOpenMenu()">Note</md-button>
-
-          <md-menu-content width="3">
-            <md-menu-item>
-              <md-button ng-click="toggleEditor()">
-                <md-icon md-font-set="material-icons" md-menu-align-target>description</md-icon>
-                Web editor
-              </md-button>
-            </md-menu-item>
-
-            <md-menu-item>
-              <md-button ng-click="toggleFileUpload()">
-                <md-icon md-font-set="material-icons" md-menu-align-target>file_upload</md-icon>
-                File upload
-              </md-button>
-            </md-menu-item>
-          </md-menu-content>
-        </md-menu>
-
-        <md-button class="md-raised md-primary" ng-click="completeLecture()">Complete</md-button>
-      </div> 
+<div class="others-notes-cont">
+  <div class="md-padding" ng-repeat="note in othersNotes">
+    <div class="note-item">
+      <img class="avatar" ng-src="{{ note.userId.google.image.url }}" alt="Account Image"/>
+      <div class="userinfo">
+        <p class="md-subhead">{{ note.userId.name }}</p>
+      </div>
     </div>
 
     <md-divider></md-divider>
 
-    <div ng-show="isEditorOn">
-      <form ng-submit="doneNote('editor', noteContents)">
-        <textarea id="newNote" ng-model="noteContents" ckeditor></textarea>
-        <md-button type="submit" class="md-raised">Done</md-button>
-      </form>
-    </div>
-
-    <div class="md-padding" ng-show="isFileUploadOn">
-      <form ng-submit="doneNote('file', noteFile)">
-        <input type="file" ngf-select ng-model="noteFile"/>
-        <md-button type="submit" class="md-raised">Done</md-button>
-      </form>
-    </div>
-
-    <div ng-if="isLoggedIn()">
-
-      <div class="md-padding" ng-repeat="note in notes">
-        <div ng-hide="note.isEditing">
-          <div class="note-item">
-            <img class="avatar" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image"/>
-            <div class="userinfo">
-              <p class="md-subhead">{{ getCurrentUser().name }}</p>
-            </div>
-          </div>
-
-          <md-divider></md-divider>
-
-          <iframe ng-if="shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
-          <img ng-if="!shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url }}" alt="My lecture note"/>
-
-          <div class="md-actions" layout="row" layout-align="end center">
-            <md-button class="md-raised" ng-if="note.type === 'editor'" ng-click="editNote(note)">Edit</md-button>
-            <md-button class="md-raised md-warn" ng-click="deleteNote(note)">Delete</md-button>
-          </div>
-        </div>
-
-        <div ng-if="note.isEditing">
-          <form ng-submit="updateNote(note)">
-            <textarea ng-model="note.contents" ckeditor></textarea>
-            <md-button class="md-raised md-warn" ng-click="cancelEditing(note)">Cancel</md-button>
-            <md-button type="submit" class="md-raised">Update</md-button>
-          </form>
-        </div>
-      </div>
-
-    </div>
-
-    <div class="others-notes-cont">
-      <div class="md-padding" ng-repeat="note in othersNotes">
-        <div class="note-item">
-          <img class="avatar" ng-src="{{ note.userId.google.image.url }}" alt="Account Image"/>
-          <div class="userinfo">
-            <p class="md-subhead">{{ note.userId.name }}</p>
-          </div>
-        </div>
-
-        <md-divider></md-divider>
-
-        <iframe ng-if="shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
-        <img ng-if="!shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url }}" alt="My lecture note"/>
-      </div>
-    </div>
-
+    <iframe ng-if="shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
+    <img ng-if="!shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url }}" alt="My lecture note"/>
   </div>
+</div>
+
+</div>
 </md-content>
