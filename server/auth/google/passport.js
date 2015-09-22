@@ -15,15 +15,17 @@ exports.setup = function (User, config) {
       profile._json.accessToken = accessToken;
       profile._json.refreshToken = refreshToken;
 
+      var userInfo = {
+        name: profile.displayName,
+        email: profile.emails[0].value,
+        role: 'user',
+        username: profile.username,
+        provider: 'google',
+        google: profile._json
+      };
+
       if (!user && !config.seedWithOAuth) {
-        user = new User({
-          name: profile.displayName,
-          email: profile.emails[0].value,
-          role: 'user',
-          username: profile.username,
-          provider: 'google',
-          google: profile._json
-        });
+        user = new User(userInfo);
         user.save(function(err) {
           if (err) return done(err);
           done(err, user);
@@ -31,9 +33,13 @@ exports.setup = function (User, config) {
       } else if (!user && config.seedWithOAuth) {
         User.findOne({ email: profile.emails[0].value }).exec()
         .then(function(u) {
-          user = u;
-          user.username = profile.username;
-          user.google = profile._json;
+          if(!u) {
+            user = new User(userInfo);
+          } else {
+            user = u;
+            user.username = profile.username;
+            user.google = profile._json;
+          }
 
           user.save(function(err) {
             if (err) return done(err);
