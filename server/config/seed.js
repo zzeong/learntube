@@ -12,6 +12,9 @@ var Class = require('../api/user/class/class.model');
 var Rating = require('../api/rating/rating.model');
 var mongoose = require('mongoose');
 var Promise = mongoose.Promise = require('promise');
+var aws = require('aws-sdk');
+var s3 = new aws.S3();
+var config = require('./environment');
 
 
 var initialUser = function() {
@@ -184,10 +187,10 @@ var seedUpload = function(users) {
     playlistId: 'PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx',
     lectures: [{
       videoId: 'miUYEpXDitc',
-      url: 'https://learntubebucket.s3.amazonaws.com/' + users[2].email + '/' + hashes[0],
+      url: s3.endpoint.href + config.aws.s3Bucket + '/' + users[2].email + '/uploads/' + hashes[0],
     }, {
       videoId: 'F-xd3G0PW0k',
-      url: 'https://learntubebucket.s3.amazonaws.com/' + users[2].email + '/' + hashes[1],
+      url: s3.endpoint.href + config.aws.s3Bucket + '/' + users[2].email + '/uploads/' + hashes[1],
     }],
   }]);
 };

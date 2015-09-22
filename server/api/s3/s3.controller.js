@@ -20,7 +20,7 @@ exports.credential = function(req, res) {
     ContentType: req.query.fileType, 
     ACL: 'public-read'
   }; 
-  var accessUrl = 'https://' + config.aws.s3Bucket + '.s3.amazonaws.com/' + s3Params.Key;
+  var accessUrl = s3.endpoint.href + config.aws.s3Bucket + '/' + s3Params.Key;
 
   s3.getSignedUrl('putObject', s3Params, function(err, url) { 
     if(err){ return res.status(500).send(err); }
