@@ -1,148 +1,120 @@
 
 <div ng-include="'components/toolbar/toolbar.html'"></div>
 <md-content>
+<div class="content-width">
 
-  <div class="content-width">
+  <!-- 클래스에 가장 처음 업로드된 강의 -->
 
-    <!-- 클래스에 가장 처음 업로드된 강의 -->
-
-    <div class="headContents">
-      <div class="firstLecture test">
-        <div class="embed-item-limit-width">
-          <div class="embed-responsive embed-responsive-16by9">
-            <youtube-video class="embed-responsive-item" video-id="lectureList[0].snippet.resourceId.videoId"></youtube-video>
-          </div>
-        </div>
-      </div>
-
-
-
-
-
-
-      <!-- 클래스 소개 -->
-      <div class="classIntro">
-        <div class="chIntroDiv">
-          <h1>{{classe.snippet.title}}</h1>
-
-          <!-- teacher -->
-          <div style="width:160px; float:left">
-            <div class="teacher-icon">
-              <img ng-src="assets/images/teacher.png" height="20px">
-            </div>
-            <div>
-              <h5>&nbsp&nbsp{{classe.snippet.channelTitle}}</h5>
-            </div>
-          </div>
-
-          <!-- total playtime -->
-          <div style="width:187px float:left">
-            <div class="teacher-icon">
-              <img ng-src="assets/images/playtime.png" height="20px">
-            </div>
-            <div>
-              <h5>&nbsp&nbspTotal playtime : {{ playtimeHour }}H&nbsp{{ playtimeMin }}M&nbsp{{ playtimeSec }}S</h5>
-            </div>
-          </div>
-
-          <!-- 클래스 소개 더보기 -->
-          <!--  change()에서 return한 true,false에 의해 class명을 바꾸자.  -->
-
-          <div>
-            <hm-read hmtext="{{ desc }}" hmlimit="20" hm-more-text="read more" hm-less-text="read less"></hm-read>
-          </div>
-
-
-
-
-          <!-- 연습만이 살길이다! -->
-
-
-
-          <div class="md-actions" layout="row" layout-align="end center">
-            <md-button class="md-raised" ng-show="isLoggedIn()" ng-click="addClass()">Add Class</md-button>
-          </div>
+  <div class="headContents">
+    <div class="firstLecture test">
+      <div class="embed-item-limit-width">
+        <div class="embed-responsive embed-responsive-16by9">
+          <youtube-video class="embed-responsive-item" video-id="lectureList[0].snippet.resourceId.videoId"></youtube-video>
         </div>
       </div>
     </div>
-    <md-divider></md-divider>
 
+    <!-- 클래스 소개 -->
+    <div class="classIntro">
+      <div class="chIntroDiv">
+        <h1>{{classe.snippet.title}}</h1>
 
-
-
-
-
-
-
-    <!-- 선생님 소개  -->
-    <div class="content-width content-background">
-
-      <div class="tutorIntro">
-
-        <!-- 선생님 썸네일 (채널 대표 이미지) -->
-        <div class="thumbAndTitle">
-          <div class="thumbnail">
-            <img ng-src="{{ channel.snippet.thumbnails.default.url }}"  style="border-radius:45px">
+        <!-- teacher -->
+        <div style="width:160px; float:left">
+          <div class="teacher-icon">
+            <img ng-src="assets/images/teacher.png" height="20px">
           </div>
-          <!-- 체널 타이틀 -->
           <div>
-            <h4 style="color:grey; margin-bottom:0px;">TUTOR</h4>
-            <h1 class="font-light-300">{{ channel.snippet.title }}.&nbsp</h1>
-          </div>
-
-          <br><br>
-
-          <!-- 선생님 소개 (채널 소개) 더보기 -->
-          <!--  change()에서 return한 true,false에 의해 class명을 바꾸자.  -->
-          <div class="tutorDescDiv">
-            <div>
-              <hm-read hmtext="{{ channel.snippet.description }}" hmlimit="20" hm-more-text="read more" hm-less-text="read less"></hm-read>
-            </div>
+            <h5>&nbsp&nbsp{{classe.snippet.channelTitle}}</h5>
           </div>
         </div>
-      </div>
 
-      <!-- 클래스 내의 강의 목록 -->
-      <div class="middle">
-        <h3>Lectures in this Class</h3>
-      </div>
-
-
-      <md-list>
-        <div class="lectureList"
-          infinite-scroll="loadMore(pageToken)" 
-          infinite-scroll-disabled="httpBusy || !pageToken"
-          infinite-scroll-distance="1">
-
-          <md-list-item class="md-2-line"
-            ng-repeat="lecture in lectureList"
-            ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
-
-            <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
-
-            <div class="md-list-item-text">
-              <div class="lecture-index">
-                <span>{{ $index + 1 }}.&nbsp</span>
-              </div>
-
-              <div class="lecture-title-div">
-                <div>
-                  <h3>{{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
-                </div>
-
-                <div>
-                  <span>{{ lecture.contentDetails.duration | humanable }}</span>
-                </div>
-              </div>
-
-            </div>
-          </md-list-item>
+        <!-- total playtime -->
+        <div style="width:187px float:left">
+          <div class="teacher-icon">
+            <img ng-src="assets/images/playtime.png" height="20px">
+          </div>
+          <div>
+            <h5>&nbsp&nbspTotal playtime : {{ playtimeHour }}H&nbsp{{ playtimeMin }}M&nbsp{{ playtimeSec }}S</h5>
+          </div>
         </div>
-      </md-list>
 
+        <!-- 클래스 소개 더보기 -->
+        <div>
+          <hm-read hmtext="{{ desc }}" hmlimit="20" hm-more-text="read more" hm-less-text="read less"></hm-read>
+        </div>
 
+        <div class="md-actions" layout="row" layout-align="end center">
+          <md-button class="md-raised" ng-show="isLoggedIn()" ng-click="addClass()">Add Class</md-button>
+        </div>
+      </div>
     </div>
   </div>
+  <md-divider></md-divider>
+
+  <!-- 선생님 소개  -->
+  <div class="content-width content-background">
+    <div class="tutorIntro">
+
+      <!-- 선생님 썸네일 (채널 대표 이미지) -->
+      <div class="thumbAndTitle">
+        <div class="thumbnail">
+          <img ng-src="{{ channel.snippet.thumbnails.default.url }}"  style="border-radius:45px">
+        </div>
+        <!-- 체널 타이틀 -->
+        <div>
+          <h4 style="color:grey; margin-bottom:0px;">TUTOR</h4>
+          <h1 class="font-light-300">{{ channel.snippet.title }}.&nbsp</h1>
+        </div>
+
+        <br><br>
+
+        <!-- 선생님 소개 (채널 소개) 더보기 -->
+        <div class="tutorDescDiv">
+          <div>
+            <hm-read hmtext="{{ channel.snippet.description }}" hmlimit="20" hm-more-text="read more" hm-less-text="read less"></hm-read>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- 클래스 내의 강의 목록 -->
+    <div class="middle">
+      <h3>Lectures in this Class</h3>
+    </div>
 
 
+    <md-list>
+    <div class="lectureList"
+    infinite-scroll="loadMore(pageToken)" 
+    infinite-scroll-disabled="httpBusy || !pageToken"
+    infinite-scroll-distance="1">
+
+    <md-list-item class="md-2-line"
+    ng-repeat="lecture in lectureList"
+    ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
+
+      <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
+
+      <div class="md-list-item-text">
+        <div class="lecture-index">
+          <span>{{ $index + 1 }}.&nbsp</span>
+        </div>
+
+        <div class="lecture-title-div">
+          <div>
+            <h3>{{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
+          </div>
+
+          <div>
+            <span>{{ lecture.contentDetails.duration | humanable }}</span>
+          </div>
+        </div>
+
+      </div>
+    </md-list-item>
+    </div>
+    </md-list>
+  </div>
+</div>
 </md-content>
