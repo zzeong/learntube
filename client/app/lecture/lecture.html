@@ -6,25 +6,18 @@
     <div class="embed-responsive embed-responsive-16by9">
       <youtube-video class="embed-responsive-item" video-id="videoId" player-vars="playerVars"></youtube-video>
     </div>
-    <div ng-show="details">
-      <p>{{ item.snippet.description }}</p>
-      <span class="lecture-details-item md-body-2">Channel : </span>
-      <span class="md-body-1">{{ item.snippet.channelTitle }}</span><br>
-      <span class="lecture-details-item">Hits : </span>
-      <span class="md-body-1">{{ item.statistics.viewCount }}</span><br>
-      <span class="lecture-det  ails-item md-body-2">Upload : </span>
-      <span class="md-body-1">{{ publishedDate }}</span><br>
+  </div>
 
-      <div class="detailsFooter" layout="row" layout-wrap>
-        <div flex="700">
-          <i class="material-icons float-left fa-lg icon">thumb_up</i>
-          <span class="lecture-details-item like float-left likeCount md-body-1">{{ item.statistics.likeCount }}</span>
-          <i class="material-icons float-left fa-lg icon">thumb_down</i>
-          <span class="lecture-details-item float-left dislike md-body-1">{{ item.statistics.dislikeCount }}</span>
-        </div>
-        <div>
-          <h5 class="lecture-details-item float-left">Download Materails</h5>
-          <i class="material-icons fa-lg">file_download</i>
+  <div class="content-width content-background content-top-mt">
+
+    <div class="video-info-panel md-padding">
+      <div layout="row" layout-wrap>
+        <div flex="750">
+          <h1 class="md-title" style="width:800px">{{ item.snippet.title }}</h1>
+          </div flex="50">
+          <div>
+            <md-icon md-font-set="material-icons" ng-click="showDetails()">arrow_drop_down</md-icon>
+          </div>
         </div>
         <div ng-show="details">
           <p>{{ item.snippet.description }}</p>
@@ -37,15 +30,19 @@
 
           <div class="detailsFooter" layout="row" layout-wrap>
             <div flex="700">
-              <i class="material-icons float-left fa-lg">thumb_up</i>
-              <span class="lecture-details-item like float-left md-body-1">{{ item.statistics.likeCount }}</span>
-              <i class="material-icons float-left fa-lg">thumb_down</i>
-              <span class="lecture-details-item float-left dislike md-body-1">{{ item.statistics.dislikeCount }}</span>
+              <span>
+                <md-icon md-font-set="material-icons">thumb_up</md-icon>
+                <span class="lecture-details-item md-body-2">{{ item.statistics.likeCount }}</span>
+              </span>
+              <span>
+                <md-icon md-font-set="material-icons">thumb_down</md-icon>
+                <span class="lecture-details-item md-body-2">{{ item.statistics.dislikeCount }}</span>
+              </span>
             </div>
-            <div>
-              <h5 class="lecture-details-item float-left">Download Materails</h5>
-              <i class="material-icons fa-lg">file_download</i>
-            </div>
+
+            <md-button>
+              Download handout <md-icon md-font-set="material-icons">file_download</md-icon>
+            </md-button>
           </div>
 
         </div>
