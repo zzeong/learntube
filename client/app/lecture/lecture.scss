@@ -57,6 +57,14 @@ $panel-offset: 10px;
 
 .detailsFooter{
   padding-top: 10px; 
+} 
+
+.icon{
+  padding-top: 2px;
+}
+
+.likeCount{
+  padding-right: 10px;
 }
 
 @media (max-width: $responsive-width) {

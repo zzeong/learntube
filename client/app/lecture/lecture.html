@@ -30,9 +30,9 @@
       
       <div class="detailsFooter" layout="row" layout-wrap>
         <div flex="700">
-          <i class="material-icons float-left fa-lg">thumb_up&nbsp</i>
-          <span class="lecture-details-item like float-left  md-body-1">{{ item.statistics.likeCount }}&nbsp&nbsp</span>
-          <i class="material-icons float-left fa-lg">thumb_down&nbsp</i>
+          <i class="material-icons float-left fa-lg icon">thumb_up</i>
+          <span class="lecture-details-item like float-left likeCount md-body-1">{{ item.statistics.likeCount }}</span>
+          <i class="material-icons float-left fa-lg icon">thumb_down</i>
           <span class="lecture-details-item float-left dislike md-body-1">{{ item.statistics.dislikeCount }}</span>
         </div>
         <div>
@@ -44,28 +44,28 @@
     </div>
     <div class="md-actions" layout="row" layout-align="end center">
       <md-menu>
-      <md-button class="md-raised" ng-click="$mdOpenMenu()">Note</md-button>
+        <md-button class="md-raised" ng-click="$mdOpenMenu()">Note</md-button>
 
-      <md-menu-content width="3">
-      <md-menu-item>
-      <md-button ng-click="toggleEditor()">
-      <md-icon md-font-set="material-icons" md-menu-align-target>description</md-icon>
-      Web editor
-    </md-button>
-  </md-menu-item>
+        <md-menu-content width="3">
+          <md-menu-item>
+            <md-button ng-click="toggleEditor()">
+              <md-icon md-font-set="material-icons" md-menu-align-target>description</md-icon>
+               Web editor
+            </md-button>
+          </md-menu-item>
+        <md-menu-item>
+      
+        <md-button ng-click="toggleFileUpload()">
+        <md-icon md-font-set="material-icons" md-menu-align-target>file_upload</md-icon>
+        File upload
+        </md-button>
+        </md-menu-item>
+        </md-menu-content>
+      </md-menu>
 
-  <md-menu-item>
-  <md-button ng-click="toggleFileUpload()">
-  <md-icon md-font-set="material-icons" md-menu-align-target>file_upload</md-icon>
-  File upload
-</md-button>
-</md-menu-item>
-</md-menu-content>
-</md-menu>
-
-<md-button class="md-raised md-primary" ng-click="completeLecture()">Complete</md-button>
-</div> 
-</div>
+      <md-button class="md-raised md-primary" ng-click="completeLecture()">Complete</md-button>
+    </div> 
+  </div>
 
 <md-divider></md-divider>
 
