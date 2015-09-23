@@ -17,7 +17,7 @@ angular.module('learntubeApp')
     );
   };
 
-  var uploadFile = function(urls, file) {
+  var uploadFile = function(file, urls) {
     var deferred = $q.defer(); 
     var xhr = new XMLHttpRequest();
     xhr.file = file;
@@ -37,14 +37,11 @@ angular.module('learntubeApp')
     return deferred.promise;
   };
 
-  var postToBack = function(url, lecture) {
+  var postToBack = function(params) {
     var deferred = $q.defer();
 
-    $http.post('/api/users/' + Auth.getCurrentUser()._id + '/uploads', {
-      videoId: lecture.snippet.resourceId.videoId,
-      playlistId: $scope.playlistId,
-      url: url
-    }).then(function(res) {
+    $http.post('/api/users/' + Auth.getCurrentUser()._id + '/uploads', params)
+    .then(function(res) {
       deferred.resolve(res.data);
     }, function() {
       deferred.reject(); 
@@ -139,10 +136,15 @@ angular.module('learntubeApp')
         $scope.attachFile = function(file) {
           getSignedUrl(file)
           .then(function(s3Urls) {
-            return uploadFile(s3Urls, file);
+            return uploadFile(file, s3Urls);
           }, onRejected)
           .then(function(url) {
-            return postToBack(url, lecture);
+            return postToBack({
+              videoId: lecture.snippet.resourceId.videoId,
+              playlistId: $scope.playlistId,
+              url: url,
+              fileName: file.name
+            });
           }, onRejected)
           .then(function(uploaded) {
             $mdDialog.hide(uploaded); 

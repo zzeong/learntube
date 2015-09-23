@@ -187,9 +187,11 @@ var seedUpload = function(users) {
     playlistId: 'PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx',
     lectures: [{
       videoId: 'miUYEpXDitc',
+      fileName: 'just.txt',
       url: s3.endpoint.href + config.aws.s3Bucket + '/' + users[2].email + '/uploads/' + hashes[0],
     }, {
       videoId: 'F-xd3G0PW0k',
+      fileName: 'just.pdf',
       url: s3.endpoint.href + config.aws.s3Bucket + '/' + users[2].email + '/uploads/' + hashes[1],
     }],
   }]);

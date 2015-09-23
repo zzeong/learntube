@@ -48,6 +48,7 @@ exports.create = function(req, res) {
   .then(function(upload) {
     upload.lectures.push({
       videoId: req.body.videoId, 
+      fileName: req.body.fileName,
       url: req.body.url
     });
     return upload.save();

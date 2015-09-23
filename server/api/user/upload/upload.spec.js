@@ -60,7 +60,8 @@ describe('REST API:', function() {
       .send({
         videoId: 'ASDF',
         playlistId: 'QWER',
-        url: 'http://foo.com'
+        url: 'http://foo.com',
+        fileName: 'foo.txt',
       })
       .expect(201)
       .expect('Content-Type', /json/)
@@ -88,7 +89,8 @@ describe('REST API:', function() {
         lectures: [{
           videoId: 'ASDF',
           playlistId: 'QWER',
-          url: 'http://foo.com'
+          url: 'http://foo.com',
+          fileName: 'foo.txt',
         }]
       });
 
@@ -99,7 +101,8 @@ describe('REST API:', function() {
         .send({
           videoId: 'ASDF2',
           playlistId: 'PL34d',
-          url: 'http://fooo.com'
+          url: 'http://fooo.com',
+          fileName: 'foo2.txt',
         })
         .expect(201)
         .expect('Content-Type', /json/)
