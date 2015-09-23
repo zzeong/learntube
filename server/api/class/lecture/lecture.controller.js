@@ -47,7 +47,7 @@ exports.getHandout = function(req, res) {
     if(!lecture.length) { return res.status(404).send('Not found'); }
     lecture = lecture[0];
 
-    var filePath = '.tmp/' + lecture.fileName;
+    var filePath = './' + lecture.fileName;
     var writeStream = fs.createWriteStream(filePath);
     var s3Path = url.parse(lecture.url).pathname;
 

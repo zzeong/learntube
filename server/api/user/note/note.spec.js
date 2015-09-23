@@ -7,6 +7,7 @@ var mongoose = require('mongoose');
 var User = require('../user.model');
 var Note = require('./note.model');
 var Rating = require('../../rating/rating.model');
+var path = require('path');
 
 var Promise = mongoose.Promise = require('promise');
 
@@ -27,7 +28,7 @@ describe('REST API:', function() {
       var user = new User({
         provider: 'local',
         name: 'Fake User',
-        email: 'test@test.com',
+        email: './test@test.com',
         password: 'password',
       });
       return user.save();
@@ -71,7 +72,7 @@ describe('REST API:', function() {
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
-      .attach('file', 'test/fixtures/dummy.html')
+      .attach('file', './test/fixtures/dummy.html')
       .end(function(err, res) {
         if(err) { return done(err); } 
         res.body.should.have.property('_id');
@@ -86,7 +87,7 @@ describe('REST API:', function() {
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
-      .attach('file', 'test/fixtures/dummy.html')
+      .attach('file', './test/fixtures/dummy.html')
       .expect(201)
       .expect('Content-Type', /json/)
       .end(function(err, res) {
@@ -115,7 +116,7 @@ describe('REST API:', function() {
         .field('playlistId', playlistId)
         .field('videoId', videoId)
         .field('type', 'editor')
-        .attach('file', 'test/fixtures/dummy.html')
+        .attach('file', './test/fixtures/dummy.html')
         .expect(201)
         .expect('Content-Type', /json/)
         .end(function(err, res) {
@@ -145,7 +146,7 @@ describe('REST API:', function() {
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
-      .attach('file', 'test/fixtures/dummy.html')
+      .attach('file', './test/fixtures/dummy.html')
       .end(function(err, res) {
         if(err) { return done(err); } 
         nid = res.body._id;
@@ -218,7 +219,7 @@ describe('REST API:', function() {
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
-      .attach('file', 'test/fixtures/dummy.html')
+      .attach('file', './test/fixtures/dummy.html')
       .end(function(err, res) {
         if(err) { return done(err); } 
         nid = res.body._id;
@@ -241,7 +242,7 @@ describe('REST API:', function() {
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
-      .attach('file', 'test/fixtures/dummy.html')
+      .attach('file', './test/fixtures/dummy.html')
       .expect(201)
       .expect('Content-Type', /json/)
       .end(function(err, res) {
@@ -262,7 +263,7 @@ describe('REST API:', function() {
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
-      .attach('file', 'test/fixtures/dummy.html')
+      .attach('file', './test/fixtures/dummy.html')
       .end(function(err, res) {
         if(err) { return done(err); } 
         nid = res.body._id;
