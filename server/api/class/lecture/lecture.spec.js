@@ -50,8 +50,6 @@ describe('REST API:', function() {
 
 
   describe('GET /api/classes/:pid/lectures/:vid/get-handout', function() {
-    this.timeout(15000);
-
     before(function(done) {
       Upload.create([{
         userId: id,

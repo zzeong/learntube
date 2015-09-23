@@ -19,7 +19,6 @@ var s3 = knox.createClient({
 
 describe('REST API:', function() {
   var user1, user2;
-  this.timeout(5000);
 
   before(function(done) {
     User.remove().exec(); 
@@ -58,7 +57,6 @@ describe('REST API:', function() {
   });
 
   describe('GET /api/notes', function() {
-    this.timeout(15000);
     var params = {
       playlistId: 'asdf',
     };

@@ -14,8 +14,6 @@ var Promise = mongoose.Promise = require('promise');
 describe('REST API:', function() {
   var id, noteContents, videoId, playlistId;
 
-  this.timeout(15000);
-
   before(function(done){
     videoId = 'sMKoNBRZM1M';
     playlistId = 'SHEWILLLOVEME';

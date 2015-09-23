@@ -33,7 +33,6 @@ describe('REST API:', function() {
   });
 
   describe('DELETE /api/users/:id/uploads/lectures', function() {
-    this.timeout(5000);
     var upload;
 
     beforeEach(function(done) {
