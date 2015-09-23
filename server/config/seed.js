@@ -104,15 +104,15 @@ var seedNote = function(users) {
 
 var seedClass = function(users) {
   return Class.create([{
-    userId: users[0]._id,
-    playlistId: 'PL2jcQseI9PWJoKqqIhOyNE9r_F4IpCf4t',
+    userId: users[3]._id,
+    playlistId: 'PLeNYl43VgxfUsY23CygyCtE1MKw8Vy4e8',
     lectures: [{
-      videoId: '-SQIlNb3cWM'
+      videoId: 'RKhsHGfrFmY'
     }, {
-      videoId: '5G229--2HJ4'
+      videoId: 'rJnICByeL8Q'
     }]
   }, {
-    userId: users[0]._id,
+    userId: users[3]._id,
     playlistId: 'PL9B61DEF63FC19BD9',
     lectures: [{
       videoId: '1ZRb1we80kM'
@@ -122,7 +122,7 @@ var seedClass = function(users) {
       videoId: 'rJnICByeL8Q'
     }]
   }, {
-    userId: users[0]._id,
+    userId: users[3]._id,
     playlistId: 'PLmtapKaZsgZt3g_uAPJbsMWdkVsznn_2R',
     lectures: [{
       videoId: 'W_k2EB33s7A'
@@ -130,7 +130,7 @@ var seedClass = function(users) {
       videoId: 'B5HkW--GAQ8'
     }]
   }, {
-    userId: users[0]._id,
+    userId: users[3]._id,
     playlistId: 'PLFgquLnL59akz2EQlObY3Ac3aC68xfSU6',
     lectures: [{
       videoId: 'RgKAFK5djSk'
@@ -138,7 +138,7 @@ var seedClass = function(users) {
       videoId: '_mVJJvx04_w'
     }]
   }, {
-    userId: users[0]._id,
+    userId: users[3]._id,
     playlistId: 'PL8fVUTBmJhHJDAtZwiIOooPRurN0hna-j',
     lectures: [{
       videoId: '1ZLN9AzxVa8'

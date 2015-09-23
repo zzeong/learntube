@@ -1,71 +1,95 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('WatchedLectureListCtrl', function($scope, $stateParams, Auth, $state, $http, $log, ClassAPI, $filter, NoteAPI, GApi, GoogleConst) {
+.controller('WatchedLectureListCtrl', function($scope, $stateParams, Auth, $state, $http, $log, ClassAPI, $filter, NoteAPI, GApi, GoogleConst, $q) {
   $scope.playlistId = $stateParams.pid;
+
+  $scope.loadMore = function(token) {
+    $scope.httpBusy = true;
+
+    GApi.execute('youtube', 'playlistItems.list', {
+      key: GoogleConst.browserKey,
+      part: 'snippet',
+      maxResults: 20,
+      playlistId: $scope.playlistId,
+      fields: 'items(contentDetails,snippet,status),nextPageToken',
+      pageToken: token
+    })
+    .then(function(res) {
+      $scope.pageToken = res.nextPageToken || null;
+      return applyDuration(res.items);
+    })
+    .then(function(list) {
+      $scope.lectureList = $scope.lectureList.concat(list);
+      $scope.httpBusy = false;
+    });
+  };
+
+  var applyDuration = function(list) {
+    var deferred = $q.defer();
+    var ids = list.map(function(item) {
+      return item.snippet.resourceId.videoId; 
+    }).join(',');
+
+    GApi.execute('youtube', 'videos.list', {
+      key: GoogleConst.browserKey,
+      part: 'contentDetails',
+      id: ids,
+      fields: 'items(contentDetails(duration))',
+    }).then(function(response) {
+      list.forEach(function(item, i) {
+        item.contentDetails = response.items[i].contentDetails; 
+      }); 
+      deferred.resolve(list);
+    }, deferred.reject);
+
+    return deferred.promise;
+  };
+
+  var separateLecture = function(identity, specificLecture){
+
+    for(var k=0; k<$scope.lectureList.length; k++){
+      for(var s=0; s<specificLecture.length; s++){
+        if($scope.lectureList[k].snippet.resourceId.videoId === specificLecture[s].videoId){
+          if(identity === 'highlight'){
+            $scope.lectureList[k].highlight = true;
+          }else{
+            $scope.lectureList[k].noteIconVisible = true;
+          }
+        }
+      }
+    }
+
+  };
 
   if(!Auth.isLoggedIn()) { $state.go('Login'); }
 
   // 강의들을 가져오기 위한 api사용
   GApi.execute('youtube', 'playlistItems.list', {
     key: GoogleConst.browserKey, 
-    part: 'snippet,status',
+    part: 'snippet,status,contentDetails',
     maxResults: 20,
     playlistId: $scope.playlistId,
-    fields: 'items(snippet,status),nextPageToken',
+    fields: 'items(contentDetails,snippet,status),nextPageToken',
   })
   .then(function(res) {
-    $scope.lectureList = res.items;
+    $scope.pageToken = res.nextPageToken || null;
+    return applyDuration(res.items);
+  })
+  .then(function(list){
+    $scope.lectureList = list;
+    $scope.httpBusy = false;
 
-    // lecArrSorting구성
-    $scope.lecArrSorting = _.sortBy($scope.lectureList, function(el){
-      return el.snippet.publishedAt;
-    });
-
-
-    // 동영상 번호 부여 (오래된 동영상 -> 최근 동영상)
-    for(var i=0; i<$scope.lecArrSorting.length; i++){
-      $scope.lecArrSorting[i].index = i+1;
-      // 동영상 비교하기 위한 속성 부여
-      $scope.lecArrSorting[i].highlight = false;
-      $scope.lecArrSorting[i].noteIconVisible = false;
-
-      // duration에 humanable filter적용
-      $scope.lecArrSorting[i].contentDetails.duration = $filter('humanable')($scope.lecArrSorting[i].contentDetails.duration);
-
+    // setting elements - highlight & noteIconVisible
+    for(var i=0; i<$scope.lectureList.length; i++){
+      $scope.lectureList[i].highlight = false;
+      $scope.lectureList[i].noteIconVisible = false;
     }
-
-
 
     // DB에서 시청한 동영상 목록 가져오기 (seenLectures)
     ClassAPI.query({playlistId: $scope.playlistId}, function(response){
-      $scope.watchedLectures = response[0].lectures; // response = json형태의 lectures
-
-      // highlight처리를 위한 메소드
-      $scope.highlightLecture($scope.lecArrSorting, $scope.watchedLectures);
-
-
-    }, function(err){
-      $log.error(err);
-    });
-
-
-    // DB에서 필기 목록 가져오기 (Note)
-    NoteAPI.query({playlistId: $scope.playlistId}, function(response){
-
-      var notenLectures = [];
-      for(var i=0; i<response.length; i++){
-        notenLectures[i] = response[i].videoId;
-      }
-
-      // 필기 아이콘 처리를 위한 비교
-      for(var k=0; k<$scope.lecArrSorting.length; k++){
-        for(var s=0; s<notenLectures.length; s++){
-          if($scope.lecArrSorting[k].snippet.resourceId.videoId === notenLectures[s]){
-            $scope.lecArrSorting[k].noteIconVisible = true;
-          }
-        }
-      }
+      $scope.watchedLectures = response[0].lectures;
+      separateLecture('highlight', $scope.watchedLectures);
     }, function(err){
       $log.error(err);
     });
@@ -85,17 +109,6 @@ angular.module('learntubeApp')
       return $scope.selectedLecture === lecture;
     };
 
-    $scope.highlightLecture = function(lectureList, watchedLectureList){
-      // Highlight처리를 위한 비교
-      for(var i=0; i<lectureList.length; i++){
-        for(var s=0; s<watchedLectureList.length; s++){
-          if(lectureList[i].snippet.resourceId.videoId === watchedLectureList[s].videoId){
-            // 여기에서 highlight = true로 변경
-            lectureList[i].highlight = true;
-          }
-        }
-      }
-    };
 
   });
 
