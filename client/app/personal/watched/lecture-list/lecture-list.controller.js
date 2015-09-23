@@ -94,6 +94,17 @@ angular.module('learntubeApp')
       $log.error(err);
     });
 
+
+    // DB에서 필기 목록 가져오기 (Note)
+    NoteAPI.query({playlistId: $scope.playlistId}, function(response){
+      $scope.haveNoteLectures = response;
+      console.log($scope.haveNoteLectures);
+      separateLecture('noteIconVisible', $scope.haveNoteLectures);
+      console.log($scope.lectureList);
+    }, function(err){
+      $log.error(err);
+    });
+
     $scope.showNote = function(lecture) {
       $scope.selectedLecture = lecture;
       if(_.has(lecture, 'notes')) { return; }
