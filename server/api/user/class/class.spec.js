@@ -30,32 +30,12 @@ describe('REST API:', function() {
         };
       });
 
-      it('should return 201', function(done) {
-        request(app)
-        .post('/api/users/' + id + '/classes/')
-        .send(params)
-        .expect(201)
-        .end(function(err, res) {
-          if(err) { return done(err); }
-          done(); 
-        });
-      });
-
-      it('should return json', function(done) {
-        request(app)
-        .post('/api/users/' + id + '/classes/')
-        .send(params)
-        .expect('Content-Type', /json/)
-        .end(function(err, res) {
-          if(err) { return done(err); }
-          done(); 
-        });
-      });
-
       it('should return saved class', function(done) {
         request(app)
         .post('/api/users/' + id + '/classes/')
         .send(params)
+        .expect(201)
+        .expect('Content-Type', /json/)
         .end(function (err, res) {
           if(err) { return done(err); } 
           res.body.should.have.property('_id');
@@ -88,30 +68,11 @@ describe('REST API:', function() {
       .catch(function(err) { done(err); });
     });
 
-    it('should return 200', function(done) {
-      request(app)
-      .get('/api/users/' + id + '/classes/')
-      .expect(200)
-      .end(function(err, res) {
-        if(err) { return done(err); }
-        done();
-      });
-    });
-
-    it('should return JSON array', function(done) {
-      request(app)
-      .get('/api/users/' + id + '/classes/')
-      .expect('Content-Type', /json/)
-      .end(function(err, res) {
-        if(err) { return done(err); } 
-        res.body.should.be.instanceof(Array);
-        done();
-      });
-    });
-
     it('should get all classes that have 2 items', function(done) {
       request(app) 
       .get('/api/users/' + id + '/classes/')
+      .expect(200)
+      .expect('Content-Type', /json/)
       .end(function(err, res) {
         if(err) { return done(err); } 
         res.body.should.have.length(2);
@@ -139,19 +100,10 @@ describe('REST API:', function() {
       .catch(function(err) { done(err); });
     });
 
-    it('should return 204 when class is removed', function(done) {
-      request(app)
-      .delete('/api/users/' + id + '/classes/' + cid)
-      .expect(204)
-      .end(function(err, res) {
-        if(err) { return done(err); }
-        done(); 
-      });
-    });
-
     it('should makes Class collection has no docs after class is removed', function(done) {
       request(app)
       .delete('/api/users/' + id + '/classes/' + cid)
+      .expect(204)
       .end(function(err, res) {
         if(err) { return done(err); } 
         Class.find({}).exec()
