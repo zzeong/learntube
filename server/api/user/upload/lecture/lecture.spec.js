@@ -9,27 +9,40 @@ var Upload = require('../upload.model');
 var config = require('../../../../config/environment');
 var knox = require('knox');
 
+var Promise = mongoose.Promise = require('promise');
+
+
 describe('REST API:', function() {
-  var user;
+  var id;
 
   before(function(done) {
-    User.remove().exec().then(function() {
-      user = new User({
+    Promise.all([
+      User.remove({}),
+      Upload.remove({})
+    ])
+    .then(function() {
+      var user = {
         name: 'Fake User',
         email: 'test@test.com',
         password: 'password'
-      });
+      };
 
-      user.save(function() {
-        done();
-      });
-    });
+      return User.create(user);
+    })
+    .then(function(user) {
+      id = user._id;
+      done();
+    })
+    .catch(function(err) { done(err); });
   });
 
   after(function(done) {
-    User.remove().exec().then(function() {
-      done(); 
-    });
+    Promise.all([
+      User.remove({}),
+      Upload.remove({})
+    ])
+    .then(function() { done(); })
+    .catch(function(err) { done(err); });
   });
 
   describe('DELETE /api/users/:id/uploads/lectures', function() {
@@ -42,7 +55,8 @@ describe('REST API:', function() {
         bucket: config.aws.s3Bucket
       });
 
-      Upload.remove().exec().then(function() {
+      Upload.remove({})
+      .then(function() {
         var string = 'hello';
 
         var request = awsClient.put('/test/foo.txt', {
@@ -54,7 +68,7 @@ describe('REST API:', function() {
         request.on('response', function(res) {
           if(200 === +res.statusCode) {
             upload = new Upload({
-              userId: user._id,
+              userId: id,
               playlistId: 'PL34d',
               lectures: [{
                 videoId: 'ASDF',
@@ -73,14 +87,12 @@ describe('REST API:', function() {
     });
 
     afterEach(function(done) {
-      Upload.remove().exec().then(function() {
-        done(); 
-      });
+      Upload.remove({}).then(function() { done(); });
     });
 
     it('should return 204 when lecture sub-doc is removed', function(done) {
       request(app)
-      .delete('/api/users/' + user._id + '/uploads/' + upload._id + '/lectures/' + upload.lectures[0]._id)
+      .delete('/api/users/' + id + '/uploads/' + upload._id + '/lectures/' + upload.lectures[0]._id)
       .expect(204)
       .end(function(err, res) {
         if(err) { return done(err); } 

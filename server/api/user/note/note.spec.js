@@ -19,9 +19,9 @@ describe('REST API:', function() {
     playlistId = 'SHEWILLLOVEME';
 
     Promise.all([
-      User.remove({}).exec(), 
-      Note.remove({}).exec(),
-      Rating.remove({}).exec()
+      User.remove({}),
+      Note.remove({}),
+      Rating.remove({})
     ])
     .then(function() {
       var user = new User({
@@ -40,9 +40,9 @@ describe('REST API:', function() {
 
   after(function(done) {
     Promise.all([
-      User.remove({}).exec(),
-      Note.remove({}).exec(),
-      Rating.remove({}).exec()
+      User.remove({}),
+      Note.remove({}),
+      Rating.remove({})
     ]).then(function() {
       done(); 
     });
@@ -57,8 +57,11 @@ describe('REST API:', function() {
       .delete('/api/users/' + id + '/notes/' + nid)
       .end(function(err, res) {
         if(err) { return done(err); }
-        Rating.remove({}).exec();
-        done(); 
+
+        Rating.remove({})
+        .then(function() {
+          done(); 
+        });
       });
     });
 
@@ -89,12 +92,14 @@ describe('REST API:', function() {
       .end(function(err, res) {
         if(err) { return done(err); } 
         nid = res.body._id;
-        Rating.findOne({ playlistId: playlistId }, function(err, rating) {
-          if(err) { return done(err); }
+
+        Rating.findOne({ playlistId: playlistId }).exec()
+        .then(function(rating) {
           should.exist(rating); 
           rating.points.should.be.equal(1);
           done();
-        });
+        })
+        .catch(function(err) { done(err); });
       });
     });
 
@@ -116,11 +121,13 @@ describe('REST API:', function() {
         .end(function(err, res) {
           if(err) { return done(err); } 
           nid = res.body._id;
-          Rating.findOne({ playlistId: playlistId }, function(err, rating) {
-            if(err) { return done(err); }
+
+          Rating.findOne({ playlistId: playlistId }).exec()
+          .then(function(rating) {
             rating.points.should.be.equal(2);
             done();
-          });
+          })
+          .catch(function(err) { done(err); });
         });
       });
 
@@ -183,7 +190,7 @@ describe('REST API:', function() {
           done();
         });
       });
-      
+
       describe('/get-contents', function() {
         it('should return note contents equal to contents which have been saved when note is got', function(done) {
           request(app)
@@ -265,12 +272,10 @@ describe('REST API:', function() {
 
     afterEach(function(done) {
       Promise.all([
-        Note.remove({}).exec(),
-        Rating.remove({}).exec()
+        Note.remove({}),
+        Rating.remove({})
       ])
-      .then(function() {
-        done();
-      });
+      .then(function() { done(); });
     });
 
     it('should return 204 status code when note is removed', function(done) {
@@ -297,11 +302,12 @@ describe('REST API:', function() {
         .end(function(err, res) {
           if(err) { return done(err); } 
 
-          Rating.findOne({ playlistId: playlistId }, function(err, rating) {
-            if(err) { return done(err); }
+          Rating.findOne({ playlistId: playlistId }).exec()
+          .then(function(rating) {
             rating.points.should.be.equal(2);
             done();
-          });
+          })
+          .catch(function(err) { done(err); });
         });
       });
     });
@@ -313,11 +319,12 @@ describe('REST API:', function() {
       .end(function(err, res) {
         if(err) { return done(err); } 
 
-        Rating.findOne({ playlistId: playlistId }, function(err, rating) {
-          if(err) { return done(err); } 
+        Rating.findOne({ playlistId: playlistId }).exec()
+        .then(function(rating) {
           should.not.exist(rating);
           done();
-        });
+        })
+        .catch(function(err) { done(err); });
       });
     });
   });

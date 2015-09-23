@@ -6,26 +6,23 @@ var request = require('supertest');
 var User = require('../user/user.model');
 
 describe('REST API:', function() {
-  var user;
-
   before(function(done) {
-    User.remove().exec().then(function() {
-      user = new User({
+    User.remove({})
+    .then(function() {
+      var user = {
         name: 'Fake User',
         email: 'test@test.com',
         password: 'password'
-      });
+      };
       
-      user.save(function() {
-        done();
-      });
-    });
+      return User.create(user);
+    })
+    .then(function() { done(); })
+    .catch(function(err) { done(err); });
   });
 
   after(function(done) {
-    User.remove().exec().then(function() {
-      done(); 
-    });
+    User.remove({}).then(function() { done(); });
   });
 
 

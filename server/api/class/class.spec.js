@@ -15,7 +15,7 @@ describe('REST API:', function() {
       }; 
     });
 
-    Rating.remove()
+    Rating.remove({})
     .then(function() {
       return Rating.create(arr);
     })
@@ -23,9 +23,8 @@ describe('REST API:', function() {
   });
 
   after(function(done) {
-    Rating.remove().exec().then(function() {
-      done(); 
-    }); 
+    Rating.remove({})
+    .then(function() { done(); }); 
   });
   
   describe('GET /api/classes/get-tops', function() {

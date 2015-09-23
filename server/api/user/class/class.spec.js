@@ -71,10 +71,8 @@ describe('REST API:', function() {
   });
 
   describe('GET /api/users/:id/classes/', function() {
-    var classes, cid;
-
     beforeEach(function(done) {
-      classes = [{
+      var classes = [{
         userId: id,
         playlistId: 'Q1W2'
       }, {
@@ -82,11 +80,12 @@ describe('REST API:', function() {
         playlistId: 'E3R4'
       }];
 
-      Class.remove().exec(); 
-      Class.create(classes, function(err, res) {
-        if(err) { return done(err); }
-        done();
-      });
+      Class.remove({})
+      .then(function() {
+        return Class.create(classes); 
+      })
+      .then(function() { done(); })
+      .catch(function(err) { done(err); });
     });
 
     it('should return 200', function(done) {
@@ -122,21 +121,22 @@ describe('REST API:', function() {
   });
 
   describe('DELETE /api/users/:id/classes/:cid', function() {
-    var classData, cid;
+    var cid;
 
     beforeEach(function(done) {
-      Class.remove().exec();
-
-      classData = {
-        userId: id,
-        playlistId: 'ZZZ'
-      };
-
-      var classe = new Class(classData);
-      classe.save(function(err, savedClass) {
-        cid = savedClass._id;
-        done();
-      });
+      Class.remove({})
+      .then(function() {
+        var classe = new Class({
+          userId: id,
+          playlistId: 'ZZZ'
+        });
+        return classe.save();
+      })
+      .then(function(classe) {
+        cid = classe._id;
+        done(); 
+      })
+      .catch(function(err) { done(err); });
     });
 
     it('should return 204 when class is removed', function(done) {
@@ -154,10 +154,12 @@ describe('REST API:', function() {
       .delete('/api/users/' + id + '/classes/' + cid)
       .end(function(err, res) {
         if(err) { return done(err); } 
-        Class.find({}, function(err, classes) {
+        Class.find({}).exec()
+        .then(function(classes) {
           classes.should.have.length(0);
           done();
-        });
+        })
+        .catch(function(err) { done(err); });
       });
     });
 

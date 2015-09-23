@@ -16,36 +16,32 @@ describe('REST API:', function() {
 
   before(function(done) {
     Promise.all([
-      User.remove().exec(),
-      Upload.remove().exec()
+      User.remove({}),
+      Upload.remove({})
     ])  
     .then(function() {
-      var user = new User({
+      var user = {
         provider: 'local',
         name: 'Fake User',
         email: 'test@test.com',
         password: 'password',
-      });
-      return user.save();
+      };
+      return User.create(user);
     })
     .then(function(user) {
       id = user._id;
       done();
     })
-    .catch(done);
+    .catch(function(err) { done(err); });
   });
 
   after(function(done) {
     Promise.all([
-      User.remove().exec(),
-      Upload.remove().exec()
+      User.remove({}),
+      Upload.remove({})
     ])
-    .then(function() {
-      done(); 
-    })
-    .catch(function(err) {
-      done(err); 
-    });
+    .then(function() { done(); })
+    .catch(function(err) { done(err); });
   });
 
 
@@ -64,12 +60,8 @@ describe('REST API:', function() {
           url: 'https://s3.amazonaws.com/learntubebucket/learntubebot01%40gmail.com/uploads/2bd6387e8333e63dec3e1cea9617accb' 
         }],
       }])
-      .then(function() {
-        done(); 
-      })
-      .catch(function(err) {
-        done(err); 
-      });
+      .then(function() { done(); })
+      .catch(function(err) { done(err); });
     });
 
 

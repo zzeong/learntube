@@ -17,36 +17,43 @@ var userData = {
 };
 
 describe('REST API:', function() {
-  var user;
   var id = mongoose.Types.ObjectId();
 
   describe('POST /api/users/:id/classes/:cid/lectures/', function() {
     var classData, cid;
-    var params = {
-      playlistId: 'YYY',
-      videoId: 'XXX'
-    };
+
+    before(function(done) {
+      Class.remove({})
+      .then(function() { done(); })
+      .catch(function(err) { done(err); });
+    });
+
+    after(function(done) {
+      Class.remove({})
+      .then(function() { done(); })
+      .catch(function(err) { done(err); });
+    });
+
 
     describe('when lecture is save', function() {
+      var params;
 
       before(function() {
-        params = {
-          videoId: 'XXX'
-        };
+        params = { videoId: 'XXX' };
       });
 
       beforeEach(function(done) {
-        Class.remove().exec(); 
-        classData = {
+        var classe = {
           userId: id,
           playlistId: 'ZZZ',
         };
 
-        var classe = new Class(classData);
-        classe.save(function(err, savedClass) {
-          cid = savedClass._id;
+        Class.create(classe)
+        .then(function(created) {
+          cid = created._id;
           done();
-        });
+        })
+        .catch(function(err) { done(err); });
       });
 
       it('should return class which saved lecture', function(done) {

@@ -4,6 +4,9 @@ var should = require('should');
 var app = require('../../app');
 var User = require('./user.model');
 
+var mongoose = require('mongoose');
+var Promise = mongoose.Promise = require('promise');
+
 var user = new User({
   provider: 'local',
   name: 'Fake User',
@@ -13,29 +16,27 @@ var user = new User({
 
 describe('User Model', function() {
   before(function(done) {
-    // Clear users before testing
-    User.remove().exec().then(function() {
-      done();
-    });
+    User.remove({}).then(function() { done(); });
   });
 
   afterEach(function(done) {
-    User.remove().exec().then(function() {
-      done();
-    });
+    User.remove({}).then(function() { done(); });
   });
 
   it('should begin with no users', function(done) {
-    User.find({}, function(err, users) {
+    User.find({})
+    .then(function(users) {
       users.should.have.length(0);
       done();
-    });
+    })
+    .catch(function(err) { done(err); });
   });
 
   it('should fail when saving a duplicate user', function(done) {
     user.save(function() {
       var userDup = new User(user);
-      userDup.save(function(err) {
+      userDup.save()
+      .catch(function(err) {
         should.exist(err);
         done();
       });
@@ -44,7 +45,8 @@ describe('User Model', function() {
 
   it('should fail when saving without an email', function(done) {
     user.email = '';
-    user.save(function(err) {
+    user.save()
+    .catch(function(err) {
       should.exist(err);
       done();
     });

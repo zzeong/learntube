@@ -10,17 +10,11 @@ var Upload = require('./upload.model');
 mongoose.Promise = require('promise');
 
 
-var just = function(done) {
-  return function(results) {
-    done(); 
-  };
-};
-
 describe('REST API:', function() {
   var user;
 
   before(function(done) {
-    User.remove({}).exec()
+    User.remove({})
     .then(function() {
       user = new User({
         name: 'Fake User',
@@ -30,28 +24,28 @@ describe('REST API:', function() {
 
       return user.save();
     })
-    .then(just(done))
-    .catch(done);
+    .then(function() { done(); })
+    .catch(function(err) { done(err); });
   });
 
   after(function(done) {
-    User.remove({}).exec()
-    .then(just(done))
-    .catch(done);
+    User.remove({})
+    .then(function() { done(); })
+    .catch(function(err) { done(err); });
   });
 
   describe('POST /api/users/:id/uploads', function() {
 
     beforeEach(function(done) {
-      Upload.remove({}).exec()
-      .then(just(done))
-      .catch(done);
+      Upload.remove({})
+      .then(function() { done(); })
+      .catch(function(err) { done(err); });
     });
 
     afterEach(function(done) {
-      Upload.remove({}).exec()
-      .then(just(done))
-      .catch(done);
+      Upload.remove({})
+      .then(function() { done(); })
+      .catch(function(err) { done(err); });
     });
 
     it('should return created \'upload model doc\'', function(done) {
@@ -132,7 +126,7 @@ describe('REST API:', function() {
   describe('GET /api/users/:id/uploads', function() {
 
     beforeEach(function(done) {
-      Upload.remove({}).exec()
+      Upload.remove({})
       .then(function() {
         request(app)
         .post('/api/users/' + user._id + '/uploads')
@@ -151,8 +145,8 @@ describe('REST API:', function() {
     }); 
 
     afterEach(function(done) {
-      Upload.remove({}).exec()
-      .then(just(done));
+      Upload.remove({})
+      .then(function() { done(); });
     });
 
     it('should return uploads when query with playlistId', function(done) {

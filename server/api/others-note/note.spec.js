@@ -4,11 +4,14 @@ var _ = require('lodash');
 var should = require('should');
 var knox  = require('knox');
 var request = require('supertest');
+var mongoose = require('mongoose');
 var url = require('url');
 var User = require('../user/user.model');
 var Note = require('../user/note/note.model');
 var config = require('../../config/environment');
 var app = require('../../app');
+
+var Promise = mongoose.Promise = require('promise');
 
 var s3 = knox.createClient({
   key: config.aws.accessKeyId,
@@ -21,39 +24,50 @@ describe('REST API:', function() {
   var user1, user2;
 
   before(function(done) {
-    User.remove().exec(); 
-    User.create({
-      name: 'Fake User One',
-      email: 'test1@test.com',
-      password: 'password',
-      provider: 'google',
-      google: {
-        image: {
-          url: 'http://www.google.com', 
-        }, 
-      },
-    }, {
-      name: 'Fake User Two',
-      email: 'test2@test.com',
-      password: 'password',
-      provider: 'google',
-      google: {
-        image: {
-          url: 'http://www.google.co.kr', 
-        }, 
-      },
-    }, function(err, u1, u2) {
-      user1 = u1;
-      user2 = u2;
+    Promise.all([
+      User.remove({}),
+      Note.remove({})
+    ])
+    .then(function() {
+      var users = [{
+        name: 'Fake User One',
+        email: 'test1@test.com',
+        password: 'password',
+        provider: 'google',
+        google: {
+          image: {
+            url: 'http://www.google.com', 
+          }, 
+        }
+      }, {
+        name: 'Fake User Two',
+        email: 'test2@test.com',
+        password: 'password',
+        provider: 'google',
+        google: {
+          image: {
+            url: 'http://www.google.co.kr', 
+          }, 
+        },
+      }];
 
-      Note.remove().exec();
+      return User.create(users);
+    })
+    .then(function(users) {
+      user1 = users[0];
+      user2 = users[1];
       done();
-    });
+    })
+    .catch(function(err) { done(err); });
   });
 
-  after(function() {
-    User.remove().exec(); 
-    Note.remove().exec(); 
+  after(function(done) {
+    Promise.all([
+      User.remove({}),
+      Note.remove({})
+    ])
+    .then(function() { done(); })
+    .catch(function(err) { done(err); });
   });
 
   describe('GET /api/notes', function() {
@@ -93,14 +107,18 @@ describe('REST API:', function() {
     });
 
     after(function(done) {
-      Note.find({ userId: { $in: [user1._id, user2._id] }}, function(err, notes) {
-        var items = notes.map(function(note) { return url.parse(note.url).pathname; });
+      Note.find({ userId: { $in: [user1._id, user2._id] }}).exec()
+      .then(function(notes) {
+        var items = notes.map(function(note) {
+          return url.parse(note.url).pathname;
+        });
 
-        s3.deleteMultiple(items, function(error, response) {
-          if(error) { return done(error); }
+        s3.deleteMultiple(items, function(err) {
+          if(err) { return done(err); }
           done();
         });
-      });
+      })
+      .catch(function(err) { done(err); });
     });
 
     it('should return all note docs', function(done) {
