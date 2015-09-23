@@ -157,6 +157,9 @@ angular.module('learntubeApp')
     return false;
   };
 
+  $scope.getDownloadUrl = function() {
+    return '/api/classes/' + $scope.playlistId + '/lectures/' + $scope.videoId + '/get-handout';
+  };
 
   $scope.getUserImgPath = function(user) {
     var guestImgPath = '/assets/images/guest.png';
