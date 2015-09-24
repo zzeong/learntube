@@ -9,10 +9,8 @@
       <h3>Lectures in this Class</h3>
     </div>
 
-
     <md-list>
-    <div class="lectureList"
-    infinite-scroll="loadMore(pageToken)" 
+    <div infinite-scroll="loadMore(pageToken)" 
     infinite-scroll-disabled="httpBusy || !pageToken"
     infinite-scroll-distance="1">
 
@@ -21,30 +19,20 @@
     ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })"
     ng-class="{highlight: lecture.highlight}">
 
-    <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
+      <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
 
-    <div class="md-list-item-text">
-      <div class="lecture-index">
-        <span>{{ $index + 1 }}.&nbsp</span>
-      </div>
-
-      <div class="lecture-title-div">
+      <div class="md-list-item-text">
         <div>
-          <span>{{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</span>
-        </div>
-
-        <div>
-          <span>{{ lecture.contentDetails.duration | humanable }}</span>
+          <!-- <span>{{ $index + 1 }}.&nbsp</span> -->
+          <h3>{{ $index+1 }}. {{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
+          <p>{{ lecture.contentDetails.duration | humanable }}</p>
         </div>
       </div>
 
       <md-icon md-font-set="material-icons" ng-show="lecture.noteIconVisible"> description </md-icon>
-
-    </div>
-  </md-list-item>
+    </md-list-item>
 </div>
 </md-list>
 </div>
 </div>
-
 </md-content>
