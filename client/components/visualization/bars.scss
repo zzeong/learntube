@@ -1,0 +1,32 @@
+d3-bars {
+  svg {
+    width: 100%;
+  }
+
+  .bar {
+    fill: #dce775;
+  }
+
+  .axis text {
+    font: 10px sans-serif;
+    fill: #000000;
+    fill-opacity: 0.87;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    stroke: #000000;
+    stroke-opacity: 0.87;
+    shape-rendering: crispEdges;
+  }
+
+  .x.axis {
+    path {
+      display: none;
+    }
+    text {
+      text-anchor: end !important;
+    }
+  }
+}
