@@ -1,27 +1,26 @@
+.align{
+  vertical-align: middle;
+  height: 40px;
+  padding-top: 10px;
+  padding-bottom: 5px;
+  margin-left: 20px;
 
-  .align{
-    vertical-align: middle;
-    height: 40px;
-    padding-top: 10px;
-    padding-bottom: 5px;
-    margin-left: 20px;
+}
 
-  }
+.highlight {
+  background-color: #FFF56E;
+}
 
-  .highlight {
-     background-color: #FFF56E;
-   }
+.index{
+  float: left;
+  height: 30px;
+}
 
-  .index{
-    float: left;
-    height: 30px;
-  }
+.duration-padding{
+  padding-left: 25px;
+}
 
-  .duration-padding{
-    padding-left: 25px;
-  }
-
-  @media (min-width: $responsive-width) {
+@media (min-width: $responsive-width) {
 
 
- }
+}
