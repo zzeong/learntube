@@ -67,11 +67,17 @@
     padding-top:12px;
   }
 
+  .middle {
+    h3 {
+      margin: 15px 0 10px 0;
+    }
+  }
+
 // reponsive web
 @media (min-width: $responsive-width){
 
     .middle{
-      padding-left: 20px;
+      padding-left: 14px;
       padding-top: 18px;
       margin-top: 0px;
     }
