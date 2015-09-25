@@ -10,6 +10,7 @@ var ClassSchema = new Schema({
     ref: 'User'
   },
   playlistId: String,
+  addedAt: { type: Date, default: Date.now },
   lectures: [LectureSchema]
 });
 
