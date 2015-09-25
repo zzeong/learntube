@@ -5,6 +5,7 @@
 
 'use strict';
 
+var _ = require('lodash');
 var User = require('../api/user/user.model');
 var Note = require('../api/user/note/note.model');
 var Upload = require('../api/user/upload/upload.model');
@@ -103,6 +104,12 @@ var seedNote = function(users) {
 };
 
 var seedClass = function(users) {
+  var timeMachine = function(offset) {
+    var d = new Date();
+    d.setDate(d.getDate() + offset);
+    return d;
+  };
+
   return Class.create([{
     userId: users[3]._id,
     playlistId: 'PLeNYl43VgxfUsY23CygyCtE1MKw8Vy4e8',
@@ -115,11 +122,26 @@ var seedClass = function(users) {
     userId: users[3]._id,
     playlistId: 'PL9B61DEF63FC19BD9',
     lectures: [{
-      videoId: '1ZRb1we80kM'
+      videoId: '1ZRb1we80kM',
+      completedAt: timeMachine(_.random(-14, 0)),
     }, {
-      videoId: '8pin-6JrdHY'
+      videoId: '8pin-6JrdHY',
+      completedAt: timeMachine(_.random(-14, 0)),
     }, {
-      videoId: 'rJnICByeL8Q'
+      videoId: 'rJnICByeL8Q',
+      completedAt: timeMachine(_.random(-14, 0)),
+    }, {
+      videoId: 'doFK7Eanm3I',
+      completedAt: timeMachine(_.random(-14, 0)),
+    }, {
+      videoId: 'RKhsHGfrFmY',
+      completedAt: timeMachine(_.random(-14, 0)),
+    }, {
+      videoId: 't3ULhmadHkg',
+      completedAt: timeMachine(_.random(-14, 0)),
+    }, {
+      videoId: 'LOXEVd-Z7NE',
+      completedAt: timeMachine(_.random(-14, 0)),
     }]
   }, {
     userId: users[3]._id,
