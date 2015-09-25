@@ -62,6 +62,41 @@ angular.module('learntubeApp')
 
   };
 
+  var fitToD3 = function(data) {
+    var timeMachine = function(offset) {
+      var d = new Date();
+      d.setDate(d.getDate() + offset);
+      return d;
+    };
+
+    var filler = _.range(14).map(function(i) {
+      return {
+        date: timeMachine(-i),
+        value: 0
+      }; 
+    });
+
+    var source = _(data).countBy(function(lecture) {
+      return lecture.completedAt;
+    })
+    .pairs()
+    .map(function(pair) {
+      return {
+        date: new Date(pair[0]),
+        value: pair[1]
+      }; 
+    })
+    .value();
+
+    return filler.map(function(d) {
+      d = _.find(source, function(s) {
+        return s.date.getDate() === d.date.getDate(); 
+      }) || d;
+      return d;
+    });
+
+  };
+
   if(!Auth.isLoggedIn()) { $state.go('Login'); }
 
   // 강의들을 가져오기 위한 api사용
@@ -89,6 +124,7 @@ angular.module('learntubeApp')
     // DB에서 시청한 동영상 목록 가져오기 (seenLectures)
     ClassAPI.query({playlistId: $scope.playlistId}, function(response){
       $scope.watchedLectures = response[0].lectures;
+      $scope.vdata = fitToD3($scope.watchedLectures);
       separateLecture('highlight', $scope.watchedLectures);
     }, function(err){
       $log.error(err);
