@@ -4,8 +4,7 @@
 <!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
 <!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta charset="utf-8"> <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <base href="/">
     <title></title>
     <meta name="description" content="">
@@ -30,7 +29,7 @@
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div ui-view=""></div>
+    <div ui-view="" ng-controller="masterCtrl" md-swipe-right="onSwipeRight($event)"></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>
@@ -102,6 +101,7 @@
           <script src="components/note/ckeditor.directive.js"></script>
           <script src="components/note/note-api.service.js"></script>
           <script src="components/sidenav/sidenav.controller.js"></script>
+          <script src="components/sidenav/sidenav.service.js"></script>
           <script src="components/toolbar/toolbar.controller.js"></script>
           <script src="components/util/custom.filter.js"></script>
           <script src="components/util/google.constant.js"></script>

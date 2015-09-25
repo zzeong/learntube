@@ -82,4 +82,10 @@ angular.module('learntubeApp', [
         }
       });
     });
+  })
+
+  .controller('masterCtrl', function($scope, navToggler) {
+    $scope.onSwipeRight = function(ev) {
+      if(ev.pointer.startX < 15) { navToggler.left(); }
+    };
   });
