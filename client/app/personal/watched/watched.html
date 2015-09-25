@@ -5,11 +5,41 @@
 
   <div class="content-width" layout-padding>
     <md-card class="watched-class-card" ng-repeat="classe in classes">
-      <img ng-src="{{ classe.item.snippet.thumbnails.high.url }}" ng-click="go('WatchedLectureList', { pid: classe.playlistId })" class="md-card-image" alt="Class Image">
+      <div>
+
+        <div class="graph-info" style="width:{{ classe.imgWidth }}px; height:{{ classe.imgHeight }}px;" ng-show="classe.graph">
+          
+          <div id="progressText">
+            <p class="progress-text">Progress</p>
+          </div>
+
+          <div>
+            <div class="progressbar-outline">
+              <div class="percentage-div">
+                <p class="md-caption percentage-p">{{ classe.percentage }}%</p>
+              </div> 
+            </div>
+            <div class="progressbar-inline" style="width: {{ classe.percentage }}%; height: 12px;"></div>
+          </div>
+
+          <div class="texts" layout="row" layout-wrap>
+            <div class="md-caption watched-text" flex="50">
+              <p>Watched: {{ classe.numberOfWatched }} / {{ classe.item.contentDetails.itemCount }}</p>
+            </div>
+
+            <div class="md-caption notes-text" flex="50">
+              <p>Notes: {{ classe.numberOfNote }}</p>
+            </div>
+          </div>
+        </div>
+
+        <img id="thumbnail" ng-src="{{ classe.item.snippet.thumbnails.high.url }}" ng-click="go('WatchedLectureList', { pid: classe.playlistId })" class="md-card-image" alt="Class Image">
+      </div>
       <md-card-content>
         <h2 class="md-title">{{ classe.item.snippet.title }}</h2>
       </md-card-content>
       <div class="md-actions" layout="row" layout-align="end center">
+        <md-button class="md-button" ng-click="showGraph(classe)">Graph</md-button>
         <md-button class="md-warn" ng-click="deleteClass(classe)">Delete</md-button>
       </div>
     </md-card>

@@ -1,7 +1,85 @@
+
+
+.graph-info{
+	position: absolute;
+	background: rgba(0,0,0,0.8);
+}
+
+.progress-text{
+	color: white;
+	position: absolute;
+	top: 25%;
+	left: 15%;
+}
+
+
+.progressbar-outline{
+	background: rgba(255,255,255,0.5);
+	width: 68%;
+	height: 20px;
+	position: absolute;
+	top: 37%;
+	left: 15%;
+	border-radius: 5px;
+}
+
+.progressbar-inline{
+	background: rgba(61, 183, 204, 1);
+	position: absolute;
+	top: 38.1%;
+	left: 17%;
+	border-radius: 5px;
+}
+
+.percentage-div{
+	float: right;
+	padding-right: 5px;
+	padding-top: 2px;
+}
+
+.percentage-p{
+	margin-top: 0px;
+	color: white;
+}
+
+.texts{
+	width: 68%;
+	position: absolute;
+	top: 42%;
+	left: 15%;
+}
+
+.watched-text, .notes-text{
+	color: white;
+}
+
 @media (min-width: $responsive-width) {
-  .watched-class-card {
-    $card-width: 344px;
-    width: $card-width;
-    display: inline-flex;
-  }
+
+	.watched-class-card {
+		$card-width: 344px;
+		width: $card-width;
+		display: inline-flex;
+	}
+
+	.progress-text{
+		color: white;
+		position: absolute;
+		top: 20%;
+		left: 15%;
+	}
+
+	.watched-text{
+		color: white;
+		position: absolute;
+		top: 47%;
+		left: 15%;
+	}
+
+	.notes-text{
+		color: white;
+		position: absolute;
+		top: 47%;
+		left: 68%;
+	}
+
 }
