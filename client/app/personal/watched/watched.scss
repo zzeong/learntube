@@ -8,26 +8,24 @@
 .progress-text{
 	color: white;
 	position: absolute;
-	top: 25%;
-	left: 15%;
+	top: 10px;
 }
 
 
 .progressbar-outline{
 	background: rgba(255,255,255,0.5);
-	width: 68%;
+	width: 100%;
 	height: 20px;
 	position: absolute;
-	top: 37%;
-	left: 15%;
+	top: 50px;
 	border-radius: 5px;
 }
 
 .progressbar-inline{
 	background: rgba(61, 183, 204, 1);
 	position: absolute;
-	top: 38.1%;
-	left: 17%;
+	top: 19%;
+	left: 1%;
 	border-radius: 5px;
 }
 
@@ -43,43 +41,66 @@
 }
 
 .texts{
-	width: 68%;
+	width: 100%;
 	position: absolute;
-	top: 42%;
-	left: 15%;
+	top: 65px;
 }
 
-.watched-text, .notes-text{
+.watched-text{
 	color: white;
 }
 
-@media (min-width: $responsive-width) {
+.notes-text{
+	color: white;
+}
 
+.overlay {
+	 position: absolute;
+	 top: 0;
+	 left: 0;
+	 width: 100%;
+	 height: 98%;
+	 background-color: rgba(0, 0, 0, 0.7);
+ }
+
+.card-image-cont {
+  position: relative;
+  width: 100%;
+}
+
+.contentPosition{
+	position: absolute;
+	height: 100%;
+	width: 68%;
+	margin: 0 auto;
+	left: 15%;
+	top: 50%;
+	display: table;
+}
+
+.position2{
+	display: table-cell;
+	vertical-align: middle;
+}
+
+
+@media (min-width: $responsive-width) {
 	.watched-class-card {
 		$card-width: 344px;
 		width: $card-width;
 		display: inline-flex;
 	}
 
-	.progress-text{
-		color: white;
+	.texts-media{
+		width: 100%;
 		position: absolute;
-		top: 20%;
-		left: 15%;
+		top: 75px;
 	}
 
-	.watched-text{
-		color: white;
-		position: absolute;
-		top: 47%;
-		left: 15%;
-	}
+}
 
-	.notes-text{
-		color: white;
-		position: absolute;
-		top: 47%;
-		left: 68%;
+@media (max-width: 260px){
+	.hide-detail{
+		display: none;
 	}
-
 }

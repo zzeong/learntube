@@ -45,7 +45,6 @@ angular.module('learntubeApp')
     classe.imgWidth = img.width;
     classe.imgHeight = img.height;
 
-
     // DB에서 시청한 동영상 목록 가져오기 (seenLectures)
     ClassAPI.query({playlistId: classe.playlistId}, function (response) {
       classe.numberOfWatched = response[0].lectures.length;
@@ -62,16 +61,7 @@ angular.module('learntubeApp')
       $log.error(err);
     });
 
-
-    var graphPosition = document.getElementById('progressText');
-    graphPosition.style.top = '50px';
-
     classe.graph = !classe.graph;
 
-
   };
-
-
-
-
 });
