@@ -77,12 +77,12 @@ module.exports = function (grunt) {
         files: ['server/**/*.js'],
         tasks: ['env:test', 'mochaTest:test']
       },
-      jshint: {
+      jscs: {
         files: [
           '<%= yeoman.client %>/{app,components}/**/*.js',
           'server/**/*.js'
         ],
-        tasks: ['jshint']
+        tasks: ['jscs']
       },
       unitTest: {
         files: [
@@ -139,37 +139,37 @@ module.exports = function (grunt) {
     },
 
     // Make sure code styles are up to par and there are no obvious mistakes
-    jshint: {
+    jscs: {
       options: {
-        jshintrc: '<%= yeoman.client %>/.jshintrc',
-        reporter: require('jshint-stylish')
+        config: './.jscsrc',
+      },
+      client: {
+        files: {
+          src: [
+            '<%= yeoman.client %>/{app,components}/**/*.js',
+            '!<%= yeoman.client %>/{app,components}/**/*.spec.js',
+            '!<%= yeoman.client %>/{app,components}/**/*.mock.js'
+          ]
+        },
       },
       server: {
-        options: {
-          jshintrc: 'server/.jshintrc'
+        files: {
+          src: [
+            'server/**/*.js',
+            '!server/**/*.spec.js'
+          ]
         },
-        src: [
-          'server/**/*.js',
-          '!server/**/*.spec.js'
-        ]
       },
-      serverTest: {
-        options: {
-          jshintrc: 'server/.jshintrc-spec'
-        },
-        src: ['server/**/*.spec.js']
-      },
-      all: [
-        '<%= yeoman.client %>/{app,components}/**/*.js',
-        '!<%= yeoman.client %>/{app,components}/**/*.spec.js',
-        '!<%= yeoman.client %>/{app,components}/**/*.mock.js'
-      ],
       test: {
-        src: [
-          '<%= yeoman.client %>/{app,components}/**/*.spec.js',
-          '<%= yeoman.client %>/{app,components}/**/*.mock.js'
-        ]
-      }
+        files: {
+          src: [
+            '<%= yeoman.client %>/{app,components}/**/*.spec.js',
+            '<%= yeoman.client %>/{app,components}/**/*.mock.js',
+            'server/**/*.spec.js'
+          ]
+        },
+      },
+      etc: ['./Gruntfile.js', './karma.conf.js', './protractor.conf.js'],
     },
 
     // Empties folders to start fresh
@@ -654,7 +654,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('watch:nonTest', function () {
-    delete grunt.config.data.watch.jshint;
+    delete grunt.config.data.watch.jscs;
     delete grunt.config.data.watch.unitTest;
     delete grunt.config.data.watch.mochaTest;
     grunt.task.run('watch');
@@ -746,12 +746,12 @@ module.exports = function (grunt) {
     } else if (target === 'js') {
       if (option === 'watch') {
         return grunt.task.run([
-          'jshint',
-          'watch:jshint'
+          'jscs',
+          'watch:jscs'
         ]);
       }
 
-      return grunt.task.run(['jshint']);
+      return grunt.task.run(['jscs']);
     } else if (target === 'coverage') {
       if (option === 'server') {
         return grunt.task.run([
@@ -772,13 +772,13 @@ module.exports = function (grunt) {
       }
     } else if (target === 'ci') {
       return grunt.task.run([
-        'jshint',
+        'jscs',
         'test:coverage:server',
         'test:coverage:client'
       ]);
     } else {
       grunt.task.run([
-        'jshint',
+        'jscs',
         'test:server',
         'test:client'
       ]);
@@ -807,7 +807,7 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('default', [
-    'newer:jshint',
+    'newer:jscs',
     'build'
   ]);
 };
