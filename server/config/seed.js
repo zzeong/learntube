@@ -18,7 +18,7 @@ var s3 = new aws.S3();
 var config = require('./environment');
 
 
-var initialUser = function() {
+var initialUser = function () {
   return User.create([{
     provider: 'local',
     name: 'Test User',
@@ -43,7 +43,7 @@ var initialUser = function() {
   }]);
 };
 
-var seedNote = function(users) {
+var seedNote = function (users) {
   var bot = {
     'learntubebot01@gmail.com': {
       hash: [
@@ -52,7 +52,7 @@ var seedNote = function(users) {
         '4fa0e346807233f7f4c18cb6c35afec1',
         'fe8cf8d21a24376a1263b2267a77c87a'
       ]
-    }, 
+    },
     'learntubebot02@gmail.com': {
       hash: [
         '2fb8aad5086a0a6fe9967829017fb4c2',
@@ -60,10 +60,10 @@ var seedNote = function(users) {
         '5295158d2070c6d600521c5667dd63b8',
         '4c757fe906a459a8283c830d67466358'
       ]
-    }, 
+    },
   };
 
-  var createDoc = function(user, i) {
+  var createDoc = function (user, i) {
     var id = {
       playlist: 'PL9B61DEF63FC19BD9',
       video: ['1ZRb1we80kM', 'rJnICByeL8Q']
@@ -73,10 +73,10 @@ var seedNote = function(users) {
       userId: user._id,
       videoId: id.video[parseInt(i / 2)],
       playlistId: id.playlist,
-      url : 'https://learntubebucket.s3.amazonaws.com/' + user.email + '/' + bot[user.email].hash[i],
+      url: 'https://learntubebucket.s3.amazonaws.com/' + user.email + '/' + bot[user.email].hash[i],
       type: 'editor',
       resourceType: 'text/html',
-    }; 
+    };
   };
 
   var docs = [{
@@ -93,9 +93,9 @@ var seedNote = function(users) {
     url: 'https://learntubebucket.s3.amazonaws.com/' + users[0].email + '/a868c19f55558a2a349193ff9d1f2fce',
     type: 'editor',
     resourceType: 'text/html',
-  }]; 
-  
-  for(var i = 0; i < 4; i++) {
+  }];
+
+  for (var i = 0; i < 4; i++) {
     docs.push(createDoc(users[2], i));
     docs.push(createDoc(users[3], i));
   }
@@ -103,8 +103,8 @@ var seedNote = function(users) {
   return Note.create(docs);
 };
 
-var seedClass = function(users) {
-  var timeMachine = function(offset) {
+var seedClass = function (users) {
+  var timeMachine = function (offset) {
     var d = new Date();
     d.setDate(d.getDate() + offset);
     return d;
@@ -170,7 +170,7 @@ var seedClass = function(users) {
   }]);
 };
 
-var seedRating = function() {
+var seedRating = function () {
   return Rating.create([{
     playlistId: 'PLdN7Dwi6JGXsAASQgnsm34BBL6mQfQUKK',
     points: 99
@@ -198,9 +198,9 @@ var seedRating = function() {
   }]);
 };
 
-var seedUpload = function(users) {
+var seedUpload = function (users) {
   var hashes = [
-   '2bd6387e8333e63dec3e1cea9617accb',  
+   '2bd6387e8333e63dec3e1cea9617accb',
    '24ebf6590e230c823d1afd1dd01911e2'
   ];
 
@@ -239,7 +239,7 @@ Promise.all([
   Upload.remove({}).exec()
 ])
 .then(initialUser)
-.then(function(users) {
+.then(function (users) {
   return Promise.all([
     seedNote(users),
     seedClass(users),
@@ -247,9 +247,9 @@ Promise.all([
     seedRating()
   ]);
 })
-.then(function() {
+.then(function () {
   console.log('Finish seeding');
 })
-.catch(function(err) {
-  console.error(err); 
+.catch(function (err) {
+  console.error(err);
 });

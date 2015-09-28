@@ -6,8 +6,8 @@ var Schema = mongoose.Schema;
 // 스키마 생성
 var NoteSchema = new Schema({
   userId: {
-  	type: mongoose.Schema.Types.ObjectId,
-  	ref: 'User'
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'User'
   },
   videoId: String,
   playlistId: String,

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.factory('ClassAPI', function(Auth, $resource) {
+.factory('ClassAPI', function (Auth, $resource) {
   return $resource('/api/users/:id/classes/:cid', {
     id: '@id',
     cid: '@cid',
@@ -20,11 +20,11 @@ angular.module('learntubeApp')
       params: { id: Auth.getCurrentUser()._id }
     },
     remove: {
-      method: 'DELETE', 
+      method: 'DELETE',
       params: { id: Auth.getCurrentUser()._id }
     },
     update: {
-      method: 'PUT', 
+      method: 'PUT',
       params: { id: Auth.getCurrentUser()._id }
     },
   });

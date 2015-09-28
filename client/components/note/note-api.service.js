@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.factory('NoteAPI', function(Auth, $resource) {
+.factory('NoteAPI', function (Auth, $resource) {
   return $resource('/api/users/:id/notes/:nid/:controller', {
     id: '@id',
     nid: '@nid',

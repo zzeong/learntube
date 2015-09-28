@@ -34,7 +34,7 @@ var Promise = require('promise');
  *       "pageToken": "DJGNdN"
  *     }
  */
- exports.index = function(req, res) {
+exports.index = function (req, res) {
   g.oauth2Client.setCredentials({
     access_token: req.user.google.accessToken,
     refresh_token: req.user.google.refreshToken,
@@ -49,36 +49,36 @@ var Promise = require('promise');
   };
 
   g.youtube('playlistItems.list', params)
-  .then(function(response) {
+  .then(function (response) {
     var resBody = {
       pageToken: response.nextPageToken,
       items: response.items
     };
 
-    if(req.query.withDuration) {
+    if (req.query.withDuration) {
       g.youtube('videos.list', {
         auth: g.oauth2Client,
         part: 'contentDetails',
-        id: resBody.items.map(function(item) {
+        id: resBody.items.map(function (item) {
           return item.snippet.resourceId.videoId;
         }).join(','),
         fields: 'items(contentDetails(duration))',
       })
-      .then(function(response) {
-        resBody.items.forEach(function(item, i) {
+      .then(function (response) {
+        resBody.items.forEach(function (item, i) {
           item.contentDetails = response.items[i].contentDetails;
         });
         return res.status(200).json(resBody);
-      }, function(error) {
-        return res.status(500).send(error); 
+      }, function (error) {
+        return res.status(500).send(error);
       });
 
       return;
     }
-    
+
     return res.status(200).json(resBody);
-  }, function(error) {
-    return res.status(500).send(error); 
+  }, function (error) {
+    return res.status(500).send(error);
   });
 };
 
@@ -95,7 +95,7 @@ var Promise = require('promise');
  * @apiParam {Boolean} [withDuration=false] A flag for containing duration.
  * @apiParamExample {json} Request-Example:
  *     BODY
- *     { 
+ *     {
  *       "resource": {
  *         "snippet": {
  *            "playlistId": "PLDcnymzs18LWbmCFUlZie7VsxQ_FIF0_y",
@@ -103,7 +103,7 @@ var Promise = require('promise');
  *              "kind": "youtube#video",
  *              "videoId": "D8t8A8E_Tqc",
  *            }
- *         }, 
+ *         },
  *         "status": {
  *           "privacyStatus": "public"
  *         }
@@ -125,7 +125,7 @@ var Promise = require('promise');
  *       playlistItem_resource_properties
  *     }
  */
- exports.create = function(req, res) {
+exports.create = function (req, res) {
   g.oauth2Client.setCredentials({
     access_token: req.user.google.accessToken,
     refresh_token: req.user.google.refreshToken,
@@ -139,27 +139,27 @@ var Promise = require('promise');
 
 
   g.youtube('playlistItems.insert', params)
-  .then(function(item) {
-    if(req.query.withDuration) {
+  .then(function (item) {
+    if (req.query.withDuration) {
       g.youtube('videos.list', {
         auth: g.oauth2Client,
         part: 'contentDetails',
         id: item.snippet.resourceId.videoId,
         fields: 'items(contentDetails(duration))',
       })
-      .then(function(response) {
+      .then(function (response) {
         item.contentDetails = response.items[0].contentDetails;
         return res.status(201).json(item);
-      }, function(error) {
-        return res.status(500).send(error); 
+      }, function (error) {
+        return res.status(500).send(error);
       });
 
       return;
     }
 
     return res.status(201).json(item);
-  }, function(error) {
-    return res.status(500).send(error); 
+  }, function (error) {
+    return res.status(500).send(error);
   });
 };
 
@@ -189,7 +189,7 @@ var Promise = require('promise');
  *     }
  */
 
-exports.destroy = function(req, res) {
+exports.destroy = function (req, res) {
   g.oauth2Client.setCredentials({
     access_token: req.user.google.accessToken,
     refresh_token: req.user.google.refreshToken,
@@ -197,7 +197,7 @@ exports.destroy = function(req, res) {
 
   var playlistItemIdArr = req.query.playlistItemId.split(',');
 
-  var promises = playlistItemIdArr.map(function(arrayItem) {
+  var promises = playlistItemIdArr.map(function (arrayItem) {
 
     var params = {
       auth: g.oauth2Client,
@@ -207,11 +207,11 @@ exports.destroy = function(req, res) {
     return g.youtube('playlistItems.delete', params);
   });
 
-  Promise.all(promises).then(function() {
+  Promise.all(promises).then(function () {
     return res.status(204).send();
-  }, function(error) {
+  }, function (error) {
     return res.status(500).send(error);
   });
 
-  
+
 };

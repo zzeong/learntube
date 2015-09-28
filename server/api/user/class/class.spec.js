@@ -15,29 +15,29 @@ var userData = {
   classes: []
 };
 
-describe('REST API:', function() {
+describe('REST API:', function () {
   var user;
   var id = mongoose.Types.ObjectId();
 
-  describe('POST /api/users/:id/classes', function() {
+  describe('POST /api/users/:id/classes', function () {
     var params;
 
-    describe('when class is save', function() {
+    describe('when class is save', function () {
 
-      before(function() {
+      before(function () {
         params = {
           playlistId: 'ZZZ'
         };
       });
 
-      it('should return saved class', function(done) {
+      it('should return saved class', function (done) {
         request(app)
         .post('/api/users/' + id + '/classes/')
         .send(params)
         .expect(201)
         .expect('Content-Type', /json/)
         .end(function (err, res) {
-          if(err) { return done(err); } 
+          if (err) { return done(err); }
           res.body.should.have.property('_id');
           res.body.should.have.property('userId');
           res.body.userId.should.equal(id + '');
@@ -50,8 +50,8 @@ describe('REST API:', function() {
     });
   });
 
-  describe('GET /api/users/:id/classes/', function() {
-    beforeEach(function(done) {
+  describe('GET /api/users/:id/classes/', function () {
+    beforeEach(function (done) {
       var classes = [{
         userId: id,
         playlistId: 'Q1W2'
@@ -61,57 +61,57 @@ describe('REST API:', function() {
       }];
 
       Class.remove({})
-      .then(function() {
-        return Class.create(classes); 
+      .then(function () {
+        return Class.create(classes);
       })
-      .then(function() { done(); })
-      .catch(function(err) { done(err); });
+      .then(function () { done(); })
+      .catch(function (err) { done(err); });
     });
 
-    it('should get all classes that have 2 items', function(done) {
-      request(app) 
+    it('should get all classes that have 2 items', function (done) {
+      request(app)
       .get('/api/users/' + id + '/classes/')
       .expect(200)
       .expect('Content-Type', /json/)
-      .end(function(err, res) {
-        if(err) { return done(err); } 
+      .end(function (err, res) {
+        if (err) { return done(err); }
         res.body.should.have.length(2);
         done();
       });
     });
   });
 
-  describe('DELETE /api/users/:id/classes/:cid', function() {
+  describe('DELETE /api/users/:id/classes/:cid', function () {
     var cid;
 
-    beforeEach(function(done) {
+    beforeEach(function (done) {
       Class.remove({})
-      .then(function() {
+      .then(function () {
         var classe = new Class({
           userId: id,
           playlistId: 'ZZZ'
         });
         return classe.save();
       })
-      .then(function(classe) {
+      .then(function (classe) {
         cid = classe._id;
-        done(); 
+        done();
       })
-      .catch(function(err) { done(err); });
+      .catch(function (err) { done(err); });
     });
 
-    it('should makes Class collection has no docs after class is removed', function(done) {
+    it('should makes Class collection has no docs after class is removed', function (done) {
       request(app)
       .delete('/api/users/' + id + '/classes/' + cid)
       .expect(204)
-      .end(function(err, res) {
-        if(err) { return done(err); } 
+      .end(function (err, res) {
+        if (err) { return done(err); }
         Class.find({}).exec()
-        .then(function(classes) {
+        .then(function (classes) {
           classes.should.have.length(0);
           done();
         })
-        .catch(function(err) { done(err); });
+        .catch(function (err) { done(err); });
       });
     });
 

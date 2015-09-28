@@ -5,7 +5,7 @@ module.exports = function (grunt) {
   var localConfig;
   try {
     localConfig = require('./server/config/local.env');
-  } catch(e) {
+  } catch (e) {
     localConfig = {};
   }
 
@@ -70,7 +70,7 @@ module.exports = function (grunt) {
         tasks: ['injector:css']
       },
       wiredep: {
-        files: ['bower.json'], 
+        files: ['bower.json'],
         tasks: ['wiredep']
       },
       mochaTest: {
@@ -81,14 +81,14 @@ module.exports = function (grunt) {
         files: [
           '<%= yeoman.client %>/{app,components}/**/*.js',
           'server/**/*.js'
-        ], 
+        ],
         tasks: ['jshint']
       },
       unitTest: {
         files: [
           'karma.conf.js',
           '<%= yeoman.client %>/{app,components}/**/*.js'
-        ], 
+        ],
         tasks: ['karma:debug']
       },
       injectSass: {
@@ -245,7 +245,7 @@ module.exports = function (grunt) {
       target: {
         src: '<%= yeoman.client %>/index.html',
         ignorePath: '<%= yeoman.client %>/',
-        exclude: [/bootstrap-sass-official/, /bootstrap.js/, '/json3/', '/es5-shim/', /bootstrap.css/, /font-awesome.css/ ]
+        exclude: [/bootstrap-sass-official/, /bootstrap.js/, '/json3/', '/es5-shim/', /bootstrap.css/, /font-awesome.css/]
       },
       karma: {
         devDependencies: true,
@@ -260,7 +260,7 @@ module.exports = function (grunt) {
             replace: {
               js: '\'<%= yeoman.client %>/{{filePath}}\','
             }
-          }, 
+          },
         },
         exclude: [/angular-scenario/]
       },
@@ -477,7 +477,7 @@ module.exports = function (grunt) {
         reporters: ['spec'],
       },
       coverage: {
-        reporters: ['coverage'], 
+        reporters: ['coverage'],
       },
     },
 
@@ -516,7 +516,7 @@ module.exports = function (grunt) {
 
     // Compiles ES6 to JavaScript using Babel
     babel: {
-      options: { 
+      options: {
         sourceMap: true
       },
       server: {
@@ -544,7 +544,7 @@ module.exports = function (grunt) {
           compass: false
         },
         files: {
-          '.tmp/app/app.css' : '<%= yeoman.client %>/app/app.scss'
+          '.tmp/app/app.css': '<%= yeoman.client %>/app/app.scss'
         }
       }
     },
@@ -556,7 +556,7 @@ module.exports = function (grunt) {
       // Inject application script files into index.html (doesn't include bower)
       scripts: {
         options: {
-          transform: function(filePath) {
+          transform: function (filePath) {
             filePath = filePath.replace('/client/', '');
             filePath = filePath.replace('/.tmp/', '');
             return '<script src="' + filePath + '"></script>';
@@ -577,7 +577,7 @@ module.exports = function (grunt) {
       // Inject component scss into app.scss
       sass: {
         options: {
-          transform: function(filePath) {
+          transform: function (filePath) {
             filePath = filePath.replace('/client/app/', '');
             filePath = filePath.replace('/client/components/', '');
             return '@import \'' + filePath + '\';';
@@ -596,7 +596,7 @@ module.exports = function (grunt) {
       // Inject component css into index.html
       css: {
         options: {
-          transform: function(filePath) {
+          transform: function (filePath) {
             filePath = filePath.replace('/client/', '');
             filePath = filePath.replace('/.tmp/', '');
             return '<link rel="stylesheet" href="' + filePath + '">';
@@ -630,7 +630,7 @@ module.exports = function (grunt) {
         dest: 'apidoc/',
         options: {
           debug: true,
-          includeFilters: [ '.*\.controller\.js$' ],
+          includeFilters: ['.*\.controller\.js$'],
         },
       }
     },
@@ -649,11 +649,11 @@ module.exports = function (grunt) {
     }, 1500);
   });
 
-  grunt.registerTask('express-keepalive', 'Keep grunt running', function() {
+  grunt.registerTask('express-keepalive', 'Keep grunt running', function () {
     this.async();
   });
 
-  grunt.registerTask('watch:nonTest', function() {
+  grunt.registerTask('watch:nonTest', function () {
     delete grunt.config.data.watch.jshint;
     delete grunt.config.data.watch.unitTest;
     delete grunt.config.data.watch.mochaTest;
@@ -669,7 +669,7 @@ module.exports = function (grunt) {
       return grunt.task.run([
         'clean:server',
         'env:all',
-        'injector:sass', 
+        'injector:sass',
         'concurrent:server',
         'injector',
         'wiredep',
@@ -681,7 +681,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'env:all',
-      'injector:sass', 
+      'injector:sass',
       'concurrent:server',
       'injector',
       'wiredep',
@@ -699,9 +699,9 @@ module.exports = function (grunt) {
   });
 
 
-  grunt.registerTask('test', function(target, option) {
+  grunt.registerTask('test', function (target, option) {
     if (target === 'server') {
-      if(option === 'watch') {
+      if (option === 'watch') {
         return grunt.task.run([
           'test:server',
           'watch:mochaTest'
@@ -713,10 +713,8 @@ module.exports = function (grunt) {
         'env:test',
         'mochaTest:test',
       ]);
-    }
-
-    else if (target === 'client') {
-      if(option === 'watch') {
+    } else if (target === 'client') {
+      if (option === 'watch') {
         return grunt.task.run([
           'test:client',
           'watch:unitTest'
@@ -726,20 +724,18 @@ module.exports = function (grunt) {
       return grunt.task.run([
         'clean:server',
         'env:all',
-        'injector:sass', 
+        'injector:sass',
         'concurrent:test',
         'injector',
         'autoprefixer',
         'karma:debug'
       ]);
-    }
-
-    else if (target === 'e2e') {
+    } else if (target === 'e2e') {
       return grunt.task.run([
         'clean:server',
         'env:all',
         'env:test',
-        'injector:sass', 
+        'injector:sass',
         'concurrent:test',
         'injector',
         'wiredep',
@@ -747,20 +743,16 @@ module.exports = function (grunt) {
         'express:dev',
         'protractor'
       ]);
-    }
-
-    else if (target === 'js') {
-      if(option === 'watch') {
+    } else if (target === 'js') {
+      if (option === 'watch') {
         return grunt.task.run([
           'jshint',
           'watch:jshint'
         ]);
       }
 
-      return grunt.task.run(['jshint']); 
-    }
-
-    else if (target === 'coverage') {
+      return grunt.task.run(['jshint']);
+    } else if (target === 'coverage') {
       if (option === 'server') {
         return grunt.task.run([
           'env:all',
@@ -771,24 +763,20 @@ module.exports = function (grunt) {
         return grunt.task.run([
           'clean:server',
           'env:all',
-          'injector:sass', 
+          'injector:sass',
           'concurrent:test',
           'injector',
           'autoprefixer',
           'karma:coverage'
         ]);
       }
-    }
-
-    else if (target === 'ci') {
+    } else if (target === 'ci') {
       return grunt.task.run([
-        'jshint', 
+        'jshint',
         'test:coverage:server',
         'test:coverage:client'
       ]);
-    }
-
-    else {
+    } else {
       grunt.task.run([
         'jshint',
         'test:server',
@@ -801,7 +789,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'injector:sass', 
+    'injector:sass',
     'concurrent:dist',
     'injector',
     'wiredep',

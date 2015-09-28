@@ -1,11 +1,11 @@
 'use strict';
 
 describe('Controller: WatchedContentsCtrl', function () {
-  beforeEach(module('learntubeApp')); 
+  beforeEach(module('learntubeApp'));
   var $scope, $httpBackend;
 
   beforeEach(inject(function ($controller, _$httpBackend_, Auth) {
-    var userData = { 
+    var userData = {
       __v: 0,
       _id: 'QWER',
       email: 'test@test.com',
@@ -20,22 +20,22 @@ describe('Controller: WatchedContentsCtrl', function () {
     $httpBackend.when('POST', '/auth/local').respond({ token: 'myToken' });
     $httpBackend.when('GET', '/api/users/me').respond(userData);
 
-    Auth.login({ email: 'test@test.com', password: 'test' }); 
+    Auth.login({ email: 'test@test.com', password: 'test' });
     $httpBackend.flush();
 
-    $controller('WatchedContentsCtrl', {'$scope' : $scope });
+    $controller('WatchedContentsCtrl', {$scope: $scope });
   }));
 
 
-  afterEach(inject(function(Auth) {
+  afterEach(inject(function (Auth) {
     $httpBackend.verifyNoOutstandingExpectation();
     $httpBackend.verifyNoOutstandingRequest();
-    Auth.logout(); 
+    Auth.logout();
   }));
 
-  describe('with HTTP', function() {
+  describe('with HTTP', function () {
 
-    beforeEach(function() {
+    beforeEach(function () {
       var res = {
         classQuery: [{
           _id: 'QWER',
@@ -55,7 +55,7 @@ describe('Controller: WatchedContentsCtrl', function () {
 
 
 
-    xit('should get all classes', function() {
+    xit('should get all classes', function () {
       $httpBackend.expectGET(/\/api\/users\/.*\/classes/);
       $httpBackend.expectGET(/https\:\/\/www\.googleapis\.com\/youtube\/v3\/playlists\?.*/);
       $httpBackend.flush();
@@ -64,7 +64,7 @@ describe('Controller: WatchedContentsCtrl', function () {
       expect($scope.classes[0].item).toBeDefined();
     });
 
-    it('should have 1 decreased classes after to delete class', function() {
+    it('should have 1 decreased classes after to delete class', function () {
       $httpBackend.flush();
 
       var beforeLength = $scope.classes.length;

@@ -8,10 +8,10 @@ exports.setup = function (User, config) {
     clientSecret: config.google.clientSecret,
     callbackURL: config.google.callbackURL
   },
-  function(accessToken, refreshToken, profile, done) {
+  function (accessToken, refreshToken, profile, done) {
     User.findOne({
       'google.id': profile.id
-    }, function(err, user) {
+    }, function (err, user) {
       profile._json.accessToken = accessToken;
       profile._json.refreshToken = refreshToken;
 
@@ -26,14 +26,14 @@ exports.setup = function (User, config) {
 
       if (!user && !config.seedWithOAuth) {
         user = new User(userInfo);
-        user.save(function(err) {
-          if (err) return done(err);
+        user.save(function (err) {
+          if (err) { return done(err); }
           done(err, user);
         });
       } else if (!user && config.seedWithOAuth) {
         User.findOne({ email: profile.emails[0].value }).exec()
-        .then(function(u) {
-          if(!u) {
+        .then(function (u) {
+          if (!u) {
             user = new User(userInfo);
           } else {
             user = u;
@@ -41,8 +41,8 @@ exports.setup = function (User, config) {
             user.google = profile._json;
           }
 
-          user.save(function(err) {
-            if (err) return done(err);
+          user.save(function (err) {
+            if (err) { return done(err); }
             done(err, user);
           });
         });

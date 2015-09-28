@@ -8,13 +8,13 @@ angular.module('learntubeApp')
     changePassword: {
       method: 'PUT',
       params: {
-        controller:'password'
+        controller: 'password'
       }
     },
     get: {
       method: 'GET',
       params: {
-        id:'me'
+        id: 'me'
       }
     }
   });

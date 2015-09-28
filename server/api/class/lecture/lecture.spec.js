@@ -11,15 +11,15 @@ var app = require('../../../app');
 var Promise = mongoose.Promise = require('promise');
 
 
-describe('REST API:', function() {
+describe('REST API:', function () {
   var id;
 
-  before(function(done) {
+  before(function (done) {
     Promise.all([
       User.remove({}),
       Upload.remove({})
-    ])  
-    .then(function() {
+    ])
+    .then(function () {
       var user = {
         provider: 'local',
         name: 'Fake User',
@@ -28,25 +28,25 @@ describe('REST API:', function() {
       };
       return User.create(user);
     })
-    .then(function(user) {
+    .then(function (user) {
       id = user._id;
       done();
     })
-    .catch(function(err) { done(err); });
+    .catch(function (err) { done(err); });
   });
 
-  after(function(done) {
+  after(function (done) {
     Promise.all([
       User.remove({}),
       Upload.remove({})
     ])
-    .then(function() { done(); })
-    .catch(function(err) { done(err); });
+    .then(function () { done(); })
+    .catch(function (err) { done(err); });
   });
 
 
-  describe('GET /api/classes/:pid/lectures/:vid/get-handout', function() {
-    before(function(done) {
+  describe('GET /api/classes/:pid/lectures/:vid/get-handout', function () {
+    before(function (done) {
       Upload.create([{
         userId: id,
         playlistId: 'PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx',
@@ -57,25 +57,25 @@ describe('REST API:', function() {
         }, {
           videoId: 'F-xd3G0PW0k',
           fileName: 'just.pdf',
-          url: 'https://s3.amazonaws.com/learntubebucket/learntubebot01%40gmail.com/uploads/2bd6387e8333e63dec3e1cea9617accb' 
+          url: 'https://s3.amazonaws.com/learntubebucket/learntubebot01%40gmail.com/uploads/2bd6387e8333e63dec3e1cea9617accb'
         }],
       }])
-      .then(function() { done(); })
-      .catch(function(err) { done(err); });
+      .then(function () { done(); })
+      .catch(function (err) { done(err); });
     });
 
 
-    it('should return a file which will be downloaded', function(done) {
+    it('should return a file which will be downloaded', function (done) {
       request(app)
       .get('/api/classes/PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx/lectures/F-xd3G0PW0k/get-handout')
       .expect(200)
       .expect('Content-Type', /application\/octet-stream/)
-      .end(function(err, res) {
-        if(err) { return done(err); } 
+      .end(function (err, res) {
+        if (err) { return done(err); }
         should.exist(res.header['content-disposition']);
         res.header['content-disposition'].should.match(/^attachment/);
         done();
       });
-    }); 
+    });
   });
 });

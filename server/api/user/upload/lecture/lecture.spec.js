@@ -12,15 +12,15 @@ var knox = require('knox');
 var Promise = mongoose.Promise = require('promise');
 
 
-describe('REST API:', function() {
+describe('REST API:', function () {
   var id;
 
-  before(function(done) {
+  before(function (done) {
     Promise.all([
       User.remove({}),
       Upload.remove({})
     ])
-    .then(function() {
+    .then(function () {
       var user = {
         name: 'Fake User',
         email: 'test@test.com',
@@ -29,26 +29,26 @@ describe('REST API:', function() {
 
       return User.create(user);
     })
-    .then(function(user) {
+    .then(function (user) {
       id = user._id;
       done();
     })
-    .catch(function(err) { done(err); });
+    .catch(function (err) { done(err); });
   });
 
-  after(function(done) {
+  after(function (done) {
     Promise.all([
       User.remove({}),
       Upload.remove({})
     ])
-    .then(function() { done(); })
-    .catch(function(err) { done(err); });
+    .then(function () { done(); })
+    .catch(function (err) { done(err); });
   });
 
-  describe('DELETE /api/users/:id/uploads/lectures', function() {
+  describe('DELETE /api/users/:id/uploads/lectures', function () {
     var upload;
 
-    beforeEach(function(done) {
+    beforeEach(function (done) {
       var awsClient = knox.createClient({
         key: config.aws.accessKeyId,
         secret: config.aws.secretKey,
@@ -56,7 +56,7 @@ describe('REST API:', function() {
       });
 
       Upload.remove({})
-      .then(function() {
+      .then(function () {
         var string = 'hello';
 
         var request = awsClient.put('/test/foo.txt', {
@@ -64,9 +64,9 @@ describe('REST API:', function() {
           'Content-Length': Buffer.byteLength(string),
           'Content-Type': 'text/plain'
         });
-        
-        request.on('response', function(res) {
-          if(200 === +res.statusCode) {
+
+        request.on('response', function (res) {
+          if (200 === +res.statusCode) {
             upload = new Upload({
               userId: id,
               playlistId: 'PL34d',
@@ -76,7 +76,7 @@ describe('REST API:', function() {
               }]
             });
 
-            upload.save(function(err) {
+            upload.save(function (err) {
               done();
             });
           }
@@ -86,16 +86,16 @@ describe('REST API:', function() {
       });
     });
 
-    afterEach(function(done) {
-      Upload.remove({}).then(function() { done(); });
+    afterEach(function (done) {
+      Upload.remove({}).then(function () { done(); });
     });
 
-    it('should return 204 when lecture sub-doc is removed', function(done) {
+    it('should return 204 when lecture sub-doc is removed', function (done) {
       request(app)
       .delete('/api/users/' + id + '/uploads/' + upload._id + '/lectures/' + upload.lectures[0]._id)
       .expect(204)
-      .end(function(err, res) {
-        if(err) { return done(err); } 
+      .end(function (err, res) {
+        if (err) { return done(err); }
         done();
       });
     });

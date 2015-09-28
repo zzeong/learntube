@@ -16,7 +16,7 @@ var path = require('path');
 var config = require('./environment');
 var passport = require('passport');
 
-module.exports = function(app) {
+module.exports = function (app) {
   var env = app.get('env');
 
   app.set('views', config.root + '/server/views');

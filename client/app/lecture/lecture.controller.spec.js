@@ -1,11 +1,11 @@
 'use strict';
 
 describe('Controller: LectureCtrl', function () {
-  beforeEach(module('learntubeApp')); 
+  beforeEach(module('learntubeApp'));
   var $scope, $httpBackend;
 
   beforeEach(inject(function ($controller, $stateParams, _$httpBackend_, Auth) {
-    var userData = { 
+    var userData = {
       __v: 0,
       _id: 'QWER',
       email: 'test@test.com',
@@ -16,57 +16,57 @@ describe('Controller: LectureCtrl', function () {
 
     $httpBackend = _$httpBackend_;
     $scope = {};
-    
+
     $httpBackend.when('POST', '/auth/local').respond({ token: 'myToken' });
     $httpBackend.when('GET', '/api/users/me').respond(userData);
 
     $stateParams.vid = '2rde3';
-    Auth.login({ email: 'test@test.com', password: 'test' }); 
+    Auth.login({ email: 'test@test.com', password: 'test' });
     $httpBackend.flush();
 
     $controller('LectureCtrl', { $scope: $scope });
   }));
 
-  it('should get video id in URI-parameter', inject(function($stateParams) {
+  it('should get video id in URI-parameter', inject(function ($stateParams) {
     expect($scope.videoId).toBe($stateParams.vid);
   }));
 
 
-  it('should be able to toggle note editor', inject(function() {
-    expect($scope.isEditorOn).toBe(false); 
+  it('should be able to toggle note editor', inject(function () {
+    expect($scope.isEditorOn).toBe(false);
     $scope.toggleEditor();
     expect($scope.isEditorOn).toBe(true);
     $scope.toggleEditor();
     expect($scope.isEditorOn).toBe(false);
   }));
 
-  describe('with HTTP', function() {
+  describe('with HTTP', function () {
     var $cookieStore, resultItems;
 
-    beforeEach(inject(function(_$cookieStore_) {
+    beforeEach(inject(function (_$cookieStore_) {
       $cookieStore = _$cookieStore_;
 
       resultItems = {
         items: [{
           snippet: {
-            title: 'hello' 
+            title: 'hello'
           }
-        }] 
+        }]
       };
 
 
       var othersNotes = [{
         userId: {
           image: {
-            url: 'http://www.google.com' 
-          }, 
+            url: 'http://www.google.com'
+          },
         },
         contents: 'Hi, Guys'
       }, {
         userId: {
           image: {
-            url: 'http://www.google.co.kr' 
-          }, 
+            url: 'http://www.google.co.kr'
+          },
         },
         contents: 'Hi, Guys'
       }];
@@ -81,39 +81,39 @@ describe('Controller: LectureCtrl', function () {
       $httpBackend.when('POST', /\/api\/users\/.*\/classes/).respond({ _id: 'QAWS'  });
       $httpBackend.when('POST', /\/api\/users\/.*\/classes\/.*\/lectures/).respond({ _id: 'ZXCV' });
       $httpBackend.when('GET', /\/api\/others-notes\?.*/).respond(othersNotes);
-    })); 
+    }));
 
-    afterEach(function() {
+    afterEach(function () {
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
-      $cookieStore.remove('token'); 
+      $cookieStore.remove('token');
     });
 
 
-    xit('should assign item which YouTube API responsed to scope item', inject(function() {
+    xit('should assign item which YouTube API responsed to scope item', inject(function () {
       $httpBackend.expectGET(/https\:\/\/www\.googleapis\.com\/youtube\/v3\/videos\?.*/);
       $httpBackend.flush();
 
-      expect($scope.item).toEqual(resultItems.items[0]); 
+      expect($scope.item).toEqual(resultItems.items[0]);
     }));
 
-    it('should provide editing status to notes', inject(function() {
+    it('should provide editing status to notes', inject(function () {
       $httpBackend.expectGET(/\/api\/users\/.*\/notes\?videoId=2rde3/);
       $httpBackend.flush();
 
       expect($scope.notes[0].isEditing).toBeFalsy();
     }));
 
-    it('should get notes which user have been saving', inject(function() {
+    it('should get notes which user have been saving', inject(function () {
       $httpBackend.expectGET(/\/api\/users\/.*\/notes\?videoId=2rde3/);
-      $httpBackend.flush(); 
+      $httpBackend.flush();
 
       expect($scope.notes.length).toEqual(1);
       expect($scope.notes[0]._id).toEqual('NQWER');
     }));
 
 
-    it('should save editor contents and push saved notes', inject(function() {
+    it('should save editor contents and push saved notes', inject(function () {
       $httpBackend.flush();
       var beforeLength = $scope.notes.length;
 
@@ -133,14 +133,14 @@ describe('Controller: LectureCtrl', function () {
       expect($scope.toggleEditor).toHaveBeenCalled();
     }));
 
-    it('should change the editor window to a note viewer when note is updated', function() {
+    it('should change the editor window to a note viewer when note is updated', function () {
       $httpBackend.flush();
 
       var note = {
         _id: 'NQWER',
         contents: '<h1>Updated</h1>',
         isEditing: true
-      }; 
+      };
       $scope.updateNote(note);
 
       $httpBackend.expectPUT(/\/api\/users\/.*\/notes\/NQWER/);
@@ -149,7 +149,7 @@ describe('Controller: LectureCtrl', function () {
     });
 
 
-    it('should delete listed note and have notes', function() {
+    it('should delete listed note and have notes', function () {
       $httpBackend.flush();
 
       var beforeLength = $scope.notes.length;
@@ -162,7 +162,7 @@ describe('Controller: LectureCtrl', function () {
     });
 
 
-    it('should save current lecture with class', inject(function($log) {
+    it('should save current lecture with class', inject(function ($log) {
       $httpBackend.flush();
 
       $scope.completeLecture();
@@ -174,7 +174,7 @@ describe('Controller: LectureCtrl', function () {
       expect($log.info.logs).toContain(['Saved Lecture']);
     }));
 
-    it('should get notes which are written by others', function() {
+    it('should get notes which are written by others', function () {
       $httpBackend.expectGET(/\/api\/others-notes\?.*/);
       $httpBackend.flush();
 
@@ -182,15 +182,15 @@ describe('Controller: LectureCtrl', function () {
       expect($scope.othersNotes.length).toEqual(2);
     });
 
-    it('should show note as embedded', function() {
+    it('should show note as embedded', function () {
       $httpBackend.flush();
 
       var notes = [{
-        resourceType: 'text/html' 
+        resourceType: 'text/html'
       }, {
-        resourceType: 'text/plain' 
+        resourceType: 'text/plain'
       }, {
-        resourceType: 'image/jpeg' 
+        resourceType: 'image/jpeg'
       }];
 
       expect($scope.shouldBeEmbedded(notes[0])).toEqual(true);
@@ -198,12 +198,12 @@ describe('Controller: LectureCtrl', function () {
       expect($scope.shouldBeEmbedded(notes[2])).toEqual(false);
     });
 
-    it('should show editing area that have got note contents when a user edit the note', function() {
-      $httpBackend.flush(); 
+    it('should show editing area that have got note contents when a user edit the note', function () {
+      $httpBackend.flush();
 
       var note = { _id: 'NQWER' };
       $scope.editNote(note);
-      $httpBackend.flush(); 
+      $httpBackend.flush();
 
       expect(note.contents).toBeDefined();
       expect(note.isEditing).toEqual(true);

@@ -1,21 +1,21 @@
 'use strict';
 
-xdescribe('Controller: WatchedLectureListCtrl', function() {
+xdescribe('Controller: WatchedLectureListCtrl', function () {
   beforeEach(module('learntubeApp'));
   var $scope, createController;
 
-  beforeEach(inject(function($controller) {
+  beforeEach(inject(function ($controller) {
     $scope = {};
-    createController = function() {
+    createController = function () {
       return $controller('WatchedLectureListCtrl', { $scope: $scope });
     };
   }));
 
 
-  describe('with HTTP', function() {
+  describe('with HTTP', function () {
     var $httpBackend;
 
-    beforeEach(inject(function(_$httpBackend_, $stateParams) {
+    beforeEach(inject(function (_$httpBackend_, $stateParams) {
       $httpBackend = _$httpBackend_;
       $stateParams.pid = 'PL12A65DE93A8357D6';
 
@@ -70,8 +70,8 @@ xdescribe('Controller: WatchedLectureListCtrl', function() {
       }];
 
       var watchedLectures = {
-        lectures : {
-          videoId : 'MYVIDEO1'
+        lectures: {
+          videoId: 'MYVIDEO1'
         }
       };
 
@@ -83,7 +83,7 @@ xdescribe('Controller: WatchedLectureListCtrl', function() {
 
     }));
 
-    beforeEach(inject(function(Auth) {
+    beforeEach(inject(function (Auth) {
       var userData = {
         __v: 0,
         _id: 'QWER',
@@ -101,13 +101,13 @@ xdescribe('Controller: WatchedLectureListCtrl', function() {
       $httpBackend.flush();
     }));
 
-    afterEach(inject(function(Auth) {
+    afterEach(inject(function (Auth) {
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
       Auth.logout();
     }));
 
-    it('should show notes when existing note is selected', function() {
+    it('should show notes when existing note is selected', function () {
       createController();
       $httpBackend.flush();
 
@@ -120,7 +120,7 @@ xdescribe('Controller: WatchedLectureListCtrl', function() {
       expect(lecture).toBeDefined('notes');
     });
 
-    it('should show notes without request when same lecture is selected again', function() {
+    it('should show notes without request when same lecture is selected again', function () {
       createController();
       $httpBackend.flush();
 
@@ -133,7 +133,7 @@ xdescribe('Controller: WatchedLectureListCtrl', function() {
       $scope.showNote(lecture);
     });
 
-    it('should show highlight mark on watched lectures', function(){
+    it('should show highlight mark on watched lectures', function () {
       createController();
       $httpBackend.expectGET(/\/api\/users\/.*\/classes\?.*/);
       $httpBackend.flush();

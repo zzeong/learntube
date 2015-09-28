@@ -1,14 +1,14 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('UploadedLectureListCtrl', function($scope, $stateParams, Auth, $state, $http, $log, $mdDialog, $q, $mdToast, GApi, GoogleConst) {
+.controller('UploadedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, $log, $mdDialog, $q, $mdToast, GApi, GoogleConst) {
   $scope.playlistId = $stateParams.pid;
   $scope.go = $state.go;
   var scope = $scope;
 
-  var onRejected = function(err) { $log.error(err); };
+  var onRejected = function (err) { $log.error(err); };
 
-  var showToast = function(text) {
+  var showToast = function (text) {
     $mdToast.show(
       $mdToast.simple()
       .content(text)
@@ -17,14 +17,14 @@ angular.module('learntubeApp')
     );
   };
 
-  var uploadFile = function(file, urls) {
-    var deferred = $q.defer(); 
+  var uploadFile = function (file, urls) {
+    var deferred = $q.defer();
     var xhr = new XMLHttpRequest();
     xhr.file = file;
 
-    xhr.onreadystatechange = function() {
-      if(this.readyState === 4) {
-        if(this.status === 200) {
+    xhr.onreadystatechange = function () {
+      if (this.readyState === 4) {
+        if (this.status === 200) {
           deferred.resolve(urls.accessUrl);
         } else {
           deferred.reject(this);
@@ -37,32 +37,32 @@ angular.module('learntubeApp')
     return deferred.promise;
   };
 
-  var postToBack = function(params) {
+  var postToBack = function (params) {
     var deferred = $q.defer();
 
     $http.post('/api/users/' + Auth.getCurrentUser()._id + '/uploads', params)
-    .then(function(res) {
+    .then(function (res) {
       deferred.resolve(res.data);
-    }, function() {
-      deferred.reject(); 
+    }, function () {
+      deferred.reject();
     });
 
     return deferred.promise;
   };
 
-  var getSignedUrl = function(file){
+  var getSignedUrl = function (file) {
     var deferred = $q.defer();
 
     $http.get('/api/s3/credential', {
       params: {
         fileName: file.name,
         fileType: file.type,
-      }, 
+      },
     })
-    .then(function(res) {
+    .then(function (res) {
       deferred.resolve(res.data);
-    }, function() {
-      deferred.reject(); 
+    }, function () {
+      deferred.reject();
     });
 
     return deferred.promise;
@@ -71,15 +71,15 @@ angular.module('learntubeApp')
 
   $http.get('/api/youtube/mine/playlists', {
     params: {
-      playlistId: $scope.playlistId, 
+      playlistId: $scope.playlistId,
     },
-  }).then(function(res) {
-    for(var i in res.data.items){
-      if(res.data.items[i].id === $scope.playlistId){
+  }).then(function (res) {
+    for (var i in res.data.items) {
+      if (res.data.items[i].id === $scope.playlistId) {
         $scope.summary = res.data.items[i];
       }
     }
-  }, function(err) {
+  }, function (err) {
     $log.error(err);
   });
 
@@ -87,25 +87,25 @@ angular.module('learntubeApp')
     params: {
       playlistId: $scope.playlistId,
       withDuration: true,
-    }, 
+    },
   })
-  .then(function(res) {
+  .then(function (res) {
     $scope.lectureList = res.data.items;
     console.log($scope.lectureList);
     return $http.get('/api/users/' + Auth.getCurrentUser()._id + '/uploads', {
       params: {
-        playlistId: $scope.playlistId, 
+        playlistId: $scope.playlistId,
       },
     });
-  }, function(err) {
-    $log.error(err); 
+  }, function (err) {
+    $log.error(err);
   })
-  .then(function(res) {
+  .then(function (res) {
     $scope.upload = res.data[0];
     var files = $scope.upload.lectures;
-    files.forEach(function(fileMeta) {
-      for(var i = 0; i < $scope.lectureList.length; i++) {
-        if($scope.lectureList[i].snippet.resourceId.videoId === fileMeta.videoId) {
+    files.forEach(function (fileMeta) {
+      for (var i = 0; i < $scope.lectureList.length; i++) {
+        if ($scope.lectureList[i].snippet.resourceId.videoId === fileMeta.videoId) {
           $scope.lectureList[i].file = fileMeta;
         }
       }
@@ -113,32 +113,32 @@ angular.module('learntubeApp')
   }, onRejected);
 
 
-  $scope.haveUploadedFile = function(lecture) {
+  $scope.haveUploadedFile = function (lecture) {
     return 'file' in lecture;
   };
 
-  $scope.showFileDialog = function(lecture, ev) {
+  $scope.showFileDialog = function (lecture, ev) {
     $mdDialog.show({
-      controller: function($scope, $mdDialog) {
+      controller: function ($scope, $mdDialog) {
         $scope.haveUploadedFile = scope.haveUploadedFile;
         $scope.lecture = lecture;
 
-        $scope.deleteFile = function(lecture) {
+        $scope.deleteFile = function (lecture) {
           $http.delete('/api/users/' + Auth.getCurrentUser()._id + '/uploads/' + scope.upload._id + '/lectures/' + lecture.file._id)
-          .then(function() {
+          .then(function () {
             delete lecture.file;
             showToast('File deleted');
           }, onRejected);
         };
-        $scope.cancel = function() {
+        $scope.cancel = function () {
           $mdDialog.cancel();
         };
-        $scope.attachFile = function(file) {
+        $scope.attachFile = function (file) {
           getSignedUrl(file)
-          .then(function(s3Urls) {
+          .then(function (s3Urls) {
             return uploadFile(file, s3Urls);
           }, onRejected)
-          .then(function(url) {
+          .then(function (url) {
             return postToBack({
               videoId: lecture.snippet.resourceId.videoId,
               playlistId: $scope.playlistId,
@@ -146,8 +146,8 @@ angular.module('learntubeApp')
               fileName: file.name
             });
           }, onRejected)
-          .then(function(uploaded) {
-            $mdDialog.hide(uploaded); 
+          .then(function (uploaded) {
+            $mdDialog.hide(uploaded);
           }, onRejected);
         };
       },
@@ -156,54 +156,54 @@ angular.module('learntubeApp')
       targetEvent: ev,
       clickOutsideToClose: true
     })
-    .then(function(uploaded) {
+    .then(function (uploaded) {
       showToast('File uploaded');
-      lecture.file = uploaded.lectures.filter(function(fileMeta) {
+      lecture.file = uploaded.lectures.filter(function (fileMeta) {
         return fileMeta.videoId === lecture.snippet.resourceId.videoId;
       })[0];
       $log.info(uploaded);
     }, onRejected);
   };
 
-  $scope.showLectureDialog = function(lecture, ev) {
+  $scope.showLectureDialog = function (lecture, ev) {
     $mdDialog.show({
-      controller: function($scope, $mdDialog) {
-        $scope.getMyVideos = function() {
-          if($scope.myVideos) { return; }
+      controller: function ($scope, $mdDialog) {
+        $scope.getMyVideos = function () {
+          if ($scope.myVideos) { return; }
 
           $http.get('/api/youtube/mine/videos', {
             params: { withDuration: true }
           })
-          .then(function(res) {
-            $scope.myVideos = res.data.items; 
+          .then(function (res) {
+            $scope.myVideos = res.data.items;
           }, onRejected);
         };
 
-        $scope.search = function() {
+        $scope.search = function () {
           GApi.execute('youtube', 'search.list', {
             key: GoogleConst.browserKey,
             part: 'snippet',
             q: $scope.query,
             maxResults: 50,
             type: 'video',
-          }).then(function(res) {
+          }).then(function (res) {
             $scope.searched = res.items;
           }, onRejected);
         };
 
-        $scope.selectVideo = function(video) {
-          $scope.selectedVideo = video; 
+        $scope.selectVideo = function (video) {
+          $scope.selectedVideo = video;
         };
 
-        $scope.isSelected = function(video) {
-          return $scope.selectedVideo === video; 
+        $scope.isSelected = function (video) {
+          return $scope.selectedVideo === video;
         };
 
-        $scope.cancel = function() {
+        $scope.cancel = function () {
           $mdDialog.cancel();
         };
 
-        $scope.addLecture = function(video) {
+        $scope.addLecture = function (video) {
           $http.post('/api/youtube/mine/playlistitems', {
             resource: {
               snippet: {
@@ -214,11 +214,11 @@ angular.module('learntubeApp')
                 }
               }
             },
-          }, { 
+          }, {
             params: { withDuration: true }
           })
-          .then(function(res) {
-            if(res.status === 201) {
+          .then(function (res) {
+            if (res.status === 201) {
               scope.lectureList.push(res.data);
               $mdDialog.hide();
             }
@@ -230,14 +230,14 @@ angular.module('learntubeApp')
       targetEvent: ev,
       clickOutsideToClose: true
     })
-    .then(function() {
+    .then(function () {
       showToast('Lecture added');
     }, onRejected);
   };
 
   $scope.selection = [];
 
-  $scope.toggleSelection = function(site) {
+  $scope.toggleSelection = function (site) {
     var idx = $scope.selection.indexOf(site);
     // is currently selected
     if (idx > -1) {
@@ -249,10 +249,10 @@ angular.module('learntubeApp')
     }
   };
 
-  $scope.deleteLecture = function(){
+  $scope.deleteLecture = function () {
     $scope.selectionStr = $scope.selection.join();
     $http.delete('/api/youtube/mine/playlistitems',{
-      params: { playlistItemId: $scope.selectionStr } 
+      params: { playlistItemId: $scope.selectionStr }
     });
   };
 

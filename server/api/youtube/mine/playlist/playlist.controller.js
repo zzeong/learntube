@@ -36,14 +36,14 @@ var config = require('../../../../config/environment');
  *       "pageToken": "DJGNdN"
  *     }
  */
-exports.index = function(req, res) {
+exports.index = function (req, res) {
   g.oauth2Client.setCredentials({
     access_token: req.user.google.accessToken,
     refresh_token: req.user.google.refreshToken,
   });
 
   var params = {
-    auth: g.oauth2Client, 
+    auth: g.oauth2Client,
     part: 'id,snippet,status',
     mine: true,
     maxResults: config.google.maxResults,
@@ -51,14 +51,14 @@ exports.index = function(req, res) {
   };
 
   g.youtube('playlists.list', params)
-  .then(function(response) {
+  .then(function (response) {
     var resBody = { items: response.items };
-    if(response.nextPageToken) { 
+    if (response.nextPageToken) {
       resBody.pageToken = response.nextPageToken;
     }
     return res.status(200).json(resBody);
-  }, function(error) {
-    return res.status(500).send(error); 
+  }, function (error) {
+    return res.status(500).send(error);
   });
 
 };
@@ -70,16 +70,16 @@ exports.index = function(req, res) {
  * @apiGroup My playlists
  *
  * @apiUse TokenAuth
- * 
+ *
  * @apiParam {Object} resource **POST body**. It must be [playlist resource](https://developers.google.com/youtube/v3/docs/playlists#resource)
  * which have `snippet.title`, `snippet.description`, `status.privacyStatus`.
  * @apiParamExample {json} Request-Example:
- *     { 
+ *     {
  *       "resource": {
  *         "snippet": {
  *            "title": "My Awesome Playlist",
  *            "description": "It is fantastic."
- *         }, 
+ *         },
  *         "status": {
  *           "privacyStatus": "public"
  *         }
@@ -95,7 +95,7 @@ exports.index = function(req, res) {
  *       playlist_resource_properties
  *     }
  */
-exports.create = function(req, res) {
+exports.create = function (req, res) {
   g.oauth2Client.setCredentials({
     access_token: req.user.google.accessToken,
     refresh_token: req.user.google.refreshToken,
@@ -108,10 +108,10 @@ exports.create = function(req, res) {
   }, req.body);
 
   g.youtube('playlists.insert', params)
-  .then(function(item) {
+  .then(function (item) {
     return res.status(201).json(item);
-  }, function(error) {
-    return res.status(500).send(error); 
+  }, function (error) {
+    return res.status(500).send(error);
   });
 };
 
@@ -126,7 +126,7 @@ exports.create = function(req, res) {
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 204 No Content
  */
-exports.destroy = function(req, res) {
+exports.destroy = function (req, res) {
   g.oauth2Client.setCredentials({
     access_token: req.user.google.accessToken,
     refresh_token: req.user.google.refreshToken,
@@ -138,9 +138,9 @@ exports.destroy = function(req, res) {
   };
 
   g.youtube('playlists.delete', params)
-  .then(function() {
+  .then(function () {
     return res.status(204).send();
-  }, function(error) {
+  }, function (error) {
     return res.status(500).send(error);
   });
 };

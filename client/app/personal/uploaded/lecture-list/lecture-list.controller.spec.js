@@ -1,22 +1,22 @@
 'use strict';
 
-xdescribe('Controller: UploadedLectureListCtrl', function() {
+xdescribe('Controller: UploadedLectureListCtrl', function () {
   beforeEach(module('learntubeApp'));
   var $scope, createController;
 
-  beforeEach(inject(function($controller) {
+  beforeEach(inject(function ($controller) {
     $scope = {};
-    createController = function() {
-      return $controller('UploadedLectureListCtrl', { $scope: $scope }); 
+    createController = function () {
+      return $controller('UploadedLectureListCtrl', { $scope: $scope });
     };
   }));
 
 
-  describe('with HTTP', function() {
-    var $httpBackend; 
+  describe('with HTTP', function () {
+    var $httpBackend;
 
-    beforeEach(inject(function(_$httpBackend_, $stateParams) {
-      $httpBackend = _$httpBackend_; 
+    beforeEach(inject(function (_$httpBackend_, $stateParams) {
+      $httpBackend = _$httpBackend_;
       $stateParams.pid = 'PL12A65DE93A8357D6';
 
       var lecturelist = [{
@@ -31,7 +31,7 @@ xdescribe('Controller: UploadedLectureListCtrl', function() {
       }];
 
       var classes = [{
-        snippet: {}, 
+        snippet: {},
         status: {},
       }];
 
@@ -50,8 +50,8 @@ xdescribe('Controller: UploadedLectureListCtrl', function() {
       $httpBackend.when('GET', /\/api\/users\/.*\/uploads\?.*/).respond(files);
     }));
 
-    beforeEach(inject(function(Auth) {
-      var userData = { 
+    beforeEach(inject(function (Auth) {
+      var userData = {
         __v: 0,
         _id: 'QWER',
         email: 'test@test.com',
@@ -63,18 +63,18 @@ xdescribe('Controller: UploadedLectureListCtrl', function() {
       $httpBackend.when('POST', '/auth/local').respond({ token: 'myToken' });
       $httpBackend.when('GET', '/api/users/me').respond(userData);
 
-      Auth.login({ email: 'test@test.com', password: 'test' }); 
+      Auth.login({ email: 'test@test.com', password: 'test' });
       $httpBackend.flush();
     }));
 
-    afterEach(inject(function(Auth) {
+    afterEach(inject(function (Auth) {
       $httpBackend.verifyNoOutstandingExpectation();
       $httpBackend.verifyNoOutstandingRequest();
-      Auth.logout(); 
+      Auth.logout();
     }));
 
-    it('should get class summary when user entered the page', function() {
-      createController(); 
+    it('should get class summary when user entered the page', function () {
+      createController();
       $httpBackend.expectGET(/\/api\/youtube\/classes\?.*/);
       $httpBackend.flush();
 
@@ -82,8 +82,8 @@ xdescribe('Controller: UploadedLectureListCtrl', function() {
       expect($scope.summary.status).toBeDefined();
     });
 
-    it('should get lecture list when user entered the page', function() {
-      createController();   
+    it('should get lecture list when user entered the page', function () {
+      createController();
       $httpBackend.expectGET(/\/api\/youtube\/lecture-list\?.*/);
       $httpBackend.flush();
 
@@ -92,8 +92,8 @@ xdescribe('Controller: UploadedLectureListCtrl', function() {
       expect($scope.lectureList[0].status).toBeDefined();
     });
 
-    it('should distinguish a lecture has a file or not', function() {
-      createController(); 
+    it('should distinguish a lecture has a file or not', function () {
+      createController();
       $httpBackend.expectGET(/\/api\/users\/.*\/uploads\?.*/);
       $httpBackend.flush();
       expect($scope.haveUploadedFile($scope.lectureList[0])).toEqual(true);
