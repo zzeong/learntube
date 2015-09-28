@@ -33,7 +33,7 @@
               ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
               <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail"/>
               <div class="md-list-item-text">
-                <h3>{{ $index+1 }}. {{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
+                <h4>{{ $index+1 }}. {{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h4>
                 <p>{{ lecture.contentDetails.duration | humanable }}</p>
 
                 <md-icon md-font-set="material-icons"
@@ -52,4 +52,3 @@
 
   </div>
 </md-content>
-
