@@ -22,8 +22,7 @@
       </div>
 
       <md-list>
-        <div class="lectureList"
-          infinite-scroll="loadMore(pageToken)" 
+        <div infinite-scroll="loadMore(pageToken)"
           infinite-scroll-disabled="httpBusy || !pageToken"
           infinite-scroll-distance="1">
 
@@ -33,11 +32,9 @@
             ng-class="{highlight: lecture.highlight}">
 
             <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
-
             <div class="md-list-item-text">
               <div>
-                <!-- <span>{{ $index + 1 }}.&nbsp</span> -->
-                <h3>{{ $index+1 }}. {{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h3>
+                <h4>{{ $index+1 }}. {{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h4>
                 <p>{{ lecture.contentDetails.duration | humanable }}</p>
               </div>
             </div>
