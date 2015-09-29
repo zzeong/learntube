@@ -1,13 +1,16 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('ClassCtrl', function ($scope, $http, $stateParams, $state, ClassAPI, $log, Auth, $filter, GoogleConst, GApi, $q) {
+.controller('ClassCtrl', function ($scope, $http, $stateParams, $state, ClassAPI, $log, Auth, $filter, GoogleConst, GApi, $q, $mdToast, $document) {
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.playlistId = $stateParams.pid;
   $scope.go = $state.go;
   $scope.httpBusy = true;
 
   $scope.addClass = function () {
+
+    $scope.showSimpleToast();
+
     ClassAPI.create({
       playlistId: $scope.playlistId
     }, function () {
@@ -97,9 +100,20 @@ angular.module('learntubeApp')
   })
   .then(function (list) {
     $scope.lectureList = list;
+    console.log($filter('humanable')($scope.lectureList[0].contentDetails.duration));
     $scope.httpBusy = false;
   });
 
+  $scope.showSimpleToast = function () {
 
+    var positionArr = 'top right';
+
+    $mdToast.show(
+      $mdToast.simple()
+        .content('Class is added')
+        .position(positionArr)
+        .hideDelay(3000)
+    );
+  };
 
 });
