@@ -6,32 +6,29 @@
   <div class="content-width" layout-padding>
     <md-card class="watched-class-card" ng-repeat="classe in classes">
 
-      <div class="card-image-cont">
+      <div class="card-image-cont cursor-pointer">
         <img id="thumbnail" ng-src="{{ classe.item.snippet.thumbnails.high.url }}" ng-click="go('WatchedLectureList', { pid: classe.playlistId })" class="md-card-image" alt="Class Image">
 
-        <div class="overlay"  ng-show="classe.graph">
+        <div class="overlay cursor-pointer" ng-show="classe.graph" ng-click="go('WatchedLectureList', { pid: classe.playlistId })">
+          <div class="contentPosition">
+            <div class="progress-text progress-media">
+              <p>Progress</p>
+            </div>
 
-          <div class="contentPosition" style="margin-top: -60px">
-            <div class="position2">
-              <div class="progress-text progress-media">
-                <p>Progress</p>
+            <div class="progressbar-outline">
+              <div class="percentage-div">
+                <p class="md-caption percentage-p">{{ classe.percentage }}%</p>
+              </div>
+              <div class="progressbar-inline" style="width: {{ classe.percentage }}%; height: 12px;"></div>
+            </div>
+
+            <div class="texts texts-media hide-detail">
+              <div class="md-caption watched-text" style="float:left">
+                <p>Watched: {{ classe.numberOfWatched }} / {{ classe.item.contentDetails.itemCount }}</p>
               </div>
 
-              <div class="progressbar-outline">
-                <div class="percentage-div">
-                  <p class="md-caption percentage-p">{{ classe.percentage }}%</p>
-                </div>
-                <div class="progressbar-inline" style="width: {{ classe.percentage }}%; height: 12px;"></div>
-              </div>
-
-              <div class="texts texts-media hide-detail">
-                <div class="md-caption watched-text" style="float:left">
-                  <p>Watched: {{ classe.numberOfWatched }} / {{ classe.item.contentDetails.itemCount }}</p>
-                </div>
-
-                <div class="md-caption notes-text" style="float:right">
-                  <p>Notes: {{ classe.numberOfNote }}</p>
-                </div>
+              <div class="md-caption notes-text" style="float:right">
+                <p>Notes: {{ classe.numberOfNote }}</p>
               </div>
             </div>
           </div>
