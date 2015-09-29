@@ -3,7 +3,6 @@
 angular.module('learntubeApp')
 .controller('UploadedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, $log, $mdDialog, $q, $mdToast, GApi, GoogleConst) {
   $scope.playlistId = $stateParams.pid;
-  $scope.go = $state.go;
   var scope = $scope;
 
   var onRejected = function (err) { $log.error(err); };

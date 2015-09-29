@@ -4,7 +4,6 @@ angular.module('learntubeApp')
 .controller('ClassCtrl', function ($scope, $http, $stateParams, $state, ClassAPI, $log, Auth, $filter, GoogleConst, GApi, $q, $mdToast, $document) {
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.playlistId = $stateParams.pid;
-  $scope.go = $state.go;
   $scope.httpBusy = true;
 
   $scope.addClass = function () {

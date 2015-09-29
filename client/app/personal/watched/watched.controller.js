@@ -2,8 +2,6 @@
 
 angular.module('learntubeApp')
 .controller('WatchedContentsCtrl', function ($scope, $http, ClassAPI, NoteAPI, $state, $log, GoogleConst, GApi) {
-  $scope.go = $state.go;
-
   ClassAPI.query(function (response) {
     $scope.classes = response;
 

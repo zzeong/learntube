@@ -3,7 +3,6 @@
 angular.module('learntubeApp')
 .controller('WatchedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, $log, ClassAPI, $filter, NoteAPI, GApi, GoogleConst, $q) {
   $scope.playlistId = $stateParams.pid;
-  $scope.go = $state.go;
 
   $scope.loadMore = function (token) {
     $scope.httpBusy = true;

@@ -83,8 +83,9 @@ angular.module('learntubeApp', [
   });
 })
 
-.controller('masterCtrl', function ($scope, navToggler) {
+.controller('MasterCtrl', function ($scope, navToggler, $state) {
   $scope.onSwipeRight = function (ev) {
     if (ev.pointer.startX < 15) { navToggler.left(); }
   };
+  $scope.go = $state.go;
 });

@@ -27,7 +27,6 @@ angular.module('learntubeApp')
   };
   $scope.stateNameCheck = function (name) { return $state.current.name === name; };
   $scope.title = $scope.stateNameCheck('Search') ? $state.params.q : $state.current.name;
-  $scope.goSearch = function () { $state.go('Search', { q: $scope.q }); };
   $scope.leftTrigger = function () {
     var func = $scope.stateNameCheck('Home') ? navToggler.left : back;
     func();

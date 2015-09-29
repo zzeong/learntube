@@ -2,8 +2,6 @@
 
 angular.module('learntubeApp')
 .controller('MainCtrl', function ($scope, $state, GApi, GoogleConst, $http) {
-  $scope.go = $state.go;
-
   $http.get('/api/classes/get-tops', {
     params: { num: 6 }
   })

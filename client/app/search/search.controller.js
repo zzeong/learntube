@@ -1,9 +1,8 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('SearchCtrl', function ($scope, $http, $stateParams, $state, GApi, GoogleConst) {
+.controller('SearchCtrl', function ($scope, $http, $stateParams, GApi, GoogleConst) {
   $scope.q = $stateParams.q;
-  $scope.go = $state.go;
   $scope.httpBusy = true;
 
   var params = {
