@@ -6,20 +6,20 @@
 }
 
 #intro {
-  background-image: url("/assets/images/intro_background.jpg");
+  background-image: url('/assets/images/main_background.jpg');
   background-repeat: no-repeat;
   background-size: cover;
-  background-position: 50% 0;
+  background-position: 50% 23%;
   height: 450px;
 }
 
 #slogan {
-  color: rgba(255, 255, 255, 0.87);
+  color: rgba(0, 0, 0, 0.87);
   margin: 1.15rem 0;
 }
 
 .main-search-cont {
-  background-color: rgba(255, 255, 255, 0.6);
+  background-color: rgba(0, 0, 0, 0.075);
   border-radius: 4px;
   padding: 8px 10px;
 
