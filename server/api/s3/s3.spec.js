@@ -4,8 +4,11 @@ var should = require('should');
 var app = require('../../app');
 var request = require('supertest');
 var User = require('../user/user.model');
+var auth = require('../../auth/auth.service');
 
 describe('REST API:', function () {
+  var id;
+
   before(function (done) {
     User.remove({})
     .then(function () {
@@ -17,7 +20,10 @@ describe('REST API:', function () {
 
       return User.create(user);
     })
-    .then(function () { done(); })
+    .then(function (user) {
+      id = user._id;
+      done();
+    })
     .catch(function (err) { done(err); });
   });
 
@@ -29,19 +35,8 @@ describe('REST API:', function () {
   describe('GET /api/s3/credential', function () {
     var token;
 
-    before(function (done) {
-      request(app)
-      .post('/auth/local')
-      .send({
-        email: 'test@test.com',
-        password: 'password'
-      })
-      .expect(200)
-      .expect('Content-Type', /json/)
-      .end(function (err, res) {
-        token = res.body.token;
-        done();
-      });
+    before(function () {
+      token = auth.signToken(id);
     });
 
     it('should return S3 credentials', function (done) {

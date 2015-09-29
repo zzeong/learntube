@@ -49,6 +49,8 @@
 
     </md-menu>
 
-    <md-button ng-hide="isLoggedIn()" href="/login" hide-sm>Login</md-button>
+    <md-button class="md-raised md-primary md-hue-2 login-btn" ng-hide="isLoggedIn()" ng-click="loginOauth('google')" hide-sm>
+      Login with <i class="fa fa-youtube-play"></i>
+    </md-button>
   </div>
 </md-toolbar>

@@ -21,7 +21,6 @@ describe('REST API:', function () {
     ])
     .then(function () {
       var user = {
-        provider: 'local',
         name: 'Fake User',
         email: 'test@test.com',
         password: 'password',

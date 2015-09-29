@@ -9,7 +9,6 @@ var Class = require('../class.model');
 var Lecture = require('./lecture.model');
 
 var userData = {
-  provider: 'local',
   name: 'Fake User',
   email: 'test@test.com',
   password: 'password',

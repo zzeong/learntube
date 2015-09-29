@@ -50,20 +50,19 @@ xdescribe('Controller: UploadedLectureListCtrl', function () {
       $httpBackend.when('GET', /\/api\/users\/.*\/uploads\?.*/).respond(files);
     }));
 
-    beforeEach(inject(function (Auth) {
+    beforeEach(inject(function (Auth, $cookieStore) {
       var userData = {
         __v: 0,
         _id: 'QWER',
         email: 'test@test.com',
         name: 'Test User',
-        provider: 'local',
         role: 'user'
       };
 
-      $httpBackend.when('POST', '/auth/local').respond({ token: 'myToken' });
+      $cookieStore.put('token', 'myYummyCookie');
       $httpBackend.when('GET', '/api/users/me').respond(userData);
 
-      Auth.login({ email: 'test@test.com', password: 'test' });
+      Auth.reget();
       $httpBackend.flush();
     }));
 

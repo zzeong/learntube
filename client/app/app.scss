@@ -82,10 +82,13 @@ md-sidenav, md-backdrop {
   position: fixed;
 }
 
+.login-btn {
+  padding: 0 15px;
+}
+
 
 // Component styles are injected through grunt
 // injector
-@import 'account/account.scss';
 @import 'class/class.scss';
 @import 'lecture/lecture.scss';
 @import 'main/main.scss';

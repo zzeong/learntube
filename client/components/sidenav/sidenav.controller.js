@@ -1,10 +1,15 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('SidenavDrawerCtrl', function ($scope, Auth, $location) {
+.controller('SidenavDrawerCtrl', function ($scope, Auth, $location, $window) {
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.isAdmin = Auth.isAdmin;
   $scope.getCurrentUser = Auth.getCurrentUser;
+
+  $scope.loginOauth = function (provider) {
+    $window.location.href = '/auth/' + provider;
+  };
+
   $scope.personalMenu = [{
     name: 'Watched Contents',
     url: '/watched',

@@ -4,24 +4,23 @@ describe('Controller: LectureCtrl', function () {
   beforeEach(module('learntubeApp'));
   var $scope, $httpBackend;
 
-  beforeEach(inject(function ($controller, $stateParams, _$httpBackend_, Auth) {
+  beforeEach(inject(function ($controller, $stateParams, _$httpBackend_, Auth, $cookieStore) {
     var userData = {
       __v: 0,
       _id: 'QWER',
       email: 'test@test.com',
       name: 'Test User',
-      provider: 'local',
       role: 'user'
     };
 
+    $cookieStore.put('token', 'myYummyCookie');
     $httpBackend = _$httpBackend_;
     $scope = {};
 
-    $httpBackend.when('POST', '/auth/local').respond({ token: 'myToken' });
     $httpBackend.when('GET', '/api/users/me').respond(userData);
 
     $stateParams.vid = '2rde3';
-    Auth.login({ email: 'test@test.com', password: 'test' });
+    Auth.reget();
     $httpBackend.flush();
 
     $controller('LectureCtrl', { $scope: $scope });

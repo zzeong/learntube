@@ -4,6 +4,10 @@ angular.module('learntubeApp')
 .controller('ToolbarCtrl', function ($scope, $location, $state, $window, Auth, navToggler) {
   var back = function () { $window.history.back(); };
 
+  $scope.loginOauth = function (provider) {
+    $window.location.href = '/auth/' + provider;
+  };
+
   $scope.onSearching = false;
   $scope.getCurrentUser = Auth.getCurrentUser;
   $scope.isLoggedIn = Auth.isLoggedIn;

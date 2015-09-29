@@ -8,7 +8,6 @@ var User = require('../user.model');
 var Class = require('./class.model');
 
 var userData = {
-  provider: 'local',
   name: 'Fake User',
   email: 'test@test.com',
   password: 'password',

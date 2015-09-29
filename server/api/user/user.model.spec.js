@@ -8,7 +8,6 @@ var mongoose = require('mongoose');
 var Promise = mongoose.Promise = require('promise');
 
 var user = new User({
-  provider: 'local',
   name: 'Fake User',
   email: 'test@test.com',
   password: 'password'

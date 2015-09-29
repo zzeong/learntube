@@ -20,17 +20,6 @@ var config = require('./environment');
 
 var initialUser = function () {
   return User.create([{
-    provider: 'local',
-    name: 'Test User',
-    email: 'test@test.com',
-    password: 'test',
-  }, {
-    provider: 'local',
-    role: 'admin',
-    name: 'Admin',
-    email: 'admin@admin.com',
-    password: 'admin'
-  }, {
     provider: 'google',
     role: 'user',
     name: 'Jieun Lee',
@@ -79,25 +68,11 @@ var seedNote = function (users) {
     };
   };
 
-  var docs = [{
-    userId: users[0]._id,
-    videoId: '1ZRb1we80kM',
-    playlistId: 'PL9B61DEF63FC19BD9',
-    url: 'https://learntubebucket.s3.amazonaws.com/' + users[0].email + '/7121cd645707ec47efa33393028473c7',
-    type: 'editor',
-    resourceType: 'text/html',
-  }, {
-    userId: users[0]._id,
-    videoId: 'rJnICByeL8Q',
-    playlistId: 'PL9B61DEF63FC19BD9',
-    url: 'https://learntubebucket.s3.amazonaws.com/' + users[0].email + '/a868c19f55558a2a349193ff9d1f2fce',
-    type: 'editor',
-    resourceType: 'text/html',
-  }];
 
+  var docs = [];
   for (var i = 0; i < 4; i++) {
-    docs.push(createDoc(users[2], i));
-    docs.push(createDoc(users[3], i));
+    docs.push(createDoc(users[0], i));
+    docs.push(createDoc(users[1], i));
   }
 
   return Note.create(docs);
@@ -111,7 +86,7 @@ var seedClass = function (users) {
   };
 
   return Class.create([{
-    userId: users[3]._id,
+    userId: users[1]._id,
     playlistId: 'PLeNYl43VgxfUsY23CygyCtE1MKw8Vy4e8',
     lectures: [{
       videoId: 'RKhsHGfrFmY'
@@ -119,7 +94,7 @@ var seedClass = function (users) {
       videoId: 'rJnICByeL8Q'
     }]
   }, {
-    userId: users[3]._id,
+    userId: users[1]._id,
     playlistId: 'PL9B61DEF63FC19BD9',
     lectures: [{
       videoId: '1ZRb1we80kM',
@@ -144,7 +119,7 @@ var seedClass = function (users) {
       completedAt: timeMachine(_.random(-14, 0)),
     }]
   }, {
-    userId: users[3]._id,
+    userId: users[1]._id,
     playlistId: 'PLmtapKaZsgZt3g_uAPJbsMWdkVsznn_2R',
     lectures: [{
       videoId: 'W_k2EB33s7A'
@@ -152,7 +127,7 @@ var seedClass = function (users) {
       videoId: 'B5HkW--GAQ8'
     }]
   }, {
-    userId: users[3]._id,
+    userId: users[1]._id,
     playlistId: 'PLFgquLnL59akz2EQlObY3Ac3aC68xfSU6',
     lectures: [{
       videoId: 'RgKAFK5djSk'
@@ -160,7 +135,7 @@ var seedClass = function (users) {
       videoId: '_mVJJvx04_w'
     }]
   }, {
-    userId: users[3]._id,
+    userId: users[1]._id,
     playlistId: 'PL8fVUTBmJhHJDAtZwiIOooPRurN0hna-j',
     lectures: [{
       videoId: '1ZLN9AzxVa8'
@@ -205,16 +180,16 @@ var seedUpload = function (users) {
   ];
 
   return Upload.create([{
-    userId: users[2]._id,
+    userId: users[0]._id,
     playlistId: 'PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx',
     lectures: [{
       videoId: 'miUYEpXDitc',
       fileName: 'just.txt',
-      url: s3.endpoint.href + config.aws.s3Bucket + '/' + users[2].email + '/uploads/' + hashes[0],
+      url: s3.endpoint.href + config.aws.s3Bucket + '/' + users[0].email + '/uploads/' + hashes[0],
     }, {
       videoId: 'F-xd3G0PW0k',
       fileName: 'just.pdf',
-      url: s3.endpoint.href + config.aws.s3Bucket + '/' + users[2].email + '/uploads/' + hashes[1],
+      url: s3.endpoint.href + config.aws.s3Bucket + '/' + users[0].email + '/uploads/' + hashes[1],
     }],
   }]);
 };

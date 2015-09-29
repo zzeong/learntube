@@ -4,23 +4,22 @@ describe('Controller: WatchedContentsCtrl', function () {
   beforeEach(module('learntubeApp'));
   var $scope, $httpBackend;
 
-  beforeEach(inject(function ($controller, _$httpBackend_, Auth) {
+  beforeEach(inject(function ($controller, _$httpBackend_, Auth, $cookieStore) {
     var userData = {
       __v: 0,
       _id: 'QWER',
       email: 'test@test.com',
       name: 'Test User',
-      provider: 'local',
       role: 'user'
     };
 
     $httpBackend = _$httpBackend_;
     $scope = {};
 
-    $httpBackend.when('POST', '/auth/local').respond({ token: 'myToken' });
+    $cookieStore.put('token', 'myYummyCookie');
     $httpBackend.when('GET', '/api/users/me').respond(userData);
 
-    Auth.login({ email: 'test@test.com', password: 'test' });
+    Auth.reget();
     $httpBackend.flush();
 
     $controller('WatchedContentsCtrl', {$scope: $scope });

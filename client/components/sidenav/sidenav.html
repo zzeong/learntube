@@ -4,7 +4,9 @@
       <img ng-src="{{ getUserImage() }}" class="account-img" alt="Account Image"/>
     </div>
     <div class="account-cont">
-      <md-button ng-hide="isLoggedIn()" class="md-raised" href="/login">Login</md-button>
+      <md-button ng-hide="isLoggedIn()" ng-click="loginOauth('google')" class="md-raised login-btn">
+        Login with <i class="fa fa-youtube-play"></i>
+      </md-button>
       <div class="inner-left-padding" ng-show="isLoggedIn()">
         <p class="md-body-2">{{ getCurrentUser().name }}</p>
         <p class="md-body-1">{{ getCurrentUser().email }}</p>
