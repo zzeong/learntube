@@ -22,7 +22,7 @@ describe('Controller: WatchedContentsCtrl', function () {
     Auth.reget();
     $httpBackend.flush();
 
-    $controller('WatchedContentsCtrl', {$scope: $scope });
+    $controller('WatchedContentsCtrl', { $scope: $scope });
   }));
 
 

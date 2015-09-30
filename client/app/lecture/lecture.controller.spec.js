@@ -77,7 +77,7 @@ describe('Controller: LectureCtrl', function () {
       $httpBackend.when('PUT', /\/api\/users\/.*\/notes\/.*/).respond({ _id: 'NQWER', });
       $httpBackend.when('GET', /\/api\/users\/.*\/notes\/.*\/get-contents.*/).respond({ _id: 'NQWER', contents: '<h1>IHAVENOMONEY</h1>' });
       $httpBackend.when('DELETE', /\/api\/users\/.*\/notes\/.*/).respond({ _id: 'NQWER' });
-      $httpBackend.when('POST', /\/api\/users\/.*\/classes/).respond({ _id: 'QAWS'  });
+      $httpBackend.when('POST', /\/api\/users\/.*\/classes/).respond({ _id: 'QAWS' });
       $httpBackend.when('POST', /\/api\/users\/.*\/classes\/.*\/lectures/).respond({ _id: 'ZXCV' });
       $httpBackend.when('GET', /\/api\/others-notes\?.*/).respond(othersNotes);
     }));

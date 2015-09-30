@@ -3,7 +3,7 @@
 var express = require('express');
 var controller = require('./class.controller');
 
-var router = express.Router({ mergeParams: true});
+var router = express.Router({ mergeParams: true });
 
 router.use('/:cid/lectures', require('./lecture'));
 

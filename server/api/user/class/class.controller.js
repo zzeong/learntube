@@ -17,7 +17,7 @@ var Class = require('./class.model');
 // Get list of classes
 exports.index = function (req, res) {
 
-  var data = _.assign(req.query, {userId: req.params.id});
+  var data = _.assign(req.query, { userId: req.params.id });
 
   Class.find(data, function (err, classes) {
     if (err) { return res.status(500).send(err); }

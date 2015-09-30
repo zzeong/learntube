@@ -49,7 +49,7 @@ angular.module('learntubeApp')
     classe.imgHeight = img.height;
 
     // DB에서 시청한 동영상 목록 가져오기 (seenLectures)
-    ClassAPI.query({playlistId: classe.playlistId})
+    ClassAPI.query({ playlistId: classe.playlistId })
     .$promise
     .then(function (response) {
       classe.numberOfWatched = response[0].lectures.length;
@@ -59,7 +59,7 @@ angular.module('learntubeApp')
 
 
     // DB에서 필기 목록 가져오기 (Note)
-    NoteAPI.query({playlistId: classe.playlistId})
+    NoteAPI.query({ playlistId: classe.playlistId })
     .$promise
     .then(function (response) {
       classe.numberOfNote = response.length;

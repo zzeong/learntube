@@ -50,15 +50,16 @@
   "requireSpaceBeforeBlockStatements": true,
   "requireSpacesInForStatement": true,
   "requireLineFeedAtFileEnd": false,
-  "disallowSpacesInsideObjectBrackets": false,
   "disallowSpacesInsideArrayBrackets": true,
   "disallowSpacesInsideParentheses": true,
-
   "disallowNewlineBeforeBlockStatements": true,
   "disallowKeywords": ["with"],
   "disallowSpacesInCallExpression": true,
   "disallowSpaceAfterObjectKeys": true,
   "requireSpaceBeforeObjectValues": true,
+  "requireSpacesInsideObjectBrackets": {
+      "allExcept": [ "}", ")" ]
+  },
   "requireCapitalizedConstructors": true,
   "requireDotNotation": true,
   "requireSemicolons": true,

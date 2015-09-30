@@ -32,7 +32,7 @@ angular.module('learntubeApp')
   };
 
   var textToFile = function (text) {
-    return new Blob([text], {type: 'text/html'});
+    return new Blob([text], { type: 'text/html' });
   };
 
   var keepNoteSoundly = function (note, src) {

@@ -124,7 +124,7 @@ angular.module('learntubeApp')
     }
 
     // DB에서 시청한 동영상 목록 가져오기 (seenLectures)
-    ClassAPI.query({playlistId: $scope.playlistId})
+    ClassAPI.query({ playlistId: $scope.playlistId })
     .$promise
     .then(function (response) {
       $scope.watchedLectures = response[0].lectures;
@@ -134,7 +134,7 @@ angular.module('learntubeApp')
     .catch(console.error);
 
     // DB에서 필기 목록 가져오기 (Note)
-    NoteAPI.query({playlistId: $scope.playlistId})
+    NoteAPI.query({ playlistId: $scope.playlistId })
     .$promise
     .then(function (response) {
       $scope.haveNoteLectures = response;
