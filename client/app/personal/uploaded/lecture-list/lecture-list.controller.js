@@ -100,6 +100,10 @@ angular.module('learntubeApp')
     $log.error(err);
   })
   .then(function (res) {
+    if (_.has(res.data, 'message') && res.data.message === 'empty') {
+      return;
+    }
+
     $scope.upload = res.data[0];
     var files = $scope.upload.lectures;
     files.forEach(function (fileMeta) {

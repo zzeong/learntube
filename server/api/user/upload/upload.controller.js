@@ -21,7 +21,7 @@ exports.index = function (req, res) {
 
   Upload.find(query).exec()
   .then(function (uploads) {
-    if (!uploads.length) { return res.status(404).send('Not Found'); }
+    if (!uploads.length) { return res.status(200).json({ message: 'empty' }); }
     return res.status(200).json(uploads);
   })
   .catch(handleError(res));
