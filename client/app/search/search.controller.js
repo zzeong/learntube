@@ -18,7 +18,8 @@ angular.module('learntubeApp')
     $scope.classes = res.items;
     $scope.pageToken = res.nextPageToken || null;
     $scope.httpBusy = false;
-  });
+  })
+  .catch(console.error);
 
   $scope.loadMore = function (token) {
     $scope.httpBusy = true;
@@ -29,7 +30,8 @@ angular.module('learntubeApp')
       $scope.classes = $scope.classes.concat(res.items);
       $scope.pageToken = res.nextPageToken || null;
       $scope.httpBusy = false;
-    });
+    })
+    .catch(console.error);
   };
 
 });

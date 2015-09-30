@@ -55,11 +55,14 @@ angular.module('learntubeApp')
         return User.changePassword({ id: currentUser._id }, {
           oldPassword: oldPassword,
           newPassword: newPassword
-        }, function (user) {
+        })
+        .$promise
+        .then(function (user) {
           return cb(user);
-        }, function (err) {
+        })
+        .catch(function (err) {
           return cb(err);
-        }).$promise;
+        });
       },
 
       /**
@@ -85,9 +88,11 @@ angular.module('learntubeApp')
        */
       isLoggedInAsync: function (cb) {
         if (currentUser.hasOwnProperty('$promise')) {
-          currentUser.$promise.then(function () {
+          currentUser.$promise
+          .then(function () {
             cb(true);
-          }).catch(function () {
+          })
+          .catch(function () {
             cb(false);
           });
         } else if (currentUser.hasOwnProperty('role')) {

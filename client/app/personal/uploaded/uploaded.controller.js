@@ -1,10 +1,12 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('UploadedContentsCtrl', function ($state, $scope, $mdDialog, $log, $http) {
-  $http.get('/api/youtube/mine/playlists').then(function (res) {
+.controller('UploadedContentsCtrl', function ($state, $scope, $mdDialog, $http) {
+  $http.get('/api/youtube/mine/playlists')
+  .then(function (res) {
     $scope.classes = res.data.items;
-  });
+  })
+  .catch(console.error);
 
   $scope.showDialog = function (ev) {
     $mdDialog.show({
@@ -23,11 +25,11 @@ angular.module('learntubeApp')
                 privacyStatus: 'public',
               },
             },
-          }).then(function (res) {
+          })
+          .then(function (res) {
             $mdDialog.hide(res.data);
-          }, function (res) {
-            $log.error(res);
-          });
+          })
+          .catch(console.error);
         };
       },
       templateUrl: 'components/dialog/add-class.tmpl.html',
@@ -37,9 +39,8 @@ angular.module('learntubeApp')
     })
     .then(function (item) {
       $scope.classes.unshift(item);
-    }, function (res) {
-      $log.error(res);
-    });
+    })
+    .catch(console.error);
   };
 
   $scope.deleteClass = function (classe) {
@@ -48,9 +49,8 @@ angular.module('learntubeApp')
     })
     .then(function () {
       _.remove($scope.classes, classe);
-    }, function (res) {
-      $log.error(res);
-    });
+    })
+    .catch(console.error);
   };
 
 });

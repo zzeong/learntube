@@ -1,11 +1,9 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('UploadedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, $log, $mdDialog, $q, $mdToast, GApi, GoogleConst) {
+.controller('UploadedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, $mdDialog, $q, $mdToast, GApi, GoogleConst) {
   $scope.playlistId = $stateParams.pid;
   var scope = $scope;
-
-  var onRejected = function (err) { $log.error(err); };
 
   var showToast = function (text) {
     $mdToast.show(
@@ -42,9 +40,8 @@ angular.module('learntubeApp')
     $http.post('/api/users/' + Auth.getCurrentUser()._id + '/uploads', params)
     .then(function (res) {
       deferred.resolve(res.data);
-    }, function () {
-      deferred.reject();
-    });
+    })
+    .catch(console.error);
 
     return deferred.promise;
   };
@@ -60,9 +57,8 @@ angular.module('learntubeApp')
     })
     .then(function (res) {
       deferred.resolve(res.data);
-    }, function () {
-      deferred.reject();
-    });
+    })
+    .catch(console.error);
 
     return deferred.promise;
   };
@@ -72,15 +68,15 @@ angular.module('learntubeApp')
     params: {
       playlistId: $scope.playlistId,
     },
-  }).then(function (res) {
+  })
+  .then(function (res) {
     for (var i in res.data.items) {
       if (res.data.items[i].id === $scope.playlistId) {
         $scope.summary = res.data.items[i];
       }
     }
-  }, function (err) {
-    $log.error(err);
-  });
+  })
+  .catch(console.error);
 
   $http.get('/api/youtube/mine/playlistitems', {
     params: {
@@ -96,8 +92,6 @@ angular.module('learntubeApp')
         playlistId: $scope.playlistId,
       },
     });
-  }, function (err) {
-    $log.error(err);
   })
   .then(function (res) {
     if (_.has(res.data, 'message') && res.data.message === 'empty') {
@@ -113,7 +107,8 @@ angular.module('learntubeApp')
         }
       }
     });
-  }, onRejected);
+  })
+  .catch(console.error);
 
 
   $scope.haveUploadedFile = function (lecture) {
@@ -131,7 +126,8 @@ angular.module('learntubeApp')
           .then(function () {
             delete lecture.file;
             showToast('File deleted');
-          }, onRejected);
+          })
+          .catch(console.error);
         };
         $scope.cancel = function () {
           $mdDialog.cancel();
@@ -140,7 +136,7 @@ angular.module('learntubeApp')
           getSignedUrl(file)
           .then(function (s3Urls) {
             return uploadFile(file, s3Urls);
-          }, onRejected)
+          })
           .then(function (url) {
             return postToBack({
               videoId: lecture.snippet.resourceId.videoId,
@@ -148,10 +144,11 @@ angular.module('learntubeApp')
               url: url,
               fileName: file.name
             });
-          }, onRejected)
+          })
           .then(function (uploaded) {
             $mdDialog.hide(uploaded);
-          }, onRejected);
+          })
+          .catch(console.error);
         };
       },
       templateUrl: 'components/dialog/attach-file.tmpl.html',
@@ -164,8 +161,9 @@ angular.module('learntubeApp')
       lecture.file = uploaded.lectures.filter(function (fileMeta) {
         return fileMeta.videoId === lecture.snippet.resourceId.videoId;
       })[0];
-      $log.info(uploaded);
-    }, onRejected);
+      console.log(uploaded);
+    })
+    .catch(console.error);
   };
 
   $scope.showLectureDialog = function (lecture, ev) {
@@ -179,7 +177,8 @@ angular.module('learntubeApp')
           })
           .then(function (res) {
             $scope.myVideos = res.data.items;
-          }, onRejected);
+          })
+          .catch(console.error);
         };
 
         $scope.search = function () {
@@ -189,9 +188,11 @@ angular.module('learntubeApp')
             q: $scope.query,
             maxResults: 50,
             type: 'video',
-          }).then(function (res) {
+          })
+          .then(function (res) {
             $scope.searched = res.items;
-          }, onRejected);
+          })
+          .catch(console.error);
         };
 
         $scope.selectVideo = function (video) {
@@ -225,7 +226,8 @@ angular.module('learntubeApp')
               scope.lectureList.push(res.data);
               $mdDialog.hide();
             }
-          }, onRejected);
+          })
+          .catch(console.error);
         };
       },
       templateUrl: 'components/dialog/add-lecture.tmpl.html',
@@ -235,7 +237,8 @@ angular.module('learntubeApp')
     })
     .then(function () {
       showToast('Lecture added');
-    }, onRejected);
+    })
+    .catch(console.error);
   };
 
   $scope.selection = [];
@@ -256,7 +259,8 @@ angular.module('learntubeApp')
     $scope.selectionStr = $scope.selection.join();
     $http.delete('/api/youtube/mine/playlistitems',{
       params: { playlistItemId: $scope.selectionStr }
-    });
+    })
+    .catch(console.error);
   };
 
 });

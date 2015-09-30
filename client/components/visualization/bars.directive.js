@@ -8,7 +8,8 @@ angular.module('learntubeApp')
       data: '=',
     },
     link: function (scope, ele) {
-      d3Service.d3().then(function (d3) {
+      d3Service.d3()
+      .then(function (d3) {
         var isInitialized = false;
         var margin = { top: 20, right: 10, bottom: 45, left: 25 };
 

@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('WatchedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, $log, ClassAPI, $filter, NoteAPI, GApi, GoogleConst, $q) {
+.controller('WatchedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, ClassAPI, $filter, NoteAPI, GApi, GoogleConst, $q) {
   $scope.playlistId = $stateParams.pid;
 
   $scope.loadMore = function (token) {
@@ -22,7 +22,8 @@ angular.module('learntubeApp')
     .then(function (list) {
       $scope.lectureList = $scope.lectureList.concat(list);
       $scope.httpBusy = false;
-    });
+    })
+    .catch(console.error);
   };
 
   var applyDuration = function (list) {
@@ -36,7 +37,8 @@ angular.module('learntubeApp')
       part: 'contentDetails',
       id: ids,
       fields: 'items(contentDetails(duration))',
-    }).then(function (response) {
+    })
+    .then(function (response) {
       list.forEach(function (item, i) {
         item.contentDetails = response.items[i].contentDetails;
       });
@@ -122,22 +124,23 @@ angular.module('learntubeApp')
     }
 
     // DB에서 시청한 동영상 목록 가져오기 (seenLectures)
-    ClassAPI.query({playlistId: $scope.playlistId}, function (response) {
+    ClassAPI.query({playlistId: $scope.playlistId})
+    .$promise
+    .then(function (response) {
       $scope.watchedLectures = response[0].lectures;
       $scope.vdata = fitToD3($scope.watchedLectures);
       separateLecture('highlight', $scope.watchedLectures);
-    }, function (err) {
-      $log.error(err);
-    });
-
+    })
+    .catch(console.error);
 
     // DB에서 필기 목록 가져오기 (Note)
-    NoteAPI.query({playlistId: $scope.playlistId}, function (response) {
+    NoteAPI.query({playlistId: $scope.playlistId})
+    .$promise
+    .then(function (response) {
       $scope.haveNoteLectures = response;
       separateLecture('noteIconVisible', $scope.haveNoteLectures);
-    }, function (err) {
-      $log.error(err);
-    });
+    })
+    .catch(console.error);
 
     $scope.showNote = function (lecture) {
       $scope.selectedLecture = lecture;
@@ -145,9 +148,12 @@ angular.module('learntubeApp')
 
       NoteAPI.query({
         videoId: lecture.snippet.resourceId.videoId
-      }, function (notes) {
+      })
+      .$promise
+      .then(function (notes) {
         lecture.notes = notes;
-      });
+      })
+      .catch(console.error);
     };
 
     $scope.isSelected = function (lecture) {

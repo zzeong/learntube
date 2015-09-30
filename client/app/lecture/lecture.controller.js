@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('LectureCtrl', function ($scope, $stateParams, $http, Auth, NoteAPI, $log, GoogleConst, GApi, Upload) {
+.controller('LectureCtrl', function ($scope, $stateParams, $http, Auth, NoteAPI, GoogleConst, GApi, Upload) {
   $scope.videoId = $stateParams.vid;
   $scope.playlistId = $stateParams.pid;
   $scope.playerVars = {
@@ -21,7 +21,8 @@ angular.module('learntubeApp')
   .then(function (res) {
     $scope.item = res.items[0];
     $scope.publishedDate = ($scope.item.snippet.publishedAt).substring(0,10);
-  });
+  })
+  .catch(console.error);
 
   $scope.details = false;
 
@@ -44,11 +45,14 @@ angular.module('learntubeApp')
   };
 
   if ($scope.isLoggedIn()) {
-    NoteAPI.query({ videoId: $scope.videoId }, function (notes) {
+    NoteAPI.query({ videoId: $scope.videoId })
+    .$promise
+    .then(function (notes) {
       $scope.notes = notes.map(function (note) {
         return keepNoteSoundly(note);
       });
-    });
+    })
+    .catch(console.error);
   }
 
   var initializeNotePanel = function (type) {
@@ -72,19 +76,23 @@ angular.module('learntubeApp')
   })
   .then(function (res) {
     $scope.othersNotes = res.data;
-  });
+  })
+  .catch(console.error);
 
   $scope.completeLecture = function () {
     $http.post('/api/users/' + $scope.getCurrentUser()._id + '/classes/', {
       userId: $scope.getCurrentUser()._id
-    }).success(function (response) {
-      var classe = response;
-      $http.post('/api/users/' + $scope.getCurrentUser()._id + '/classes/' + classe._id + '/lectures/', {
+    })
+    .then(function (response) {
+      var classe = response.data;
+      return $http.post('/api/users/' + $scope.getCurrentUser()._id + '/classes/' + classe._id + '/lectures/', {
         videoId: $scope.videoId
-      }).success(function () {
-        $log.info('Saved Lecture');
       });
-    });
+    })
+    .then(function (res) {
+      console.log('Saved Lecture');
+    })
+    .catch(console.error);
   };
 
   $scope.toggleEditor = function () {
@@ -95,10 +103,13 @@ angular.module('learntubeApp')
   };
 
   $scope.editNote = function (note) {
-    NoteAPI.getContents({ nid: note._id }, function (res) {
+    NoteAPI.getContents({ nid: note._id })
+    .$promise
+    .then(function (res) {
       note.contents = res.contents;
       note.isEditing = true;
-    });
+    })
+    .catch(console.error);
   };
 
   $scope.cancelEditing = function (note) {
@@ -106,9 +117,12 @@ angular.module('learntubeApp')
   };
 
   $scope.deleteNote = function (note) {
-    NoteAPI.remove({ nid: note._id }, function () {
+    NoteAPI.remove({ nid: note._id })
+    .$promise
+    .then(function () {
       _.remove($scope.notes, { _id: note._id });
-    });
+    })
+    .catch(console.error);
   };
 
   $scope.updateNote = function (note) {
@@ -124,7 +138,8 @@ angular.module('learntubeApp')
         if (note._id === res.data._id) { return keepNoteSoundly(res.data); }
         return note;
       });
-    });
+    })
+    .catch(console.error);
   };
 
   $scope.doneNote = function (type, file) {
@@ -147,7 +162,8 @@ angular.module('learntubeApp')
       $scope.notes.push(note);
 
       initializeNotePanel(type);
-    });
+    })
+    .catch(console.error);
   };
 
   $scope.shouldBeEmbedded = function (note) {

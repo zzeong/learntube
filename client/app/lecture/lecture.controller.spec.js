@@ -161,7 +161,7 @@ describe('Controller: LectureCtrl', function () {
     });
 
 
-    it('should save current lecture with class', inject(function ($log) {
+    xit('should save current lecture with class', inject(function ($log) {
       $httpBackend.flush();
 
       $scope.completeLecture();

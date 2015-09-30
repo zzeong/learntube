@@ -17,5 +17,6 @@ angular.module('learntubeApp')
   })
   .then(function (res) {
     $scope.classes = res.items;
-  });
+  })
+  .catch(console.error);
 });

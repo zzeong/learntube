@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('ClassCtrl', function ($scope, $http, $stateParams, $state, ClassAPI, $log, Auth, $filter, GoogleConst, GApi, $q, $mdToast, $document) {
+.controller('ClassCtrl', function ($scope, $http, $stateParams, $state, ClassAPI, Auth, $filter, GoogleConst, GApi, $q, $mdToast, $document) {
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.playlistId = $stateParams.pid;
   $scope.httpBusy = true;
@@ -12,9 +12,12 @@ angular.module('learntubeApp')
 
     ClassAPI.create({
       playlistId: $scope.playlistId
-    }, function () {
-      $log.info('Saved Lecture');
-    });
+    })
+    .$promise
+    .then(function () {
+      console.log('Saved Lecture');
+    })
+    .catch(console.error);
   };
 
   $scope.loadMore = function (token) {
@@ -35,7 +38,8 @@ angular.module('learntubeApp')
     .then(function (list) {
       $scope.lectureList = $scope.lectureList.concat(list);
       $scope.httpBusy = false;
-    });
+    })
+    .catch(console.error);
   };
 
 
@@ -60,7 +64,8 @@ angular.module('learntubeApp')
   })
   .then(function (res) {
     $scope.channel = res.items[0];
-  });
+  })
+  .catch(console.error);
 
 
   var applyDuration = function (list) {
@@ -74,12 +79,14 @@ angular.module('learntubeApp')
       part: 'contentDetails',
       id: ids,
       fields: 'items(contentDetails(duration))',
-    }).then(function (response) {
+    })
+    .then(function (response) {
       list.forEach(function (item, i) {
         item.contentDetails = response.items[i].contentDetails;
       });
       deferred.resolve(list);
-    }, deferred.reject);
+    })
+    .catch(deferred.reject);
 
     return deferred.promise;
   };
@@ -101,7 +108,8 @@ angular.module('learntubeApp')
     $scope.lectureList = list;
     console.log($filter('humanable')($scope.lectureList[0].contentDetails.duration));
     $scope.httpBusy = false;
-  });
+  })
+  .catch(console.error);
 
   $scope.showSimpleToast = function () {
 
