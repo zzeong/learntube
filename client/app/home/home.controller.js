@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('MainCtrl', function ($scope, $state, GApi, GoogleConst, $http) {
+.controller('HomeCtrl', function ($scope, $state, GApi, GoogleConst, $http) {
   $http.get('/api/classes/get-tops', {
     params: { num: 6 }
   })

@@ -90,8 +90,8 @@ md-sidenav, md-backdrop {
 // Component styles are injected through grunt
 // injector
 @import 'class/class.scss';
+@import 'home/home.scss';
 @import 'lecture/lecture.scss';
-@import 'main/main.scss';
 @import 'personal/uploaded/lecture-list/lecture-list.scss';
 @import 'personal/watched/lecture-list/lecture-list.scss';
 @import 'personal/watched/watched.scss';

@@ -5,7 +5,10 @@ angular.module('learntubeApp')
   $stateProvider
   .state('Home', {
     url: '/',
-    templateUrl: 'app/main/main.html',
-    controller: 'MainCtrl'
+    templateUrl: 'app/home/home.html',
+    controller: 'HomeCtrl',
+    data: {
+      title: 'Home'
+    },
   });
 });
