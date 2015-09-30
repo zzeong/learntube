@@ -22,9 +22,6 @@ angular.module('learntubeApp')
   }, {
     name: 'Uploaded Contents',
     url: '/uploaded',
-  }, {
-    name: 'Settings',
-    url: '/',
   }];
   $scope.toggleSearchingState = function () {
     $scope.onSearching = !$scope.onSearching;

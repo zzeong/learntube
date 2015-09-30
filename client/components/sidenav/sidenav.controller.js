@@ -16,9 +16,6 @@ angular.module('learntubeApp')
   }, {
     name: 'Uploaded Contents',
     url: '/uploaded',
-  }, {
-    name: 'Settings',
-    url: '/',
   }];
 
   $scope.logout = function () {
