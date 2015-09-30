@@ -21,7 +21,7 @@
 
       <md-button class="md-raised" ng-click="deleteLecture()">DELETE</md-button>
 
-      <div ng-repeat="lecture in lectureList | onlyPublic">
+      <div ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
 
         <div class="checkboxStyle">
           <md-checkbox ng-click="toggleSelection(lecture.id)" value="lecture.id"></md-checkbox>

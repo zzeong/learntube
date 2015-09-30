@@ -3,10 +3,19 @@
 angular.module('learntubeApp')
 .filter('onlyPublic', function () {
   return function (items) {
-    if (typeof items === 'undefined') { return true; }
+    if (typeof items === 'undefined') { return items; }
 
     return items.filter(function (item) {
       return item.status.privacyStatus === 'public';
+    });
+  };
+})
+.filter('onlyProcessed', function () {
+  return function (items) {
+    if (typeof items === 'undefined') { return items; }
+
+    return items.filter(function (item) {
+      return item.status.uploadStatus === 'processed';
     });
   };
 })

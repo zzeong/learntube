@@ -58,15 +58,16 @@ exports.index = function (req, res) {
     if (req.query.withDuration) {
       g.youtube('videos.list', {
         auth: g.oauth2Client,
-        part: 'contentDetails',
+        part: 'contentDetails,status',
         id: resBody.items.map(function (item) {
           return item.snippet.resourceId.videoId;
         }).join(','),
-        fields: 'items(contentDetails(duration))',
+        fields: 'items(contentDetails(duration),status(uploadStatus,rejectionReason,privacyStatus))',
       })
       .then(function (response) {
         resBody.items.forEach(function (item, i) {
           item.contentDetails = response.items[i].contentDetails;
+          item.status = response.items[i].status;
         });
         return res.status(200).json(resBody);
       }, function (error) {

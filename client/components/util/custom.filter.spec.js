@@ -9,7 +9,7 @@ describe('Filter: onlyPublic', function () {
   }));
 
   it('should return true when given undefined', function () {
-    expect(filter()).toEqual(true);
+    expect(filter()).toBeUndefined();
   });
 
   it('should return only public items when given items that have status.privacyStatus property', function () {
@@ -24,6 +24,30 @@ describe('Filter: onlyPublic', function () {
     expect(filter(items).length).toEqual(1);
     expect(filter(items)[0].title).toEqual('outgoing girl');
     expect(filter(items)[0].status.privacyStatus).toEqual('public');
+  });
+});
+
+describe('Filter: onlyProcessed', function () {
+  beforeEach(module('learntubeApp'));
+  var filter;
+
+  beforeEach(inject(function ($filter) {
+    filter = $filter('onlyProcessed');
+  }));
+
+  it('should return true when given undefined', function () {
+    expect(filter()).toBeUndefined();
+  });
+
+  it('should return only available status items', function () {
+    var items = [{
+      status: { uploadStatus: 'processed' },
+    }, {
+      status: { uploadStatus: 'rejected' },
+    }];
+
+    expect(filter(items).length).toEqual(1);
+    expect(filter(items)[0].status.uploadStatus).toEqual('processed');
   });
 });
 
