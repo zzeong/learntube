@@ -6,6 +6,7 @@ angular.module('learntubeApp')
   .state('Search', {
     url: '/search/:q',
     templateUrl: 'app/search/search.html',
-    controller: 'SearchCtrl'
+    controller: 'SearchCtrl',
+    data: { pageName: 'Search' }
   });
 });

@@ -6,6 +6,7 @@ angular.module('learntubeApp')
   .state('Summary', {
     url: '/class/:pid',
     templateUrl: 'app/class/class.html',
-    controller: 'ClassCtrl'
+    controller: 'ClassCtrl',
+    data: { pageName: 'Class Summary' }
   });
 });

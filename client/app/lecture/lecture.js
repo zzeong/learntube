@@ -6,6 +6,7 @@ angular.module('learntubeApp')
   .state('Lecture', {
     url: '/class/:pid/lecture/:vid',
     templateUrl: 'app/lecture/lecture.html',
-    controller: 'LectureCtrl'
+    controller: 'LectureCtrl',
+    data: { pageName: 'Lecture Room' }
   });
 });

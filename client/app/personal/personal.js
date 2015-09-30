@@ -6,11 +6,13 @@ angular.module('learntubeApp')
   .state('Watched', {
     url: '/watched',
     templateUrl: 'app/personal/watched/watched.html',
-    controller: 'WatchedContentsCtrl'
+    controller: 'WatchedContentsCtrl',
+    data: { pageName: 'Watched Contents' }
   })
   .state('Uploaded', {
     url: '/uploaded',
     templateUrl: 'app/personal/uploaded/uploaded.html',
-    controller: 'UploadedContentsCtrl'
+    controller: 'UploadedContentsCtrl',
+    data: { pageName: 'Uploaded Contents' }
   });
 });

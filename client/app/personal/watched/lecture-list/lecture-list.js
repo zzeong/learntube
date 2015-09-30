@@ -6,5 +6,6 @@ angular.module('learntubeApp')
     url: '/watched/lecture-list/:pid',
     templateUrl: 'app/personal/watched/lecture-list/lecture-list.html',
     controller: 'WatchedLectureListCtrl',
+    data: { pageName: 'Lecture List' }
   });
 });

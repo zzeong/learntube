@@ -7,8 +7,6 @@ angular.module('learntubeApp')
     url: '/',
     templateUrl: 'app/home/home.html',
     controller: 'HomeCtrl',
-    data: {
-      title: 'Home'
-    },
+    data: { pageName: 'Home' }
   });
 });

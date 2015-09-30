@@ -3,6 +3,11 @@
 angular.module('learntubeApp')
 .controller('ToolbarCtrl', function ($scope, $location, $state, $window, Auth, navToggler) {
   var back = function () { $window.history.back(); };
+  var getMobileTitle = function () {
+    var title = _.has($state.current, 'data') ? $state.current.data.pageName : '';
+    title = $scope.stateNameCheck('Search') ? $state.params.q : title;
+    return title;
+  };
 
   $scope.loginOauth = function (provider) {
     $window.location.href = '/auth/' + provider;
@@ -26,7 +31,7 @@ angular.module('learntubeApp')
     $scope.focusInput = true;
   };
   $scope.stateNameCheck = function (name) { return $state.current.name === name; };
-  $scope.title = $scope.stateNameCheck('Search') ? $state.params.q : $state.current.name;
+  $scope.title = getMobileTitle();
   $scope.leftTrigger = function () {
     var func = $scope.stateNameCheck('Home') ? navToggler.left : back;
     func();
