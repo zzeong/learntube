@@ -19,7 +19,7 @@
 
     <div class="content-inner">
 
-      <md-button class="md-raised" ng-click="deleteLecture()">DELETE</md-button>
+      <md-button class="md-raised" ng-click="deleteLecture()" ng-disabled="!selectedLecture">Delete</md-button>
 
       <div ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
 
