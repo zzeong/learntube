@@ -223,6 +223,7 @@ angular.module('learntubeApp')
           })
           .then(function (res) {
             if (res.status === 201) {
+              console.log(res.data);
               scope.lectureList.push(res.data);
               $mdDialog.hide();
             }
@@ -241,24 +242,21 @@ angular.module('learntubeApp')
     .catch(console.error);
   };
 
-  $scope.selection = [];
-
-  $scope.toggleSelection = function (site) {
-    var idx = $scope.selection.indexOf(site);
-    // is currently selected
-    if (idx > -1) {
-      $scope.selection.splice(idx, 1);
-    }
-    // is newly selected
-    else {
-      $scope.selection.push(site);
-    }
+  $scope.selectLecture = function (lecture) {
+    $scope.selectedLecture = $scope.selectedLecture === lecture ? null : lecture;
+  };
+  $scope.isSelectedLecture = function (lecture) {
+    return $scope.selectedLecture === lecture;
   };
 
   $scope.deleteLecture = function () {
-    $scope.selectionStr = $scope.selection.join();
     $http.delete('/api/youtube/mine/playlistitems',{
-      params: { playlistItemId: $scope.selectionStr }
+      params: { playlistItemId: $scope.selectedLecture.id }
+    })
+    .then(function () {
+      _.remove($scope.lectureList, $scope.selectedLecture);
+      $scope.selectedLecture = null;
+      showToast('Lecture deleted');
     })
     .catch(console.error);
   };

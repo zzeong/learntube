@@ -144,12 +144,13 @@ exports.create = function (req, res) {
     if (req.query.withDuration) {
       g.youtube('videos.list', {
         auth: g.oauth2Client,
-        part: 'contentDetails',
+        part: 'contentDetails,status',
         id: item.snippet.resourceId.videoId,
-        fields: 'items(contentDetails(duration))',
+        fields: 'items(contentDetails(duration),status(uploadStatus,rejectionReason,privacyStatus))',
       })
       .then(function (response) {
         item.contentDetails = response.items[0].contentDetails;
+        item.status = response.items[0].status;
         return res.status(201).json(item);
       }, function (error) {
         return res.status(500).send(error);
