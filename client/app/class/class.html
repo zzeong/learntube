@@ -17,34 +17,34 @@
 
       <!-- CLASS INTRODUCE -->
       <div class="classIntro background">
-          <h2 class="class-title">{{classe.snippet.title}}</h2>
+        <h2 class="class-title">{{classe.snippet.title}}</h2>
 
-          <!-- THIS IS EXTRA INFORMATION AREA. NEED TO FIX BUGS ..
+        <!-- THIS IS EXTRA INFORMATION AREA. NEED TO FIX BUGS ..
 
-          <div class="extra-info extra-media">
-            <div class="float">
-              <div class="teacher-icon float">
-                <img ng-src="assets/images/teacher.png" height="20px">
-              </div>
-              <div>
-                <p class="md-caption channel-title">&nbsp&nbsp{{classe.snippet.channelTitle}}</p>
-              </div>
+        <div class="extra-info extra-media">
+          <div class="float">
+            <div class="teacher-icon float">
+              <img ng-src="assets/images/teacher.png" height="20px">
             </div>
-
-            <div class="">
-              <div class="teacher-icon">
-                <img ng-src="assets/images/playtime.png" height="20px">
-              </div>
-              <div>
-                <p class="md-caption channel-title">&nbsp&nbspTotal playtime : {{ playtimeHour }}H&nbsp{{ playtimeMin }}M&nbsp{{ playtimeSec }}S</p>
-              </div>
+            <div>
+              <p class="md-caption channel-title">&nbsp&nbsp{{classe.snippet.channelTitle}}</p>
             </div>
-          </div> -->
-
-          <!-- description -->
-          <div class="introduce">
-            <p class="md-caption margin-zero"><hm-read class="cursor-pointer" hmtext="{{ desc }}" hmlimit="100" hm-more-text="read more" hm-less-text="read less" ></hm-read></p>
           </div>
+
+          <div class="">
+            <div class="teacher-icon">
+              <img ng-src="assets/images/playtime.png" height="20px">
+            </div>
+            <div>
+              <p class="md-caption channel-title">&nbsp&nbspTotal playtime : {{ playtimeHour }}H&nbsp{{ playtimeMin }}M&nbsp{{ playtimeSec }}S</p>
+            </div>
+          </div>
+        </div> -->
+
+        <!-- description -->
+        <div class="introduce">
+          <p class="md-caption margin-zero"><hm-read class="cursor-pointer" hmtext="{{ desc }}" hmlimit="100" hm-more-text="read more" hm-less-text="read less" ></hm-read></p>
+        </div>
       </div>
       <!-- ADD CLASS BUTTON -->
       <div class="md-actions add-media" layout="row" layout-align="end center">
@@ -87,26 +87,26 @@
 
       <md-list class="lecture-list-numbering">
         <div class="lectureList"
-        infinite-scroll="loadMore(pageToken)"
-        infinite-scroll-disabled="httpBusy || !pageToken"
-        infinite-scroll-distance="1">
+          infinite-scroll="loadMore(pageToken)"
+          infinite-scroll-disabled="httpBusy || !pageToken"
+          infinite-scroll-distance="1">
 
-        <md-list-item class="md-2-line"
-        ng-repeat="lecture in lectureList"
-        ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
+          <md-list-item class="md-2-line"
+            ng-repeat="lecture in lectureList"
+            ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
 
-        <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
+            <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
 
-        <div class="md-list-item-text">
-          <div class="lecture-info-cont">
-              <h3 class="lecture-title ellipsis">{{ lecture.snippet.title }}</h3>
-              <p>{{ lecture.contentDetails.duration | humanable }}</p>
-          </div>
+            <div class="md-list-item-text">
+              <div class="lecture-info-cont">
+                <h3 class="lecture-title ellipsis">{{ lecture.snippet.title }}</h3>
+                <p>{{ lecture.contentDetails.duration | humanable }}</p>
+              </div>
 
+            </div>
+          </md-list-item>
         </div>
-      </md-list-item>
+      </md-list>
     </div>
-  </md-list>
-</div>
-</div>
+  </div>
 </md-content>
