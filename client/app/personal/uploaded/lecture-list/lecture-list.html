@@ -21,20 +21,22 @@
 
       <md-button class="md-raised" ng-click="deleteLecture()" ng-disabled="!selectedLecture">Delete</md-button>
 
-      <div ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
+      <md-list class="lecture-list-numbering">
+        <div ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
+          <div class="checkboxStyle">
+            <md-checkbox ng-click="selectLecture(lecture)" ng-checked="isSelectedLecture(lecture)"></md-checkbox>
+          </div>
 
-        <div class="checkboxStyle">
-          <md-checkbox ng-click="selectLecture(lecture)" ng-checked="isSelectedLecture(lecture)"></md-checkbox>
-        </div>
-
-        <div>
-          <md-list>
+          <div>
             <md-list-item class="md-2-line"
               ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
               <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail"/>
+
               <div class="md-list-item-text">
-                <h4>{{ $index+1 }}. {{ lecture.snippet.title | limitTo:40 }}{{ lecture.snippet.title.length > 40 ? '...' : '' }}</h4>
-                <p>{{ lecture.contentDetails.duration | humanable }}</p>
+                <div class="second-icon-padding">
+                  <h3 class="lecture-title ellipsis second-icon-padding">{{ lecture.snippet.title }}</h3>
+                  <p>{{ lecture.contentDetails.duration | humanable }}</p>
+                </div>
 
                 <md-icon md-font-set="material-icons"
                   ng-click="showFileDialog(lecture, $event)"
@@ -45,9 +47,9 @@
                 </md-icon>
               </div>
             </md-list-item>
-          </md-list>
+          </div>
         </div>
-      </div>
+      </md-list>
     </div>
 
   </div>
