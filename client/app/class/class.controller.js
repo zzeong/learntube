@@ -100,13 +100,11 @@ angular.module('learntubeApp')
     fields: 'items(contentDetails,snippet,status),nextPageToken',
   })
   .then(function (res) {
-    console.log(res);
     $scope.pageToken = res.nextPageToken || null;
     return applyDuration(res.items);
   })
   .then(function (list) {
     $scope.lectureList = list;
-    console.log($filter('humanable')($scope.lectureList[0].contentDetails.duration));
     $scope.httpBusy = false;
   })
   .catch(console.error);
