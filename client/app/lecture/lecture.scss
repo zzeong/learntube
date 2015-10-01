@@ -63,6 +63,10 @@ $panel-offset: 10px;
   padding-right: 10px;
 }
 
+input.note-file-uploader {
+  width: 225px; 
+}
+
 @media (max-width: $responsive-width) {
   .embed-item-limit-width {
     margin: 0 auto;

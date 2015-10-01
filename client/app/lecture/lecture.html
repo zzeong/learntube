@@ -68,34 +68,78 @@
           </md-menu-content>
         </md-menu>
 
-        <md-button class="md-raised md-primary" ng-click="completeLecture()">Complete</md-button>
+        <md-button class="md-raised md-primary md-hue-2" ng-click="completeLecture()">Complete</md-button>
       </div> 
     </div>
 
     <md-divider></md-divider>
 
     <div ng-show="isEditorOn">
+      <md-subheader>Note web editor</md-subheader>
       <form ng-submit="doneNote('editor', noteContents)">
         <textarea id="newNote" ng-model="noteContents" ckeditor></textarea>
-        <md-button type="submit" class="md-raised">Done</md-button>
+        <div class="md-actions md-padding" layout="row" layout-align="end center">
+          <md-button type="submit" class="md-raised">Done</md-button>
+        </div>
       </form>
+      <md-divider></md-divider>
     </div>
 
-    <div class="md-padding" ng-show="isFileUploadOn">
-      <form ng-submit="doneNote('file', noteFile)">
-        <input type="file" ngf-select ng-model="noteFile"/>
-        <md-button type="submit" class="md-raised">Done</md-button>
-      </form>
+    <div ng-show="isFileUploadOn">
+      <md-subheader>Note file uploader</md-subheader>
+      <div class="md-actions md-padding" layout="row" layout-align="end center">
+        <form ng-submit="doneNote('file', noteFile)">
+          <input class="note-file-uploader" type="file" ngf-select ng-model="noteFile"/>
+          <md-button type="submit" class="md-raised">Done</md-button>
+        </form>
+      </div>
+      <md-divider></md-divider>
     </div>
 
     <div ng-if="isLoggedIn()">
+      <section>
+        <md-subheader class="md-primary">My notes</md-subheader>
 
-      <div class="md-padding" ng-repeat="note in notes">
-        <div ng-hide="note.isEditing">
+        <div class="md-padding" ng-repeat="note in notes">
+          <div ng-hide="note.isEditing">
+            <div class="note-item">
+              <img class="avatar" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image"/>
+              <div class="userinfo">
+                <p class="md-subhead">{{ getCurrentUser().name }}</p>
+              </div>
+            </div>
+
+            <md-divider></md-divider>
+
+            <iframe ng-if="shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
+            <img ng-if="!shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url }}" alt="My lecture note"/>
+
+            <div class="md-actions" layout="row" layout-align="end center">
+              <md-button class="md-raised" ng-if="note.type === 'editor'" ng-click="editNote(note)">Edit</md-button>
+              <md-button class="md-raised md-warn" ng-click="deleteNote(note)">Delete</md-button>
+            </div>
+          </div>
+
+          <div ng-if="note.isEditing">
+            <form ng-submit="updateNote(note)">
+              <textarea ng-model="note.contents" ckeditor></textarea>
+              <md-button class="md-raised md-warn" ng-click="cancelEditing(note)">Cancel</md-button>
+              <md-button type="submit" class="md-raised">Update</md-button>
+            </form>
+          </div>
+        </div>
+
+      </section>
+    </div>
+
+    <section>
+      <md-subheader class="md-primary">Others notes</md-subheader>
+      <div class="others-notes-cont">
+        <div class="md-padding" ng-repeat="note in othersNotes">
           <div class="note-item">
-            <img class="avatar" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image"/>
+            <img class="avatar" ng-src="{{ note.userId.google.image.url }}" alt="Account Image"/>
             <div class="userinfo">
-              <p class="md-subhead">{{ getCurrentUser().name }}</p>
+              <p class="md-subhead">{{ note.userId.name }}</p>
             </div>
           </div>
 
@@ -103,39 +147,9 @@
 
           <iframe ng-if="shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
           <img ng-if="!shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url }}" alt="My lecture note"/>
-
-          <div class="md-actions" layout="row" layout-align="end center">
-            <md-button class="md-raised" ng-if="note.type === 'editor'" ng-click="editNote(note)">Edit</md-button>
-            <md-button class="md-raised md-warn" ng-click="deleteNote(note)">Delete</md-button>
-          </div>
-        </div>
-
-        <div ng-if="note.isEditing">
-          <form ng-submit="updateNote(note)">
-            <textarea ng-model="note.contents" ckeditor></textarea>
-            <md-button class="md-raised md-warn" ng-click="cancelEditing(note)">Cancel</md-button>
-            <md-button type="submit" class="md-raised">Update</md-button>
-          </form>
         </div>
       </div>
-
-    </div>
-
-    <div class="others-notes-cont">
-      <div class="md-padding" ng-repeat="note in othersNotes">
-        <div class="note-item">
-          <img class="avatar" ng-src="{{ note.userId.google.image.url }}" alt="Account Image"/>
-          <div class="userinfo">
-            <p class="md-subhead">{{ note.userId.name }}</p>
-          </div>
-        </div>
-
-        <md-divider></md-divider>
-
-        <iframe ng-if="shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
-        <img ng-if="!shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url }}" alt="My lecture note"/>
-      </div>
-    </div>
+    </section>
 
   </div>
 </md-content>
