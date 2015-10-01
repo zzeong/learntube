@@ -18,36 +18,13 @@
       <!-- CLASS INTRODUCE -->
       <div class="classIntro background">
         <h2 class="class-title">{{classe.snippet.title}}</h2>
-
-        <!-- THIS IS EXTRA INFORMATION AREA. NEED TO FIX BUGS ..
-
-        <div class="extra-info extra-media">
-          <div class="float">
-            <div class="teacher-icon float">
-              <img ng-src="assets/images/teacher.png" height="20px">
-            </div>
-            <div>
-              <p class="md-caption channel-title">&nbsp&nbsp{{classe.snippet.channelTitle}}</p>
-            </div>
-          </div>
-
-          <div class="">
-            <div class="teacher-icon">
-              <img ng-src="assets/images/playtime.png" height="20px">
-            </div>
-            <div>
-              <p class="md-caption channel-title">&nbsp&nbspTotal playtime : {{ playtimeHour }}H&nbsp{{ playtimeMin }}M&nbsp{{ playtimeSec }}S</p>
-            </div>
-          </div>
-        </div> -->
-
         <!-- description -->
         <div class="introduce">
-          <p class="md-caption margin-zero"><hm-read class="cursor-pointer" hmtext="{{ desc }}" hmlimit="100" hm-more-text="read more" hm-less-text="read less" ></hm-read></p>
+          <p class="md-body-1 margin-zero"><hm-read class="cursor-pointer" hmtext="{{ desc }}" hmlimit="200" hm-more-text="read more" hm-less-text="read less" ></hm-read></p>
         </div>
       </div>
       <!-- ADD CLASS BUTTON -->
-      <div class="md-actions add-media" layout="row" layout-align="end center">
+      <div class="md-actions add-media add-web" layout="row" layout-align="end center">
         <md-button class="md-raised" ng-show="isLoggedIn()" ng-click="addClass()">Add Class</md-button>
       </div>
     </div>
@@ -58,42 +35,42 @@
       <div class="tutorIntro">
 
         <!-- 선생님 썸네일 (채널 대표 이미지) -->
-        <div class="thumbAndTitle">
-          <div class="thumbnail">
+        <div class="thumbAndTitle padding">
+          <div class="thumbnail thumbnail-mobile">
             <img ng-src="{{ channel.snippet.thumbnails.default.url }}"  style="border-radius:45px">
           </div>
           <!-- 체널 타이틀 -->
-          <div>
-            <h4 style="color:grey; margin-bottom:0px;">TUTOR</h4>
-            <h1 class="font-light-300">{{ channel.snippet.title }}.&nbsp</h1>
+          <div class="channel-info ch-info-mobile">
+            <h4 class="margin-zero" style="color:grey;">TUTOR</h4>
+            <h2 class="font-light-300 margin-zero">{{ channel.snippet.title }}.&nbsp</h2>
           </div>
 
-          <br><br>
 
           <!-- 선생님 소개 (채널 소개) 더보기 -->
-          <div class="tutorDescDiv">
-            <div>
-              <hm-read hmtext="{{ channel.snippet.description }}" hmlimit="20" hm-more-text="read more" hm-less-text="read less"></hm-read>
-            </div>
+          <div class="tutor-desc">
+            <p class="hide-in-web md-body-1 margin-zero"><hm-read hmtext="{{ channel.snippet.description }}" hmlimit="40" hm-more-text="read more" hm-less-text="read less"></hm-read></p>
+            <p class="hide-in-mobile md-body-1 margin-zero">{{ channel.snippet.description }}</p>
           </div>
         </div>
       </div>
 
+      <md-divider></md-divider>
+
       <!-- 클래스 내의 강의 목록 -->
-      <div class="middle">
+      <div class="middle padding">
         <h3>Lectures in this Class</h3>
       </div>
 
 
       <md-list class="lecture-list-numbering">
         <div class="lectureList"
-          infinite-scroll="loadMore(pageToken)"
-          infinite-scroll-disabled="httpBusy || !pageToken"
-          infinite-scroll-distance="1">
+        infinite-scroll="loadMore(pageToken)"
+        infinite-scroll-disabled="httpBusy || !pageToken"
+        infinite-scroll-distance="1">
 
           <md-list-item class="md-2-line"
-            ng-repeat="lecture in lectureList"
-            ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
+          ng-repeat="lecture in lectureList"
+          ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
 
             <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
 
