@@ -140,7 +140,7 @@ angular.module('learntubeApp')
           .then(function (url) {
             return postToBack({
               videoId: lecture.snippet.resourceId.videoId,
-              playlistId: $scope.playlistId,
+              playlistId: scope.playlistId,
               url: url,
               fileName: file.name
             });
