@@ -26,26 +26,31 @@
           infinite-scroll-disabled="httpBusy || !pageToken"
           infinite-scroll-distance="1">
 
-          <md-list-item class="md-2-line"
-            ng-repeat="lecture in lectureList"
-            ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })"
-            ng-class="{highlight: lecture.highlight}">
+          <div ng-repeat="lecture in lectureList | onlyPublic">
+            <md-list-item class="md-2-line"
+              ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })"
+              ng-class="{highlight: lecture.highlight}">
 
-            <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
-            <div class="md-list-item-text">
-              <div class="second-icon-padding">
-                <h3 class="lecture-title ellipsis second-icon-padding">{{ lecture.snippet.title }}</h3>
-                <p>{{ lecture.contentDetails.duration | humanable }}</p>
+              <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
+              <div class="md-list-item-text">
+                <div class="second-icon-padding">
+                  <h3 class="lecture-title ellipsis second-icon-padding">{{ lecture.snippet.title }}</h3>
+                  <p>{{ lecture.contentDetails.duration | humanable }}</p>
+                </div>
               </div>
-            </div>
 
-            <md-icon md-font-set="material-icons"
-              class="md-secondary md-hue-1"
-              ng-show="lecture.noteIconVisible"
-              ng-click="showNote()">
-              description
-            </md-icon>
-          </md-list-item>
+              <md-icon md-font-set="material-icons"
+                class="md-secondary md-hue-1"
+                ng-show="lecture.noteIconVisible"
+                ng-click="showNote(lecture)">
+                description
+              </md-icon>
+            </md-list-item>
+
+            <div ng-if="isSelected(lecture)" ng-repeat="note in lecture.notes">
+              <iframe class="note-contents-viewer" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
+            </div>
+          </div>
         </div>
       </md-list>
     </div>
