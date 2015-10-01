@@ -1,8 +1,8 @@
 $panel-offset: 10px;
 
 .embed-item-limit-width {
-  margin: $panel-offset auto 0 auto; 
-  max-width: 640px; 
+  margin: $panel-offset auto 0 auto;
+  max-width: 640px;
 
   .embed-responsive {
     position: relative;
@@ -36,7 +36,7 @@ $panel-offset: 10px;
     margin: 0;
   }
   .userinfo {
-    margin-left: $avatar-size; 
+    margin-left: $avatar-size;
     p {
       margin: 0;
       padding: 0 20px;
@@ -52,8 +52,8 @@ $panel-offset: 10px;
 }
 
 .detailsFooter{
-  padding-top: 10px; 
-} 
+  padding-top: 10px;
+}
 
 .icon{
   padding-top: 2px;

@@ -3,8 +3,8 @@ $fa-font-path: "/bower_components/font-awesome/fonts";
 @import 'font-awesome/scss/font-awesome';
 
 /**
- * App-wide Styles
- */
+* App-wide Styles
+*/
 $md-border-radius: 4px;
 $md-account-img-size: 64px;
 $md-account-br-rd: $md-account-img-size / 2;
@@ -74,7 +74,7 @@ md-toolbar .md-menu {
 }
 
 .note-contents-viewer {
-  border: none; 
+  border: none;
   width: 100%;
 }
 
