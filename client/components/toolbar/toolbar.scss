@@ -53,3 +53,8 @@ $tb-account-br-rd: $tb-account-img-size / 2;
     p { margin: 0; }
   }
 }
+
+.md-button.youtube-color {
+  background-color: #e62117;
+  &:not([disabled]):hover { background-color: #cc181e; }
+}
