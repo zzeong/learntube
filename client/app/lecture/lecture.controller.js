@@ -27,7 +27,6 @@ angular.module('learntubeApp')
   $scope.details = false;
 
   $scope.showDetails = function () {
-    console.log('here is showDetails');
     $scope.details = !$scope.details;
   };
 
@@ -182,4 +181,3 @@ angular.module('learntubeApp')
     return _.has(user, 'google') ? user.google.image.url : guestImgPath;
   };
 });
-
