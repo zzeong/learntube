@@ -11,10 +11,10 @@ angular.module('learntubeApp')
   };
 
   $scope.personalMenu = [{
-    name: 'Watched Contents',
+    name: 'Watched contents',
     url: '/watched',
   }, {
-    name: 'Uploaded Contents',
+    name: 'Uploaded contents',
     url: '/uploaded',
   }];
 
