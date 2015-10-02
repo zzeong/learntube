@@ -6,8 +6,8 @@
 
     <!-- 클래스에 가장 처음 업로드된 강의 -->
 
-    <div class="headContents background">
-      <div class="firstLecture test">
+    <div class="head-contents background">
+      <div class="first-lecture test">
         <div class="embed-item-limit-width">
           <div class="embed-responsive embed-responsive-16by9">
             <youtube-video class="embed-responsive-item" video-id="lectureList[0].snippet.resourceId.videoId"></youtube-video>
@@ -16,7 +16,7 @@
       </div>
 
       <!-- CLASS INTRODUCE -->
-      <div class="classIntro background">
+      <div class="class-intro background">
         <h2 class="class-title">{{classe.snippet.title}}</h2>
         <!-- description -->
         <div class="introduce">
@@ -32,16 +32,16 @@
 
     <div class="content-width content-background">
       <!-- 선생님 소개  -->
-      <div class="tutorIntro">
+      <div class="tutor-intro">
 
         <!-- 선생님 썸네일 (채널 대표 이미지) -->
-        <div class="thumbAndTitle padding">
+        <div class="thumb-and-title padding">
           <div class="thumbnail thumbnail-mobile">
-            <img ng-src="{{ channel.snippet.thumbnails.default.url }}"  style="border-radius:45px">
+            <img class="thumbnail-radius" ng-src="{{ channel.snippet.thumbnails.default.url }}">
           </div>
           <!-- 체널 타이틀 -->
           <div class="channel-info ch-info-mobile">
-            <h4 class="margin-zero" style="color:grey;">Tutor</h4>
+            <h4 class="margin-zero color-grey">Tutor</h4>
             <h2 class="font-light-300 margin-zero">{{ channel.snippet.title }}.&nbsp</h2>
           </div>
 
@@ -63,7 +63,7 @@
 
 
       <md-list class="lecture-list-numbering">
-        <div class="lectureList"
+        <div class="lecturelist"
         infinite-scroll="loadMore(pageToken)"
         infinite-scroll-disabled="httpBusy || !pageToken"
         infinite-scroll-distance="1">

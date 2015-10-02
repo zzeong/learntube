@@ -7,6 +7,14 @@
   background-color: white;
 }
 
+.thumbnail-radius{
+  border-radius: 45px;
+}
+
+.color-grey{
+  color: grey;
+}
+
 .class-title{
   margin-top: 0px;
   margin-bottom: 15px;
@@ -117,7 +125,7 @@ md-list-item.md-2-line .md-list-item-text h3.lecture-title, md-list-item.md-2-li
     margin-top: 0px;
   }
 
-  .headContents{
+  .head-contents{
     height: 400px;
     background-color: white;
     padding-left: 10px;
@@ -128,11 +136,7 @@ md-list-item.md-2-line .md-list-item-text h3.lecture-title, md-list-item.md-2-li
     margin-top: 0px;
   }
 
-  .descBox{
-    height: 260px;
-  }
-
-  .firstLecture{
+  .first-lecture{
     width:660px;
     height: 390px;
     margin: 0 auto;
@@ -142,19 +146,19 @@ md-list-item.md-2-line .md-list-item-text h3.lecture-title, md-list-item.md-2-li
     float:left;
   }
 
-  .classIntro{
+  .class-intro{
     background-color: white;
     margin-left:660px;
     //width: 410px;
     height: 390px;
   }
 
-  .tutorIntro{
+  .tutor-intro{
     width: 420px;
     float:right;
   }
 
-  .thumbAndTitle{
+  .thumb-and-title{
     margin-top:20px;
     margin-right:15px;
     margin-left:30px;
@@ -167,17 +171,7 @@ md-list-item.md-2-line .md-list-item-text h3.lecture-title, md-list-item.md-2-li
     padding-right:20px;
   }
 
-  .channelTitle{
-    padding-top:15px;
-  }
-
-  .youtubeVideo{
-    right: 210px;
-    top: 10px;
-
-  }
-
-  .lectureList{
+  .lecturelist{
     width: 660px;
   }
 
@@ -196,7 +190,6 @@ md-list-item.md-2-line .md-list-item-text h3.lecture-title, md-list-item.md-2-li
   }
 
 }
-
 
 @media (max-width: 900px){
   .padding{
