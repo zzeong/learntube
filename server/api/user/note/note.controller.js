@@ -99,14 +99,18 @@ exports.show = function (req, res) {
 
 exports.getContents = function (req, res) {
   Note.findById(req.params.nid, function (err, note) {
+    var data = '';
     s3.get(url.parse(note.url).pathname).on('response', function (response) {
       console.log('[S3]:GET', response.statusCode, response.headers);
 
       response.setEncoding('utf8');
       response.on('data', function (chunk) {
+        data += chunk;
+      });
+      response.on('end', function () {
         return res.status(200).json({
           _id: note._id,
-          contents: chunk
+          contents: data
         });
       });
     })
