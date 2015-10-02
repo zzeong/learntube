@@ -47,8 +47,8 @@
               </md-icon>
             </md-list-item>
 
-            <div ng-if="isSelected(lecture)" ng-repeat="note in lecture.notes">
-              <iframe class="note-contents-viewer" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
+            <div class="note-contents-viewer" ng-if="isSelected(lecture)" ng-repeat="note in lecture.notes">
+              <iframe ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
             </div>
           </div>
         </div>

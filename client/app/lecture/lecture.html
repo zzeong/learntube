@@ -121,8 +121,10 @@
 
             <md-divider></md-divider>
 
-            <iframe ng-if="shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
-            <img ng-if="!shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url }}" alt="My lecture note"/>
+            <div class="note-contents-viewer">
+              <iframe ng-if="shouldBeEmbedded(note)" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
+              <img ng-if="!shouldBeEmbedded(note)" ng-src="{{ note.url }}" alt="My lecture note"/>
+            </div>
 
             <div class="md-actions" layout="row" layout-align="end center">
               <md-button class="md-raised" ng-if="note.type === 'editor'" ng-click="editNote(note)">Edit</md-button>
@@ -155,8 +157,10 @@
 
           <md-divider></md-divider>
 
-          <iframe ng-if="shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
-          <img ng-if="!shouldBeEmbedded(note)" class="note-contents-viewer" ng-src="{{ note.url }}" alt="My lecture note"/>
+          <div class="note-contents-viewer">
+            <iframe ng-if="shouldBeEmbedded(note)" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
+            <img ng-if="!shouldBeEmbedded(note)" ng-src="{{ note.url }}" alt="My lecture note"/>
+          </div>
         </div>
       </div>
     </section>

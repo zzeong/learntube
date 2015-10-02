@@ -73,17 +73,27 @@ md-toolbar .md-menu {
   width: $dialog-width;
 }
 
-.note-contents-viewer {
-  border: none;
-  width: 100%;
-}
-
 md-sidenav, md-backdrop {
   position: fixed;
 }
 
 .login-btn {
   padding: 0 15px;
+}
+
+.note-contents-viewer {
+  text-align: center;
+  iframe {
+    height: 350px;
+    border: none;
+    width: 100%;
+  }
+}
+
+@media (max-width: $responsive-width) {
+  .note-contents-viewer {
+    img { width: 100%; }
+  }
 }
 
 
