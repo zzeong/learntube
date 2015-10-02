@@ -29,6 +29,16 @@ var initialUser = function () {
     role: 'user',
     name: 'Seyfried Amanda',
     email: 'learntubebot02@gmail.com'
+  }, {
+    provider: 'google',
+    role: 'user',
+    name: 'zzeong team',
+    email: 'learntubebot03@gmail.com'
+  }, {
+    provider: 'google',
+    role: 'user',
+    name: 'Jinyoung Kim',
+    email: 'ligeek49@gmail.com'
   }]);
 };
 
@@ -36,10 +46,8 @@ var seedNote = function (users) {
   var bot = {
     'learntubebot01@gmail.com': {
       hash: [
-        'ac67da4d3c844e72f0607b0ef4aff541',
-        'eb42fc364af000dd9af888532ce63226',
-        '4fa0e346807233f7f4c18cb6c35afec1',
-        'fe8cf8d21a24376a1263b2267a77c87a'
+        '2af6cbcc930fec1a4358b8ac63c1d26c',
+        '48c994f54ee679e3715f63c1f615393b'
       ]
     },
     'learntubebot02@gmail.com': {
@@ -50,30 +58,52 @@ var seedNote = function (users) {
         '4c757fe906a459a8283c830d67466358'
       ]
     },
+    'learntubebot03@gmail.com': {
+      hash: [
+        '826b6745d1ce6b449eba72077a99a6f6'
+      ]
+    },
+    'ligeek49@gmail.com': {
+      hash: [
+        'c3126d2c3dca4dcd0c8017aa70d61280'
+      ]
+    },
   };
 
-  var createDoc = function (user, i) {
-    var id = {
-      playlist: 'PL9B61DEF63FC19BD9',
-      video: ['1ZRb1we80kM', 'rJnICByeL8Q']
-    };
-
-    return {
-      userId: user._id,
-      videoId: id.video[parseInt(i / 2)],
-      playlistId: id.playlist,
-      url: 'https://learntubebucket.s3.amazonaws.com/' + user.email + '/' + bot[user.email].hash[i],
-      type: 'editor',
-      resourceType: 'text/html',
-    };
+  var id = {
+    playlist: 'PLtEAazd2E1Vr5ycRfR2pRQSjqFlB9uSow',
+    video: ['7BafU1p_OKo', '7IWxw8TBPjI', '8rQGMW7nt4s']
   };
 
-
-  var docs = [];
-  for (var i = 0; i < 4; i++) {
-    docs.push(createDoc(users[0], i));
-    docs.push(createDoc(users[1], i));
-  }
+  var docs = [{
+    userId: users[0]._id,
+    videoId: id.video[1],
+    playlistId: id.playlist,
+    url: 'https://learntubebucket.s3.amazonaws.com/' + users[0].email + '/' + bot[users[0].email].hash[0],
+    type: 'editor',
+    resourceType: 'text/html',
+  }, {
+    userId: users[0]._id,
+    videoId: id.video[2],
+    playlistId: id.playlist,
+    url: 'https://learntubebucket.s3.amazonaws.com/' + users[0].email + '/' + bot[users[0].email].hash[1],
+    type: 'editor',
+    resourceType: 'text/html',
+  }, {
+    userId: users[2]._id,
+    videoId: id.video[0],
+    playlistId: id.playlist,
+    url: 'https://learntubebucket.s3.amazonaws.com/' + users[2].email + '/' + bot[users[2].email].hash[0],
+    type: 'file',
+    resourceType: 'image/jpeg',
+  }, {
+    userId: users[3]._id,
+    videoId: id.video[0],
+    playlistId: id.playlist,
+    url: 'https://learntubebucket.s3.amazonaws.com/' + users[3].email + '/' + bot[users[3].email].hash[0],
+    type: 'editor',
+    resourceType: 'text/html',
+  }];
 
   return Note.create(docs);
 };
@@ -86,78 +116,127 @@ var seedClass = function (users) {
   };
 
   return Class.create([{
-    userId: users[1]._id,
-    playlistId: 'PLeNYl43VgxfUsY23CygyCtE1MKw8Vy4e8',
+    userId: users[0]._id,
+    playlistId: 'PLtEAazd2E1Vr5ycRfR2pRQSjqFlB9uSow',
     lectures: [{
-      videoId: 'RKhsHGfrFmY'
+      videoId: '7BafU1p_OKo',
+      completedAt: timeMachine(_.random(-7, 0)),
     }, {
-      videoId: 'rJnICByeL8Q'
+      videoId: 'cuwZY0KZK3c',
+      completedAt: timeMachine(_.random(-7, 0)),
+    }, {
+      videoId: 'iokDryA747s',
+      completedAt: timeMachine(_.random(-7, 0)),
+    }, {
+      videoId: '8rQGMW7nt4s',
+      completedAt: timeMachine(_.random(-7, 0)),
+    }, {
+      videoId: '7IWxw8TBPjI',
+      completedAt: timeMachine(_.random(-7, 0)),
+    }, {
+      videoId: 'YxCkAa5rr-4',
+      completedAt: timeMachine(_.random(-7, 0)),
+    }, {
+      videoId: 'btk_iTh55_0',
+      completedAt: timeMachine(_.random(-7, 0)),
+    }, {
+      videoId: 'lDaTVJZ1hPI',
+      completedAt: timeMachine(_.random(-7, 0)),
+    }, {
+      videoId: 'vzTLE5-64c8',
+      completedAt: timeMachine(_.random(-7, 0)),
     }]
   }, {
-    userId: users[1]._id,
-    playlistId: 'PL9B61DEF63FC19BD9',
+    userId: users[0]._id,
+    playlistId: 'PLXYHQ27KYu7VmsPc5BUN2UBJn1MyYLpsw',
     lectures: [{
-      videoId: '1ZRb1we80kM',
+      videoId: 'ZQZtCVkypAo'
+    }, {
+      videoId: '5z_d0soK1cI'
+    }]
+  }, {
+    userId: users[0]._id,
+    playlistId: 'PL46F0A159EC02DF82',
+    lectures: [{
+      videoId: 'yUyJ1gcaraM',
       completedAt: timeMachine(_.random(-14, 0)),
     }, {
-      videoId: '8pin-6JrdHY',
+      videoId: 'sY8qiSaAi9g',
       completedAt: timeMachine(_.random(-14, 0)),
     }, {
-      videoId: 'rJnICByeL8Q',
+      videoId: '7i1f23AVsn4',
       completedAt: timeMachine(_.random(-14, 0)),
     }, {
-      videoId: 'doFK7Eanm3I',
+      videoId: 'yQaAGmHNn9s',
       completedAt: timeMachine(_.random(-14, 0)),
     }, {
-      videoId: 'RKhsHGfrFmY',
+      videoId: '7i1f23AVsn4',
       completedAt: timeMachine(_.random(-14, 0)),
     }, {
-      videoId: 't3ULhmadHkg',
+      videoId: 'BgtdojEoWFI',
       completedAt: timeMachine(_.random(-14, 0)),
     }, {
-      videoId: 'LOXEVd-Z7NE',
+      videoId: 'waF2Isf-phQ',
+      completedAt: timeMachine(_.random(-14, 0)),
+    }, {
+      videoId: 'og4Zku5VVl0',
+      completedAt: timeMachine(_.random(-14, 0)),
+    }, {
+      videoId: 'AdQcd3sKGC8',
+      completedAt: timeMachine(_.random(-14, 0)),
+    }, {
+      videoId: 'ZH5qZB0UucQ',
+      completedAt: timeMachine(_.random(-14, 0)),
+    }, {
+      videoId: 'VfBr32W-hRA',
+      completedAt: timeMachine(_.random(-14, 0)),
+    }, {
+      videoId: '5gjr15aWp24',
+      completedAt: timeMachine(_.random(-14, 0)),
+    }, {
+      videoId: 'ebjo8_u82mI',
       completedAt: timeMachine(_.random(-14, 0)),
     }]
   }, {
-    userId: users[1]._id,
-    playlistId: 'PLmtapKaZsgZt3g_uAPJbsMWdkVsznn_2R',
+    userId: users[0]._id,
+    playlistId: 'PLuHgQVnccGMA0lO0qip6Phh6UL73TS0es',
     lectures: [{
-      videoId: 'W_k2EB33s7A'
+      videoId: 'YuC__aN-v04'
     }, {
-      videoId: 'B5HkW--GAQ8'
+      videoId: 'V38uZEimeck'
     }]
   }, {
-    userId: users[1]._id,
-    playlistId: 'PLFgquLnL59akz2EQlObY3Ac3aC68xfSU6',
+    userId: users[0]._id,
+    playlistId: 'PLuHgQVnccGMCB06JE7zFIAOJtdcZBVrap',
     lectures: [{
-      videoId: 'RgKAFK5djSk'
+      videoId: 'XUEuYq64HKI'
     }, {
-      videoId: '_mVJJvx04_w'
+      videoId: 'N_rpDCZxRCY'
     }]
   }, {
-    userId: users[1]._id,
-    playlistId: 'PL8fVUTBmJhHJDAtZwiIOooPRurN0hna-j',
+    userId: users[0]._id,
+    playlistId: 'PLVIfzJWJwLxl2BEs-lJmngN70L_NJmgZy',
     lectures: [{
-      videoId: '1ZLN9AzxVa8'
+      videoId: 'uLhvu0IanPE'
     }, {
-      videoId: 'pTYyg5aDWAM'
+      videoId: 'oRw5onieJ3o'
     }]
   }]);
 };
 
 var seedRating = function () {
   return Rating.create([{
-    playlistId: 'PLdN7Dwi6JGXsAASQgnsm34BBL6mQfQUKK',
+    playlistId: 'PLuHgQVnccGMA4uSig3hCjl7wTDeyIeZVU',
     points: 99
   }, {
-    playlistId: 'PLyRIdnMFwruhaDX0FGe8od4VU20CD3dTC',
-    points: 61
+    playlistId: 'PLvtbuRelN29hTIX2NyTxnPkEays6u95Qe',
+    points: 82
   }, {
     playlistId: 'PLaNNx1k0ao1v8I2C8DAxXOayC3dG00xtj',
     points: 71
   }, {
     playlistId: 'PLJAq9GpGx5BMdIUSwg53JX7LiuYW_EYvP',
-    points: 82
+    points: 61
   }, {
     playlistId: 'PLcpoB2VESJmekv4lb3uZkMc5k7fyMSIzU',
     points: 4
@@ -168,28 +247,28 @@ var seedRating = function () {
     playlistId: 'PL6DB5987C212AC19F',
     points: 8
   }, {
-    playlistId: 'PLFVCbA-bmHb8_v54a9JNkNgZELYslC5wF',
+    playlistId: 'PLzX7CTd7CtHl5RQ9fxx_daq9WbVRW8a2z',
     points: 38
   }]);
 };
 
 var seedUpload = function (users) {
   var hashes = [
-   '2bd6387e8333e63dec3e1cea9617accb',
-   '24ebf6590e230c823d1afd1dd01911e2'
+   'd3e6cfa0eb57bab5c50a88a049b42930',
+   '8af01a82ad2ce86d8d0e16fbc40b069b'
   ];
 
   return Upload.create([{
-    userId: users[0]._id,
-    playlistId: 'PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx',
+    userId: users[1]._id,
+    playlistId: 'PLtEAazd2E1Vr5ycRfR2pRQSjqFlB9uSow',
     lectures: [{
-      videoId: 'miUYEpXDitc',
-      fileName: 'just.txt',
-      url: s3.endpoint.href + config.aws.s3Bucket + '/' + users[0].email + '/uploads/' + hashes[0],
+      videoId: '7BafU1p_OKo',
+      fileName: 'handout.pdf',
+      url: s3.endpoint.href + config.aws.s3Bucket + '/' + users[1].email + '/uploads/' + hashes[0],
     }, {
-      videoId: 'F-xd3G0PW0k',
-      fileName: 'just.pdf',
-      url: s3.endpoint.href + config.aws.s3Bucket + '/' + users[0].email + '/uploads/' + hashes[1],
+      videoId: '8rQGMW7nt4s',
+      fileName: 'handout.pdf',
+      url: s3.endpoint.href + config.aws.s3Bucket + '/' + users[1].email + '/uploads/' + hashes[1],
     }],
   }]);
 };
