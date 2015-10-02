@@ -84,7 +84,13 @@ angular.module('learntubeApp')
     params: { videoId: $scope.videoId }
   })
   .then(function (res) {
-    $scope.othersNotes = res.data;
+    $scope.othersNotes = res.data.filter(function (note) {
+      var isMine = false;
+      $scope.notes.forEach(function (n) {
+        if (n._id === note._id) { isMine = true;  }
+      });
+      return !isMine;
+    });
   })
   .catch(console.error);
 
