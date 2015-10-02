@@ -45,6 +45,11 @@ $panel-offset: 10px;
   }
 }
 
+.icon-position{
+  margin-left: 500px;
+  margin-top: 10px;
+}
+
 .lecture-details-item{
   margin-bottom: 0px;
   margin-top: 0px;
@@ -64,7 +69,12 @@ $panel-offset: 10px;
 }
 
 input.note-file-uploader {
-  width: 225px; 
+  width: 225px;
+}
+
+.arrow-icon{
+  margin-left: auto;
+  margin-right: 0;
 }
 
 @media (max-width: $responsive-width) {

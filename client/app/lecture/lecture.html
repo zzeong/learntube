@@ -13,14 +13,21 @@
 
     <div class="video-info-panel md-padding">
       <div layout="row" layout-wrap>
-        <div flex="750">
-          <h1 class="md-title">{{ item.snippet.title }}</h1>
-          <div>
-            <md-icon md-font-set="material-icons" ng-click="showDetails()" style="cursor: pointer">arrow_drop_down</md-icon>
-          </div>
+        <div>
+          <h1 class="md-title margin-zero">{{ item.snippet.title }}</h1>
+        </div>
+        <div class="arrow-icon">
+          <md-icon md-font-set="material-icons"
+          ng-click="showDetails()"
+          ng-show="!details"
+          style="cursor: pointer; outline: none">arrow_drop_down</md-icon>
+          <md-icon md-font-set="material-icons"
+          ng-click="showDetails()"
+          ng-show="details"
+          style="cursor: pointer; outline: none">arrow_drop_up</md-icon>
         </div>
         <div ng-show="details">
-          <p>{{ item.snippet.description }}</p>
+          <p class="md-body-1">{{ item.snippet.description }}</p>
           <span class="lecture-details-item md-body-2">Channel : </span>
           <span class="md-body-1">{{ item.snippet.channelTitle }}</span><br>
           <span class="lecture-details-item">Hits : </span>
@@ -69,7 +76,7 @@
         </md-menu>
 
         <md-button class="md-raised md-primary md-hue-2" ng-click="completeLecture()">Complete</md-button>
-      </div> 
+      </div>
     </div>
 
     <md-divider></md-divider>
