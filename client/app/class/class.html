@@ -19,8 +19,10 @@
       <div class="class-intro background">
         <h2 class="class-title">{{classe.snippet.title}}</h2>
         <!-- description -->
-        <div class="introduce">
+        <div class="introduce md-body-1" ng-bind-html="desc">
+          <!--
           <p class="md-body-1 margin-zero"><hm-read class="cursor-pointer" hmtext="{{ desc }}" hmlimit="200" hm-more-text="read more" hm-less-text="read less" ></hm-read></p>
+          -->
         </div>
       </div>
       <!-- ADD CLASS BUTTON -->
@@ -47,9 +49,12 @@
 
 
           <!-- 선생님 소개 (채널 소개) 더보기 -->
-          <div class="tutor-desc">
+          <div class="tutor-desc md-body-1" ng-bind-html="channel.snippet.description">
+
+            <!--
             <p class="hide-in-web md-body-1 margin-zero"><hm-read hmtext="{{ channel.snippet.description }}" hmlimit="40" hm-more-text="read more" hm-less-text="read less"></hm-read></p>
             <p class="hide-in-mobile md-body-1 margin-zero">{{ channel.snippet.description }}</p>
+            -->
           </div>
         </div>
       </div>

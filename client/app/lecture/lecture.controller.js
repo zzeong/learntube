@@ -13,6 +13,15 @@ angular.module('learntubeApp')
   $scope.getCurrentUser = Auth.getCurrentUser;
   $scope.isLoggedIn = Auth.isLoggedIn;
 
+  var compileToHTML = function (str) {
+    var html = str.split('\n')
+    .filter(function (p) { return p.length; })
+    .map(function (p) { return '<p>' + p + '</p>'; })
+    .join('');
+
+    return html;
+  };
+
   GApi.execute('youtube', 'videos.list', {
     key: GoogleConst.browserKey,
     part: 'snippet,contentDetails,statistics',
@@ -21,6 +30,7 @@ angular.module('learntubeApp')
   .then(function (res) {
     $scope.item = res.items[0];
     $scope.publishedDate = ($scope.item.snippet.publishedAt).substring(0,10);
+    $scope.item.snippet.description = compileToHTML($scope.item.snippet.description);
   })
   .catch(console.error);
 

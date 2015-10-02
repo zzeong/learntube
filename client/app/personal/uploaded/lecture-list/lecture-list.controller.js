@@ -5,6 +5,15 @@ angular.module('learntubeApp')
   $scope.playlistId = $stateParams.pid;
   var scope = $scope;
 
+  var compileToHTML = function (str) {
+    var html = str.split('\n')
+    .filter(function (p) { return p.length; })
+    .map(function (p) { return '<p>' + p + '</p>'; })
+    .join('');
+
+    return html;
+  };
+
   var showToast = function (text) {
     $mdToast.show(
       $mdToast.simple()
@@ -73,6 +82,7 @@ angular.module('learntubeApp')
     for (var i in res.data.items) {
       if (res.data.items[i].id === $scope.playlistId) {
         $scope.summary = res.data.items[i];
+        $scope.summary.snippet.description = compileToHTML($scope.summary.snippet.description);
       }
     }
   })

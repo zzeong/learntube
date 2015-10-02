@@ -6,6 +6,15 @@ angular.module('learntubeApp')
   $scope.playlistId = $stateParams.pid;
   $scope.httpBusy = true;
 
+  var compileToHTML = function (str) {
+    var html = str.split('\n')
+    .filter(function (p) { return p.length; })
+    .map(function (p) { return '<p>' + p + '</p>'; })
+    .join('');
+
+    return html;
+  };
+
   $scope.addClass = function () {
 
     $scope.showSimpleToast();
@@ -53,7 +62,8 @@ angular.module('learntubeApp')
   })
   .then(function (res) {
     $scope.classe = res.items[0];
-    $scope.desc = $scope.classe.snippet.description;
+    //$scope.desc = $scope.classe.snippet.description;
+    $scope.desc = compileToHTML($scope.classe.snippet.description);
     $scope.channelId = $scope.classe.snippet.channelId;
 
     return GApi.execute('youtube', 'channels.list', {
@@ -64,6 +74,7 @@ angular.module('learntubeApp')
   })
   .then(function (res) {
     $scope.channel = res.items[0];
+    $scope.channel.snippet.description = compileToHTML($scope.channel.snippet.description);
   })
   .catch(console.error);
 

@@ -27,7 +27,10 @@
           style="cursor: pointer; outline: none">arrow_drop_up</md-icon>
         </div>
         <div ng-show="details">
+          <div class="md-body-1" ng-bind-html="item.snippet.description"></div>
+          <!--
           <p class="md-body-1">{{ item.snippet.description }}</p>
+          -->
           <span class="lecture-details-item md-body-2">Channel : </span>
           <span class="md-body-1">{{ item.snippet.channelTitle }}</span><br>
           <span class="lecture-details-item">Hits : </span>
