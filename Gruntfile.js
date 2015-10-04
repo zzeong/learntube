@@ -186,6 +186,7 @@ module.exports = function (grunt) {
           ]
         }]
       },
+      docker_node: ['docker/node/**/*', '!docker/node/Dockerfile'],
       server: '.tmp'
     },
 
@@ -410,6 +411,14 @@ module.exports = function (grunt) {
           ]
         }]
       },
+      docker_node: {
+        files: [{
+          expand: true,
+          cwd: '<%= yeoman.dist %>',
+          dest: 'docker/node',
+          src: ['**']
+        }],
+      },
       styles: {
         expand: true,
         cwd: '<%= yeoman.client %>',
@@ -420,7 +429,7 @@ module.exports = function (grunt) {
 
     buildcontrol: {
       options: {
-        dir: 'dist',
+        dir: 'docker',
         commit: true,
         push: true,
         connectCommits: false,
@@ -437,7 +446,13 @@ module.exports = function (grunt) {
           remote: 'openshift',
           branch: 'master'
         }
-      }
+      },
+      aws: {
+        options: {
+          remote: 'ubuntu@52.5.145.162:git-bare/learntube.git',
+          branch: 'master'
+        }
+      },
     },
 
     // Run some tasks in parallel to speed up the build process
@@ -804,6 +819,13 @@ module.exports = function (grunt) {
     'uglify',
     'rev',
     'usemin'
+  ]);
+
+  grunt.registerTask('deploy', [
+    'build',
+    'clean:docker_node',
+    'copy:docker_node',
+    'buildcontrol:aws'
   ]);
 
   grunt.registerTask('default', [
