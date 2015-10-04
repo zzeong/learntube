@@ -11,3 +11,5 @@ npm-debug.log
 _*
 coverage/
 apidoc/
+.travis/
+encrypt.tar
