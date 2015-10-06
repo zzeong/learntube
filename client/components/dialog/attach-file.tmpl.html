@@ -13,15 +13,12 @@
     </md-dialog-content>
 
     <div class="md-actions" layout="row">
-      <md-button
-        type="button"
-        class="md-warn"
-        ng-disabled="!haveUploadedFile(lecture)"
-        ng-click="deleteFile(lecture)">
+      <md-button type="button" class="md-warn" ng-disabled="!haveUploadedFile(lecture)"
+      ng-click="deleteFile(lecture)">
         Delete file
       </md-button>
       <span flex></span>
-      <md-button type="button" class="md-warn" ng-click="cancel()" >
+      <md-button type="button" class="md-warn" ng-click="cancel()">
         Cancel
       </md-button>
       <md-button type="submit" ng-disabled="haveUploadedFile(lecture)">

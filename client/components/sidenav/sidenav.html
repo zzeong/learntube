@@ -1,7 +1,8 @@
-<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')" hide-gt-sm>
+<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')"
+hide-gt-sm>
   <div class="sidenav-account-area md-hue-1" ng-controller="SidenavDrawerCtrl">
     <div class="image-cont">
-      <img ng-src="{{ getUserImage() }}" class="account-img" alt="Account Image"/>
+      <img ng-src="{{ getUserImage() }}" class="account-img" alt="Account Image" />
     </div>
     <div class="account-cont">
       <md-button ng-hide="isLoggedIn()" ng-click="loginOauth('google')" class="md-raised login-btn">
@@ -23,3 +24,4 @@
     </md-list-item>
   </md-list>
 </md-sidenav>
+

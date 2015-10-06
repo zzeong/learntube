@@ -17,13 +17,9 @@
           <h1 class="md-title margin-zero">{{ item.snippet.title }}</h1>
         </div>
         <div class="arrow-icon">
-          <md-icon md-font-set="material-icons"
-          ng-click="showDetails()"
-          ng-show="!details"
+          <md-icon md-font-set="material-icons" ng-click="showDetails()" ng-show="!details"
           class="icon-style">arrow_drop_down</md-icon>
-          <md-icon md-font-set="material-icons"
-          ng-click="showDetails()"
-          ng-show="details"
+          <md-icon md-font-set="material-icons" ng-click="showDetails()" ng-show="details"
           class="icon-style">arrow_drop_up</md-icon>
         </div>
         <div ng-show="details">
@@ -32,11 +28,14 @@
           <p class="md-body-1">{{ item.snippet.description }}</p>
           -->
           <span class="lecture-details-item md-body-2">Channel : </span>
-          <span class="md-body-1">{{ item.snippet.channelTitle }}</span><br>
+          <span class="md-body-1">{{ item.snippet.channelTitle }}</span>
+          <br>
           <span class="lecture-details-item">Hits : </span>
-          <span class="md-body-1">{{ item.statistics.viewCount }}</span><br>
+          <span class="md-body-1">{{ item.statistics.viewCount }}</span>
+          <br>
           <span class="lecture-det  ails-item md-body-2">Upload : </span>
-          <span class="md-body-1">{{ publishedDate }}</span><br>
+          <span class="md-body-1">{{ publishedDate }}</span>
+          <br>
 
           <div class="detailsFooter" layout="row" layout-wrap>
             <div flex="700">
@@ -51,7 +50,8 @@
             </div>
 
             <md-button target="_self" ng-href="{{ getDownloadUrl() }}" download>
-              Download handout <md-icon md-font-set="material-icons">file_download</md-icon>
+              Download handout
+              <md-icon md-font-set="material-icons">file_download</md-icon>
             </md-button>
           </div>
         </div>
@@ -167,3 +167,4 @@
 
   </div>
 </md-content>
+

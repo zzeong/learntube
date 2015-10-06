@@ -15,7 +15,7 @@
         <p class="md-body-1"><hm-read class="md-body-1" hmtext="{{ summary.snippet.description }}" hmlimit="400" hm-more-text="read more" hm-less-text="read less"></hm-read></p>
         -->
       </div>
-    </br>
+      </br>
     </div>
 
     <md-divider></md-divider>
@@ -31,9 +31,9 @@
           </div>
 
           <div>
-            <md-list-item class="md-2-line"
-              ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
-              <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail">
+            <md-list-item class="md-2-line" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
+              <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
+              alt="Lecture Thumbnail">
 
               <div class="md-list-item-text">
                 <div class="second-icon-padding">
@@ -41,11 +41,9 @@
                   <p>{{ lecture.contentDetails.duration | humanable }}</p>
                 </div>
 
-                <md-icon md-font-set="material-icons"
-                  ng-click="showFileDialog(lecture, $event)"
-                  aria-label="Show file dialog"
-                  ng-class="{ 'md-accent': haveUploadedFile(lecture), 'md-hue-3': haveUploadedFile(lecture) }"
-                  class="md-secondary md-hue-1">
+                <md-icon md-font-set="material-icons" ng-click="showFileDialog(lecture, $event)"
+                aria-label="Show file dialog" ng-class="{ 'md-accent': haveUploadedFile(lecture), 'md-hue-3': haveUploadedFile(lecture) }"
+                class="md-secondary md-hue-1">
                   file_upload
                 </md-icon>
               </div>
@@ -57,3 +55,4 @@
 
   </div>
 </md-content>
+

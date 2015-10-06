@@ -68,16 +68,13 @@
 
 
       <md-list class="lecture-list-numbering">
-        <div class="lecturelist"
-        infinite-scroll="loadMore(pageToken)"
-        infinite-scroll-disabled="httpBusy || !pageToken"
+        <div class="lecturelist" infinite-scroll="loadMore(pageToken)" infinite-scroll-disabled="httpBusy || !pageToken"
         infinite-scroll-distance="1">
 
-          <md-list-item class="md-2-line"
-          ng-repeat="lecture in lectureList"
-          ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
+          <md-list-item class="md-2-line" ng-repeat="lecture in lectureList" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
 
-            <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail">
+            <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
+            alt="Lecture Thumbnail">
 
             <div class="md-list-item-text">
               <div class="lecture-info-cont">
@@ -92,3 +89,4 @@
     </div>
   </div>
 </md-content>
+

@@ -22,16 +22,15 @@
       </div>
 
       <md-list class="lecture-list-numbering">
-        <div infinite-scroll="loadMore(pageToken)"
-          infinite-scroll-disabled="httpBusy || !pageToken"
-          infinite-scroll-distance="1">
+        <div infinite-scroll="loadMore(pageToken)" infinite-scroll-disabled="httpBusy || !pageToken"
+        infinite-scroll-distance="1">
 
           <div ng-repeat="lecture in lectureList | onlyPublic">
-            <md-list-item class="md-2-line"
-              ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })"
-              ng-class="{highlight: lecture.highlight}">
+            <md-list-item class="md-2-line" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })"
+            ng-class="{highlight: lecture.highlight}">
 
-              <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail">
+              <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
+              alt="Lecture Thumbnail">
               <div class="md-list-item-text">
                 <div class="second-icon-padding">
                   <h3 class="lecture-title ellipsis second-icon-padding">{{ lecture.snippet.title }}</h3>
@@ -39,10 +38,8 @@
                 </div>
               </div>
 
-              <md-icon md-font-set="material-icons"
-                class="md-secondary md-hue-1"
-                ng-show="lecture.noteIconVisible"
-                ng-click="showNote(lecture)">
+              <md-icon md-font-set="material-icons" class="md-secondary md-hue-1" ng-show="lecture.noteIconVisible"
+              ng-click="showNote(lecture)">
                 description
               </md-icon>
             </md-list-item>
@@ -56,3 +53,4 @@
     </div>
   </div>
 </md-content>
+

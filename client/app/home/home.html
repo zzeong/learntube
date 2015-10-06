@@ -21,10 +21,7 @@
     <h3 class="md-headline">Best classes</h3>
     <md-divider></md-divider>
     <div class="grid-list-cont">
-      <md-grid-list
-        md-cols="2" md-cols-gt-md="3"
-        md-row-height="4:3"
-        md-gutter="8px" class="search-grid-list">
+      <md-grid-list md-cols="2" md-cols-gt-md="3" md-row-height="4:3" md-gutter="8px" class="search-grid-list">
         <md-grid-tile ng-repeat="classe in classes" ng-click="go('Summary', { pid: classe.id })">
           <img ng-src="{{ classe.snippet.thumbnails.high.url }}" alt="Class Image">
           <md-grid-tile-footer>

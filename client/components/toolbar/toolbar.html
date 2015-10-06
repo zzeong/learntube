@@ -1,17 +1,18 @@
 <md-toolbar ng-controller="ToolbarCtrl">
   <div class="md-toolbar-tools">
-    <md-button class="md-icon-button" aria-label="Settings" ng-click="leftTrigger()" hide-gt-sm>
+    <md-button class="md-icon-button" aria-label="Settings" ng-click="leftTrigger()"
+    hide-gt-sm>
       <md-icon ng-show="stateNameCheck('Home')" md-font-set="material-icons">menu</md-icon>
       <md-icon ng-hide="stateNameCheck('Home')" md-font-set="material-icons">keyboard_backspace</md-icon>
     </md-button>
     <a href="/" id="logo" hide-sm>
-      <img src="/assets/images/logo_learntube_white.png" show-gt-sm alt="logo"/>
+      <img src="/assets/images/logo_learntube_white.png" show-gt-sm alt="logo" />
     </a>
     <h2 ng-hide="onSearching" hide-gt-sm>
       <span>{{ title }}</span>
     </h2>
     <form ng-submit="go('Search', { q: q })" ng-show="onSearching" hide-gt-sm>
-      <input id="query" type="search" ng-model="q" focus-me="focusInput"/>
+      <input id="query" type="search" ng-model="q" focus-me="focusInput" />
     </form>
 
     <span flex>
@@ -24,8 +25,9 @@
 
     <md-menu>
 
-      <md-button class="toolbar-account-cont" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()" hide-sm>
-        <img ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image"/>
+      <md-button class="toolbar-account-cont" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()"
+      hide-sm>
+        <img ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image" />
 
         <div>
           <p class="md-body-2">{{ getCurrentUser().name }}</p>
@@ -49,8 +51,10 @@
 
     </md-menu>
 
-    <md-button class="md-raised login-btn youtube-color" ng-hide="isLoggedIn()" ng-click="loginOauth('google')" hide-sm>
+    <md-button class="md-raised login-btn youtube-color" ng-hide="isLoggedIn()" ng-click="loginOauth('google')"
+    hide-sm>
       Login with <i class="fa fa-youtube-play"></i>
     </md-button>
   </div>
 </md-toolbar>
+
