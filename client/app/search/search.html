@@ -12,7 +12,7 @@
         md-row-height="4:3"
         md-gutter="8px" class="search-grid-list">
         <md-grid-tile ng-repeat="classe in classes" ng-click="go('Summary', { pid: classe.id.playlistId })">
-          <img ng-src="{{ classe.snippet.thumbnails.high.url }}" alt="Class Image"/>
+          <img ng-src="{{ classe.snippet.thumbnails.high.url }}" alt="Class Image">
           <md-grid-tile-footer>
             <h3>{{ classe.snippet.title }}</h3>
           </md-grid-tile-footer>

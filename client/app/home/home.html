@@ -8,7 +8,7 @@
 
     <form ng-submit="go('Search', { q: q })">
       <div class="main-search-cont">
-        <input class="md-body-1" ng-model="q" type="search" placeholder="Search anything"/>
+        <input class="md-body-1" ng-model="q" type="search" placeholder="Search anything">
         <md-button class="md-icon-button search-icon-button" aria-label="Search" ng-click="go('Search', { q: q })">
           <md-icon md-font-set="material-icons">search</md-icon>
         </md-button>
@@ -26,7 +26,7 @@
         md-row-height="4:3"
         md-gutter="8px" class="search-grid-list">
         <md-grid-tile ng-repeat="classe in classes" ng-click="go('Summary', { pid: classe.id })">
-          <img ng-src="{{ classe.snippet.thumbnails.high.url }}" alt="Class Image"/>
+          <img ng-src="{{ classe.snippet.thumbnails.high.url }}" alt="Class Image">
           <md-grid-tile-footer>
             <h3>{{ classe.snippet.title }}</h3>
           </md-grid-tile-footer>

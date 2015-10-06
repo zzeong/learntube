@@ -99,7 +99,7 @@
       <md-subheader>Note file uploader</md-subheader>
       <div class="md-actions md-padding" layout="row" layout-align="end center">
         <form ng-submit="doneNote('file', noteFile)">
-          <input class="note-file-uploader" type="file" ngf-select ng-model="noteFile"/>
+          <input class="note-file-uploader" type="file" ngf-select ng-model="noteFile">
           <md-button type="submit" class="md-raised">Done</md-button>
         </form>
       </div>
@@ -113,7 +113,7 @@
         <div class="md-padding" ng-repeat="note in notes">
           <div ng-hide="note.isEditing">
             <div class="note-item">
-              <img class="avatar" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image"/>
+              <img class="avatar" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image">
               <div class="userinfo">
                 <p class="md-subhead">{{ getCurrentUser().name }}</p>
               </div>
@@ -123,7 +123,7 @@
 
             <div class="note-contents-viewer">
               <iframe ng-if="shouldBeEmbedded(note)" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
-              <img ng-if="!shouldBeEmbedded(note)" ng-src="{{ note.url }}" alt="My lecture note"/>
+              <img ng-if="!shouldBeEmbedded(note)" ng-src="{{ note.url }}" alt="My lecture note">
             </div>
 
             <div class="md-actions" layout="row" layout-align="end center">
@@ -149,7 +149,7 @@
       <div class="others-notes-cont">
         <div class="md-padding" ng-repeat="note in othersNotes">
           <div class="note-item">
-            <img class="avatar" ng-src="{{ note.userId.google.image.url }}" alt="Account Image"/>
+            <img class="avatar" ng-src="{{ note.userId.google.image.url }}" alt="Account Image">
             <div class="userinfo">
               <p class="md-subhead">{{ note.userId.name }}</p>
             </div>
@@ -159,7 +159,7 @@
 
           <div class="note-contents-viewer">
             <iframe ng-if="shouldBeEmbedded(note)" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
-            <img ng-if="!shouldBeEmbedded(note)" ng-src="{{ note.url }}" alt="My lecture note"/>
+            <img ng-if="!shouldBeEmbedded(note)" ng-src="{{ note.url }}" alt="My lecture note">
           </div>
         </div>
       </div>

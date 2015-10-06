@@ -77,7 +77,7 @@
           ng-repeat="lecture in lectureList"
           ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
 
-            <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail" />
+            <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail">
 
             <div class="md-list-item-text">
               <div class="lecture-info-cont">
