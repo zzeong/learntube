@@ -26,9 +26,7 @@
     "passport": "~0.3.0",
     "passport-google-oauth": "latest",
     "promise": "^7.0.4",
-    "serve-favicon": "~2.3.0",
-    "socket.io": "jldec/socket.io",
-    "socket.io-client": "github:gsklee/socket.io-client#e50c1cc"
+    "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
     "blanket": "^1.1.7",
