@@ -225,6 +225,7 @@ module.exports = function (grunt) {
           env: {
             PORT: process.env.PORT || 9000
           },
+          watch: ['server'],
           callback: function (nodemon) {
             nodemon.on('log', function (event) {
               console.log(event.colour);
