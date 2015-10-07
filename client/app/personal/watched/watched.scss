@@ -1,4 +1,11 @@
 
+.float-left{
+  float: left;
+}
+
+.float-right{
+  float: right;
+}
 
 .graph-info{
 	position: absolute;
@@ -68,7 +75,7 @@
 	width: 100%;
 }
 
-.contentPosition{
+.content-position{
 	position: absolute;
 	height: 50%;
 	width: 68%;

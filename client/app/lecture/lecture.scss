@@ -77,6 +77,11 @@ input.note-file-uploader {
   margin-right: 0;
 }
 
+.icon-style{
+  cursor: pointer;
+  outline: none;
+}
+
 @media (max-width: $responsive-width) {
   .embed-item-limit-width {
     margin: 0 auto;

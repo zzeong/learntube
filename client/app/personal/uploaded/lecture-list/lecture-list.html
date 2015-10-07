@@ -26,7 +26,7 @@
 
       <md-list class="lecture-list-numbering">
         <div ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
-          <div class="checkboxStyle">
+          <div class="checkbox-style">
             <md-checkbox ng-click="selectLecture(lecture)" ng-checked="isSelectedLecture(lecture)"></md-checkbox>
           </div>
 
