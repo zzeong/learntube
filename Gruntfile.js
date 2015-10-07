@@ -210,7 +210,7 @@ module.exports = function (grunt) {
       custom: {
         options: {
           'web-host': 'localhost',
-          'no-preload': true,
+          'preload': false,
           'hidden': ['node_modules']
         }
       }
