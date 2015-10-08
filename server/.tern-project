@@ -1,0 +1,11 @@
+{
+  "ecmaVersion": 5,
+  "libs": [
+    "ecma5",
+    "underscore"
+  ],
+  "plugins": {
+    "complete_strings": {},
+    "node": {}
+  }
+}

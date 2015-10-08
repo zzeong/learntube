@@ -1,0 +1,12 @@
+{
+  "ecmaVersion": 5,
+  "libs": [
+    "ecma5",
+    "underscore",
+    "browser"
+  ],
+  "plugins": {
+    "complete_strings": {},
+    "angular": {}
+  }
+}
