@@ -7,7 +7,7 @@ MAINTAINER Anand Mani Sankar
 # Install Node.js and other dependencies
 RUN apt-get update && \
     apt-get -y install curl git && \
-    curl -sL https://deb.nodesource.com/setup | sudo bash - && \
+    curl -sL https://deb.nodesource.com/setup_0.12 | sudo -E bash - \
     apt-get -y install python build-essential nodejs libkrb5-dev
 
 # Install pm2
