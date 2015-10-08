@@ -8,7 +8,7 @@ MAINTAINER Anand Mani Sankar
 RUN apt-get update && \
     apt-get -y install curl git && \
     curl -sL https://deb.nodesource.com/setup | sudo bash - && \
-    apt-get -y install python build-essential nodejs
+    apt-get -y install python build-essential nodejs libkrb5-dev
 
 # Install pm2
 RUN npm install -g pm2
