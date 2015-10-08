@@ -30,7 +30,7 @@ module.exports = function (config) {
       'client/bower_components/angular-youtube-mb/src/angular-youtube-embed.js',
       'client/bower_components/ckeditor/ckeditor.js',
       'client/bower_components/json3/lib/json3.js',
-      'client/bower_components/lodash/dist/lodash.compat.js',
+      'client/bower_components/lodash/lodash.js',
       'client/bower_components/ng-file-upload/ng-file-upload.js',
       'client/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
       'client/bower_components/Blob/Blob.js',
