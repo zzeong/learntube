@@ -500,7 +500,7 @@ module.exports = function (grunt) {
         reporters: ['spec'],
       },
       coverage: {
-        reporters: ['coverage'],
+        reporters: ['spec', 'coverage'],
       },
     },
 
