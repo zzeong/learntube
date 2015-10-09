@@ -13,7 +13,7 @@ angular.module('learntubeApp')
       hmMoreClass: '@',
       hmLessClass: '@'
     },
-    templateUrl: 'components/util/readmore.tmpl.html',
+    templateUrl: 'components/readmore/readmore.html',
     transclude: true,
     controller: function ($scope) {
       $scope.toggleValue = function () {

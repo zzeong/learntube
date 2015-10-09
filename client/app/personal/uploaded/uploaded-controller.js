@@ -32,7 +32,7 @@ angular.module('learntubeApp')
           .catch(console.error);
         };
       },
-      templateUrl: 'components/dialog/add-class.tmpl.html',
+      templateUrl: 'components/dialog/add-class.html',
       parent: angular.element(document.body),
       targetEvent: ev,
       clickOutsideToClose: true

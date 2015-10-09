@@ -161,7 +161,7 @@ angular.module('learntubeApp')
           .catch(console.error);
         };
       },
-      templateUrl: 'components/dialog/attach-file.tmpl.html',
+      templateUrl: 'components/dialog/attach-file.html',
       parent: angular.element(document.body),
       targetEvent: ev,
       clickOutsideToClose: true
@@ -241,7 +241,7 @@ angular.module('learntubeApp')
           .catch(console.error);
         };
       },
-      templateUrl: 'components/dialog/add-lecture.tmpl.html',
+      templateUrl: 'components/dialog/add-lecture.html',
       parent: angular.element(document.body),
       targetEvent: ev,
       clickOutsideToClose: true

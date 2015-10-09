@@ -53,7 +53,7 @@ module.exports = function (config) {
       '**/*.html': 'html2js',
       'client/app/**/*.js': 'babel',
       '**/*.coffee': 'coffee',
-      'client/{app,components}/**/!(*spec).js': 'coverage'
+      'client/{app,components}/**/!(*test).js': 'coverage'
     },
 
     ngHtml2JsPreprocessor: {
