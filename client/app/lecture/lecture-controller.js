@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('LectureCtrl', function ($scope, $stateParams, $http, Auth, NoteAPI, GoogleConst, GApi, Upload) {
+.controller('LectureCtrl', function ($scope, $stateParams, $http, Auth, Note, GoogleConst, GApi, Upload) {
   $scope.videoId = $stateParams.vid;
   $scope.playlistId = $stateParams.pid;
   $scope.playerVars = {
@@ -54,7 +54,7 @@ angular.module('learntubeApp')
   };
 
   if ($scope.isLoggedIn()) {
-    NoteAPI.query({ videoId: $scope.videoId })
+    Note.query({ videoId: $scope.videoId })
     .$promise
     .then(function (notes) {
       $scope.notes = notes.map(function (note) {
@@ -118,7 +118,7 @@ angular.module('learntubeApp')
   };
 
   $scope.editNote = function (note) {
-    NoteAPI.getContents({ nid: note._id })
+    Note.getContents({ nid: note._id })
     .$promise
     .then(function (res) {
       note.contents = res.contents;
@@ -132,7 +132,7 @@ angular.module('learntubeApp')
   };
 
   $scope.deleteNote = function (note) {
-    NoteAPI.remove({ nid: note._id })
+    Note.remove({ nid: note._id })
     .$promise
     .then(function () {
       _.remove($scope.notes, { _id: note._id });

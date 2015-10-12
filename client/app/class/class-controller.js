@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('ClassCtrl', function ($scope, $http, $stateParams, $state, ClassAPI, Auth, $filter, GoogleConst, GApi, $q, $mdToast, $document) {
+.controller('ClassCtrl', function ($scope, $http, $stateParams, $state, Class, Auth, $filter, GoogleConst, GApi, $q, $mdToast, $document) {
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.playlistId = $stateParams.pid;
   $scope.httpBusy = true;
@@ -19,7 +19,7 @@ angular.module('learntubeApp')
 
     $scope.showSimpleToast();
 
-    ClassAPI.create({
+    Class.create({
       playlistId: $scope.playlistId
     })
     .$promise

@@ -1,15 +1,15 @@
 'use strict';
 
 angular.module('learntubeApp')
-.factory('ClassAPI', function (Auth, $resource) {
-  return $resource('/api/users/:id/classes/:cid', {
+.factory('Note', function (Auth, $resource) {
+  return $resource('/api/users/:id/notes/:nid/:controller', {
     id: '@id',
-    cid: '@cid',
+    nid: '@nid',
   }, {
     query: {
       method: 'GET',
-      isArray: true,
-      params: { id: Auth.getCurrentUser()._id }
+      params: { id: Auth.getCurrentUser()._id },
+      isArray: true
     },
     get: {
       method: 'GET',
@@ -26,6 +26,13 @@ angular.module('learntubeApp')
     update: {
       method: 'PUT',
       params: { id: Auth.getCurrentUser()._id }
+    },
+    getContents: {
+      method: 'GET',
+      params: {
+        id: Auth.getCurrentUser()._id,
+        controller: 'get-contents'
+      },
     },
   });
 });

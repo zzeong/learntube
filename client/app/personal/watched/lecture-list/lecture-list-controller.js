@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('WatchedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, ClassAPI, $filter, NoteAPI, GApi, GoogleConst, $q) {
+.controller('WatchedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, Class, $filter, Note, GApi, GoogleConst, $q) {
   $scope.playlistId = $stateParams.pid;
 
   $scope.loadMore = function (token) {
@@ -124,7 +124,7 @@ angular.module('learntubeApp')
     }
 
     // DB에서 시청한 동영상 목록 가져오기 (seenLectures)
-    ClassAPI.query({ playlistId: $scope.playlistId })
+    Class.query({ playlistId: $scope.playlistId })
     .$promise
     .then(function (response) {
       $scope.watchedLectures = response[0].lectures;
@@ -134,7 +134,7 @@ angular.module('learntubeApp')
     .catch(console.error);
 
     // DB에서 필기 목록 가져오기 (Note)
-    NoteAPI.query({ playlistId: $scope.playlistId })
+    Note.query({ playlistId: $scope.playlistId })
     .$promise
     .then(function (response) {
       $scope.haveNoteLectures = response;
@@ -146,7 +146,7 @@ angular.module('learntubeApp')
       $scope.selectedLecture = lecture;
       if (_.has(lecture, 'notes')) { return; }
 
-      NoteAPI.query({
+      Note.query({
         videoId: lecture.snippet.resourceId.videoId
       })
       .$promise
