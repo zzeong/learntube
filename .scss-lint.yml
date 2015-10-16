@@ -1,0 +1,12 @@
+scss_files: 'client/assets/stylesheets/**/*.scss'
+
+linters:
+  LeadingZero:
+    style: include_zero
+  HexLength:
+    style: long
+  PropertySortOrder:
+    order: smacss
+  IdSelector:
+    enabled: false
+
