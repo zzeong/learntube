@@ -1,0 +1,41 @@
+@charset 'UTF-8';
+
+// vendors from bower_components
+// this must be set MANUALLY
+@import 'normalize-scss/normalize';
+@import 'angular-material/angular-material';
+
+//      utils: configuration and helpers
+//       base: base stuff
+//     layout: layout-related sections
+// components: components
+//      pages: page-specific styles
+
+// injector
+@import 'utils/variables';
+@import 'utils/mixins';
+@import 'utils/functions';
+@import 'base/typography';
+@import 'base/base';
+@import 'base/helpers';
+@import 'base/fonts';
+@import 'layout/toolbar';
+@import 'layout/footer';
+@import 'layout/sidenav';
+@import 'layout/visualization';
+@import 'components/dialog';
+@import 'components/note';
+@import 'components/cards';
+@import 'components/thumbnails';
+@import 'components/bars';
+@import 'components/list';
+@import 'components/buttons';
+@import 'pages/home';
+@import 'pages/lecture';
+@import 'pages/search';
+@import 'pages/uploaded-lecture-list';
+@import 'pages/watched-lecture-list';
+@import 'pages/class';
+@import 'pages/add-lecture-tmpl';
+@import 'pages/app';
+// endinjector

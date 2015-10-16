@@ -71,7 +71,8 @@ angular.module('learntubeApp')
           .call(xAxis)
           .selectAll('text')
           .attr('dx', '-0.5em')
-          .attr('transform', 'rotate(-45)');
+          .attr('transform', 'rotate(-45)')
+          .style('text-anchor', 'end');
 
           chart.append('g')
           .attr('class', 'y axis')

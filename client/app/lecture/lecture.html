@@ -1,5 +1,5 @@
-<div ng-include="'components/sidenav/sidenav.html'"></div>
-<div ng-include="'components/toolbar/toolbar.html'"></div>
+<div id="sidenav" ng-include="'components/sidenav/sidenav.html'"></div>
+<div id="header" ng-include="'components/toolbar/toolbar.html'"></div>
 
 <md-content>
 
@@ -37,7 +37,7 @@
           <span class="md-body-1">{{ publishedDate }}</span>
           <br>
 
-          <div class="detailsFooter" layout="row" layout-wrap>
+          <div class="details-footer" layout="row" layout-wrap>
             <div flex="700">
               <span>
                 <md-icon md-font-set="material-icons">thumb_up</md-icon>
@@ -113,7 +113,7 @@
         <div class="md-padding" ng-repeat="note in notes">
           <div ng-hide="note.isEditing">
             <div class="note-item">
-              <img class="avatar" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image">
+              <img class="avatar account-thumb" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image">
               <div class="userinfo">
                 <p class="md-subhead">{{ getCurrentUser().name }}</p>
               </div>
@@ -149,7 +149,7 @@
       <div class="others-notes-cont">
         <div class="md-padding" ng-repeat="note in othersNotes">
           <div class="note-item">
-            <img class="avatar" ng-src="{{ note.userId.google.image.url }}" alt="Account Image">
+            <img class="avatar account-thumb" ng-src="{{ note.userId.google.image.url }}" alt="Account Image">
             <div class="userinfo">
               <p class="md-subhead">{{ note.userId.name }}</p>
             </div>

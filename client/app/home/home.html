@@ -1,10 +1,10 @@
-<div ng-include="'components/sidenav/sidenav.html'"></div>
-<div ng-include="'components/toolbar/toolbar.html'"></div>
+<div id="sidenav" ng-include="'components/sidenav/sidenav.html'"></div>
+<div id="header" ng-include="'components/toolbar/toolbar.html'"></div>
 
 <md-content>
-  <div id="intro" layout="column" layout-align="center center">
+  <div class="intro" layout="column" layout-align="center center">
 
-    <h2 id="slogan" class="md-display-2"><strong>All you need is knowledge</strong></h2>
+    <h2 class="slogan" class="md-headline"><strong>All you need is knowledge</strong></h2>
 
     <form ng-submit="go('Search', { q: q })">
       <div class="main-search-cont">
@@ -34,5 +34,5 @@
 
 </md-content>
 
-<footer hide-sm></footer>
+<footer id="footer" hide-sm></footer>
 

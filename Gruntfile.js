@@ -5,8 +5,7 @@ module.exports = function (grunt) {
   var localConfig;
   try {
     localConfig = require('./server/config/local.env');
-  } catch (e) {
-    localConfig = {};
+  } catch (e) { localConfig = {};
   }
 
   // Load grunt tasks automatically, when needed
@@ -91,11 +90,11 @@ module.exports = function (grunt) {
         tasks: ['karma:debug']
       },
       injectSass: {
-        files: ['<%= yeoman.client %>/{app,components}/**/*.{scss,sass}'],
+        files: ['<%= yeoman.client %>/assets/stylesheets/**/*.scss'],
         tasks: ['injector:sass']
       },
       sass: {
-        files: ['<%= yeoman.client %>/{app,components}/**/*.{scss,sass}'],
+        files: ['<%= yeoman.client %>/assets/stylesheets/**/*.scss'],
         tasks: ['sass', 'autoprefixer']
       },
       babel: {
@@ -110,8 +109,8 @@ module.exports = function (grunt) {
       },
       livereload: {
         files: [
-          '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.css',
           '{.tmp,<%= yeoman.client %>}/{app,components}/**/*.html',
+          '{.tmp,<%= yeoman.client %>}/assets/stylesheets/main.css',
 
           '<%= yeoman.client %>/index.html',
 
@@ -243,7 +242,7 @@ module.exports = function (grunt) {
       target: {
         src: '<%= yeoman.client %>/index.html',
         ignorePath: '<%= yeoman.client %>/',
-        exclude: [/bootstrap-sass-official/, /bootstrap.js/, '/json3/', '/es5-shim/', /bootstrap.css/, /font-awesome.css/],
+        exclude: ['/json3/', '/es5-shim/', /font-awesome.css/, /angular-material.css/],
         fileTypes: {
           html: {
             replace: {
@@ -557,13 +556,12 @@ module.exports = function (grunt) {
         options: {
           loadPath: [
             '<%= yeoman.client %>/bower_components',
-            '<%= yeoman.client %>/app',
-            '<%= yeoman.client %>/components'
+            '<%= yeoman.client %>/assets/stylesheets'
           ],
           compass: false
         },
         files: {
-          '.tmp/app/app.css': '<%= yeoman.client %>/app/app.scss'
+          '.tmp/assets/stylesheets/main.css': '<%= yeoman.client %>/assets/stylesheets/main.scss'
         }
       }
     },
@@ -595,18 +593,32 @@ module.exports = function (grunt) {
       // Inject component scss into app.scss
       sass: {
         options: {
+          sort: function (a, b) {
+            var sortBy = ['/utils/', '/base/', '/layout/', '/components/', '/pages/'];
+            var ai, bi;
+            ai = bi = -1;
+
+            sortBy.forEach(function (e, i) {
+              if (a.indexOf(e) > -1) { ai = i; }
+              if (b.indexOf(e) > -1) { bi = i; }
+            });
+
+            if (ai > bi) { return 1; }
+            if (ai < bi) { return -1; }
+            return 0;
+          },
           transform: function (filePath) {
-            filePath = filePath.replace('/client/app/', '');
-            filePath = filePath.replace('/client/components/', '');
+            filePath = filePath.replace('/client/assets/stylesheets/', '');
+            filePath = filePath.replace(/_|\.scss/g, '');
             return '@import \'' + filePath + '\';';
           },
           starttag: '// injector',
           endtag: '// endinjector'
         },
         files: {
-          '<%= yeoman.client %>/app/app.scss': [
-            '<%= yeoman.client %>/{app,components}/**/*.{scss,sass}',
-            '!<%= yeoman.client %>/app/app.{scss,sass}'
+          '<%= yeoman.client %>/assets/stylesheets/main.scss': [
+            '<%= yeoman.client %>/assets/stylesheets/**/*.scss',
+            '!<%= yeoman.client %>/assets/stylesheets/main.scss'
           ]
         }
       },
