@@ -7,6 +7,12 @@
 // Set default node environment to development
 process.env.NODE_ENV = process.env.NODE_ENV || 'development';
 
+// Inject environment variables to process.env at production
+if (process.env.NODE_ENV === 'production') {
+  var envInjector = require('node-env-injector');
+  envInjector.load(require('./config/local.env.js'));
+}
+
 var express = require('express');
 var mongoose = require('mongoose');
 var config = require('./config/environment');
