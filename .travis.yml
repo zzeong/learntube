@@ -3,7 +3,7 @@ node_js:
 - '0.12'
 before_script:
 - echo -e "Host *\n\tStrictHostKeyChecking no\n" >> ~/.ssh/config
-- git config --global user.email "ligeek49@gmail.com"
+- git config --global user.email "jkiimm9@gmail.com"
 - git config --global user.name "Jinyoung Kim (via TravisCI)"
 - npm install -g bower grunt-cli
 - gem install sass
