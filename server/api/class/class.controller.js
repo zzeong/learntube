@@ -1,6 +1,6 @@
 'use strict';
 
-var Rating = require('../rating/rating.model.js');
+var Rating = require('../../models/rating.model');
 
 exports.getTops = function (req, res) {
   if (!req.query.num) { return res.status(500).send('No required params'); }

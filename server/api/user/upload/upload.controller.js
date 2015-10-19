@@ -1,8 +1,8 @@
 'use strict';
 
 var _ = require('lodash');
-var User = require('../user.model');
-var Upload = require('./upload.model');
+var User = require('../../../models/user.model');
+var Upload = require('../../../models/upload.model');
 var mongoose = require('mongoose');
 
 mongoose.Promise = require('promise');

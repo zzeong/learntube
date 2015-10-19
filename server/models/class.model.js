@@ -3,7 +3,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var LectureSchema = require('./lecture/lecture.model');
 var ClassSchema = new Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
@@ -11,7 +10,10 @@ var ClassSchema = new Schema({
   },
   playlistId: String,
   addedAt: { type: Date, default: Date.now },
-  lectures: [LectureSchema]
+  lectures: [{
+    videoId: String,
+    completedAt: { type: Date, default: Date.now },
+  }]
 });
 
 module.exports = mongoose.model('Class', ClassSchema);

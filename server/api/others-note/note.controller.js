@@ -1,6 +1,6 @@
 'use strict';
 
-var Note = require('../user/note/note.model');
+var Note = require('../../models/note.model');
 var knox = require('knox');
 var config = require('../../config/environment');
 var Promise = require('promise');

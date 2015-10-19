@@ -13,9 +13,9 @@ var _ = require('lodash');
 var url = require('url');
 var crypto = require('crypto');
 var knox = require('knox');
-var User = require('../user.model');
-var Note = require('./note.model');
-var Rating = require('../../rating/rating.model');
+var User = require('../../../models/user.model');
+var Note = require('../../../models/note.model');
+var Rating = require('../../../models/rating.model');
 var Promise = require('promise');
 var config = require('../../../config/environment');
 

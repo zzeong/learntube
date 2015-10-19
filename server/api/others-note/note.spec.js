@@ -6,8 +6,8 @@ var knox  = require('knox');
 var request = require('supertest');
 var mongoose = require('mongoose');
 var url = require('url');
-var User = require('../user/user.model');
-var Note = require('../user/note/note.model');
+var User = require('../../models/user.model');
+var Note = require('../../models/note.model');
 var config = require('../../config/environment');
 var app = require('../../app');
 

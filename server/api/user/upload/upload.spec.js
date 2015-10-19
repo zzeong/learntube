@@ -4,8 +4,8 @@ var should = require('should');
 var app = require('../../../app');
 var request = require('supertest');
 var mongoose = require('mongoose');
-var User = require('../user.model');
-var Upload = require('./upload.model');
+var User = require('../../../models/user.model');
+var Upload = require('../../../models/upload.model');
 
 mongoose.Promise = require('promise');
 

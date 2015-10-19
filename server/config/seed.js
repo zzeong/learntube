@@ -6,11 +6,11 @@
 'use strict';
 
 var _ = require('lodash');
-var User = require('../api/user/user.model');
-var Note = require('../api/user/note/note.model');
-var Upload = require('../api/user/upload/upload.model');
-var Class = require('../api/user/class/class.model');
-var Rating = require('../api/rating/rating.model');
+var User = require('../models/user.model');
+var Note = require('../models/note.model');
+var Upload = require('../models/upload.model');
+var Class = require('../models/class.model');
+var Rating = require('../models/rating.model');
 var mongoose = require('mongoose');
 var Promise = mongoose.Promise = require('promise');
 var aws = require('aws-sdk');

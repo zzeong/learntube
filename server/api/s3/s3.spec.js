@@ -3,7 +3,7 @@
 var should = require('should');
 var app = require('../../app');
 var request = require('supertest');
-var User = require('../user/user.model');
+var User = require('../../models/user.model');
 var auth = require('../../auth/auth.service');
 
 describe('REST API:', function () {

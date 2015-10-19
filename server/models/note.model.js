@@ -3,7 +3,6 @@
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-// 스키마 생성
 var NoteSchema = new Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,

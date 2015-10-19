@@ -3,8 +3,8 @@
 var _ = require('lodash');
 var should = require('should');
 var request = require('supertest');
-var Rating = require('../rating/rating.model.js');
-var app = require('../../app');
+var Rating = require('../../models/rating.model');
+var app = require('../../app.js');
 
 describe('REST API:', function () {
   before(function (done) {

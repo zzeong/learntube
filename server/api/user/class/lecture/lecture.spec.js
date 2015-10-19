@@ -4,9 +4,7 @@ var should = require('should');
 var app = require('../../../../app');
 var request = require('supertest');
 var mongoose = require('mongoose');
-var User = require('../../user.model');
-var Class = require('../class.model');
-var Lecture = require('./lecture.model');
+var Class = require('../../../../models/class.model');
 
 var userData = {
   name: 'Fake User',

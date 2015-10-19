@@ -10,8 +10,8 @@
 'use strict';
 
 var _ = require('lodash');
-var User = require('../user.model');
-var Class = require('./class.model');
+var User = require('../../../models/user.model');
+var Class = require('../../../models/class.model');
 
 
 // Get list of classes

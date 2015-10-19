@@ -3,7 +3,7 @@
 var express = require('express');
 var passport = require('passport');
 var config = require('../config/environment');
-var User = require('../api/user/user.model');
+var User = require('../models/user.model');
 
 // Passport Configuration
 require('./google/passport').setup(User, config);
