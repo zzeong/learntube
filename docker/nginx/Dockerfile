@@ -12,11 +12,14 @@ MAINTAINER Anand Mani Sankar
 # Update the repository
 RUN apt-get update
 
+# Set the env variable DEBIAN_FRONTEND to noninteractive
+ENV DEBIAN_FRONTEND noninteractive
+
 # Install necessary tools
 RUN apt-get install -y wget dialog net-tools
 
 # Download and Install Nginx
-RUN apt-get install -y nginx  
+RUN apt-get install -y nginx
 
 # Remove the default Nginx configuration file
 RUN rm -v /etc/nginx/nginx.conf

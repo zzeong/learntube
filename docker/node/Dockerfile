@@ -4,6 +4,9 @@ FROM    ubuntu
 # File Author / Maintainer
 MAINTAINER Anand Mani Sankar
 
+# Set the env variable DEBIAN_FRONTEND to noninteractive
+ENV DEBIAN_FRONTEND noninteractive
+
 # Install Node.js and other dependencies
 RUN apt-get update && \
     apt-get -y install curl git && \
