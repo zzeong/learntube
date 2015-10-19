@@ -30,6 +30,13 @@ var createRandomHash = function () {
   return crypto.createHash('md5').update(id).digest('hex');
 };
 
+var handleError = function (res, statusCode) {
+  statusCode = statusCode || 500;
+  return function (err) {
+    res.status(statusCode).send(err);
+  };
+};
+
 
 exports.index = function (req, res) {
   var data = _.assign(req.query, { userId: req.params.id });
@@ -71,16 +78,21 @@ exports.create = function (req, res) {
       note.save(function (error) {
         if (error) { return res.status(500).send(error); }
 
-        Rating.findOrCreate({
-          playlistId: note.playlistId
-        }, function (error, rating) {
-          if (error) { return res.status(500).send(error); }
+        var query = { playlistId: note.playlistId };
+        Rating.findOneAndUpdate(query, {
+          $setOnInsert: query
+        }, {
+          new: true,
+          upsert: true
+        })
+        .exec()
+        .then(function (rating) {
           rating.update({ $inc: { points: 1 }}, function (error) {
             if (error) { return res.status(500).send(error); }
             return res.status(201).json(note);
           });
-        });
-
+        })
+        .catch(handleError(res));
       });
     });
   });
