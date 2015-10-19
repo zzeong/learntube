@@ -43,7 +43,7 @@ module.exports = function (grunt) {
       },
       prod: {
         options: {
-          script: 'dist/server/app.js'
+          script: 'dist/node/server/app.js'
         }
       }
     },
@@ -174,14 +174,11 @@ module.exports = function (grunt) {
           dot: true,
           src: [
             '.tmp',
-            '<%= yeoman.dist %>/*',
-            '!<%= yeoman.dist %>/.git*',
-            '!<%= yeoman.dist %>/.openshift',
-            '!<%= yeoman.dist %>/Procfile'
+            '<%= yeoman.dist %>/node/**/*',
+            '!<%= yeoman.dist %>/node/Dockerfile'
           ]
         }]
       },
-      docker_node: ['docker/node/**/*', '!docker/node/Dockerfile'],
       server: '.tmp'
     },
 
@@ -275,10 +272,10 @@ module.exports = function (grunt) {
       dist: {
         files: {
           src: [
-            '<%= yeoman.dist %>/public/{,*/}*.js',
-            '<%= yeoman.dist %>/public/{,*/}*.css',
-            '<%= yeoman.dist %>/public/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= yeoman.dist %>/public/assets/fonts/*'
+            '<%= yeoman.dist %>/node/public/{,*/}*.js',
+            '<%= yeoman.dist %>/node/public/{,*/}*.css',
+            '<%= yeoman.dist %>/node/public/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+            '<%= yeoman.dist %>/node/public/assets/fonts/*'
           ]
         }
       }
@@ -290,19 +287,19 @@ module.exports = function (grunt) {
     useminPrepare: {
       html: ['<%= yeoman.client %>/index.html'],
       options: {
-        dest: '<%= yeoman.dist %>/public'
+        dest: '<%= yeoman.dist %>/node/public'
       }
     },
 
     // Performs rewrites based on rev and the useminPrepare configuration
     usemin: {
-      html: ['<%= yeoman.dist %>/public/{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/public/{,*/}*.css'],
-      js: ['<%= yeoman.dist %>/public/{,*/}*.js'],
+      html: ['<%= yeoman.dist %>/node/public/{,*/}*.html'],
+      css: ['<%= yeoman.dist %>/node/public/{,*/}*.css'],
+      js: ['<%= yeoman.dist %>/node/public/{,*/}*.js'],
       options: {
         assetsDirs: [
-          '<%= yeoman.dist %>/public',
-          '<%= yeoman.dist %>/public/assets/images'
+          '<%= yeoman.dist %>/node/public',
+          '<%= yeoman.dist %>/node/public/assets/images'
         ],
         // This is so we update image references in our ng-templates
         patterns: {
@@ -320,7 +317,7 @@ module.exports = function (grunt) {
           expand: true,
           cwd: '<%= yeoman.client %>/assets/images',
           src: '{,*/}*.{png,jpg,jpeg,gif}',
-          dest: '<%= yeoman.dist %>/public/assets/images'
+          dest: '<%= yeoman.dist %>/node/public/assets/images'
         }]
       }
     },
@@ -380,7 +377,7 @@ module.exports = function (grunt) {
     // Replace Google CDN references
     cdnify: {
       dist: {
-        html: ['<%= yeoman.dist %>/public/*.html']
+        html: ['<%= yeoman.dist %>/node/public/*.html']
       }
     },
 
@@ -391,7 +388,7 @@ module.exports = function (grunt) {
           expand: true,
           dot: true,
           cwd: '<%= yeoman.client %>',
-          dest: '<%= yeoman.dist %>/public',
+          dest: '<%= yeoman.dist %>/node/public',
           src: [
             '*.{ico,png,txt}',
             '.htaccess',
@@ -403,24 +400,22 @@ module.exports = function (grunt) {
         }, {
           expand: true,
           cwd: '.tmp/images',
-          dest: '<%= yeoman.dist %>/public/assets/images',
+          dest: '<%= yeoman.dist %>/node/public/assets/images',
           src: ['generated/*']
         }, {
           expand: true,
-          dest: '<%= yeoman.dist %>',
+          dest: '<%= yeoman.dist %>/node',
           src: [
             'package.json',
             'server/**/*'
           ]
         }]
       },
-      docker_node: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.dist %>',
-          dest: 'docker/node',
-          src: ['**']
-        }],
+      docker: {
+        expand: true,
+        cwd: 'docker',
+        dest: '<%= yeoman.dist %>',
+        src: '**',
       },
       styles: {
         expand: true,
@@ -432,7 +427,7 @@ module.exports = function (grunt) {
 
     buildcontrol: {
       options: {
-        dir: 'docker',
+        dir: 'dist',
         commit: true,
         push: true,
         connectCommits: false,
@@ -828,6 +823,7 @@ module.exports = function (grunt) {
     'ngtemplates',
     'concat',
     'ngAnnotate',
+    'copy:docker',
     'copy:dist',
     'cdnify',
     'cssmin',
@@ -838,8 +834,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('deploy', [
     'build',
-    'clean:docker_node',
-    'copy:docker_node',
     'buildcontrol:aws'
   ]);
 
