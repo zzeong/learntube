@@ -505,7 +505,7 @@ module.exports = function (grunt) {
           reporter: 'spec',
           timeout: 15000,
         },
-        src: ['server/**/*_test.js'],
+        src: ['server/**/*.spec.js'],
       },
     },
 
