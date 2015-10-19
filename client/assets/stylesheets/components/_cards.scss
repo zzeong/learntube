@@ -1,0 +1,98 @@
+.watched-class-card {
+  @include respond-to('small') {
+    $card-width: 338px;
+    display: inline-flex;
+    width: $card-width;
+  }
+
+  .card-image-cont {
+    position: relative;
+    width: 100%;
+  }
+
+  .content-position {
+    position: absolute;
+    top: 50%;
+    left: 15%;
+    width: 68%;
+    height: 50%;
+    margin: -60px auto 0;
+  }
+
+  .cursor-pointer {
+    cursor: pointer;
+  }
+
+  .overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 98%;
+    background-color: $trans-black;
+    color: $text-color-alt;
+  }
+
+  .margin-zero-graph {
+    margin-top: 0;
+    margin-bottom: 0;
+  }
+
+  .texts-media {
+    position: absolute;
+    top: 75px;
+    width: 100%;
+  }
+
+  .float-left {
+    float: left;
+  }
+
+  .float-right {
+    float: right;
+  }
+
+  .graph-info {
+    $color: rgba(0, 0, 0, 0.8);
+    position: absolute;
+    background: $color;
+  }
+
+  .progress-text {
+    position: absolute;
+    top: 10px;
+  }
+
+
+  .progressbar-outline {
+    $color: rgba(255, 255, 255, 0.5);
+    position: absolute;
+    top: 50px;
+    width: 100%;
+    height: 20px;
+    border-radius: 5px;
+    background: $color;
+  }
+
+  .progressbar-inline {
+    $color: rgba(61, 183, 204, 1);
+    position: absolute;
+    top: 19%;
+    left: 1%;
+    border-radius: 5px;
+    background: $color;
+  }
+
+  .percentage-div {
+    padding-top: 2px;
+    padding-right: 5px;
+    float: right;
+    p { margin-top: 0; }
+  }
+
+  .texts {
+    position: absolute;
+    top: 80px;
+    width: 100%;
+  }
+}

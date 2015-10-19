@@ -1,0 +1,45 @@
+.content-width {
+  max-width: $content-max-width;
+  margin: 0 auto;
+}
+
+.content-background {
+  background-color: $white;
+}
+
+.content-inner {
+  width: $content-inner-width;
+  max-width: 100%;
+  margin: 0 auto;
+}
+
+.avatar {
+  margin: 10px 15px 10px 0;
+  float: left;
+}
+
+.lecture-thumb {
+  $w: 120px;
+  width: $w;
+  height: $w * 0.75;
+  margin-top: 8px;
+  margin-right: 16px;
+  margin-bottom: 8px;
+}
+
+.fab-fix {
+  $offset: 24px;
+  position: fixed;
+  right: $offset;
+  bottom: $offset;
+}
+
+.dialog-width {
+  width: $dialog-width;
+}
+
+
+.login-btn {
+  padding: 0 15px;
+}
+

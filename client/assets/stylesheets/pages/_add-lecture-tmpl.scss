@@ -1,0 +1,24 @@
+.add-lecture-tmpl {
+  .search-box {
+    max-width: 250px;
+    padding: 0 16px;
+  }
+
+  md-tabs {
+    height: 400px;
+  }
+
+  .lecture-thumb {
+    $w: 90px;
+    width: $w;
+    height: $w * 0.75;
+    margin-top: 4px;
+    margin-right: 8px;
+    margin-bottom: 4px;
+  }
+
+  .selected {
+    $color: #e0e0e0;
+    background-color: $color;
+  }
+}

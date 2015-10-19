@@ -1,0 +1,22 @@
+d3-bars {
+  .bar {
+    $color: #ffd740;
+    fill: $color;
+  }
+
+  .axis text {
+    font: 10px sans-serif;
+  }
+
+  .axis path,
+  .axis line {
+    fill: none;
+    shape-rendering: crispEdges;
+    stroke: $text-svg-color;
+  }
+
+  .x.axis {
+    path { display: none; }
+    text { text-anchor: end; }
+  }
+}

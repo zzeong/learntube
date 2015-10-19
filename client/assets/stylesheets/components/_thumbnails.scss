@@ -1,0 +1,13 @@
+.account-thumb {
+  width: $account-thumb-size;
+  height: $account-thumb-size;
+  border-radius: 50%;
+}
+
+md-sidenav {
+  .account-thumb {
+    $s: 64px;
+    width: $s;
+    height: $s;
+  }
+}

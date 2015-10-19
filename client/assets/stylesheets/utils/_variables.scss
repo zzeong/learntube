@@ -1,0 +1,48 @@
+// -----------------------------------------------------------------------------
+// This file contains all application-wide Sass variables.
+// -----------------------------------------------------------------------------
+
+$white: #ffffff;
+$black: #000000;
+$grey: #808080;
+
+$text-opacity: 0.87;
+$text-color: rgba(0, 0, 0, $text-opacity);
+$text-color-alt: rgba(255, 255, 255, $text-opacity);
+$text-svg-color: #000000;
+$text-svg-color-alt: #ffffff;
+
+$main-bg-color: #eceff1;
+$highlight-color: #ffe57f;
+$youtube-color: #e62117;
+$youtube-color-action: #cc181e;
+
+$trans-black: rgba(0, 0, 0, 0.7);
+$trans-white: rgba(255, 255, 255, 0.7);
+
+
+// Container's maximum width
+// Below that is 100%
+$content-max-width: 1080px !default;
+
+
+// Breakpoints map
+$breakpoints: (
+  'small': (min-width: 600px),
+  'medium': (min-width: 900px),
+) !default;
+
+
+// Relative or absolute URL where all assets are served from
+$base-url: '/assets/' !default;
+
+
+$md-border-radius: 4px;
+$account-thumb-size: 40px;
+
+$content-padding: 70px;
+$content-inner-width: $content-max-width - ($content-padding * 2);
+$dialog-width: 600px;
+
+$panel-offset: 10px;
+

@@ -1,0 +1,29 @@
+md-sidenav,
+md-backdrop {
+  position: fixed;
+}
+
+.sidenav-account-area {
+  position: relative;
+  height: 172px;
+  background: image('sidenav_drawer_background.jpg');
+
+  img {
+    margin-top: 40px;
+    margin-left: 16px;
+  }
+
+  .image-cont {
+    margin-bottom: 10px;
+  }
+
+  .account-cont {
+    position: absolute;
+    bottom: 0;
+    padding-bottom: 8px;
+    padding-left: 8px;
+
+    .inner-left-padding { padding-left: 8px; }
+    p { margin: 0; }
+  }
+}

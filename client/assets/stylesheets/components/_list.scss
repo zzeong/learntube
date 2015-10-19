@@ -1,0 +1,17 @@
+md-list {
+  &.lecture-list-numbering {
+    counter-reset: h3counter;
+
+    h3:before {
+      content: counter(h3counter) '.\0000a0';
+      counter-increment: h3counter;
+    }
+  }
+}
+
+md-list-item {
+  .md-list-item-text > .second-icon-padding {
+    $md-icon-wrapper-size: 48px;
+    padding-right: $md-icon-wrapper-size;
+  }
+}

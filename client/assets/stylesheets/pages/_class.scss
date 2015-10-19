@@ -1,0 +1,230 @@
+.float {
+  float: left;
+}
+
+.background {
+  background-color: $white;
+}
+
+.thumbnail-radius {
+  border-radius: 45px;
+}
+
+.color-grey {
+  color: $grey;
+}
+
+.class-title {
+  margin-top: 0;
+  margin-bottom: 15px;
+  padding-top: 15px;
+  padding-left: 10px;
+}
+
+.channel-title {
+  padding-top: 3px;
+}
+
+.extra-info {
+  height: 25px;
+  padding-left: 5px;
+}
+
+.add-web {
+  padding-bottom: 10px;
+}
+
+.tutor-desc {
+  padding-bottom: 10px;
+}
+
+
+.introduce {
+  padding: 0 10px;
+}
+
+.margin-zero {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.cursor-pointer {
+  cursor: pointer;
+}
+
+.teacher-icon {
+  float: left;
+}
+
+.font-light-300 {
+  font-weight: 300;
+}
+
+.font-light-400 {
+  font-weight: 400;
+}
+
+
+p {
+  a {
+    outline: none;
+    cursor: pointer;
+  }
+}
+
+.ellipsis {
+  $lines: 2;
+  $line-multiple: 1.3;
+  $font-size: 1em;
+
+  display: block; // for non-webkit
+  display: -webkit-box;
+  max-height: $font-size * $line-multiple * $lines; // for non-webkit
+  line-height: $font-size * $line-multiple;
+  text-overflow: ellipsis;
+  overflow: hidden;
+  word-wrap: break-word;
+  -webkit-line-clamp: $lines;
+  -webkit-box-orient: vertical;
+}
+
+
+.middle {
+  @include respond-to('medium') {
+    margin-top: 0;
+    padding-top: 18px;
+    padding-left: 14px;
+  }
+
+  h3 { margin: 15px 0 10px; }
+}
+
+.add-media {
+  @include respond-to('medium') {
+    margin-top: -60px;
+    margin-right: 10px;
+  }
+}
+
+.extra-media {
+  @include respond-to('medium') {
+    padding-top: 5px;
+  }
+}
+
+.head-contents {
+  @include respond-to('medium') {
+    height: 400px;
+    padding-top: 10px;
+    padding-left: 10px;
+    background-color: $white;
+  }
+}
+
+.ng-binding {
+  @include respond-to('medium') {
+    margin-top: 0;
+  }
+}
+
+.first-lecture {
+  @include respond-to('medium') {
+    width: 660px;
+    height: 390px;
+    margin: 0 auto;
+  }
+}
+
+.test {
+  @include respond-to('medium') {
+    float: left;
+  }
+}
+
+.class-intro {
+  @include respond-to('medium') {
+    height: 390px;
+    margin-left: 660px;
+    background-color: $white;
+  }
+}
+
+.tutor-intro {
+  @include respond-to('medium') {
+    width: 420px;
+    float: right;
+  }
+}
+
+.thumb-and-title {
+  @include respond-to('medium') {
+    height: 500px;
+    margin-top: 20px;
+    margin-right: 15px;
+    margin-left: 30px;
+  }
+}
+
+.thumbnail {
+  @include respond-to('medium') {
+    padding-right: 20px;
+    float: left;
+  }
+}
+
+.lecturelist {
+  @include respond-to('medium') {
+    width: 660px;
+  }
+}
+
+.minibox {
+  @include respond-to('medium') {
+    width: 150px;
+  }
+}
+
+.channel-info {
+  @include respond-to('medium') {
+    padding-top: 20px;
+    padding-bottom: 35px;
+    h4 { text-transform: uppercase; }
+  }
+}
+
+.hide-in-web {
+  @include respond-to('medium') {
+    display: none;
+  }
+}
+
+.padding {
+  padding-top: 10px;
+  padding-left: 10px;
+
+  @include respond-to('medium') {
+    padding-top: 0;
+    padding-left: 0;
+  }
+}
+
+.thumbnail-mobile {
+  float: left;
+
+  @include respond-to('medium') {
+    float: none;
+  }
+}
+
+.ch-info-mobile {
+  padding-top: 20px;
+  padding-bottom: 35px;
+  padding-left: 100px;
+
+  @include respond-to('medium') {
+    padding-top: 0;
+    padding-bottom: 0;
+    padding-left: 0;
+  }
+}
+
