@@ -41,7 +41,7 @@ angular.module('learntubeApp', [
   };
 })
 
-.factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location) {
+.factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location, $window) {
   return {
     // Add authorization token to headers
     request: function (config) {
@@ -52,13 +52,19 @@ angular.module('learntubeApp', [
       }
       return config;
     },
-
+    response: function (res) {
+      if (/^\/api/.test(res.config.url) && res.headers('Authorization')) {
+        $cookieStore.put('token', res.headers('Authorization'));
+      }
+      return res;
+    },
     // Intercept 401s and redirect you to login
     responseError: function (response) {
       if (response.status === 401) {
-        $location.path('/login');
+        $location.path('/');
         // remove any stale tokens
         $cookieStore.remove('token');
+        $window.location.reload();
         return $q.reject(response);
       } else {
         return $q.reject(response);

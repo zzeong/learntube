@@ -18,6 +18,13 @@ module.exports = function (app) {
 
   app.use('/auth', require('./auth'));
 
+  // Error handling
+  app.use(function (err, req, res, next) {
+    if (err.name === 'UnauthorizedError') {
+      return res.status(401).json({ message: 'expired token' });
+    }
+  });
+
   // All undefined asset or api routes should return a 404
   app.route('/:url(api|auth|components|app|bower_components|assets)/*')
    .get(errors[404]);

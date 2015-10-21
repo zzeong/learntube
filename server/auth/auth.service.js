@@ -23,6 +23,18 @@ function isAuthenticated() {
       }
       validateJwt(req, res, next);
     })
+    // refresh token when over 1 hour
+    .use(function (req, res, next) {
+      var REFRESH_EXPIRATION_SECONDS = 60 * 60;
+      var timegap = Math.floor(Date.now() / 1000) - req.user.iat;
+
+      if (timegap > REFRESH_EXPIRATION_SECONDS) {
+        var refreshedToken = signToken(req.user._id);
+        res.set('Authorization', 'Bearer ' + refreshedToken);
+      }
+
+      next();
+    })
     // Attach user to request
     .use(function (req, res, next) {
       User.findById(req.user._id, function (err, user) {
@@ -56,7 +68,7 @@ function hasRole(roleRequired) {
  * Returns a jwt token signed by the app secret
  */
 function signToken(id) {
-  return jwt.sign({ _id: id }, config.secrets.session, { expiresIn: '300m' });
+  return jwt.sign({ _id: id }, config.secrets.session, { expiresIn: '5h' });
 }
 
 /**
