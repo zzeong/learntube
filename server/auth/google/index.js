@@ -15,6 +15,8 @@ router
     'https://www.googleapis.com/auth/youtube',
     'https://www.googleapis.com/auth/youtube.upload'
   ],
+  accessType: 'offline',
+  approvalPrompt: (process.env.NODE_ENV === 'development' ? 'force' : 'auto'),
   session: false
 }))
 
