@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('LectureCtrl', function ($scope, $stateParams, $http, Auth, Note, GoogleConst, GApi, Upload) {
+.controller('LectureCtrl', function ($scope, $stateParams, $http, Auth, Note, GoogleConst, GApi, Upload, PlaylistItem) {
   $scope.videoId = $stateParams.vid;
   $scope.playlistId = $stateParams.pid;
   $scope.playerVars = {
@@ -31,6 +31,12 @@ angular.module('learntubeApp')
     $scope.item = res.items[0];
     $scope.publishedDate = ($scope.item.snippet.publishedAt).substring(0,10);
     $scope.item.snippet.description = compileToHTML($scope.item.snippet.description);
+  })
+  .catch(console.error);
+
+  PlaylistItem.get({ playlistId: $scope.playlistId }, true)
+  .then(function (list) {
+    $scope.lectureList = list;
   })
   .catch(console.error);
 

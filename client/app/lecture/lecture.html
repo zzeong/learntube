@@ -10,6 +10,21 @@
   </div>
 
   <div class="content-width content-background content-top-mt">
+    <!--
+    <md-list>
+      <md-list-item class="md-2-line" ng-repeat="lecture in lectureList" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
+        <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
+        alt="Lecture Thumbnail">
+
+        <div class="md-list-item-text">
+          <div class="lecture-info-cont">
+            <h3 class="lecture-title ellipsis">{{ lecture.snippet.title }}</h3>
+            <p>{{ lecture.contentDetails.duration | humanable }}</p>
+          </div>
+        </div>
+      </md-list-item>
+    </md-list>
+    -->
 
     <div class="video-info-panel md-padding">
       <div layout="row" layout-wrap>
