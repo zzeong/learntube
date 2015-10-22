@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('ClassCtrl', function ($scope, $http, $stateParams, $state, Class, Auth, $filter, GoogleConst, GApi, $q, $mdToast, $document) {
+.controller('ClassCtrl', function ($scope, $http, $stateParams, $state, Class, Auth, $filter, GoogleConst, GApi, $q, $mdToast, $document, PlaylistItem) {
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.playlistId = $stateParams.pid;
   $scope.httpBusy = true;
@@ -16,9 +16,7 @@ angular.module('learntubeApp')
   };
 
   $scope.addClass = function () {
-
     $scope.showSimpleToast();
-
     Class.create({
       playlistId: $scope.playlistId
     })
@@ -32,27 +30,13 @@ angular.module('learntubeApp')
   $scope.loadMore = function (token) {
     $scope.httpBusy = true;
 
-    GApi.execute('youtube', 'playlistItems.list', {
-      key: GoogleConst.browserKey,
-      part: 'snippet',
-      maxResults: 20,
-      playlistId: $scope.playlistId,
-      fields: 'items(contentDetails,snippet,status),nextPageToken',
-      pageToken: token
-    })
-    .then(function (res) {
-      $scope.pageToken = res.nextPageToken || null;
-      return applyDuration(res.items);
-    })
+    PlaylistItem.get({ playlistId: $scope.playlistId }, true)
     .then(function (list) {
       $scope.lectureList = $scope.lectureList.concat(list);
       $scope.httpBusy = false;
     })
     .catch(console.error);
   };
-
-
-
 
   // 재생목록에 대한 정보 받아오기 (title, channelTitle, description)
   GApi.execute('youtube', 'playlists.list', {
@@ -78,42 +62,7 @@ angular.module('learntubeApp')
   })
   .catch(console.error);
 
-
-  var applyDuration = function (list) {
-    var deferred = $q.defer();
-    var ids = list.map(function (item) {
-      return item.snippet.resourceId.videoId;
-    }).join(',');
-
-    GApi.execute('youtube', 'videos.list', {
-      key: GoogleConst.browserKey,
-      part: 'contentDetails',
-      id: ids,
-      fields: 'items(contentDetails(duration))',
-    })
-    .then(function (response) {
-      list.forEach(function (item, i) {
-        item.contentDetails = response.items[i].contentDetails;
-      });
-      deferred.resolve(list);
-    })
-    .catch(deferred.reject);
-
-    return deferred.promise;
-  };
-
-
-  GApi.execute('youtube', 'playlistItems.list', {
-    key: GoogleConst.browserKey,
-    part: 'snippet',
-    maxResults: 20,
-    playlistId: $scope.playlistId,
-    fields: 'items(contentDetails,snippet,status),nextPageToken',
-  })
-  .then(function (res) {
-    $scope.pageToken = res.nextPageToken || null;
-    return applyDuration(res.items);
-  })
+  PlaylistItem.get({ playlistId: $scope.playlistId }, true)
   .then(function (list) {
     $scope.lectureList = list;
     $scope.httpBusy = false;

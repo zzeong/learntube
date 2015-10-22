@@ -1,51 +1,18 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('WatchedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, Class, $filter, Note, GApi, GoogleConst, $q) {
+.controller('WatchedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, Class, $filter, Note, GApi, GoogleConst, $q, PlaylistItem) {
   $scope.playlistId = $stateParams.pid;
 
   $scope.loadMore = function (token) {
     $scope.httpBusy = true;
 
-    GApi.execute('youtube', 'playlistItems.list', {
-      key: GoogleConst.browserKey,
-      part: 'snippet',
-      maxResults: 20,
-      playlistId: $scope.playlistId,
-      fields: 'items(contentDetails,snippet,status),nextPageToken',
-      pageToken: token
-    })
-    .then(function (res) {
-      $scope.pageToken = res.nextPageToken || null;
-      return applyDuration(res.items);
-    })
+    PlaylistItem.get({ playlistId: $scope.playlistId }, true)
     .then(function (list) {
       $scope.lectureList = $scope.lectureList.concat(list);
       $scope.httpBusy = false;
     })
     .catch(console.error);
-  };
-
-  var applyDuration = function (list) {
-    var deferred = $q.defer();
-    var ids = list.map(function (item) {
-      return item.snippet.resourceId.videoId;
-    }).join(',');
-
-    GApi.execute('youtube', 'videos.list', {
-      key: GoogleConst.browserKey,
-      part: 'contentDetails',
-      id: ids,
-      fields: 'items(contentDetails(duration))',
-    })
-    .then(function (response) {
-      list.forEach(function (item, i) {
-        item.contentDetails = response.items[i].contentDetails;
-      });
-      deferred.resolve(list);
-    }, deferred.reject);
-
-    return deferred.promise;
   };
 
   var separateLecture = function (identity, specificLecture) {
@@ -102,17 +69,7 @@ angular.module('learntubeApp')
   if (!Auth.isLoggedIn()) { $state.go('Login'); }
 
   // 강의들을 가져오기 위한 api사용
-  GApi.execute('youtube', 'playlistItems.list', {
-    key: GoogleConst.browserKey,
-    part: 'snippet,status,contentDetails',
-    maxResults: 20,
-    playlistId: $scope.playlistId,
-    fields: 'items(contentDetails,snippet,status),nextPageToken',
-  })
-  .then(function (res) {
-    $scope.pageToken = res.nextPageToken || null;
-    return applyDuration(res.items);
-  })
+  PlaylistItem.get({ playlistId: $scope.playlistId }, true)
   .then(function (list) {
     $scope.lectureList = list;
     $scope.httpBusy = false;
@@ -159,8 +116,6 @@ angular.module('learntubeApp')
     $scope.isSelected = function (lecture) {
       return $scope.selectedLecture === lecture;
     };
-
-
-  });
-
+  })
+  .catch(console.error);
 });

@@ -54,7 +54,7 @@ angular.module('learntubeApp', [
     },
     response: function (res) {
       if (/^\/api/.test(res.config.url) && res.headers('Authorization')) {
-        $cookieStore.put('token', res.headers('Authorization'));
+        $cookieStore.put('token', res.headers('Authorization').replace('Bearer ', ''));
       }
       return res;
     },
