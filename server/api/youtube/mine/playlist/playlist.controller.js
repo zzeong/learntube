@@ -4,6 +4,9 @@ var _ = require('lodash');
 var g = require('../../../../components/google-api');
 var config = require('../../../../config/environment');
 
+var mongoose = require('mongoose');
+var Promise = mongoose.Promise = require('promise');
+
 
 /**
  * @apiDefine TokenAuth
@@ -56,11 +59,16 @@ exports.index = function (req, res) {
     if (response.nextPageToken) {
       resBody.pageToken = response.nextPageToken;
     }
+    if (req.user.google.accessToken !== g.oauth2Client.credentials.access_token) {
+      req.user.google.accessToken = g.oauth2Client.credentials.access_token;
+      return req.user.save()
+      .then(function () { res.status(200).json(resBody); })
+      .catch(res.status(500).send);
+    }
     return res.status(200).json(resBody);
   }, function (error) {
     return res.status(500).send(error);
   });
-
 };
 
 
@@ -109,6 +117,12 @@ exports.create = function (req, res) {
 
   g.youtube('playlists.insert', params)
   .then(function (item) {
+    if (req.user.google.accessToken !== g.oauth2Client.credentials.access_token) {
+      req.user.google.accessToken = g.oauth2Client.credentials.access_token;
+      return req.user.save()
+      .then(function () { res.status(201).json(item); })
+      .catch(res.status(500).send);
+    }
     return res.status(201).json(item);
   }, function (error) {
     return res.status(500).send(error);
@@ -146,6 +160,12 @@ exports.destroy = function (req, res) {
 
   g.youtube('playlists.delete', params)
   .then(function () {
+    if (req.user.google.accessToken !== g.oauth2Client.credentials.access_token) {
+      req.user.google.accessToken = g.oauth2Client.credentials.access_token;
+      return req.user.save()
+      .then(function () { res.status(204).send(); })
+      .catch(res.status(500).send);
+    }
     return res.status(204).send();
   }, function (error) {
     return res.status(500).send(error);

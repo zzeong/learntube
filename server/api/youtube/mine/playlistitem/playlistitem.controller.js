@@ -100,6 +100,12 @@ exports.index = function (req, res) {
           item.contentDetails = response.items[i].contentDetails;
           item.status = response.items[i].status;
         });
+        if (req.user.google.accessToken !== g.oauth2Client.credentials.access_token) {
+          req.user.google.accessToken = g.oauth2Client.credentials.access_token;
+          return req.user.save()
+          .then(function () { res.status(200).json(resBody); })
+          .catch(res.status(500).send);
+        }
         return res.status(200).json(resBody);
       }, function (error) {
         return res.status(500).send(error);
@@ -182,6 +188,12 @@ exports.create = function (req, res) {
       .then(function (response) {
         item.contentDetails = response.items[0].contentDetails;
         item.status = response.items[0].status;
+        if (req.user.google.accessToken !== g.oauth2Client.credentials.access_token) {
+          req.user.google.accessToken = g.oauth2Client.credentials.access_token;
+          return req.user.save()
+          .then(function () { res.status(201).json(item); })
+          .catch(res.status(500).send);
+        }
         return res.status(201).json(item);
       }, function (error) {
         return res.status(500).send(error);

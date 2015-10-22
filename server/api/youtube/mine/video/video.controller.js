@@ -72,6 +72,12 @@ exports.index = function (req, res) {
         resBody.items.forEach(function (item, i) {
           item.contentDetails = response.items[i].contentDetails;
         });
+        if (req.user.google.accessToken !== g.oauth2Client.credentials.access_token) {
+          req.user.google.accessToken = g.oauth2Client.credentials.access_token;
+          return req.user.save()
+          .then(function () { res.status(204).json(resBody); })
+          .catch(res.status(500).send);
+        }
         return res.status(200).json(resBody);
       }, function (error) {
         return res.status(500).send(error);

@@ -11,10 +11,20 @@ var Promise = require('promise');
 exports.youtube = function (method, params) {
   return new Promise(function (resolve, reject) {
     var step = method.split('.');
-    youtube[step[0]][step[1]](params, function (err, res) {
-      if (err) { return reject(err); }
-      return resolve(res);
-    });
+    var retried = false;
+
+    (function requestTo() {
+      youtube[step[0]][step[1]](params, function (err, res) {
+        if (err) {
+          if (!retried) {
+            retried = true;
+            return requestTo();
+          }
+          return reject(err);
+        }
+        return resolve(res);
+      });
+    })();
   });
 };
 
