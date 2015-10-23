@@ -589,7 +589,7 @@ module.exports = function (grunt) {
       sass: {
         options: {
           sort: function (a, b) {
-            var sortBy = ['/utils/', '/base/', '/layout/', '/components/', '/pages/'];
+            var sortBy = ['/utils/', '/blocks/', '/base/', '/layout/', '/components/', '/pages/'];
             var ai, bi;
             ai = bi = -1;
 

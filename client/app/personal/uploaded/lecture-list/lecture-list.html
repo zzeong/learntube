@@ -1,43 +1,40 @@
 <div id="sidenav" ng-include="'components/sidenav/sidenav.html'"></div>
 <div id="header" ng-include="'components/toolbar/toolbar.html'"></div>
 
-<md-button class="md-fab fab-fix" aria-label="Add lecture" ng-click="showLectureDialog($event)">
+<md-button class="md-fab add-btn" aria-label="Add lecture" ng-click="showLectureDialog($event)">
   <md-icon md-font-set="material-icons">add</md-icon>
 </md-button>
 
 <md-content>
-  <div class="content-width content-background" layout-padding>
+  <div class="container" layout-padding>
 
-    <div class="content-inner lecture-list-summary">
+    <div class="inner-content">
       <h2 class="md-headline">{{ summary.snippet.title }}</h2>
       <div class="md-body-1" ng-bind-html="summary.snippet.description">
-        <!--
-        <p class="md-body-1"><hm-read class="md-body-1" hmtext="{{ summary.snippet.description }}" hmlimit="400" hm-more-text="read more" hm-less-text="read less"></hm-read></p>
-        -->
       </div>
       </br>
     </div>
 
     <md-divider></md-divider>
 
-    <div class="content-inner">
+    <div class="inner-content">
 
       <md-button class="md-raised" ng-click="deleteLecture()" ng-disabled="!selectedLecture">Delete</md-button>
 
-      <md-list class="lecture-list-numbering">
+      <md-list>
         <div ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
-          <div class="checkbox-cont">
+          <div class="checkbox">
             <md-checkbox ng-click="selectLecture(lecture)" ng-checked="isSelectedLecture(lecture)"></md-checkbox>
           </div>
 
-          <div>
+          <div class="lecturelist-item">
             <md-list-item class="md-2-line" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
-              <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
+              <img class="lecturelist-item__thumbnail" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
               alt="Lecture Thumbnail">
 
               <div class="md-list-item-text">
                 <div class="second-icon-padding">
-                  <h3 class="lecture-title ellipsis second-icon-padding">{{ lecture.snippet.title }}</h3>
+                  <h3>{{ lecture.snippet.title }}</h3>
                   <p>{{ lecture.contentDetails.duration | humanable }}</p>
                 </div>
 
@@ -55,4 +52,3 @@
 
   </div>
 </md-content>
-

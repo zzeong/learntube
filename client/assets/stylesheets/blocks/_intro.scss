@@ -1,0 +1,21 @@
+.intro {
+  height: 250px;
+  background-image: image('main_background.jpg');
+  background-repeat: no-repeat;
+  background-position: 50% 23%;
+  background-size: cover;
+
+  @include respond-to('small') {
+    height: 450px;
+  }
+}
+
+.intro__slogan {
+  margin: 1.15rem 0;
+  color: $text-color;
+
+  @include respond-to('small') {
+    font-size: 45px;
+    line-height: 50px;
+  }
+}

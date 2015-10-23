@@ -1,0 +1,14 @@
+.web-search-cont {
+  max-width: 850px;
+  margin-left: 30px;
+  padding-right: 50px;
+}
+
+.web-search-cont__input {
+  width: 100%;
+  max-width: 850px;
+  padding: 6px 32px 6px 10px;
+  border: 0;
+  border-radius: $md-border-radius;
+  outline: none;
+}

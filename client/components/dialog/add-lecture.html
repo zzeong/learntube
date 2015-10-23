@@ -1,6 +1,6 @@
-<md-dialog class="dialog-width add-lecture-tmpl" aria-label="Add lecture">
+<md-dialog class="add-dialog" aria-label="Add lecture">
 
-  <md-tabs md-border-bottom>
+  <md-tabs class="add-dialog__lec" md-border-bottom>
 
     <md-tab label="Search videos">
       <md-content class="md-padding">
@@ -13,9 +13,9 @@
         </form>
 
         <md-list>
-          <md-list-item class="md-2-line md-hue-1" ng-class="{ selected: isSelected(video) }"
+          <md-list-item class="md-2-line md-hue-1" ng-class="{ 'search-box--lec-selected': isSelected(video) }"
           ng-repeat="video in searched" ng-click="selectVideo(video)">
-            <img class="lecture-thumb" ng-src="{{ video.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail"
+            <img class="search-box__lec-thumb" ng-src="{{ video.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail"
             />
             <div class="md-list-item-text">
               <h3>{{ video.snippet.title | limitTo:30 }}{{ video.snippet.title.length > 40 ? '...' : '' }}</h3>
@@ -59,4 +59,3 @@
   </form>
 
 </md-dialog>
-

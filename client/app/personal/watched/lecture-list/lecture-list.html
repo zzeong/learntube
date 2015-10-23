@@ -3,37 +3,33 @@
 
 <md-content>
 
-  <div class="content-width content-background" layout-padding>
-    <div class="content-inner">
-      <div class="middle">
-        <h3 class="md-headline">My learning info</h3>
-      </div>
-      <div class="visual-cont">
+  <div class="container" layout-padding>
+    <div class="inner-content">
+      <h3 class="md-headline">My learning info</h3>
+      <div class="d3-visual-cont">
         <d3-bars data="vdata"></d3-bars>
       </div>
     </div>
 
     <md-divider></md-divider>
 
-    <div class="content-inner">
+    <div class="inner-content">
       <!-- 클래스 내의 강의 목록 -->
-      <div class="middle">
-        <h3 class="md-headline">Lectures in this class</h3>
-      </div>
+      <h3 class="md-headline">Lectures in this class</h3>
 
-      <md-list class="lecture-list-numbering">
+      <md-list>
         <div infinite-scroll="loadMore(pageToken)" infinite-scroll-disabled="httpBusy || !pageToken"
         infinite-scroll-distance="1">
 
-          <div ng-repeat="lecture in lectureList | onlyPublic">
+          <div class="lecturelist-item" ng-repeat="lecture in lectureList | onlyPublic">
             <md-list-item class="md-2-line" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })"
-            ng-class="{highlight: lecture.highlight}">
+            ng-class="{'lecturelist-item--highlight': lecture.highlight}">
 
-              <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
+              <img class="lecturelist-item__thumbnail" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
               alt="Lecture Thumbnail">
               <div class="md-list-item-text">
                 <div class="second-icon-padding">
-                  <h3 class="lecture-title ellipsis second-icon-padding">{{ lecture.snippet.title }}</h3>
+                  <h3>{{ lecture.snippet.title }}</h3>
                   <p>{{ lecture.contentDetails.duration | humanable }}</p>
                 </div>
               </div>
@@ -53,4 +49,3 @@
     </div>
   </div>
 </md-content>
-

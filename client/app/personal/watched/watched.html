@@ -3,34 +3,29 @@
 
 <md-content>
 
-  <div class="content-width" layout-padding>
-    <md-card class="watched-class-card" ng-repeat="classe in classes">
+  <div class="container-without-bg" layout-padding>
+    <md-card class="personal-class-card" ng-repeat="classe in classes">
 
-      <div class="card-image-cont cursor-pointer">
+      <div class="personal-class-card__image-cont">
         <img id="thumbnail" ng-src="{{ classe.item.snippet.thumbnails.high.url }}" ng-click="go('WatchedLectureList', { pid: classe.playlistId })"
         class="md-card-image" alt="Class Image">
 
-        <div class="overlay cursor-pointer" ng-show="classe.graph" ng-click="go('WatchedLectureList', { pid: classe.playlistId })">
-          <div class="content-position">
-            <div class="progress-text progress-media">
+        <div class="study-graph-bg" ng-show="classe.graph" ng-click="go('WatchedLectureList', { pid: classe.playlistId })">
+          <div class="study-graph-cont">
+            <div class="study-graph-cont__title">
               <p>Progress</p>
             </div>
 
-            <div class="progressbar-outline">
-              <div class="percentage-div">
+            <div class="progressbar-box">
+              <div class="progressbar-box__percentage">
                 <p class="md-caption">{{ classe.percentage }}%</p>
               </div>
-              <div class="progressbar-inline" style="width: {{ classe.percentage }}%; height: 12px;"></div>
+              <div class="progressbar-box__inline" style="width: {{ classe.percentage }}%; height: 12px;"></div>
             </div>
 
-            <div class="texts texts-media hide-detail">
-              <div class="md-caption watched-text float-left">
-                <p class="margin-zero-graph">Watched: {{ classe.numberOfWatched }} / {{ classe.item.contentDetails.itemCount }}</p>
-              </div>
-
-              <div class="md-caption notes-text float-right">
-                <p class="margin-zero-graph">Notes: {{ classe.numberOfNote }}</p>
-              </div>
+            <div class="study-graph-text">
+              <p class="md-caption study-graph-text__watched">Watched: {{ classe.numberOfWatched }} / {{ classe.item.contentDetails.itemCount }}</p>
+              <p class="md-caption study-graph-text__notes">Notes: {{ classe.numberOfNote }}</p>
             </div>
           </div>
 
@@ -49,4 +44,3 @@
   </div>
 
 </md-content>
-

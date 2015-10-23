@@ -1,14 +1,14 @@
 <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')"
 hide-gt-sm>
   <div class="sidenav-account-area md-hue-1" ng-controller="SidenavDrawerCtrl">
-    <div class="image-cont">
-      <img ng-src="{{ getUserImage() }}" class="account-thumb" alt="Account Image" />
+    <div class="sidenav-account-area__thumb">
+      <img ng-src="{{ getUserImage() }}" alt="Account Image" />
     </div>
-    <div class="account-cont">
-      <md-button ng-hide="isLoggedIn()" ng-click="loginOauth('google')" class="md-raised login-btn">
+    <div class="sidenav-account-area__cont">
+      <md-button ng-hide="isLoggedIn()" ng-click="loginOauth('google')" class="md-raised sidenav-account-area__login-btn">
         Login with <i class="fa fa-youtube-play"></i>
       </md-button>
-      <div class="inner-left-padding" ng-show="isLoggedIn()">
+      <div ng-show="isLoggedIn()">
         <p class="md-body-2">{{ getCurrentUser().name }}</p>
         <p class="md-body-1">{{ getCurrentUser().email }}</p>
       </div>
@@ -24,4 +24,3 @@ hide-gt-sm>
     </md-list-item>
   </md-list>
 </md-sidenav>
-

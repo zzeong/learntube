@@ -9,4 +9,5 @@ linters:
     order: smacss
   IdSelector:
     enabled: false
-
+  SelectorFormat:
+    enabled: false

@@ -1,5 +1,5 @@
 <div id="sidenav" ng-include="'components/sidenav/sidenav.html'"></div>
-<div id="header" ng-include="'components/toolbar/toolbar.html'"></div>
+<div class="header" ng-include="'components/toolbar/toolbar.html'"></div>
 
 <md-content>
 
@@ -9,7 +9,7 @@
     </div>
   </div>
 
-  <div class="content-width content-background content-top-mt">
+  <div class="container lecture-content">
     <!--
     <md-list>
       <md-list-item class="md-2-line" ng-repeat="lecture in lectureList" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
@@ -26,41 +26,41 @@
     </md-list>
     -->
 
-    <div class="video-info-panel md-padding">
+    <div class="lecture-info md-padding">
       <div layout="row" layout-wrap>
         <div>
-          <h1 class="md-title margin-zero">{{ item.snippet.title }}</h1>
+          <h1 class="md-title lecture-info__title">{{ item.snippet.title }}</h1>
         </div>
-        <div class="arrow-icon">
-          <md-icon md-font-set="material-icons" ng-click="showDetails()" ng-show="!details"
-          class="icon-style">arrow_drop_down</md-icon>
-          <md-icon md-font-set="material-icons" ng-click="showDetails()" ng-show="details"
-          class="icon-style">arrow_drop_up</md-icon>
-        </div>
-        <div ng-show="details">
+
+        <md-icon md-font-set="material-icons" ng-click="showDetails()" ng-show="!details"
+        class="arrow-icon">arrow_drop_down</md-icon>
+        <md-icon md-font-set="material-icons" ng-click="showDetails()" ng-show="details"
+        class="arrow-icon">arrow_drop_up</md-icon>
+
+        <div class="lecture-cont-detail" ng-show="details">
           <div class="md-body-1" ng-bind-html="item.snippet.description"></div>
           <!--
           <p class="md-body-1">{{ item.snippet.description }}</p>
           -->
-          <span class="lecture-details-item md-body-2">Channel : </span>
+          <span class="lecture-cont-detail__ch-title md-body-2">Channel : </span>
           <span class="md-body-1">{{ item.snippet.channelTitle }}</span>
           <br>
-          <span class="lecture-details-item">Hits : </span>
+          <span class="lecture-cont-detail__hits">Hits : </span>
           <span class="md-body-1">{{ item.statistics.viewCount }}</span>
           <br>
-          <span class="lecture-det  ails-item md-body-2">Upload : </span>
+          <span class="lecture-cont-detail__upload-date md-body-2">Upload : </span>
           <span class="md-body-1">{{ publishedDate }}</span>
           <br>
 
-          <div class="details-footer" layout="row" layout-wrap>
+          <div class="lecture-cont-bottom" layout="row" layout-wrap>
             <div flex="700">
-              <span>
+              <span class="lecture-cont-bottom__thumb-up">
                 <md-icon md-font-set="material-icons">thumb_up</md-icon>
-                <span class="lecture-details-item md-body-2">{{ item.statistics.likeCount }}</span>
+                <span class="md-body-2">{{ item.statistics.likeCount }}</span>
               </span>
-              <span>
+              <span class="lecture-cont-bottom__thumb-down">
                 <md-icon md-font-set="material-icons">thumb_down</md-icon>
-                <span class="lecture-details-item md-body-2">{{ item.statistics.dislikeCount }}</span>
+                <span class="md-body-2">{{ item.statistics.dislikeCount }}</span>
               </span>
             </div>
 
@@ -113,23 +113,24 @@
     <div ng-show="isFileUploadOn">
       <md-subheader>Note file uploader</md-subheader>
       <div class="md-actions md-padding" layout="row" layout-align="end center">
-        <form ng-submit="doneNote('file', noteFile)">
-          <input class="note-file-uploader" type="file" ngf-select ng-model="noteFile">
-          <md-button type="submit" class="md-raised">Done</md-button>
+        <form class="file-uploader" ng-submit="doneNote('file', noteFile)">
+          <input class="file-uploader__choice" type="file" ngf-select ng-model="noteFile">
+          <md-button type="submit" class="file-uploader__btn md-raised">Done</md-button>
         </form>
       </div>
       <md-divider></md-divider>
     </div>
 
-    <div ng-if="isLoggedIn()">
+    <div class="my-note" ng-if="isLoggedIn()">
       <section>
         <md-subheader class="md-primary">My notes</md-subheader>
 
         <div class="md-padding" ng-repeat="note in notes">
           <div ng-hide="note.isEditing">
-            <div class="note-item">
-              <img class="avatar account-thumb" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image">
-              <div class="userinfo">
+            <div class="writer-info">
+              <img class="writer-info__thumb" ng-src="{{ getUserImgPath(getCurrentUser()) }}"
+              alt="Account Image">
+              <div class="writer-info__name">
                 <p class="md-subhead">{{ getCurrentUser().name }}</p>
               </div>
             </div>
@@ -141,17 +142,17 @@
               <img ng-if="!shouldBeEmbedded(note)" ng-src="{{ note.url }}" alt="My lecture note">
             </div>
 
-            <div class="md-actions" layout="row" layout-align="end center">
-              <md-button class="md-raised" ng-if="note.type === 'editor'" ng-click="editNote(note)">Edit</md-button>
-              <md-button class="md-raised md-warn" ng-click="deleteNote(note)">Delete</md-button>
+            <div class="note-btn md-actions" layout="row" layout-align="end center">
+              <md-button class="note-btn__edit md-raised" ng-if="note.type === 'editor'" ng-click="editNote(note)">Edit</md-button>
+              <md-button class="note-btn__delete md-raised md-warn" ng-click="deleteNote(note)">Delete</md-button>
             </div>
           </div>
 
           <div ng-if="note.isEditing">
             <form ng-submit="updateNote(note)">
               <textarea ng-model="note.contents" ckeditor></textarea>
-              <md-button class="md-raised md-warn" ng-click="cancelEditing(note)">Cancel</md-button>
-              <md-button type="submit" class="md-raised">Update</md-button>
+              <md-button class="note-btn__cancel md-raised md-warn" ng-click="cancelEditing(note)">Cancel</md-button>
+              <md-button type="submit" class="note-btn__update md-raised">Update</md-button>
             </form>
           </div>
         </div>
@@ -161,11 +162,11 @@
 
     <section>
       <md-subheader class="md-primary">Others notes</md-subheader>
-      <div class="others-notes-cont">
+      <div class="others-note">
         <div class="md-padding" ng-repeat="note in othersNotes">
-          <div class="note-item">
-            <img class="avatar account-thumb" ng-src="{{ note.userId.google.image.url }}" alt="Account Image">
-            <div class="userinfo">
+          <div class="writer-info">
+            <img class="writer-info__thumb" ng-src="{{ note.userId.google.image.url }}" alt="Account Image">
+            <div class="writer-info__name">
               <p class="md-subhead">{{ note.userId.name }}</p>
             </div>
           </div>
@@ -182,4 +183,3 @@
 
   </div>
 </md-content>
-

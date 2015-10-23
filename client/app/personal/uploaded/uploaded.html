@@ -1,13 +1,13 @@
 <div id="sidenav" ng-include="'components/sidenav/sidenav.html'"></div>
 <div id="header" ng-include="'components/toolbar/toolbar.html'"></div>
 
-<md-button class="md-fab fab-fix" aria-label="Add class" ng-click="showDialog($event)">
+<md-button class="md-fab add-btn" aria-label="Add class" ng-click="showDialog($event)">
   <md-icon md-font-set="material-icons">add</md-icon>
 </md-button>
 
 <md-content>
-  <div class="content-width" layout-padding>
-    <md-card class="watched-class-card" ng-repeat="classe in classes | onlyPublic">
+  <div class="container-without-bg" layout-padding>
+    <md-card class="personal-class-card" ng-repeat="classe in classes | onlyPublic">
       <img ng-src="{{ classe.snippet.thumbnails.high.url }}" ng-click="go('UploadedLectureList', { pid: classe.id })"
       class="md-card-image" alt="Class Image">
       <md-card-content>
@@ -19,4 +19,3 @@
     </md-card>
   </div>
 </md-content>
-

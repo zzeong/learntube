@@ -1,0 +1,8 @@
+.video-box {
+  @include respond-to('medium') {
+    width: 660px;
+    height: 390px;
+    margin: 0 auto;
+    float: left;
+  }
+}

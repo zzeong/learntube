@@ -1,0 +1,4 @@
+.lecture-content {
+  margin-top: 0;
+  @include respond-to('small') { margin-top: $panel-offset; }
+}

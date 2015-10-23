@@ -5,7 +5,7 @@
       <md-icon ng-show="stateNameCheck('Home')" md-font-set="material-icons">menu</md-icon>
       <md-icon ng-hide="stateNameCheck('Home')" md-font-set="material-icons">keyboard_backspace</md-icon>
     </md-button>
-    <a href="/" class="logo" hide-sm>
+    <a href="/" class="header__logo" hide-sm>
       <img src="/assets/images/logo_learntube_white.png" show-gt-sm alt="logo" />
     </a>
     <h2 ng-hide="onSearching" hide-gt-sm>
@@ -15,16 +15,16 @@
     <span flex>
       <div class="web-search-cont" ng-show="!stateNameCheck('Home')">
         <form ng-submit="go('Search', { q: q })" hide-sm>
-          <input type="search" ng-model="q"/>
+          <input class="web-search-cont__input" type="search" ng-model="q"/>
         </form>
       </div>
     </span>
 
     <md-menu>
 
-      <md-button class="toolbar-account-cont" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()"
+      <md-button class="md-menu__account-cont" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()"
       hide-sm>
-        <img class="account-thumb" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image" />
+        <img class="md-menu__account-thumb" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image" />
 
         <div>
           <p class="md-body-2">{{ getCurrentUser().name }}</p>

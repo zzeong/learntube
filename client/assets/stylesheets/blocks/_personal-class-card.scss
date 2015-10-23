@@ -1,0 +1,12 @@
+.personal-class-card {
+  @include respond-to('small') {
+    $card-width: 338px;
+    display: inline-flex;
+    width: $card-width;
+  }
+}
+
+.personal-class-card__image-cont {
+  position: relative;
+  width: 100%;
+}

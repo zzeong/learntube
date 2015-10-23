@@ -1,0 +1,18 @@
+.writer-info {
+  margin-bottom: 10px;
+
+  .writer-info__name {
+    margin-left: $account-thumb-size;
+
+    p {
+      margin: 0;
+      padding: 0 20px;
+      line-height: $account-thumb-size;
+    }
+  }
+}
+
+.writer-info__thumb {
+  margin: 0;
+  float: left;
+}
