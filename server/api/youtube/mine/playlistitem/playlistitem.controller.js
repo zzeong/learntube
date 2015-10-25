@@ -5,6 +5,37 @@ var g = require('../../../../components/google-api');
 var config = require('../../../../config/environment');
 var Promise = require('promise');
 
+function figureIdOutAndDelete(params) {
+  return g.youtube('playlistItems.list', params)
+  .then(function (res) {
+    return g.youtube('playlistItems.delete', {
+      auth: params.auth,
+      id: res.items[0].id
+    });
+  });
+}
+
+function deleteAllPlaylistItems(params) {
+  var paramsUnit = {
+    auth: params.auth,
+    part: 'id',
+    playlistId: params.playlistId,
+    videoId: params.videoId.shift()
+  };
+
+  return new Promise(function (resolve) {
+    (function recursive(p) {
+      figureIdOutAndDelete(p)
+      .then(function () {
+        var videoId = params.videoId.shift();
+        if (!videoId) { return resolve(); }
+
+        p.videoId = videoId;
+        recursive(p);
+      });
+    })(paramsUnit);
+  });
+}
 
 /**
  * @api {get} /api/youtube/mine/playlistitems Get my YouTube playlistItems
@@ -197,23 +228,15 @@ exports.destroy = function (req, res) {
     refresh_token: req.user.google.refreshToken,
   });
 
-  var playlistItemIdArr = req.query.playlistItemId.split(',');
-
-  var promises = playlistItemIdArr.map(function (arrayItem) {
-
-    var params = {
-      auth: g.oauth2Client,
-      id: arrayItem,
-    };
-
-    return g.youtube('playlistItems.delete', params);
-  });
-
-  Promise.all(promises).then(function () {
+  deleteAllPlaylistItems({
+    auth: g.oauth2Client,
+    playlistId: req.query.playlistId,
+    videoId: req.query.videoId.split(',')
+  })
+  .then(function () {
     return res.status(204).send();
-  }, function (error) {
+  })
+  .catch(function (error) {
     return res.status(500).send(error);
   });
-
-
 };

@@ -3,6 +3,7 @@
 angular.module('learntubeApp')
 .controller('UploadedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, $mdDialog, $q, $mdToast, GApi, GoogleConst) {
   $scope.playlistId = $stateParams.pid;
+  $scope.lectureDelBucket = [];
   var scope = $scope;
 
   var compileToHTML = function (str) {
@@ -252,24 +253,27 @@ angular.module('learntubeApp')
     .catch(console.error);
   };
 
-  $scope.selectLecture = function (lecture) {
-    $scope.selectedLecture = $scope.selectedLecture === lecture ? null : lecture;
-  };
-  $scope.isSelectedLecture = function (lecture) {
-    return $scope.selectedLecture === lecture;
+  $scope.pushLecture = function (lecture) {
+    $scope.lectureDelBucket.push(lecture);
   };
 
-  $scope.deleteLecture = function () {
-    $http.delete('/api/youtube/mine/playlistitems',{
-      params: { playlistItemId: $scope.selectedLecture.id }
+  $scope.deleteLectures = function () {
+    var joinedId = $scope.lectureDelBucket.map(function (lecture) {
+      return lecture.snippet.resourceId.videoId;
+    }).join(',');
+
+    $http.delete('/api/youtube/mine/playlistitems', {
+      params: {
+        playlistId: $scope.playlistId,
+        videoId: joinedId
+      }
     })
     .then(function () {
-      _.remove($scope.lectureList, $scope.selectedLecture);
-      $scope.selectedLecture = null;
+      $scope.lectureList = _.xor($scope.lectureList, $scope.lectureDelBucket);
+      $scope.lectureDelBucket = [];
       showToast('Lecture deleted');
     })
     .catch(console.error);
   };
-
 });
 

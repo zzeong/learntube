@@ -19,12 +19,12 @@
 
     <div class="inner-content">
 
-      <md-button class="md-raised" ng-click="deleteLecture()" ng-disabled="!selectedLecture">Delete</md-button>
+      <md-button class="md-raised" ng-click="deleteLectures()" ng-disabled="!lectureDelBucket.length">Delete</md-button>
 
       <md-list>
         <div ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
           <div class="checkbox">
-            <md-checkbox ng-click="selectLecture(lecture)" ng-checked="isSelectedLecture(lecture)"></md-checkbox>
+            <md-checkbox ng-click="pushLecture(lecture)"></md-checkbox>
           </div>
 
           <div class="lecturelist-item">
