@@ -123,6 +123,13 @@ exports.create = function (req, res) {
  *
  * @apiUse TokenAuth
  *
+ * @apiParam {String} playlistId YouTube playlist id.
+ *
+ * @apiParamExample {json} Request-Example:
+ *     {
+ *       "playlistId": "PLDcnymzs18LWbmCFUlZie7VsxQ_FIF0_y"
+ *     }
+
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 204 No Content
  */

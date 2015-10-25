@@ -197,23 +197,20 @@ exports.create = function (req, res) {
 };
 
 /**
- * @api {delete} /api/youtube/mine/playlistitems Destroy my YouTube playlistItem
- * @apiName DestroyMyPlaylistItem
+ * @api {delete} /api/youtube/mine/playlistitems Delete my YouTube playlistItem
+ * @apiName DeleteMyPlaylistItem
  * @apiGroup My playlist items
  *
  * @apiUse TokenAuth
  *
- * @apiParam {Object} params **DELETE body**. It must be [playlistItem resource](https://developers.google.com/youtube/v3/docs/playlists#resource)
- * which have `playlistItemId`.
+ * @apiParam {String} playlistId YouTube playlist id.
+ * @apiParam {String} videoId YouTube video id. These ids are must joined by comma delimiter.
+ *
  * @apiParamExample {json} Request-Example:
- *
- *     PARAMS
  *     {
- *       "playlistItemId": "PL0kbKBabmRWUW4f5HSWIvzp0wFEtYNTJeS7dhDMTqKVk"
+ *       "playlistId": "PLDcnymzs18LWbmCFUlZie7VsxQ_FIF0_y"
+ *       "videoId": "XRrnAnkU0so,DyRs5_bPCrM"
  *     }
- *
- *
- * @apiSuccess (Success 204) {Object} playlistItem_resource Destroyed [playlistItem resource](https://developers.google.com/youtube/v3/docs/playlistItems#resource).\
  *
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 204 OK
