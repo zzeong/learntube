@@ -1,27 +1,15 @@
-/**
- * Using Rails-like standard naming convention for endpoints.
- * GET     /lectures              ->  index
- * POST    /lectures              ->  create
- * GET     /lectures/:lid          ->  show
- * PUT     /lectures/:lid          ->  update
- * DELETE  /lectures/:lid          ->  destroy
- */
-
 'use strict';
 
 var _ = require('lodash');
 var Class = require('../../../../models/class.model');
 
 
-// Get list of lectures
 exports.index = function (req, res) {
 };
 
-// Get a single lecture
 exports.show = function (req, res) {
 };
 
-// Creates a new lecture in the DB.
 exports.create = function (req, res) {
   Class.findById(req.params.cid, function (err, classe) {
     if (err) { return res.status(500).send(err); }
@@ -35,11 +23,9 @@ exports.create = function (req, res) {
   });
 };
 
-// Updates an existing lecture in the DB.
 exports.update = function (req, res) {
 };
 
-// Deletes a lecture from the DB.
 exports.destroy = function (req, res) {
 };
 

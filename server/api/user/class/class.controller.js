@@ -1,22 +1,10 @@
-/**
- * Using Rails-like standard naming convention for endpoints.
- * GET     /classes              ->  index
- * POST    /classes              ->  create
- * GET     /classes/:cid          ->  show
- * PUT     /classes/:cid          ->  update
- * DELETE  /classes/:cid          ->  destroy
- */
-
 'use strict';
 
 var _ = require('lodash');
 var User = require('../../../models/user.model');
 var Class = require('../../../models/class.model');
 
-
-// Get list of classes
 exports.index = function (req, res) {
-
   var data = _.assign(req.query, { userId: req.params.id });
 
   Class.find(data, function (err, classes) {
@@ -25,11 +13,9 @@ exports.index = function (req, res) {
   });
 };
 
-// Get a single classe
 exports.show = function (req, res) {
 };
 
-// Creates a new classe in the DB.
 exports.create = function (req, res) {
   var data = {
     userId: req.params.id,
@@ -48,11 +34,9 @@ exports.create = function (req, res) {
   });
 };
 
-// Updates an existing classe in the DB.
 exports.update = function (req, res) {
 };
 
-// Deletes a classe from the DB.
 exports.destroy = function (req, res) {
   Class.findById(req.params.cid, function (err, classe) {
     if (err) { return res.status(500).send(err); }
