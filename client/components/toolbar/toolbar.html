@@ -13,16 +13,16 @@
     </h2>
 
     <span flex>
-      <div class="web-search-cont" ng-show="!stateNameCheck('Home')">
+      <div class="web-search-content" ng-show="!stateNameCheck('Home')">
         <form ng-submit="go('Search', { q: q })" hide-sm>
-          <input class="web-search-cont__input" type="search" ng-model="q"/>
+          <input class="web-search-content__input" type="search" ng-model="q"/>
         </form>
       </div>
     </span>
 
     <md-menu>
 
-      <md-button class="md-menu__account-cont" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()"
+      <md-button class="md-menu__account-content" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()"
       hide-sm>
         <img class="md-menu__account-thumb" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image" />
 

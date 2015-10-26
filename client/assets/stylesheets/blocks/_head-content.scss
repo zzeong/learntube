@@ -1,4 +1,4 @@
-.head-contents {
+.head-content {
   background-color: $white;
   @include respond-to('medium') {
     height: 400px;
@@ -8,7 +8,7 @@
   }
 }
 
-.head-contents__video-box {
+.head-content__video-box {
   @include respond-to('medium') {
     width: 660px;
     height: 390px;

@@ -137,7 +137,7 @@
 
             <md-divider></md-divider>
 
-            <div class="note-contents-viewer">
+            <div class="note-content-viewer">
               <iframe ng-if="shouldBeEmbedded(note)" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
               <img ng-if="!shouldBeEmbedded(note)" ng-src="{{ note.url }}" alt="My lecture note">
             </div>
@@ -173,7 +173,7 @@
 
           <md-divider></md-divider>
 
-          <div class="note-contents-viewer">
+          <div class="note-content-viewer">
             <iframe ng-if="shouldBeEmbedded(note)" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
             <img ng-if="!shouldBeEmbedded(note)" ng-src="{{ note.url }}" alt="My lecture note">
           </div>

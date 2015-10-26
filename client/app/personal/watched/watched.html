@@ -6,13 +6,13 @@
   <div class="container-without-bg" layout-padding>
     <md-card class="personal-class-card" ng-repeat="classe in classes">
 
-      <div class="personal-class-card__image-cont">
+      <div class="personal-class-card__image-content">
         <img id="thumbnail" ng-src="{{ classe.item.snippet.thumbnails.high.url }}" ng-click="go('WatchedLectureList', { pid: classe.playlistId })"
         class="md-card-image" alt="Class Image">
 
         <div class="study-graph-bg" ng-show="classe.graph" ng-click="go('WatchedLectureList', { pid: classe.playlistId })">
-          <div class="study-graph-cont">
-            <div class="study-graph-cont__title">
+          <div class="study-graph-content">
+            <div class="study-graph-content__title">
               <p>Progress</p>
             </div>
 

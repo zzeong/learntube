@@ -6,7 +6,7 @@
   <div class="container" layout-padding>
     <div class="inner-content">
       <h3 class="md-headline">My learning info</h3>
-      <div class="d3-visual-cont">
+      <div class="d3-visaul-content">
         <d3-bars data="vdata"></d3-bars>
       </div>
     </div>
@@ -40,7 +40,7 @@
               </md-icon>
             </md-list-item>
 
-            <div class="note-contents-viewer" ng-if="isSelected(lecture)" ng-repeat="note in lecture.notes">
+            <div class="note-content-viewer" ng-if="isSelected(lecture)" ng-repeat="note in lecture.notes">
               <iframe ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
             </div>
           </div>
