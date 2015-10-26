@@ -40,11 +40,6 @@ var Promise = mongoose.Promise = require('promise');
  *     }
  */
 exports.index = function (req, res) {
-  g.oauth2Client.setCredentials({
-    access_token: req.user.google.accessToken,
-    refresh_token: req.user.google.refreshToken,
-  });
-
   var params = {
     auth: g.oauth2Client,
     part: 'id,snippet,status',
@@ -104,11 +99,6 @@ exports.index = function (req, res) {
  *     }
  */
 exports.create = function (req, res) {
-  g.oauth2Client.setCredentials({
-    access_token: req.user.google.accessToken,
-    refresh_token: req.user.google.refreshToken,
-  });
-
   var params = _.assign({
     auth: g.oauth2Client,
     part: 'snippet,status',
@@ -148,11 +138,6 @@ exports.create = function (req, res) {
  *     HTTP/1.1 204 No Content
  */
 exports.destroy = function (req, res) {
-  g.oauth2Client.setCredentials({
-    access_token: req.user.google.accessToken,
-    refresh_token: req.user.google.refreshToken,
-  });
-
   var params = {
     auth: g.oauth2Client,
     id: req.query.playlistId,

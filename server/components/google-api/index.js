@@ -29,3 +29,12 @@ exports.youtube = function (method, params) {
 };
 
 exports.oauth2Client = oauth2Client;
+
+exports.setCredentials = function (req, res, next) {
+  oauth2Client.setCredentials({
+    access_token: req.user.google.accessToken,
+    refresh_token: req.user.google.refreshToken,
+  });
+  next();
+};
+

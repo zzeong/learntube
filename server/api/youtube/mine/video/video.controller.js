@@ -31,11 +31,6 @@ var config = require('../../../../config/environment');
  *     }
  */
 exports.index = function (req, res) {
-  g.oauth2Client.setCredentials({
-    access_token: req.user.google.accessToken,
-    refresh_token: req.user.google.refreshToken,
-  });
-
   g.youtube('channels.list', {
     auth: g.oauth2Client,
     part: 'contentDetails',

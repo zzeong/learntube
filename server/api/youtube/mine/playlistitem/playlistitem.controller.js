@@ -66,11 +66,6 @@ function deleteAllPlaylistItems(params) {
  *     }
  */
 exports.index = function (req, res) {
-  g.oauth2Client.setCredentials({
-    access_token: req.user.google.accessToken,
-    refresh_token: req.user.google.refreshToken,
-  });
-
   var params = {
     auth: g.oauth2Client,
     part: 'id,snippet,status',
@@ -164,11 +159,6 @@ exports.index = function (req, res) {
  *     }
  */
 exports.create = function (req, res) {
-  g.oauth2Client.setCredentials({
-    access_token: req.user.google.accessToken,
-    refresh_token: req.user.google.refreshToken,
-  });
-
   var params = _.assign({
     auth: g.oauth2Client,
     part: 'snippet,status',
@@ -232,11 +222,6 @@ exports.create = function (req, res) {
  */
 
 exports.destroy = function (req, res) {
-  g.oauth2Client.setCredentials({
-    access_token: req.user.google.accessToken,
-    refresh_token: req.user.google.refreshToken,
-  });
-
   deleteAllPlaylistItems({
     auth: g.oauth2Client,
     playlistId: req.query.playlistId,
