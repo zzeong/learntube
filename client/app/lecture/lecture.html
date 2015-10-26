@@ -26,10 +26,10 @@
     </md-list>
     -->
 
-    <div class="lecture-info md-padding">
+    <div class="md-padding">
       <div layout="row" layout-wrap>
         <div>
-          <h1 class="md-title lecture-info__title">{{ item.snippet.title }}</h1>
+          <h1 class="md-title">{{ item.snippet.title }}</h1>
         </div>
 
         <md-icon md-font-set="material-icons" ng-click="showDetails()" ng-show="!details"
@@ -121,7 +121,7 @@
       <md-divider></md-divider>
     </div>
 
-    <div class="my-note" ng-if="isLoggedIn()">
+    <div ng-if="isLoggedIn()">
       <section>
         <md-subheader class="md-primary">My notes</md-subheader>
 
@@ -142,17 +142,17 @@
               <img ng-if="!shouldBeEmbedded(note)" ng-src="{{ note.url }}" alt="My lecture note">
             </div>
 
-            <div class="note-btn md-actions" layout="row" layout-align="end center">
-              <md-button class="note-btn__edit md-raised" ng-if="note.type === 'editor'" ng-click="editNote(note)">Edit</md-button>
-              <md-button class="note-btn__delete md-raised md-warn" ng-click="deleteNote(note)">Delete</md-button>
+            <div class="md-actions" layout="row" layout-align="end center">
+              <md-button class="md-raised" ng-if="note.type === 'editor'" ng-click="editNote(note)">Edit</md-button>
+              <md-button class="md-raised md-warn" ng-click="deleteNote(note)">Delete</md-button>
             </div>
           </div>
 
           <div ng-if="note.isEditing">
             <form ng-submit="updateNote(note)">
               <textarea ng-model="note.contents" ckeditor></textarea>
-              <md-button class="note-btn__cancel md-raised md-warn" ng-click="cancelEditing(note)">Cancel</md-button>
-              <md-button type="submit" class="note-btn__update md-raised">Update</md-button>
+              <md-button class="md-raised md-warn" ng-click="cancelEditing(note)">Cancel</md-button>
+              <md-button type="submit" class="md-raised">Update</md-button>
             </form>
           </div>
         </div>
