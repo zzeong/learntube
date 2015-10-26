@@ -1,7 +1,6 @@
 'use strict';
 
 var _ = require('lodash');
-var User = require('../../../models/user.model');
 var Upload = require('../../../models/upload.model');
 var mongoose = require('mongoose');
 
@@ -28,23 +27,18 @@ exports.index = function (req, res) {
 };
 
 exports.create = function (req, res) {
-  User.findById(req.params.id).exec()
-  .then(function (user) {
-    if (!user) { return res.status(404).send('Not Found'); }
+  var query = {
+    userId: req.params.id,
+    playlistId: req.body.playlistId
+  };
 
-    var query = {
-      userId: req.params.id,
-      playlistId: req.body.playlistId
-    };
-
-    return Upload.findOneAndUpdate(query, {
-      $setOnInsert: query
-    }, {
-      new: true,
-      upsert: true
-    })
-    .exec();
+  Upload.findOneAndUpdate(query, {
+    $setOnInsert: query
+  }, {
+    new: true,
+    upsert: true
   })
+  .exec()
   .then(function (upload) {
     upload.lectures.push({
       videoId: req.body.videoId,

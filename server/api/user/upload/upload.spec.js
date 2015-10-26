@@ -4,6 +4,7 @@ var should = require('should');
 var app = require('../../../app');
 var request = require('supertest');
 var mongoose = require('mongoose');
+var auth = require('../../../auth/auth.service');
 var User = require('../../../models/user.model');
 var Upload = require('../../../models/upload.model');
 
@@ -24,7 +25,11 @@ describe('REST API:', function () {
 
       return user.save();
     })
-    .then(function () { done(); })
+    .then(function () {
+      user = user.toObject();
+      user.token = auth.signToken(user._id);
+      done();
+    })
     .catch(function (err) { done(err); });
   });
 
@@ -51,6 +56,7 @@ describe('REST API:', function () {
     it('should return created \'upload model doc\'', function (done) {
       request(app)
       .post('/api/users/' + user._id + '/uploads')
+      .set('Authorization', 'Bearer ' + user.token)
       .send({
         videoId: 'ASDF',
         playlistId: 'QWER',
@@ -92,6 +98,7 @@ describe('REST API:', function () {
       .then(function (err) {
         request(app)
         .post('/api/users/' + user._id + '/uploads')
+        .set('Authorization', 'Bearer ' + user.token)
         .send({
           videoId: 'ASDF2',
           playlistId: 'PL34d',
@@ -130,6 +137,7 @@ describe('REST API:', function () {
       .then(function () {
         request(app)
         .post('/api/users/' + user._id + '/uploads')
+        .set('Authorization', 'Bearer ' + user.token)
         .send({
           videoId: 'ASDF',
           playlistId: 'QWER',
@@ -152,6 +160,7 @@ describe('REST API:', function () {
     it('should return uploads when query with playlistId', function (done) {
       request(app)
       .get('/api/users/' + user._id + '/uploads')
+      .set('Authorization', 'Bearer ' + user.token)
       .query({ playlistId: 'QWER' })
       .expect(200)
       .expect('Content-Type', /json/)
@@ -171,6 +180,7 @@ describe('REST API:', function () {
     it('should return uploads with no query', function (done) {
       request(app)
       .get('/api/users/' + user._id + '/uploads')
+      .set('Authorization', 'Bearer ' + user.token)
       .expect(200)
       .expect('Content-Type', /json/)
       .end(function (err, res) {
@@ -186,6 +196,5 @@ describe('REST API:', function () {
       });
     });
   });
-
 });
 

@@ -8,12 +8,13 @@ var User = require('../../../models/user.model');
 var Note = require('../../../models/note.model');
 var Rating = require('../../../models/rating.model');
 var path = require('path');
+var auth = require('../../../auth/auth.service');
 
 var Promise = mongoose.Promise = require('promise');
 
 
 describe('REST API:', function () {
-  var id, noteContents, videoId, playlistId;
+  var user, noteContents, videoId, playlistId;
 
   before(function (done) {
     videoId = 'sMKoNBRZM1M';
@@ -25,16 +26,20 @@ describe('REST API:', function () {
       Rating.remove({})
     ])
     .then(function () {
-      var user = new User({
+      user = new User({
         name: 'Fake User',
-        email: './test@test.com',
+        email: 'test@test.com',
         password: 'password',
       });
       return user.save();
     })
-    .then(function (user) {
-      id = user._id;
+    .then(function () {
+      user = user.toObject();
+      user.token = auth.signToken(user._id);
       done();
+    })
+    .catch(function (err) {
+      done(err);
     });
   });
 
@@ -54,7 +59,8 @@ describe('REST API:', function () {
 
     afterEach(function (done) {
       request(app)
-      .delete('/api/users/' + id + '/notes/' + nid)
+      .delete('/api/users/' + user._id + '/notes/' + nid)
+      .set('Authorization', 'Bearer ' + user.token)
       .end(function (err, res) {
         if (err) { return done(err); }
 
@@ -67,7 +73,8 @@ describe('REST API:', function () {
 
     it('should return saved note id when note is saved', function (done) {
       request(app)
-      .post('/api/users/' + id + '/notes')
+      .post('/api/users/' + user._id + '/notes')
+      .set('Authorization', 'Bearer ' + user.token)
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
@@ -82,7 +89,8 @@ describe('REST API:', function () {
 
     it('should create rating model with initial point', function (done) {
       request(app)
-      .post('/api/users/' + id + '/notes')
+      .post('/api/users/' + user._id + '/notes')
+      .set('Authorization', 'Bearer ' + user.token)
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
@@ -111,7 +119,8 @@ describe('REST API:', function () {
         if (err) { return done(err); }
 
         request(app)
-        .post('/api/users/' + id + '/notes')
+        .post('/api/users/' + user._id + '/notes')
+        .set('Authorization', 'Bearer ' + user.token)
         .field('playlistId', playlistId)
         .field('videoId', videoId)
         .field('type', 'editor')
@@ -141,7 +150,8 @@ describe('REST API:', function () {
 
     before(function (done) {
       request(app)
-      .post('/api/users/' + id + '/notes')
+      .post('/api/users/' + user._id + '/notes')
+      .set('Authorization', 'Bearer ' + user.token)
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
@@ -155,7 +165,7 @@ describe('REST API:', function () {
 
     after(function (done) {
       request(app)
-      .delete('/api/users/' + id + '/notes/' + nid)
+      .delete('/api/users/' + user._id + '/notes/' + nid)
       .end(function (err, res) {
         if (err) { return done(err); }
         done();
@@ -164,7 +174,8 @@ describe('REST API:', function () {
 
     it('should return queried notes', function (done) {
       request(app)
-      .get('/api/users/' + id + '/notes')
+      .get('/api/users/' + user._id + '/notes')
+      .set('Authorization', 'Bearer ' + user.token)
       .query({ videoId: videoId })
       .expect(200)
       .expect('Content-Type', /json/)
@@ -181,7 +192,8 @@ describe('REST API:', function () {
     describe('/:nid', function () {
       it('should return specific note doc', function (done) {
         request(app)
-        .get('/api/users/' + id + '/notes/' + nid)
+        .get('/api/users/' + user._id + '/notes/' + nid)
+        .set('Authorization', 'Bearer ' + user.token)
         .expect(200)
         .expect('Content-Type', /json/)
         .end(function (err, res) {
@@ -194,7 +206,8 @@ describe('REST API:', function () {
       describe('/get-contents', function () {
         it('should return note contents equal to contents which have been saved when note is got', function (done) {
           request(app)
-          .get('/api/users/' + id + '/notes/' + nid + '/get-contents')
+          .get('/api/users/' + user._id + '/notes/' + nid + '/get-contents')
+          .set('Authorization', 'Bearer ' + user.token)
           .expect(200)
           .expect('Content-Type', /json/)
           .end(function (err, res) {
@@ -214,7 +227,8 @@ describe('REST API:', function () {
 
     before(function (done) {
       request(app)
-      .post('/api/users/' + id + '/notes')
+      .post('/api/users/' + user._id + '/notes')
+      .set('Authorization', 'Bearer ' + user.token)
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
@@ -228,7 +242,8 @@ describe('REST API:', function () {
 
     after(function (done) {
       request(app)
-      .delete('/api/users/' + id + '/notes/' + nid)
+      .delete('/api/users/' + user._id + '/notes/' + nid)
+      .set('Authorization', 'Bearer ' + user.token)
       .end(function (err, res) {
         if (err) { return done(err); }
         done();
@@ -237,7 +252,8 @@ describe('REST API:', function () {
 
     it('should return updated note', function (done) {
       request(app)
-      .put('/api/users/' + id + '/notes/' + nid)
+      .put('/api/users/' + user._id + '/notes/' + nid)
+      .set('Authorization', 'Bearer ' + user.token)
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
@@ -258,7 +274,8 @@ describe('REST API:', function () {
 
     beforeEach(function (done) {
       request(app)
-      .post('/api/users/' + id + '/notes')
+      .post('/api/users/' + user._id + '/notes')
+      .set('Authorization', 'Bearer ' + user.token)
       .field('playlistId', playlistId)
       .field('videoId', videoId)
       .field('type', 'editor')
@@ -280,7 +297,8 @@ describe('REST API:', function () {
 
     it('should return 204 status code when note is removed', function (done) {
       request(app)
-      .delete('/api/users/' + id + '/notes/' + nid)
+      .delete('/api/users/' + user._id + '/notes/' + nid)
+      .set('Authorization', 'Bearer ' + user.token)
       .expect(204)
       .end(function (err, res) {
         if (err) { return done(err); }
@@ -297,7 +315,8 @@ describe('REST API:', function () {
         if (err) { return done(err); }
 
         request(app)
-        .delete('/api/users/' + id + '/notes/' + nid)
+        .delete('/api/users/' + user._id + '/notes/' + nid)
+        .set('Authorization', 'Bearer ' + user.token)
         .expect(204)
         .end(function (err, res) {
           if (err) { return done(err); }
@@ -314,7 +333,8 @@ describe('REST API:', function () {
 
     it('should remove a rating doc when class have no notes', function (done) {
       request(app)
-      .delete('/api/users/' + id + '/notes/' + nid)
+      .delete('/api/users/' + user._id + '/notes/' + nid)
+      .set('Authorization', 'Bearer ' + user.token)
       .expect(204)
       .end(function (err, res) {
         if (err) { return done(err); }

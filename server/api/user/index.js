@@ -7,6 +7,8 @@ var auth = require('../../auth/auth.service');
 
 var router = express.Router();
 
+router.use('/:id', auth.isAuthenticated());
+
 router.use('/:id/classes', require('./class'));
 router.use('/:id/notes', require('./note'));
 router.use('/:id/uploads', require('./upload'));

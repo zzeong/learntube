@@ -1,7 +1,6 @@
 'use strict';
 
 var _ = require('lodash');
-var User = require('../../../models/user.model');
 var Class = require('../../../models/class.model');
 
 exports.index = function (req, res) {

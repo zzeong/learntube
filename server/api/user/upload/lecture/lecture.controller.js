@@ -1,6 +1,5 @@
 'use strict';
 
-var User = require('../../../../models/user.model');
 var Upload = require('../../../../models/upload.model');
 var config = require('../../../../config/environment');
 var knox = require('knox');

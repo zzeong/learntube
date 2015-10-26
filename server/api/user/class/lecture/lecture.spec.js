@@ -4,33 +4,46 @@ var should = require('should');
 var app = require('../../../../app');
 var request = require('supertest');
 var mongoose = require('mongoose');
+var auth = require('../../../../auth/auth.service.js');
 var Class = require('../../../../models/class.model');
-
-var userData = {
-  name: 'Fake User',
-  email: 'test@test.com',
-  password: 'password',
-  classes: []
-};
+var User = require('../../../../models/user.model');
 
 describe('REST API:', function () {
-  var id = mongoose.Types.ObjectId();
+  var user;
 
   describe('POST /api/users/:id/classes/:cid/lectures/', function () {
     var classData, cid;
 
     before(function (done) {
-      Class.remove({})
-      .then(function () { done(); })
+      Promise.all([
+        User.remove({}),
+        Class.remove({})
+      ])
+      .then(function () {
+        user = new User({
+          name: 'Fake User',
+          email: 'test@test.com',
+          password: 'password',
+          classes: []
+        });
+        return user.save();
+      })
+      .then(function (u) {
+        user = u.toObject();
+        user.token = auth.signToken(user._id);
+        done();
+      })
       .catch(function (err) { done(err); });
     });
 
     after(function (done) {
-      Class.remove({})
+      Promise.all([
+        User.remove({}),
+        Class.remove({})
+      ])
       .then(function () { done(); })
       .catch(function (err) { done(err); });
     });
-
 
     describe('when lecture is save', function () {
       var params;
@@ -41,7 +54,7 @@ describe('REST API:', function () {
 
       beforeEach(function (done) {
         var classe = {
-          userId: id,
+          userId: user._id,
           playlistId: 'ZZZ',
         };
 
@@ -55,7 +68,8 @@ describe('REST API:', function () {
 
       it('should return class which saved lecture', function (done) {
         request(app)
-        .post('/api/users/' + id + '/classes/' + cid + '/lectures/')
+        .post('/api/users/' + user._id + '/classes/' + cid + '/lectures/')
+        .set('Authorization', 'Bearer ' + user.token)
         .expect(201)
         .expect('Content-Type', /json/)
         .send(params)

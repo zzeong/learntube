@@ -10,6 +10,7 @@ var User = require('../../models/user.model');
 var Note = require('../../models/note.model');
 var config = require('../../config/environment');
 var app = require('../../app');
+var auth = require('../../auth/auth.service');
 
 var Promise = mongoose.Promise = require('promise');
 
@@ -21,7 +22,7 @@ var s3 = knox.createClient({
 
 
 describe('REST API:', function () {
-  var user1, user2;
+  var users;
 
   before(function (done) {
     Promise.all([
@@ -53,9 +54,10 @@ describe('REST API:', function () {
 
       return User.create(users);
     })
-    .then(function (users) {
-      user1 = users[0];
-      user2 = users[1];
+    .then(function (u) {
+      users = u.map(function (el) { return el.toObject(); });
+      users[0].token = auth.signToken(users[0]._id);
+      users[1].token = auth.signToken(users[1]._id);
       done();
     })
     .catch(function (err) { done(err); });
@@ -77,7 +79,8 @@ describe('REST API:', function () {
 
     before(function (done) {
       request(app)
-      .post('/api/users/' + user1._id + '/notes')
+      .post('/api/users/' + users[0]._id + '/notes')
+      .set('Authorization', 'Bearer ' + users[0].token)
       .field('playlistId', 'PLASDF')
       .field('videoId', 'QWER1')
       .attach('file', 'test/fixtures/dummy.html')
@@ -85,7 +88,8 @@ describe('REST API:', function () {
         if (err) { return done(err); }
 
         request(app)
-        .post('/api/users/' + user2._id + '/notes')
+        .post('/api/users/' + users[1]._id + '/notes')
+        .set('Authorization', 'Bearer ' + users[1].token)
         .field('playlistId', 'PLASDF')
         .field('videoId', 'QWER1')
         .attach('file', 'test/fixtures/dummy.html')
@@ -93,7 +97,8 @@ describe('REST API:', function () {
           if (err) { return done(err); }
 
           request(app)
-          .post('/api/users/' + user2._id + '/notes')
+          .post('/api/users/' + users[1]._id + '/notes')
+          .set('Authorization', 'Bearer ' + users[1].token)
           .field('playlistId', 'PLASDF')
           .field('videoId', 'QWER2')
           .attach('file', 'test/fixtures/dummy.html')
@@ -107,7 +112,7 @@ describe('REST API:', function () {
     });
 
     after(function (done) {
-      Note.find({ userId: { $in: [user1._id, user2._id] }}).exec()
+      Note.find({ userId: { $in: [users[0]._id, users[1]._id] }}).exec()
       .then(function (notes) {
         var items = notes.map(function (note) {
           return url.parse(note.url).pathname;

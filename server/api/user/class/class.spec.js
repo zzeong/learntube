@@ -4,19 +4,46 @@ var should = require('should');
 var app = require('../../../app');
 var request = require('supertest');
 var mongoose = require('mongoose');
+var auth = require('../../../auth/auth.service');
 var User = require('../../../models/user.model');
 var Class = require('../../../models/class.model');
 
-var userData = {
-  name: 'Fake User',
-  email: 'test@test.com',
-  password: 'password',
-  classes: []
-};
+var Promise = mongoose.Promise = require('promise');
 
 describe('REST API:', function () {
   var user;
-  var id = mongoose.Types.ObjectId();
+
+  before(function (done) {
+    Promise.all([
+      User.remove({}),
+      Class.remove({})
+    ])
+    .then(function () {
+      user = new User({
+        name: 'Fake User',
+        email: 'test@test.com',
+        password: 'password',
+        classes: []
+      });
+
+      return user.save();
+    })
+    .then(function () {
+      user = user.toObject();
+      user.token = auth.signToken(user._id);
+      done();
+    })
+    .catch(function (err) { done(err); });
+  });
+
+  after(function (done) {
+    Promise.all([
+      User.remove({}),
+      Class.remove({})
+    ])
+    .then(function () { done(); })
+    .catch(function (err) { done(err); });
+  });
 
   describe('POST /api/users/:id/classes', function () {
     var params;
@@ -31,7 +58,8 @@ describe('REST API:', function () {
 
       it('should return saved class', function (done) {
         request(app)
-        .post('/api/users/' + id + '/classes/')
+        .post('/api/users/' + user._id + '/classes/')
+        .set('Authorization', 'Bearer ' + user.token)
         .send(params)
         .expect(201)
         .expect('Content-Type', /json/)
@@ -39,7 +67,7 @@ describe('REST API:', function () {
           if (err) { return done(err); }
           res.body.should.have.property('_id');
           res.body.should.have.property('userId');
-          res.body.userId.should.equal(id + '');
+          res.body.userId.should.equal(user._id + '');
           res.body.should.have.property('playlistId');
           res.body.playlistId.should.equal(params.playlistId);
           done();
@@ -52,10 +80,10 @@ describe('REST API:', function () {
   describe('GET /api/users/:id/classes/', function () {
     beforeEach(function (done) {
       var classes = [{
-        userId: id,
+        userId: user._id,
         playlistId: 'Q1W2'
       }, {
-        userId: id,
+        userId: user._id,
         playlistId: 'E3R4'
       }];
 
@@ -69,7 +97,8 @@ describe('REST API:', function () {
 
     it('should get all classes that have 2 items', function (done) {
       request(app)
-      .get('/api/users/' + id + '/classes/')
+      .get('/api/users/' + user._id + '/classes/')
+      .set('Authorization', 'Bearer ' + user.token)
       .expect(200)
       .expect('Content-Type', /json/)
       .end(function (err, res) {
@@ -87,7 +116,7 @@ describe('REST API:', function () {
       Class.remove({})
       .then(function () {
         var classe = new Class({
-          userId: id,
+          userId: user._id,
           playlistId: 'ZZZ'
         });
         return classe.save();
@@ -101,7 +130,8 @@ describe('REST API:', function () {
 
     it('should makes Class collection has no docs after class is removed', function (done) {
       request(app)
-      .delete('/api/users/' + id + '/classes/' + cid)
+      .delete('/api/users/' + user._id + '/classes/' + cid)
+      .set('Authorization', 'Bearer ' + user.token)
       .expect(204)
       .end(function (err, res) {
         if (err) { return done(err); }

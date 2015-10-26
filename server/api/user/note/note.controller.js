@@ -4,7 +4,6 @@ var _ = require('lodash');
 var url = require('url');
 var crypto = require('crypto');
 var knox = require('knox');
-var User = require('../../../models/user.model');
 var Note = require('../../../models/note.model');
 var Rating = require('../../../models/rating.model');
 var Promise = require('promise');
@@ -41,50 +40,45 @@ exports.index = function (req, res) {
 };
 
 exports.create = function (req, res) {
-  User.findById(req.params.id, function (err, user) {
-    if (err) { return res.status(500).send(err); }
-    if (!user) { return res.status(404).send('Not Found'); }
+  var hash = createRandomHash();
+  var uploadPath = '/' + req.user.email + '/' + hash;
 
-    var hash = createRandomHash();
-    var uploadPath = '/' + user.email + '/' + hash;
+  s3.putFile(req.files.file.path, uploadPath, {
+    'Content-Type': req.files.file.type,
+    'x-amz-acl': 'public-read'
+  }, function (error, response) {
+    if (error) { return res.status(500).send(error); }
 
-    s3.putFile(req.files.file.path, uploadPath, {
-      'Content-Type': req.files.file.type,
-      'x-amz-acl': 'public-read'
-    }, function (error, response) {
+    var uploadUrl = s3.url(uploadPath);
+    console.log('[S3]:PUT saved to %s', uploadUrl);
+
+    var note = new Note({
+      userId: req.params.id,
+      videoId: req.body.videoId,
+      playlistId: req.body.playlistId,
+      type: req.body.type,
+      resourceType: req.files.file.headers['content-type'],
+      url: uploadUrl
+    });
+
+    note.save(function (error) {
       if (error) { return res.status(500).send(error); }
 
-      var uploadUrl = s3.url(uploadPath);
-      console.log('[S3]:PUT saved to %s', uploadUrl);
-
-      var note = new Note({
-        userId: req.params.id,
-        videoId: req.body.videoId,
-        playlistId: req.body.playlistId,
-        type: req.body.type,
-        resourceType: req.files.file.headers['content-type'],
-        url: uploadUrl
-      });
-
-      note.save(function (error) {
-        if (error) { return res.status(500).send(error); }
-
-        var query = { playlistId: note.playlistId };
-        Rating.findOneAndUpdate(query, {
-          $setOnInsert: query
-        }, {
-          new: true,
-          upsert: true
-        })
-        .exec()
-        .then(function (rating) {
-          rating.update({ $inc: { points: 1 }}, function (error) {
-            if (error) { return res.status(500).send(error); }
-            return res.status(201).json(note);
-          });
-        })
-        .catch(handleError(res));
-      });
+      var query = { playlistId: note.playlistId };
+      Rating.findOneAndUpdate(query, {
+        $setOnInsert: query
+      }, {
+        new: true,
+        upsert: true
+      })
+      .exec()
+      .then(function (rating) {
+        rating.update({ $inc: { points: 1 }}, function (error) {
+          if (error) { return res.status(500).send(error); }
+          return res.status(201).json(note);
+        });
+      })
+      .catch(handleError(res));
     });
   });
 };
