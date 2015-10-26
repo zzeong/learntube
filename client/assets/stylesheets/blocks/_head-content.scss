@@ -1,5 +1,6 @@
 .head-content {
   background-color: $white;
+
   @include respond-to('medium') {
     height: 400px;
     padding-top: 10px;
@@ -9,5 +10,7 @@
 }
 
 .head-content__video {
-  float: left;
+  @include respond-to('medium') {
+    float: left;
+  }
 }

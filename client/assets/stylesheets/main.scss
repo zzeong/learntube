@@ -12,10 +12,14 @@
 //      pages: page-specific styles
 
 // injector
-@import 'utils/variables';
 @import 'utils/functions';
 @import 'utils/mixins';
-@import 'blocks/arrow-icon';
+@import 'utils/variables';
+@import 'base/base';
+@import 'base/helpers';
+@import 'base/override';
+@import 'base/typography';
+@import 'base/fonts';
 @import 'blocks/checkbox';
 @import 'blocks/class-area';
 @import 'blocks/class-grid';
@@ -31,8 +35,9 @@
 @import 'blocks/intro';
 @import 'blocks/lecture-cont-detail';
 @import 'blocks/lecture-content-bottom';
+@import 'blocks/lecture-content';
 @import 'blocks/lecturelist-item-info';
-@import 'blocks/add-btn';
+@import 'blocks/lecturelist-item';
 @import 'blocks/lecturelist';
 @import 'blocks/md-menu';
 @import 'blocks/note-content-viewer';
@@ -50,13 +55,8 @@
 @import 'blocks/web-search-content';
 @import 'blocks/writer-info';
 @import 'blocks/youtube-video';
-@import 'blocks/lecture-content';
+@import 'blocks/add-btn';
 @import 'blocks/add-dialog';
-@import 'blocks/lecturelist-item';
-@import 'base/base';
-@import 'base/helpers';
-@import 'base/fonts';
-@import 'base/override';
-@import 'base/typography';
+@import 'blocks/arrow-icon';
 @import 'visualization/bars';
 // endinjector
