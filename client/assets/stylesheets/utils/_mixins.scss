@@ -21,15 +21,6 @@
   }
 }
 
-
-// Make a context based selector a little more friendly
-@mixin when-inside($context) {
-  #{$context} & {
-    @content;
-  }
-}
-
-
 // Responsive manager
 @mixin respond-to($breakpoint) {
   $query: map-get($breakpoints, $breakpoint);
@@ -42,4 +33,3 @@
     @content;
   }
 }
-

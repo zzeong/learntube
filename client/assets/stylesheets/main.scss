@@ -13,12 +13,8 @@
 
 // injector
 @import 'utils/variables';
-@import 'utils/mixins';
 @import 'utils/functions';
-@import 'blocks/lecture-info';
-@import 'blocks/writer-info';
-@import 'blocks/add-btn';
-@import 'blocks/add-dialog';
+@import 'utils/mixins';
 @import 'blocks/arrow-icon';
 @import 'blocks/checkbox';
 @import 'blocks/class-area';
@@ -37,9 +33,8 @@
 @import 'blocks/lecture-cont-bottom';
 @import 'blocks/lecture-cont-detail';
 @import 'blocks/lecture-content';
-@import 'blocks/web-search-cont';
 @import 'blocks/lecturelist-item-info';
-@import 'blocks/lecturelist-item';
+@import 'blocks/add-btn';
 @import 'blocks/lecturelist';
 @import 'blocks/md-menu';
 @import 'blocks/my-note';
@@ -56,11 +51,15 @@
 @import 'blocks/tutor-intro-channel';
 @import 'blocks/tutor-intro';
 @import 'blocks/video-box';
-@import 'base/fonts';
+@import 'blocks/web-search-cont';
+@import 'blocks/writer-info';
+@import 'blocks/lecture-info';
+@import 'blocks/add-dialog';
+@import 'blocks/lecturelist-item';
 @import 'base/typography';
-@import 'base/override';
-@import 'base/helpers';
+@import 'base/fonts';
 @import 'base/base';
-@import 'components/bars';
-@import 'components/buttons';
+@import 'base/helpers';
+@import 'base/override';
+@import 'visualization/bars';
 // endinjector
