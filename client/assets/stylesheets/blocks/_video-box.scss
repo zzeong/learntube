@@ -10,21 +10,5 @@
     width: 660px;
     height: 360px;
     margin: 0 auto;
-    float: left;
-  }
-}
-
-.video-box__lecture {
-  max-width: 640px;
-  margin: 0 auto;
-
-  @include respond-to('small') {
-    margin: $panel-offset auto 0;
-  }
-
-  @include respond-to('medium') {
-    width: 660px;
-    height: 360px;
-    margin: 0 auto;
   }
 }

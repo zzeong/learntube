@@ -23,7 +23,6 @@
 @import 'blocks/container';
 @import 'blocks/d3-visual-content';
 @import 'blocks/dialog';
-@import 'blocks/embed';
 @import 'blocks/file-uploader';
 @import 'blocks/footer';
 @import 'blocks/head-content';
@@ -31,9 +30,9 @@
 @import 'blocks/inner-content';
 @import 'blocks/intro';
 @import 'blocks/lecture-cont-detail';
-@import 'blocks/lecture-content';
+@import 'blocks/lecture-content-bottom';
+@import 'blocks/lecturelist-item-info';
 @import 'blocks/add-btn';
-@import 'blocks/lecturelist-item';
 @import 'blocks/lecturelist';
 @import 'blocks/md-menu';
 @import 'blocks/note-content-viewer';
@@ -50,9 +49,10 @@
 @import 'blocks/video-box';
 @import 'blocks/web-search-content';
 @import 'blocks/writer-info';
-@import 'blocks/lecture-content-bottom';
+@import 'blocks/youtube-video';
+@import 'blocks/lecture-content';
 @import 'blocks/add-dialog';
-@import 'blocks/lecturelist-item-info';
+@import 'blocks/lecturelist-item';
 @import 'base/base';
 @import 'base/helpers';
 @import 'base/fonts';

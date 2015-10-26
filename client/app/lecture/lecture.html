@@ -1,11 +1,11 @@
-<div id="sidenav" ng-include="'components/sidenav/sidenav.html'"></div>
-<div class="header" ng-include="'components/toolbar/toolbar.html'"></div>
+<div ng-include="'components/sidenav/sidenav.html'"></div>
+<div ng-include="'components/toolbar/toolbar.html'"></div>
 
 <md-content>
 
-  <div class="video-box__lecture embed-item-limit-width">
-    <div class="embed-responsive embed-responsive-16by9">
-      <youtube-video class="embed-responsive__item" video-id="videoId" player-vars="playerVars"></youtube-video>
+  <div class="video-box">
+    <div class="youtube-video">
+      <youtube-video class="youtube-video__item" video-id="videoId" player-vars="playerVars"></youtube-video>
     </div>
   </div>
 
