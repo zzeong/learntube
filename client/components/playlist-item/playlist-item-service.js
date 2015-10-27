@@ -39,7 +39,6 @@ angular.module('learntubeApp')
 
       return GApi.execute('youtube', 'playlistItems.list', opts)
       .then(function (res) {
-        console.log(res);
         pageToken = res.nextPageToken || null;
         return applyDuration(res.items);
       });

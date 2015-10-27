@@ -27,7 +27,7 @@ angular.module('learntubeApp')
     .catch(console.error);
   };
 
-  $scope.loadMore = function (token) {
+  $scope.loadMore = function () {
     $scope.httpBusy = true;
 
     PlaylistItem.get({ playlistId: $scope.playlistId }, true)
