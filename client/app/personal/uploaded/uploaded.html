@@ -11,7 +11,7 @@
       <img ng-src="{{ classe.snippet.thumbnails.high.url }}" ng-click="go('UploadedLectureList', { pid: classe.id })"
       class="md-card-image" alt="Class Image">
       <md-card-content>
-        <h2 class="md-title">{{ classe.snippet.title }}</h2>
+        <h2 class="md-title ellipsis personal-class-card__title">{{ classe.snippet.title }}</h2>
       </md-card-content>
       <div class="md-actions" layout="row" layout-align="end center">
         <md-button class="md-warn" ng-click="deleteClass(classe)">Delete</md-button>
