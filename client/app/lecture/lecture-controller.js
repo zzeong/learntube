@@ -34,7 +34,9 @@ angular.module('learntubeApp')
   })
   .catch(console.error);
 
-  PlaylistItem.get({ playlistId: $scope.playlistId }, true)
+  PlaylistItem.get({ playlistId: $scope.playlistId }, {
+    initialToken: true,
+  })
   .then(function (list) {
     $scope.lectureList = list;
   })
