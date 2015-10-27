@@ -7,14 +7,13 @@ var mongoose = require('mongoose');
 var User = require('../../../models/user.model');
 var Note = require('../../../models/note.model');
 var Rating = require('../../../models/rating.model');
-var path = require('path');
 var auth = require('../../../auth/auth.service');
 
 var Promise = mongoose.Promise = require('promise');
 
 
 describe('REST API:', function () {
-  var user, noteContents, videoId, playlistId;
+  var user, videoId, playlistId;
 
   before(function (done) {
     videoId = 'sMKoNBRZM1M';
@@ -61,7 +60,7 @@ describe('REST API:', function () {
       request(app)
       .delete('/api/users/' + user._id + '/notes/' + nid)
       .set('Authorization', 'Bearer ' + user.token)
-      .end(function (err, res) {
+      .end(function (err) {
         if (err) { return done(err); }
 
         Rating.remove({})
@@ -115,7 +114,7 @@ describe('REST API:', function () {
       Rating.create({
         playlistId: playlistId,
         points: 1
-      }, function (err, rating) {
+      }, function (err) {
         if (err) { return done(err); }
 
         request(app)
@@ -166,7 +165,7 @@ describe('REST API:', function () {
     after(function (done) {
       request(app)
       .delete('/api/users/' + user._id + '/notes/' + nid)
-      .end(function (err, res) {
+      .end(function (err) {
         if (err) { return done(err); }
         done();
       });
@@ -244,7 +243,7 @@ describe('REST API:', function () {
       request(app)
       .delete('/api/users/' + user._id + '/notes/' + nid)
       .set('Authorization', 'Bearer ' + user.token)
-      .end(function (err, res) {
+      .end(function (err) {
         if (err) { return done(err); }
         done();
       });
@@ -300,7 +299,7 @@ describe('REST API:', function () {
       .delete('/api/users/' + user._id + '/notes/' + nid)
       .set('Authorization', 'Bearer ' + user.token)
       .expect(204)
-      .end(function (err, res) {
+      .end(function (err) {
         if (err) { return done(err); }
         done();
       });
@@ -318,7 +317,7 @@ describe('REST API:', function () {
         .delete('/api/users/' + user._id + '/notes/' + nid)
         .set('Authorization', 'Bearer ' + user.token)
         .expect(204)
-        .end(function (err, res) {
+        .end(function (err) {
           if (err) { return done(err); }
 
           Rating.findOne({ playlistId: playlistId }).exec()
@@ -336,7 +335,7 @@ describe('REST API:', function () {
       .delete('/api/users/' + user._id + '/notes/' + nid)
       .set('Authorization', 'Bearer ' + user.token)
       .expect(204)
-      .end(function (err, res) {
+      .end(function (err) {
         if (err) { return done(err); }
 
         Rating.findOne({ playlistId: playlistId }).exec()

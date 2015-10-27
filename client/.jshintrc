@@ -1,0 +1,23 @@
+{
+  "extends": "../.jshintrc",
+  "browser": true,
+  "globals": {
+    "angular": true,
+    "inject": true,
+    "jasmine": true,
+    "_": true,
+    "describe": true,
+    "xdescribe": true,
+    "fdescribe": true,
+    "beforeAll": true,
+    "beforeEach": true,
+    "afterAll": true,
+    "afterEach": true,
+    "it": true,
+    "xit": true,
+    "fit": true,
+    "expect": true,
+    "spyOn": true,
+    "CKEDITOR": true
+  }
+}

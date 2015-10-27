@@ -1,14 +1,6 @@
 'use strict';
 
-var _ = require('lodash');
 var Class = require('../../../../models/class.model');
-
-
-exports.index = function (req, res) {
-};
-
-exports.show = function (req, res) {
-};
 
 exports.create = function (req, res) {
   Class.findById(req.params.cid, function (err, classe) {
@@ -22,10 +14,3 @@ exports.create = function (req, res) {
     });
   });
 };
-
-exports.update = function (req, res) {
-};
-
-exports.destroy = function (req, res) {
-};
-

@@ -110,7 +110,7 @@ angular.module('learntubeApp')
         videoId: $scope.videoId
       });
     })
-    .then(function (res) {
+    .then(function () {
       console.log('Saved Lecture');
     })
     .catch(console.error);

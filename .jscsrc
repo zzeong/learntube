@@ -75,5 +75,6 @@
   "requireSpacesInFunctionDeclaration": {
     "beforeOpeningCurlyBrace": true
   },
-  "disallowMultipleLineBreaks": false
+  "disallowMultipleLineBreaks": false,
+  "disallowUnusedParams": true
 }

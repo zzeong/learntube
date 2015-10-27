@@ -12,9 +12,6 @@ exports.index = function (req, res) {
   });
 };
 
-exports.show = function (req, res) {
-};
-
 exports.create = function (req, res) {
   var data = {
     userId: req.params.id,
@@ -31,9 +28,6 @@ exports.create = function (req, res) {
     }
     return res.status(200).json(classe);
   });
-};
-
-exports.update = function (req, res) {
 };
 
 exports.destroy = function (req, res) {

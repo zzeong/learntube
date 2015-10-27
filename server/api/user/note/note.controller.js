@@ -6,7 +6,6 @@ var crypto = require('crypto');
 var knox = require('knox');
 var Note = require('../../../models/note.model');
 var Rating = require('../../../models/rating.model');
-var Promise = require('promise');
 var config = require('../../../config/environment');
 
 var s3 = knox.createClient({
@@ -46,7 +45,7 @@ exports.create = function (req, res) {
   s3.putFile(req.files.file.path, uploadPath, {
     'Content-Type': req.files.file.type,
     'x-amz-acl': 'public-read'
-  }, function (error, response) {
+  }, function (error) {
     if (error) { return res.status(500).send(error); }
 
     var uploadUrl = s3.url(uploadPath);
@@ -125,7 +124,7 @@ exports.update = function (req, res) {
     s3.putFile(req.files.file.path, uploadPath, {
       'Content-Type': req.files.file.type,
       'x-amz-acl': 'public-read',
-    }, function (error, response) {
+    }, function (error) {
       if (error) { return res.status(500).send(error); }
 
       var uploadUrl = s3.url(uploadPath);

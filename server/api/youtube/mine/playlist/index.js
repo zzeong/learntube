@@ -2,7 +2,6 @@
 
 var express = require('express');
 var controller = require('./playlist.controller');
-var auth = require('../../../../auth/auth.service');
 
 var router = express.Router();
 

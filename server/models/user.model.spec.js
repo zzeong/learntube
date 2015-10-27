@@ -1,11 +1,9 @@
 'use strict';
 
 var should = require('should');
-var app = require('../app');
 var User = require('./user.model');
 
-var mongoose = require('mongoose');
-var Promise = mongoose.Promise = require('promise');
+require('mongoose').Promise = require('promise');
 
 var user = new User({
   name: 'Fake User',

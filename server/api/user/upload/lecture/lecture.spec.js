@@ -1,6 +1,6 @@
 'use strict';
 
-var should = require('should');
+require('should');
 var app = require('../../../../app');
 var request = require('supertest');
 var mongoose = require('mongoose');
@@ -77,7 +77,7 @@ describe('REST API:', function () {
               }]
             });
 
-            upload.save(function (err) {
+            upload.save(function () {
               done();
             });
           }
@@ -96,7 +96,7 @@ describe('REST API:', function () {
       .delete('/api/users/' + user._id + '/uploads/' + upload._id + '/lectures/' + upload.lectures[0]._id)
       .set('Authorization', 'Bearer ' + user.token)
       .expect(204)
-      .end(function (err, res) {
+      .end(function (err) {
         if (err) { return done(err); }
         done();
       });

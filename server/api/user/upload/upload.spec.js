@@ -1,6 +1,6 @@
 'use strict';
 
-var should = require('should');
+require('should');
 var app = require('../../../app');
 var request = require('supertest');
 var mongoose = require('mongoose');
@@ -95,7 +95,7 @@ describe('REST API:', function () {
       });
 
       upload.save()
-      .then(function (err) {
+      .then(function () {
         request(app)
         .post('/api/users/' + user._id + '/uploads')
         .set('Authorization', 'Bearer ' + user.token)
@@ -145,7 +145,7 @@ describe('REST API:', function () {
         })
         .expect(201)
         .expect('Content-Type', /json/)
-        .end(function (err, res) {
+        .end(function (err) {
           if (err) { return done(err); }
           done();
         });

@@ -75,12 +75,12 @@ module.exports = function (grunt) {
         files: ['server/**/*.js'],
         tasks: ['env:test', 'mochaTest:test']
       },
-      jscs: {
+      lintJS: {
         files: [
           '<%= yeoman.client %>/{app,components}/**/*.js',
           'server/**/*.js'
         ],
-        tasks: ['jscs']
+        tasks: ['jscs', 'jshint']
       },
       unitTest: {
         files: [
@@ -142,29 +142,32 @@ module.exports = function (grunt) {
       },
       client: {
         files: {
-          src: [
-            '<%= yeoman.client %>/{app,components}/**/*.js',
-            '!<%= yeoman.client %>/{app,components}/**/*_test.js'
-          ]
+          src: ['<%= yeoman.client %>/{app,components}/**/*.js']
         },
       },
       server: {
         files: {
-          src: [
-            'server/**/*.js',
-            '!server/**/*.spec.js'
-          ]
-        },
-      },
-      test: {
-        files: {
-          src: [
-            '<%= yeoman.client %>/{app,components}/**/*_test.js',
-            'server/**/*.spec.js'
-          ]
+          src: ['server/**/*.js']
         },
       },
       etc: ['./Gruntfile.js', './karma.conf.js', './protractor.conf.js'],
+    },
+    jshint: {
+      options: {
+        jshintrc: '.jshintrc',
+        reporter: require('jshint-stylish')
+      },
+      client: {
+        options: { jshintrc: '<%= yeoman.client %>/.jshintrc' },
+        src: ['<%= yeoman.client %>/{app,components}/**/*.js']
+      },
+      server: {
+        options: { jshintrc: 'server/.jshintrc' },
+        src: ['server/**/*.js']
+      },
+      etc: {
+        src: ['./Gruntfile.js', './karma.conf.js', './protractor.conf.js'],
+      },
     },
 
     // Empties folders to start fresh
@@ -679,7 +682,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('watch:nonTest', function () {
-    delete grunt.config.data.watch.jscs;
+    delete grunt.config.data.watch.lintJS;
     delete grunt.config.data.watch.unitTest;
     delete grunt.config.data.watch.mochaTest;
     grunt.task.run('watch');
@@ -772,11 +775,12 @@ module.exports = function (grunt) {
       if (option === 'watch') {
         return grunt.task.run([
           'jscs',
-          'watch:jscs'
+          'jshint',
+          'watch:lintJS'
         ]);
       }
 
-      return grunt.task.run(['jscs']);
+      return grunt.task.run(['jscs', 'jshint']);
     } else if (target === 'coverage') {
       if (option === 'server') {
         return grunt.task.run([
@@ -798,12 +802,14 @@ module.exports = function (grunt) {
     } else if (target === 'ci') {
       return grunt.task.run([
         'jscs',
+        'jshint',
         'test:coverage:server',
         'test:coverage:client'
       ]);
     } else {
       grunt.task.run([
         'jscs',
+        'jshint',
         'test:server',
         'test:client'
       ]);
@@ -839,6 +845,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('default', [
     'newer:jscs',
+    'newer:jshint',
     'build'
   ]);
 };

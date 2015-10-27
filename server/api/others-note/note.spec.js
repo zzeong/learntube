@@ -1,7 +1,6 @@
 'use strict';
 
-var _ = require('lodash');
-var should = require('should');
+require('should');
 var knox  = require('knox');
 var request = require('supertest');
 var mongoose = require('mongoose');
@@ -73,10 +72,6 @@ describe('REST API:', function () {
   });
 
   describe('GET /api/notes', function () {
-    var params = {
-      playlistId: 'asdf',
-    };
-
     before(function (done) {
       request(app)
       .post('/api/users/' + users[0]._id + '/notes')
@@ -84,7 +79,7 @@ describe('REST API:', function () {
       .field('playlistId', 'PLASDF')
       .field('videoId', 'QWER1')
       .attach('file', 'test/fixtures/dummy.html')
-      .end(function (err, res) {
+      .end(function (err) {
         if (err) { return done(err); }
 
         request(app)
@@ -93,7 +88,7 @@ describe('REST API:', function () {
         .field('playlistId', 'PLASDF')
         .field('videoId', 'QWER1')
         .attach('file', 'test/fixtures/dummy.html')
-        .end(function (err, res) {
+        .end(function (err) {
           if (err) { return done(err); }
 
           request(app)
@@ -102,7 +97,7 @@ describe('REST API:', function () {
           .field('playlistId', 'PLASDF')
           .field('videoId', 'QWER2')
           .attach('file', 'test/fixtures/dummy.html')
-          .end(function (err, res) {
+          .end(function (err) {
             if (err) { return done(err); }
             done();
           });

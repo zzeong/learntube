@@ -1,10 +1,6 @@
 'use strict';
 
 var Note = require('../../models/note.model');
-var knox = require('knox');
-var config = require('../../config/environment');
-var Promise = require('promise');
-
 
 exports.index = function (req, res) {
   Note.find(req.query)

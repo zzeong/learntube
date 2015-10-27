@@ -8,10 +8,7 @@ var router = express.Router({ mergeParams: true });
 router.use('/:cid/lectures', require('./lecture'));
 
 router.get('/', controller.index);
-router.get('/:cid', controller.show);
 router.post('/', controller.create);
-router.put('/:cid', controller.update);
-router.patch('/:cid', controller.update);
 router.delete('/:cid', controller.destroy);
 
 module.exports = router;

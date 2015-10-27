@@ -1,6 +1,5 @@
 'use strict';
 
-var _ = require('lodash');
 var Upload = require('../../../models/upload.model');
 var config = require('../../../config/environment');
 var knox = require('knox');

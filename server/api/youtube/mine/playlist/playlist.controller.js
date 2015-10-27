@@ -4,8 +4,7 @@ var _ = require('lodash');
 var g = require('../../../../components/google-api');
 var config = require('../../../../config/environment');
 
-var mongoose = require('mongoose');
-var Promise = mongoose.Promise = require('promise');
+require('mongoose').Promise = require('promise');
 
 
 /**

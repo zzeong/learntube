@@ -1,9 +1,9 @@
 'use strict';
 
-var should = require('should');
+require('should');
 var app = require('../../../../app');
 var request = require('supertest');
-var mongoose = require('mongoose');
+var Promise = require('promise');
 var auth = require('../../../../auth/auth.service.js');
 var Class = require('../../../../models/class.model');
 var User = require('../../../../models/user.model');
@@ -12,7 +12,7 @@ describe('REST API:', function () {
   var user;
 
   describe('POST /api/users/:id/classes/:cid/lectures/', function () {
-    var classData, cid;
+    var cid;
 
     before(function (done) {
       Promise.all([

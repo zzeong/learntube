@@ -19,7 +19,7 @@ module.exports = function (app) {
   app.use('/auth', require('./auth'));
 
   // Error handling
-  app.use(function (err, req, res, next) {
+  app.use(function (err, req, res, next) { // jscs:ignore disallowUnusedParams
     if (err.name === 'UnauthorizedError') {
       return res.status(401).json({ message: 'expired token' });
     }

@@ -1,6 +1,6 @@
 'use strict';
 
-var should = require('should');
+require('should');
 var app = require('../../../app');
 var request = require('supertest');
 var mongoose = require('mongoose');
@@ -133,7 +133,7 @@ describe('REST API:', function () {
       .delete('/api/users/' + user._id + '/classes/' + cid)
       .set('Authorization', 'Bearer ' + user.token)
       .expect(204)
-      .end(function (err, res) {
+      .end(function (err) {
         if (err) { return done(err); }
         Class.find({}).exec()
         .then(function (classes) {
