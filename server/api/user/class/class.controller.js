@@ -3,6 +3,8 @@
 var _ = require('lodash');
 var Class = require('../../../models/class.model');
 
+require('mongoose').Promise = require('promise');
+
 exports.index = function (req, res) {
   var data = _.assign(req.query, { userId: req.params.id });
 
@@ -12,21 +14,23 @@ exports.index = function (req, res) {
   });
 };
 
-exports.create = function (req, res) {
+exports.create = function (req, res, next) {
   var data = {
     userId: req.params.id,
     playlistId: req.body.playlistId
   };
 
-  Class.findOne(data, function (err, classe) {
-    if (err) { return res.status(500).send(err); }
-    if (!classe) {
-      return Class.create(data, function (createErr, createdClass) {
-        if (createErr) { return res.status(500).send(createErr); }
-        return res.status(201).json(createdClass);
-      });
+  Class.create(data)
+  .then(function (classe) {
+    return res.status(201).json(classe);
+  })
+  .catch(function (err) {
+    console.error(err.stack);
+    var error = new Error();
+    if (err.code === 11000) {
+      error.message = 'item already exists';
     }
-    return res.status(200).json(classe);
+    return next(error);
   });
 };
 

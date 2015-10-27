@@ -8,7 +8,7 @@ var ClassSchema = new Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User'
   },
-  playlistId: String,
+  playlistId: { type: String, unique: true },
   addedAt: { type: Date, default: Date.now },
   lectures: [{
     videoId: String,

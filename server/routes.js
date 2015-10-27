@@ -20,9 +20,11 @@ module.exports = function (app) {
 
   // Error handling
   app.use(function (err, req, res, next) { // jscs:ignore disallowUnusedParams
+    console.error(err.stack);
     if (err.name === 'UnauthorizedError') {
       return res.status(401).json({ message: 'expired token' });
     }
+    return res.status(500).json({ message: err.message });
   });
 
   // All undefined asset or api routes should return a 404
