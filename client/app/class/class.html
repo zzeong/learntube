@@ -48,23 +48,23 @@
       <md-divider></md-divider>
 
       <!-- 클래스 내의 강의 목록 -->
-      <div class="lecturelist">
-        <div class="lecturelist__title">
+      <div class="lecturelist-board">
+        <div class="lecturelist-board__title">
           <h3>Lectures in this class</h3>
         </div>
 
 
-        <md-list class="numbering">
-          <div class="lecturelist__list" infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
+        <md-list class="numbering lecturelist-board__list">
+          <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
           infinite-scroll-distance="1">
 
-            <div class="lecturelist-item">
+            <div class="lecturelist">
               <md-list-item class="md-2-line" ng-repeat="lecture in lectureList" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
 
-                <img class="lecturelist-item__thumbnail" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
+                <img class="lecturelist__thumbnail" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
                 alt="Lecture Thumbnail">
 
-                <!-- lecturelist-item.. is empty class -->
+                <!-- lecturelist.. is empty class -->
                 <div class="md-list-item-text">
                   <h3>{{ lecture.snippet.title }}</h3>
                   <p>{{ lecture.contentDetails.duration | humanable }}</p>

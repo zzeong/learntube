@@ -27,9 +27,9 @@
             <md-checkbox ng-click="pushLecture(lecture)"></md-checkbox>
           </div>
 
-          <div class="lecturelist-item">
+          <div class="lecturelist">
             <md-list-item class="md-2-line" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
-              <img class="lecturelist-item__thumbnail" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
+              <img class="lecturelist__thumbnail" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
               alt="Lecture Thumbnail">
 
               <div class="md-list-item-text">

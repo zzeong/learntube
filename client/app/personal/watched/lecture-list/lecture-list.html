@@ -21,11 +21,11 @@
         <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
         infinite-scroll-distance="1">
 
-          <div class="lecturelist-item" ng-repeat="lecture in lectureList | onlyPublic">
+          <div class="lecturelist" ng-repeat="lecture in lectureList | onlyPublic">
             <md-list-item class="md-2-line" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })"
-            ng-class="{'lecturelist-item--highlight': lecture.highlight}">
+            ng-class="{'lecturelist--highlight': lecture.highlight}">
 
-              <img class="lecturelist-item__thumbnail" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
+              <img class="lecturelist__thumbnail" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
               alt="Lecture Thumbnail">
               <div class="md-list-item-text">
                 <div class="second-icon-padding">
