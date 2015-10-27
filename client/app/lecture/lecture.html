@@ -37,18 +37,18 @@
         <md-icon md-font-set="material-icons" ng-click="showDetails()" ng-show="details"
         class="arrow-icon">arrow_drop_up</md-icon>
 
-        <div class="lecture-cont-detail" ng-show="details">
+        <div class="lecture-content-detail" ng-show="details">
           <div class="md-body-1" ng-bind-html="item.snippet.description"></div>
           <!--
           <p class="md-body-1">{{ item.snippet.description }}</p>
           -->
-          <span class="lecture-cont-detail__ch-title md-body-2">Channel : </span>
+          <span class="lecture-content-detail__ch-title md-body-2">Channel : </span>
           <span class="md-body-1">{{ item.snippet.channelTitle }}</span>
           <br>
-          <span class="lecture-cont-detail__hits">Hits : </span>
+          <span class="lecture-content-detail__hits">Hits : </span>
           <span class="md-body-1">{{ item.statistics.viewCount }}</span>
           <br>
-          <span class="lecture-cont-detail__upload-date md-body-2">Upload : </span>
+          <span class="md-body-2">Upload : </span>
           <span class="md-body-1">{{ publishedDate }}</span>
           <br>
 
@@ -128,8 +128,7 @@
         <div class="md-padding" ng-repeat="note in notes">
           <div ng-hide="note.isEditing">
             <div class="writer-info">
-              <img class="writer-info__thumb" ng-src="{{ getUserImgPath(getCurrentUser()) }}"
-              alt="Account Image">
+              <img class="writer-info__thumb" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image">
               <div class="writer-info__name">
                 <p class="md-subhead">{{ getCurrentUser().name }}</p>
               </div>
