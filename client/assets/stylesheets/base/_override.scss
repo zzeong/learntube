@@ -1,4 +1,4 @@
-// scss-lint:disable QualifyingElement
+// scss-lint:disable QualifyingElement SelectorDepth
 md-list-item {
   .md-list-item-text > .second-icon-padding {
     $md-icon-wrapper-size: 48px;
@@ -17,5 +17,10 @@ md-list-item {
   md-list-item.md-2-line,
   md-list-item.md-2-line > .md-no-style {
     height: auto;
+  }
+
+  md-list-item.md-2-line .md-list-item-text h3,
+  md-list-item.md-2-line > .md-no-style .md-list-item-text h3 {
+    white-space: normal;
   }
 }
