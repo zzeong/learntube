@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('LectureCtrl', function ($scope, $stateParams, $http, Auth, Note, GoogleConst, GApi, Upload, PlaylistItem) {
+.controller('LectureCtrl', function ($scope, $stateParams, $http, Auth, Note, GoogleConst, GApi, Upload, PlaylistItem, $mdToast) {
   $scope.videoId = $stateParams.vid;
   $scope.playlistId = $stateParams.pid;
   $scope.playerVars = {
@@ -103,6 +103,8 @@ angular.module('learntubeApp')
   .catch(console.error);
 
   $scope.completeLecture = function () {
+    $scope.showSimpleToast();
+
     $http.post('/api/users/' + $scope.getCurrentUser()._id + '/classes/', {
       userId: $scope.getCurrentUser()._id
     })
@@ -204,4 +206,17 @@ angular.module('learntubeApp')
     var guestImgPath = '/assets/images/guest.png';
     return _.has(user, 'google') ? user.google.image.url : guestImgPath;
   };
+
+  $scope.showSimpleToast = function () {
+
+    var positionArr = 'top right';
+
+    $mdToast.show(
+      $mdToast.simple()
+        .content('Lecture Complete!')
+        .position(positionArr)
+        .hideDelay(3000)
+    );
+  };
+
 });
