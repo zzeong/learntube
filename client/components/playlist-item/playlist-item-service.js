@@ -1,47 +1,55 @@
 'use strict';
 
 angular.module('learntubeApp')
-.factory('PlaylistItem', function (GApi, GoogleConst) {
+.factory('PlaylistItem', function (GApi, GoogleConst, $filter) {
   var pageToken = null;
 
-  var serializeIds = function (list) {
+  function serializeIds(list) {
     return list.map(function (item) {
       return item.snippet.resourceId.videoId;
     }).join(',');
-  };
-  var applyDuration = function (list) {
+  }
+  function applyDuration(list) {
     var ids = serializeIds(list);
 
     return GApi.execute('youtube', 'videos.list', {
       key: GoogleConst.browserKey,
-      part: 'contentDetails',
+      part: 'id,snippet,contentDetails,status',
       id: ids,
-      fields: 'items(contentDetails(duration))',
+      fields: 'items(id,snippet,contentDetails(duration),status)',
     })
-    .then(function (response) {
+    .then(function (res) {
       list.forEach(function (item, i) {
-        item.contentDetails = response.items[i].contentDetails;
+        item.contentDetails = res.items[i].contentDetails;
       });
       return list;
     });
-  };
+  }
 
   return {
-    get: function (options, withDuration) {
-      var opts = _.merge({
-        key: GoogleConst.browserKey,
-        part: 'snippet',
-        maxResults: 20,
-        fields: 'items(contentDetails,snippet,status),nextPageToken',
-        pageToken: pageToken,
-      }, options);
-      withDuration = withDuration || false;
+    get: function (p, opts) {
+      if (!opts) { opts = {}; }
+      opts.initialToken = opts.initialToken || false;
 
-      return GApi.execute('youtube', 'playlistItems.list', opts)
+      pageToken = opts.initialToken ? null : pageToken;
+
+      var params = _.merge({
+        key: GoogleConst.browserKey,
+        part: 'snippet,status',
+        maxResults: 20,
+        fields: 'items(snippet,status),nextPageToken',
+        pageToken: pageToken,
+      }, p);
+
+      return GApi.execute('youtube', 'playlistItems.list', params)
       .then(function (res) {
-        pageToken = res.nextPageToken || null;
+        res.items = $filter('onlyPublic')(res.items);
+        pageToken = res.nextPageToken;
         return applyDuration(res.items);
       });
-    }
+    },
+    getPageToken: function () {
+      return pageToken;
+    },
   };
 });

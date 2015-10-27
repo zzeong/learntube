@@ -3,11 +3,12 @@
 angular.module('learntubeApp')
 .controller('WatchedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, Class, $filter, Note, GApi, GoogleConst, $q, PlaylistItem) {
   $scope.playlistId = $stateParams.pid;
+  $scope.getPageToken = PlaylistItem.getPageToken;
 
   $scope.loadMore = function () {
     $scope.httpBusy = true;
 
-    PlaylistItem.get({ playlistId: $scope.playlistId }, true)
+    PlaylistItem.get({ playlistId: $scope.playlistId })
     .then(function (list) {
       $scope.lectureList = $scope.lectureList.concat(list);
       $scope.httpBusy = false;
@@ -69,7 +70,9 @@ angular.module('learntubeApp')
   if (!Auth.isLoggedIn()) { $state.go('Login'); }
 
   // 강의들을 가져오기 위한 api사용
-  PlaylistItem.get({ playlistId: $scope.playlistId }, true)
+  PlaylistItem.get({ playlistId: $scope.playlistId }, {
+    initialToken: true,
+  })
   .then(function (list) {
     $scope.lectureList = list;
     $scope.httpBusy = false;

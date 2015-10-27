@@ -5,6 +5,7 @@ angular.module('learntubeApp')
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.playlistId = $stateParams.pid;
   $scope.httpBusy = true;
+  $scope.getPageToken = PlaylistItem.getPageToken;
 
   var compileToHTML = function (str) {
     var html = str.split('\n')
@@ -30,7 +31,7 @@ angular.module('learntubeApp')
   $scope.loadMore = function () {
     $scope.httpBusy = true;
 
-    PlaylistItem.get({ playlistId: $scope.playlistId }, true)
+    PlaylistItem.get({ playlistId: $scope.playlistId })
     .then(function (list) {
       $scope.lectureList = $scope.lectureList.concat(list);
       $scope.httpBusy = false;
@@ -62,7 +63,9 @@ angular.module('learntubeApp')
   })
   .catch(console.error);
 
-  PlaylistItem.get({ playlistId: $scope.playlistId }, true)
+  PlaylistItem.get({ playlistId: $scope.playlistId }, {
+    initialToken: true,
+  })
   .then(function (list) {
     $scope.lectureList = list;
     $scope.httpBusy = false;

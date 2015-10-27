@@ -55,7 +55,7 @@
 
 
         <md-list class="numbering">
-          <div class="lecturelist__list" infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy"
+          <div class="lecturelist__list" infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
           infinite-scroll-distance="1">
 
             <div class="lecturelist-item">
@@ -77,3 +77,4 @@
     </div>
   </div>
 </md-content>
+

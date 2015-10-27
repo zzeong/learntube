@@ -18,7 +18,7 @@
       <h3 class="md-headline">Lectures in this class</h3>
 
       <md-list>
-        <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy"
+        <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
         infinite-scroll-distance="1">
 
           <div class="lecturelist-item" ng-repeat="lecture in lectureList | onlyPublic">
