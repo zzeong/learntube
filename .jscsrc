@@ -26,6 +26,10 @@
   },
   "disallowKeywordsOnNewLine": ["else"],
 
+  "requireSpaceBeforeKeywords": [
+    "else",
+    "catch"
+  ],
   "requireSpaceAfterKeywords": [
     "if",
     "else",
