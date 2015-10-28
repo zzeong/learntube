@@ -23,9 +23,5 @@ angular.module('learntubeApp')
       method: 'DELETE',
       params: { id: Auth.getCurrentUser()._id }
     },
-    update: {
-      method: 'PUT',
-      params: { id: Auth.getCurrentUser()._id }
-    },
   });
 });

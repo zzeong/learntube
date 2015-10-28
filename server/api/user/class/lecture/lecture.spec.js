@@ -2,86 +2,107 @@
 
 require('should');
 var app = require('../../../../app');
-var request = require('supertest');
+var request = require('supertest-as-promised');
 var Promise = require('promise');
 var auth = require('../../../../auth/auth.service.js');
 var Class = require('../../../../models/class.model');
 var User = require('../../../../models/user.model');
 
+require('mongoose').Promise = Promise;
+
 describe('REST API:', function () {
   var user;
 
+  before(function (done) {
+    Promise.all([
+      User.remove({}),
+      Class.remove({})
+    ])
+    .then(function () {
+      user = new User({
+        name: 'Fake User',
+        email: 'test@test.com',
+        password: 'password',
+      });
+      return user.save();
+    })
+    .then(function (u) {
+      user = u.toObject();
+      user.token = auth.signToken(user._id);
+      done();
+    })
+    .catch(function (err) { done(err); });
+  });
+
+  after(function (done) {
+    Promise.all([
+      User.remove({}),
+      Class.remove({})
+    ])
+    .then(function () { done(); })
+    .catch(function (err) { done(err); });
+  });
+
   describe('POST /api/users/:id/classes/:cid/lectures/', function () {
-    var cid;
+    var classe;
 
-    before(function (done) {
-      Promise.all([
-        User.remove({}),
-        Class.remove({})
-      ])
-      .then(function () {
-        user = new User({
-          name: 'Fake User',
-          email: 'test@test.com',
-          password: 'password',
-          classes: []
-        });
-        return user.save();
-      })
-      .then(function (u) {
-        user = u.toObject();
-        user.token = auth.signToken(user._id);
-        done();
-      })
-      .catch(function (err) { done(err); });
-    });
+    beforeEach(function (done) {
+      classe = new Class({
+        playlistId: 'SNSD',
+        userId: user._id
+      });
 
-    after(function (done) {
-      Promise.all([
-        User.remove({}),
-        Class.remove({})
-      ])
+      classe.save()
       .then(function () { done(); })
       .catch(function (err) { done(err); });
     });
 
-    describe('when lecture is save', function () {
-      var params;
+    afterEach(function (done) {
+      Class.remove({})
+      .then(function () { done(); })
+      .catch(function (err) { done(err); });
+    });
 
-      before(function () {
-        params = { videoId: 'XXX' };
+    it('should return saved lecture', function (done) {
+      var params = { videoId: 'CRACCCK' };
+
+      request(app)
+      .post('/api/users/' + user._id + '/classes/' + classe._id + '/lectures/')
+      .set('Authorization', 'Bearer ' + user.token)
+      .expect(201)
+      .expect('Content-Type', /json/)
+      .send(params)
+      .end(function (err, res) {
+        if (err) { return done(err); }
+        res.body.should.have.property('videoId');
+        done();
       });
+    });
 
-      beforeEach(function (done) {
-        var classe = {
-          userId: user._id,
-          playlistId: 'ZZZ',
-        };
+    it('should return duplication error when video id is existed', function (done) {
+      var params = { videoId: 'CRACCCK' };
 
-        Class.create(classe)
-        .then(function (created) {
-          cid = created._id;
-          done();
-        })
-        .catch(function (err) { done(err); });
-      });
-
-      it('should return class which saved lecture', function (done) {
-        request(app)
-        .post('/api/users/' + user._id + '/classes/' + cid + '/lectures/')
-        .set('Authorization', 'Bearer ' + user.token)
-        .expect(201)
-        .expect('Content-Type', /json/)
+      request(app)
+      .post('/api/users/' + user._id + '/classes/' + classe._id + '/lectures/')
+      .send(params)
+      .set('Authorization', 'Bearer ' + user.token)
+      .expect(201)
+      .expect('Content-Type', /json/)
+      .then(function () {
+        return request(app)
+        .post('/api/users/' + user._id + '/classes/' + classe._id + '/lectures/')
         .send(params)
-        .end(function (err, res) {
-          if (err) { return done(err); }
-          res.body.should.have.property('lectures');
-          res.body.lectures.should.have.length(1);
-          done();
-        });
+        .set('Authorization', 'Bearer ' + user.token)
+        .expect(500)
+        .expect('Content-Type', /json/);
+      })
+      .then(function (res) {
+        res.body.message.should.match(/exists/);
+        done();
+      })
+      .catch(function (err) {
+        done(err);
       });
-
     });
   });
-
 });

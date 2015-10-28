@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('LectureCtrl', function ($scope, $stateParams, $http, Auth, Note, GoogleConst, GApi, Upload, PlaylistItem, $mdToast, Class) {
+.controller('LectureCtrl', function ($scope, $stateParams, $http, Auth, Note, GoogleConst, GApi, Upload, PlaylistItem, $mdToast, Class, Lecture) {
   $scope.videoId = $stateParams.vid;
   $scope.playlistId = $stateParams.pid;
   $scope.playerVars = {
@@ -13,21 +13,23 @@ angular.module('learntubeApp')
   $scope.getCurrentUser = Auth.getCurrentUser;
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.cid = null;
+  $scope.haveLecture = false;
 
-  $http.get('/api/users/' + $scope.getCurrentUser()._id + '/classes', {
-    params: {
-      playlistId: $scope.playlistId
+  Class.query({ playlistId: $scope.playlistId }).$promise
+  .then(function (items) {
+    if (items.length) {
+      var item = items[0];
+
+      $scope.cid = item._id;
+      for (var i = 0; i < item.lectures.length; i++) {
+        if (item.lectures[i].videoId === $scope.videoId) {
+          $scope.haveLecture = true;
+          break;
+        }
+      }
     }
   })
-  .then(function (response) {
-    if (response.data.length === 0) {
-      console.log('this class is first');
-    }else {
-      $scope.cid = response.data[0]._id;
-      console.log('this class is already exist');
-    }
-    console.log($scope.cid);
-  });
+  .catch(console.error);
 
   var compileToHTML = function (str) {
     var html = str.split('\n')
@@ -119,28 +121,26 @@ angular.module('learntubeApp')
   .catch(console.error);
 
   var completeLectureHelper = function () {
+    var params = { videoId: $scope.videoId };
 
     if ($scope.cid === null) {
       return Class.create({
         playlistId: $scope.playlistId
-      })
-      .$promise
-      .then(function (response) {
-        return $http.post('/api/users/' + $scope.getCurrentUser()._id + '/classes/' + response._id + '/lectures/', {
-          videoId: $scope.videoId
-        });
+      }).$promise
+      .then(function (item) {
+        params.cid = item._id;
+        return Lecture.create(params).$promise;
       });
-    }else {
-      return $http.post('/api/users/' + $scope.getCurrentUser()._id + '/classes/' + $scope.cid + '/lectures/', {
-        videoId: $scope.videoId
-      });
+    } else {
+      params.cid = $scope.cid;
+      return Lecture.create(params).$promise;
     }
   };
 
   $scope.completeLecture = function () {
-
     completeLectureHelper()
     .then(function () {
+      $scope.haveLecture = true;
       $scope.showSimpleToast();
     })
     .catch(console.error);

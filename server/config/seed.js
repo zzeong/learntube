@@ -164,9 +164,6 @@ var seedClass = function (users) {
       videoId: 'sY8qiSaAi9g',
       completedAt: timeMachine(_.random(-14, 0)),
     }, {
-      videoId: '7i1f23AVsn4',
-      completedAt: timeMachine(_.random(-14, 0)),
-    }, {
       videoId: 'yQaAGmHNn9s',
       completedAt: timeMachine(_.random(-14, 0)),
     }, {
@@ -305,5 +302,5 @@ Promise.all([
   console.log('Finish seeding');
 })
 .catch(function (err) {
-  console.error(err);
+  console.error(err.stack);
 });

@@ -26,7 +26,7 @@
 
       <!-- ADD CLASS BUTTON -->
       <div class="md-actions class-intro__add-class-btn" layout="row" layout-align="end center">
-        <md-button class="md-raised" ng-show="isLoggedIn()" ng-click="addClass()">Add Class</md-button>
+        <md-button class="md-raised" ng-show="isLoggedIn()" ng-click="addClass()" ng-disabled="haveClass">Add Class</md-button>
       </div>
     </div>
     <md-divider></md-divider>

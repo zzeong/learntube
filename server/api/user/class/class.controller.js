@@ -15,6 +15,10 @@ exports.index = function (req, res) {
 };
 
 exports.create = function (req, res, next) {
+  if (!req.body.playlistId) {
+    return next(new Error('required parameter is not exist'));
+  }
+
   var data = {
     userId: req.params.id,
     playlistId: req.body.playlistId
@@ -24,14 +28,7 @@ exports.create = function (req, res, next) {
   .then(function (classe) {
     return res.status(201).json(classe);
   })
-  .catch(function (err) {
-    console.error(err.stack);
-    var error = new Error();
-    if (err.code === 11000) {
-      error.message = 'item already exists';
-    }
-    return next(error);
-  });
+  .catch(next);
 };
 
 exports.destroy = function (req, res) {

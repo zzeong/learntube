@@ -2,15 +2,22 @@
 
 var Class = require('../../../../models/class.model');
 
-exports.create = function (req, res) {
-  Class.findById(req.params.cid, function (err, classe) {
-    if (err) { return res.status(500).send(err); }
-    if (!classe) { return res.status(404).send(err); }
+exports.create = function (req, res, next) {
+  if (!req.body.videoId) {
+    return next(new Error('required parameter is not exist'));
+  }
 
+  Class.findById(req.params.cid)
+  .then(function (classe) {
     classe.lectures.push({ videoId: req.body.videoId });
-    classe.save(function (saveErr, savedClass) {
-      if (err) { return res.status(500).send(err); }
-      return res.status(201).json(savedClass);
-    });
+    return classe.save();
+  })
+  .then(function (classe) {
+    var lectures = classe.lectures;
+    var lecture = lectures[lectures.length - 1];
+    return res.status(201).json(lecture);
+  })
+  .catch(function (err) {
+    return next(err);
   });
 };

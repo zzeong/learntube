@@ -23,7 +23,7 @@ angular.module('learntubeApp')
         if ($scope.lectureList[k].snippet.resourceId.videoId === specificLecture[s].videoId) {
           if (identity === 'highlight') {
             $scope.lectureList[k].highlight = true;
-          }else {
+          } else {
             $scope.lectureList[k].noteIconVisible = true;
           }
         }

@@ -2,7 +2,7 @@
 
 require('should');
 var app = require('../../../app');
-var request = require('supertest');
+var request = require('supertest-as-promised');
 var mongoose = require('mongoose');
 var auth = require('../../../auth/auth.service');
 var User = require('../../../models/user.model');
@@ -46,34 +46,54 @@ describe('REST API:', function () {
   });
 
   describe('POST /api/users/:id/classes', function () {
-    var params;
+    it('should return saved class', function (done) {
+      var params = {
+        playlistId: 'CRACCCK'
+      };
 
-    describe('when class is save', function () {
-
-      before(function () {
-        params = {
-          playlistId: 'ZZZ'
-        };
+      request(app)
+      .post('/api/users/' + user._id + '/classes/')
+      .set('Authorization', 'Bearer ' + user.token)
+      .send(params)
+      .expect(201)
+      .expect('Content-Type', /json/)
+      .end(function (err, res) {
+        if (err) { return done(err); }
+        res.body.should.have.property('_id');
+        res.body.should.have.property('userId');
+        res.body.should.have.property('playlistId');
+        res.body.userId.should.equal(user._id + '');
+        res.body.playlistId.should.equal(params.playlistId);
+        done();
       });
+    });
 
-      it('should return saved class', function (done) {
-        request(app)
+    it.only('should return duplication error when video id is existed', function (done) {
+      var params = {
+        playlistId: 'CRACCCK'
+      };
+
+      request(app)
+      .post('/api/users/' + user._id + '/classes/')
+      .set('Authorization', 'Bearer ' + user.token)
+      .send(params)
+      .expect(201)
+      .expect('Content-Type', /json/)
+      .then(function () {
+        return request(app)
         .post('/api/users/' + user._id + '/classes/')
         .set('Authorization', 'Bearer ' + user.token)
         .send(params)
-        .expect(201)
-        .expect('Content-Type', /json/)
-        .end(function (err, res) {
-          if (err) { return done(err); }
-          res.body.should.have.property('_id');
-          res.body.should.have.property('userId');
-          res.body.userId.should.equal(user._id + '');
-          res.body.should.have.property('playlistId');
-          res.body.playlistId.should.equal(params.playlistId);
-          done();
-        });
+        .expect(500)
+        .expect('Content-Type', /json/);
+      })
+      .then(function (res) {
+        res.body.message.should.match(/exists/);
+        done();
+      })
+      .catch(function (err) {
+        done(err);
       });
-
     });
   });
 

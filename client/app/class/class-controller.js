@@ -6,6 +6,7 @@ angular.module('learntubeApp')
   $scope.playlistId = $stateParams.pid;
   $scope.httpBusy = true;
   $scope.getPageToken = PlaylistItem.getPageToken;
+  $scope.haveClass = false;
 
   var compileToHTML = function (str) {
     var html = str.split('\n')
@@ -19,9 +20,9 @@ angular.module('learntubeApp')
   $scope.addClass = function () {
     Class.create({
       playlistId: $scope.playlistId
-    })
-    .$promise
+    }).$promise
     .then(function () {
+      $scope.haveClass = true;
       $scope.showSimpleToast();
     })
     .catch(console.error);
@@ -59,6 +60,17 @@ angular.module('learntubeApp')
   .then(function (res) {
     $scope.channel = res.items[0];
     $scope.channel.snippet.description = compileToHTML($scope.channel.snippet.description);
+  })
+  .catch(console.error);
+
+  Class.query().$promise
+  .then(function (items) {
+    for (var i = 0; i < items.length; i++) {
+      if (items[i].playlistId === $scope.playlistId) {
+        $scope.haveClass = true;
+        break;
+      }
+    }
   })
   .catch(console.error);
 
