@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('LectureCtrl', function ($scope, $stateParams, $http, Auth, Note, GoogleConst, GApi, Upload, PlaylistItem, $mdToast) {
+.controller('LectureCtrl', function ($scope, $stateParams, $http, Auth, Note, GoogleConst, GApi, Upload, PlaylistItem, $mdToast, Class) {
   $scope.videoId = $stateParams.vid;
   $scope.playlistId = $stateParams.pid;
   $scope.playerVars = {
@@ -12,6 +12,22 @@ angular.module('learntubeApp')
   $scope.isFileUploadOn = false;
   $scope.getCurrentUser = Auth.getCurrentUser;
   $scope.isLoggedIn = Auth.isLoggedIn;
+  $scope.cid = null;
+
+  $http.get('/api/users/' + $scope.getCurrentUser()._id + '/classes', {
+    params: {
+      playlistId: $scope.playlistId
+    }
+  })
+  .then(function (response) {
+    if (response.data.length === 0) {
+      console.log('this class is first');
+    }else {
+      $scope.cid = response.data[0]._id;
+      console.log('this class is already exist');
+    }
+    console.log($scope.cid);
+  });
 
   var compileToHTML = function (str) {
     var html = str.split('\n')
@@ -102,20 +118,30 @@ angular.module('learntubeApp')
   })
   .catch(console.error);
 
-  $scope.completeLecture = function () {
-    $scope.showSimpleToast();
+  var completeLectureHelper = function () {
 
-    $http.post('/api/users/' + $scope.getCurrentUser()._id + '/classes/', {
-      userId: $scope.getCurrentUser()._id
-    })
-    .then(function (response) {
-      var classe = response.data;
-      return $http.post('/api/users/' + $scope.getCurrentUser()._id + '/classes/' + classe._id + '/lectures/', {
+    if ($scope.cid === null) {
+      return Class.create({
+        playlistId: $scope.playlistId
+      })
+      .$promise
+      .then(function (response) {
+        return $http.post('/api/users/' + $scope.getCurrentUser()._id + '/classes/' + response._id + '/lectures/', {
+          videoId: $scope.videoId
+        });
+      });
+    }else {
+      return $http.post('/api/users/' + $scope.getCurrentUser()._id + '/classes/' + $scope.cid + '/lectures/', {
         videoId: $scope.videoId
       });
-    })
+    }
+  };
+
+  $scope.completeLecture = function () {
+
+    completeLectureHelper()
     .then(function () {
-      console.log('Saved Lecture');
+      $scope.showSimpleToast();
     })
     .catch(console.error);
   };
