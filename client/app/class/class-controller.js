@@ -17,13 +17,12 @@ angular.module('learntubeApp')
   };
 
   $scope.addClass = function () {
-    $scope.showSimpleToast();
     Class.create({
       playlistId: $scope.playlistId
     })
     .$promise
     .then(function () {
-      console.log('Saved Lecture');
+      $scope.showSimpleToast();
     })
     .catch(console.error);
   };
