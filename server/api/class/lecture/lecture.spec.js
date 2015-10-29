@@ -1,7 +1,7 @@
 'use strict';
 
 var should = require('should');
-var request = require('supertest');
+var request = require('supertest-as-promised');
 var mongoose = require('mongoose');
 var Upload = require('../../../models/upload.model');
 var User = require('../../../models/user.model');
@@ -30,7 +30,7 @@ describe('REST API:', function () {
       id = user._id;
       done();
     })
-    .catch(function (err) { done(err); });
+    .catch(done);
   });
 
   after(function (done) {
@@ -38,8 +38,7 @@ describe('REST API:', function () {
       User.remove({}),
       Upload.remove({})
     ])
-    .then(function () { done(); })
-    .catch(function (err) { done(err); });
+    .then(done.bind(null, null), done);
   });
 
 
@@ -58,8 +57,7 @@ describe('REST API:', function () {
           url: 'https://s3.amazonaws.com/learntubebucket/learntubebot01%40gmail.com/uploads/2bd6387e8333e63dec3e1cea9617accb'
         }],
       }])
-      .then(function () { done(); })
-      .catch(function (err) { done(err); });
+      .then(done.bind(null, null), done);
     });
 
 
@@ -68,12 +66,12 @@ describe('REST API:', function () {
       .get('/api/classes/PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx/lectures/F-xd3G0PW0k/get-handout')
       .expect(200)
       .expect('Content-Type', /application\/octet-stream/)
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         should.exist(res.header['content-disposition']);
         res.header['content-disposition'].should.match(/^attachment/);
         done();
-      });
+      })
+      .catch(done);
     });
   });
 });

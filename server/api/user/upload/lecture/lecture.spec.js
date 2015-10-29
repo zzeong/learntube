@@ -2,7 +2,7 @@
 
 require('should');
 var app = require('../../../../app');
-var request = require('supertest');
+var request = require('supertest-as-promised');
 var mongoose = require('mongoose');
 var auth = require('../../../../auth/auth.service');
 var User = require('../../../../models/user.model');
@@ -34,7 +34,7 @@ describe('REST API:', function () {
       user.token = auth.signToken(user._id);
       done();
     })
-    .catch(function (err) { done(err); });
+    .catch(done);
   });
 
   after(function (done) {
@@ -42,8 +42,7 @@ describe('REST API:', function () {
       User.remove({}),
       Upload.remove({})
     ])
-    .then(function () { done(); })
-    .catch(function (err) { done(err); });
+    .then(done.bind(null, null), done);
   });
 
   describe('DELETE /api/users/:id/uploads/lectures', function () {
@@ -77,18 +76,19 @@ describe('REST API:', function () {
               }]
             });
 
-            upload.save(function () {
-              done();
-            });
+            upload.save()
+            .then(done.bind(null, null), done);
           }
         });
 
         request.end(string);
-      });
+      })
+      .catch(done);
     });
 
     afterEach(function (done) {
-      Upload.remove({}).then(function () { done(); });
+      Upload.remove({})
+      .then(done.bind(null, null), done);
     });
 
     it('should return 204 when lecture sub-doc is removed', function (done) {
@@ -96,10 +96,7 @@ describe('REST API:', function () {
       .delete('/api/users/' + user._id + '/uploads/' + upload._id + '/lectures/' + upload.lectures[0]._id)
       .set('Authorization', 'Bearer ' + user.token)
       .expect(204)
-      .end(function (err) {
-        if (err) { return done(err); }
-        done();
-      });
+      .then(done.bind(null, null), done);
     });
   });
 });

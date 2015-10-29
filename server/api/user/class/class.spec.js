@@ -33,7 +33,7 @@ describe('REST API:', function () {
       user.token = auth.signToken(user._id);
       done();
     })
-    .catch(function (err) { done(err); });
+    .catch(done);
   });
 
   after(function (done) {
@@ -41,11 +41,20 @@ describe('REST API:', function () {
       User.remove({}),
       Class.remove({})
     ])
-    .then(function () { done(); })
-    .catch(function (err) { done(err); });
+    .then(done.bind(null, null), done);
   });
 
   describe('POST /api/users/:id/classes', function () {
+    beforeEach(function (done) {
+      Class.remove({})
+      .then(done.bind(null, null), done);
+    });
+
+    afterEach(function (done) {
+      Class.remove({})
+      .then(done.bind(null, null), done);
+    });
+
     it('should return saved class', function (done) {
       var params = {
         playlistId: 'CRACCCK'
@@ -57,21 +66,19 @@ describe('REST API:', function () {
       .send(params)
       .expect(201)
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         res.body.should.have.property('_id');
         res.body.should.have.property('userId');
         res.body.should.have.property('playlistId');
         res.body.userId.should.equal(user._id + '');
         res.body.playlistId.should.equal(params.playlistId);
         done();
-      });
+      })
+      .catch(done);
     });
 
-    it.only('should return duplication error when video id is existed', function (done) {
-      var params = {
-        playlistId: 'CRACCCK'
-      };
+    it('should return duplication error when video id is existed', function (done) {
+      var params = { playlistId: 'CRACCCK' };
 
       request(app)
       .post('/api/users/' + user._id + '/classes/')
@@ -91,9 +98,7 @@ describe('REST API:', function () {
         res.body.message.should.match(/exists/);
         done();
       })
-      .catch(function (err) {
-        done(err);
-      });
+      .catch(done);
     });
   });
 
@@ -111,8 +116,7 @@ describe('REST API:', function () {
       .then(function () {
         return Class.create(classes);
       })
-      .then(function () { done(); })
-      .catch(function (err) { done(err); });
+      .then(done.bind(null, null), done);
     });
 
     it('should get all classes that have 2 items', function (done) {
@@ -121,11 +125,11 @@ describe('REST API:', function () {
       .set('Authorization', 'Bearer ' + user.token)
       .expect(200)
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         res.body.should.have.length(2);
         done();
-      });
+      })
+      .catch(done);
     });
   });
 
@@ -145,7 +149,7 @@ describe('REST API:', function () {
         cid = classe._id;
         done();
       })
-      .catch(function (err) { done(err); });
+      .catch(done);
     });
 
     it('should makes Class collection has no docs after class is removed', function (done) {
@@ -153,16 +157,14 @@ describe('REST API:', function () {
       .delete('/api/users/' + user._id + '/classes/' + cid)
       .set('Authorization', 'Bearer ' + user.token)
       .expect(204)
-      .end(function (err) {
-        if (err) { return done(err); }
-        Class.find({}).exec()
-        .then(function (classes) {
-          classes.should.have.length(0);
-          done();
-        })
-        .catch(function (err) { done(err); });
-      });
+      .then(function () {
+        return Class.find({}).exec();
+      })
+      .then(function (classes) {
+        classes.should.have.length(0);
+        done();
+      })
+      .catch(done);
     });
-
   });
 });

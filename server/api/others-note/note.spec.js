@@ -2,7 +2,7 @@
 
 require('should');
 var knox  = require('knox');
-var request = require('supertest');
+var request = require('supertest-as-promised');
 var mongoose = require('mongoose');
 var url = require('url');
 var User = require('../../models/user.model');
@@ -59,7 +59,7 @@ describe('REST API:', function () {
       users[1].token = auth.signToken(users[1]._id);
       done();
     })
-    .catch(function (err) { done(err); });
+    .catch(done);
   });
 
   after(function (done) {
@@ -67,43 +67,26 @@ describe('REST API:', function () {
       User.remove({}),
       Note.remove({})
     ])
-    .then(function () { done(); })
-    .catch(function (err) { done(err); });
+    .then(done.bind(null, null), done);
   });
 
   describe('GET /api/notes', function () {
     before(function (done) {
-      request(app)
-      .post('/api/users/' + users[0]._id + '/notes')
-      .set('Authorization', 'Bearer ' + users[0].token)
-      .field('playlistId', 'PLASDF')
-      .field('videoId', 'QWER1')
-      .attach('file', 'test/fixtures/dummy.html')
-      .end(function (err) {
-        if (err) { return done(err); }
-
-        request(app)
-        .post('/api/users/' + users[1]._id + '/notes')
-        .set('Authorization', 'Bearer ' + users[1].token)
+      function req(user, vid) {
+        return request(app)
+        .post('/api/users/' + user._id + '/notes')
+        .set('Authorization', 'Bearer ' + user.token)
         .field('playlistId', 'PLASDF')
-        .field('videoId', 'QWER1')
-        .attach('file', 'test/fixtures/dummy.html')
-        .end(function (err) {
-          if (err) { return done(err); }
+        .field('videoId', vid)
+        .attach('file', 'test/fixtures/dummy.html');
+      }
 
-          request(app)
-          .post('/api/users/' + users[1]._id + '/notes')
-          .set('Authorization', 'Bearer ' + users[1].token)
-          .field('playlistId', 'PLASDF')
-          .field('videoId', 'QWER2')
-          .attach('file', 'test/fixtures/dummy.html')
-          .end(function (err) {
-            if (err) { return done(err); }
-            done();
-          });
-
-        });
-      });
+      Promise.all([
+        req(users[0], 'QWER1'),
+        req(users[1], 'QWER1'),
+        req(users[1], 'QWER2')
+      ])
+      .then(done.bind(null, null), done);
     });
 
     after(function (done) {
@@ -118,7 +101,7 @@ describe('REST API:', function () {
           done();
         });
       })
-      .catch(function (err) { done(err); });
+      .catch(done);
     });
 
     it('should return all note docs', function (done) {
@@ -126,8 +109,7 @@ describe('REST API:', function () {
       .get('/api/others-notes')
       .expect(200)
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         res.body.should.length(3);
         res.body[0].userId.should.have.property('name');
         res.body[0].userId.should.have.property('google');
@@ -135,7 +117,8 @@ describe('REST API:', function () {
         res.body[0].userId.should.not.have.property('hashedPassword');
         res.body[0].userId.google.image.should.have.property('url');
         done();
-      });
+      })
+      .catch(done);
     });
 
     it('should return queried note docs', function (done) {
@@ -144,12 +127,12 @@ describe('REST API:', function () {
       .query({ videoId: 'QWER1' })
       .expect(200)
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         res.body.should.length(2);
         res.body[0].userId.should.not.equal(res.body[1].userId);
         done();
-      });
+      })
+      .catch(done);
     });
 
   });

@@ -2,7 +2,7 @@
 
 require('should');
 var app = require('../../../app');
-var request = require('supertest');
+var request = require('supertest-as-promised');
 var mongoose = require('mongoose');
 var auth = require('../../../auth/auth.service');
 var User = require('../../../models/user.model');
@@ -30,27 +30,24 @@ describe('REST API:', function () {
       user.token = auth.signToken(user._id);
       done();
     })
-    .catch(function (err) { done(err); });
+    .catch(done);
   });
 
   after(function (done) {
     User.remove({})
-    .then(function () { done(); })
-    .catch(function (err) { done(err); });
+    .then(done.bind(null, null), done);
   });
 
   describe('POST /api/users/:id/uploads', function () {
 
     beforeEach(function (done) {
       Upload.remove({})
-      .then(function () { done(); })
-      .catch(function (err) { done(err); });
+      .then(done.bind(null, null), done);
     });
 
     afterEach(function (done) {
       Upload.remove({})
-      .then(function () { done(); })
-      .catch(function (err) { done(err); });
+      .then(done.bind(null, null), done);
     });
 
     it('should return created \'upload model doc\'', function (done) {
@@ -65,21 +62,20 @@ describe('REST API:', function () {
       })
       .expect(201)
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         res.body.should.have.property('_id');
         res.body.should.have.property('userId');
         res.body.should.have.property('playlistId');
         res.body.should.have.property('lectures');
         res.body.lectures.should.have.length(1);
 
-        Upload.find({}).exec()
-        .then(function (uploads) {
-          uploads.should.have.length(1);
-          done();
-        })
-        .catch(done);
-      });
+        return Upload.find({}).exec();
+      })
+      .then(function (uploads) {
+        uploads.should.have.length(1);
+        done();
+      })
+      .catch(done);
     });
 
     it('should return \'upload model doc\' where lecture was pushed in', function (done) {
@@ -96,7 +92,7 @@ describe('REST API:', function () {
 
       upload.save()
       .then(function () {
-        request(app)
+        return request(app)
         .post('/api/users/' + user._id + '/uploads')
         .set('Authorization', 'Bearer ' + user.token)
         .send({
@@ -106,26 +102,22 @@ describe('REST API:', function () {
           fileName: 'foo2.txt',
         })
         .expect(201)
-        .expect('Content-Type', /json/)
-        .end(function (err, res) {
-          if (err) { return done(err); }
-          res.body.should.have.property('_id');
-          res.body.should.have.property('userId');
-          res.body.should.have.property('playlistId');
-          res.body.should.have.property('lectures');
-          res.body.lectures.should.have.length(2);
+        .expect('Content-Type', /json/);
+      })
+      .then(function (res) {
+        res.body.should.have.property('_id');
+        res.body.should.have.property('userId');
+        res.body.should.have.property('playlistId');
+        res.body.should.have.property('lectures');
+        res.body.lectures.should.have.length(2);
 
-          Upload.find({}).exec()
-          .then(function (uploads) {
-            uploads.should.have.length(1);
-            done();
-          })
-          .catch(done);
-        })
-        .catch(done);
-
-      });
-
+        return Upload.find({}).exec();
+      })
+      .then(function (uploads) {
+        uploads.should.have.length(1);
+        done();
+      })
+      .catch(done);
     });
   });
 
@@ -135,7 +127,7 @@ describe('REST API:', function () {
     beforeEach(function (done) {
       Upload.remove({})
       .then(function () {
-        request(app)
+        return request(app)
         .post('/api/users/' + user._id + '/uploads')
         .set('Authorization', 'Bearer ' + user.token)
         .send({
@@ -144,17 +136,14 @@ describe('REST API:', function () {
           url: 'http://foo.com'
         })
         .expect(201)
-        .expect('Content-Type', /json/)
-        .end(function (err) {
-          if (err) { return done(err); }
-          done();
-        });
-      });
+        .expect('Content-Type', /json/);
+      })
+      .then(done.bind(null, null), done);
     });
 
     afterEach(function (done) {
       Upload.remove({})
-      .then(function () { done(); });
+      .then(done.bind(null, null), done);
     });
 
     it('should return uploads when query with playlistId', function (done) {
@@ -164,8 +153,7 @@ describe('REST API:', function () {
       .query({ playlistId: 'QWER' })
       .expect(200)
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         res.body.should.have.instanceof(Array);
         res.body.should.have.length(1);
         res.body[0].should.have.property('_id');
@@ -174,7 +162,8 @@ describe('REST API:', function () {
         res.body[0].should.have.property('lectures');
         res.body[0].lectures.should.have.length(1);
         done();
-      });
+      })
+      .catch(done);
     });
 
     it('should return uploads with no query', function (done) {
@@ -183,8 +172,7 @@ describe('REST API:', function () {
       .set('Authorization', 'Bearer ' + user.token)
       .expect(200)
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         res.body.should.have.instanceof(Array);
         res.body.should.have.length(1);
         res.body[0].should.have.property('_id');
@@ -193,7 +181,8 @@ describe('REST API:', function () {
         res.body[0].should.have.property('lectures');
         res.body[0].lectures.should.have.length(1);
         done();
-      });
+      })
+      .catch(done);
     });
   });
 });

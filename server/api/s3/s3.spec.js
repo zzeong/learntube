@@ -2,7 +2,7 @@
 
 require('should');
 var app = require('../../app');
-var request = require('supertest');
+var request = require('supertest-as-promised');
 var User = require('../../models/user.model');
 var auth = require('../../auth/auth.service');
 
@@ -24,11 +24,12 @@ describe('REST API:', function () {
       id = user._id;
       done();
     })
-    .catch(function (err) { done(err); });
+    .catch(done);
   });
 
   after(function (done) {
-    User.remove({}).then(function () { done(); });
+    User.remove({})
+    .then(done.bind(null, null), done);
   });
 
 
@@ -49,14 +50,14 @@ describe('REST API:', function () {
       })
       .expect(200)
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         res.body.should.have.property('signedUrl');
         res.body.should.have.property('accessUrl');
         res.body.signedUrl.should.have.containEql(encodeURIComponent('test@test.com'));
         res.body.accessUrl.should.have.containEql('https://');
         done();
-      });
+      })
+      .catch(done);
     });
   });
 });

@@ -31,7 +31,7 @@ describe('REST API:', function () {
       user.token = auth.signToken(user._id);
       done();
     })
-    .catch(function (err) { done(err); });
+    .catch(done);
   });
 
   after(function (done) {
@@ -39,8 +39,7 @@ describe('REST API:', function () {
       User.remove({}),
       Class.remove({})
     ])
-    .then(function () { done(); })
-    .catch(function (err) { done(err); });
+    .then(done.bind(null, null), done);
   });
 
   describe('POST /api/users/:id/classes/:cid/lectures/', function () {
@@ -51,16 +50,13 @@ describe('REST API:', function () {
         playlistId: 'SNSD',
         userId: user._id
       });
-
       classe.save()
-      .then(function () { done(); })
-      .catch(function (err) { done(err); });
+      .then(done.bind(null, null), done);
     });
 
     afterEach(function (done) {
       Class.remove({})
-      .then(function () { done(); })
-      .catch(function (err) { done(err); });
+      .then(done.bind(null, null), done);
     });
 
     it('should return saved lecture', function (done) {
@@ -69,14 +65,14 @@ describe('REST API:', function () {
       request(app)
       .post('/api/users/' + user._id + '/classes/' + classe._id + '/lectures/')
       .set('Authorization', 'Bearer ' + user.token)
+      .send(params)
       .expect(201)
       .expect('Content-Type', /json/)
-      .send(params)
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         res.body.should.have.property('videoId');
         done();
-      });
+      })
+      .catch(done);
     });
 
     it('should return duplication error when video id is existed', function (done) {
@@ -100,9 +96,7 @@ describe('REST API:', function () {
         res.body.message.should.match(/exists/);
         done();
       })
-      .catch(function (err) {
-        done(err);
-      });
+      .catch(done);
     });
   });
 });

@@ -2,7 +2,7 @@
 
 require('should');
 var _ = require('lodash');
-var request = require('supertest');
+var request = require('supertest-as-promised');
 var Rating = require('../../models/rating.model');
 var app = require('../../app.js');
 
@@ -19,12 +19,13 @@ describe('REST API:', function () {
     .then(function () {
       return Rating.create(arr);
     })
-    .then(function () { done(); });
+    .then(done.bind(null, null))
+    .catch(done);
   });
 
   after(function (done) {
     Rating.remove({})
-    .then(function () { done(); });
+    .then(done.bind(null, null), done);
   });
 
   describe('GET /api/classes/get-tops', function () {
@@ -34,12 +35,11 @@ describe('REST API:', function () {
       .query({ num: 6 })
       .expect(200)
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
-        if (err) { return done(err); }
-
+      .then(function (res) {
         res.body.should.length(6);
         done();
-      });
+      })
+      .catch(done);
     });
 
     it('should return sorted docs', function (done) {
@@ -48,15 +48,14 @@ describe('REST API:', function () {
       .query({ num: 6 })
       .expect(200)
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
-        if (err) { return done(err); }
-
+      .then(function (res) {
         res.body.reduce(function (p, c) {
           p.points.should.be.aboveOrEqual(c.points);
           return c;
         });
         done();
-      });
+      })
+      .catch(done);
     });
   });
 });

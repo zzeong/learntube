@@ -2,7 +2,7 @@
 
 var should = require('should');
 var app = require('../../../app');
-var request = require('supertest');
+var request = require('supertest-as-promised');
 var mongoose = require('mongoose');
 var User = require('../../../models/user.model');
 var Note = require('../../../models/note.model');
@@ -37,9 +37,7 @@ describe('REST API:', function () {
       user.token = auth.signToken(user._id);
       done();
     })
-    .catch(function (err) {
-      done(err);
-    });
+    .catch(done);
   });
 
   after(function (done) {
@@ -47,9 +45,8 @@ describe('REST API:', function () {
       User.remove({}),
       Note.remove({}),
       Rating.remove({})
-    ]).then(function () {
-      done();
-    });
+    ])
+    .then(done.bind(null, null), done);
   });
 
 
@@ -60,14 +57,11 @@ describe('REST API:', function () {
       request(app)
       .delete('/api/users/' + user._id + '/notes/' + nid)
       .set('Authorization', 'Bearer ' + user.token)
-      .end(function (err) {
-        if (err) { return done(err); }
-
-        Rating.remove({})
-        .then(function () {
-          done();
-        });
-      });
+      .then(function () {
+        return Rating.remove({});
+      })
+      .then(done.bind(null, null))
+      .catch(done);
     });
 
     it('should return saved note id when note is saved', function (done) {
@@ -78,12 +72,12 @@ describe('REST API:', function () {
       .field('videoId', videoId)
       .field('type', 'editor')
       .attach('file', './test/fixtures/dummy.html')
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         res.body.should.have.property('_id');
         nid = res.body._id;
         done();
-      });
+      })
+      .catch(done);
     });
 
     it('should create rating model with initial point', function (done) {
@@ -96,28 +90,25 @@ describe('REST API:', function () {
       .attach('file', './test/fixtures/dummy.html')
       .expect(201)
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         nid = res.body._id;
-
-        Rating.findOne({ playlistId: playlistId }).exec()
-        .then(function (rating) {
-          should.exist(rating);
-          rating.points.should.be.equal(1);
-          done();
-        })
-        .catch(function (err) { done(err); });
-      });
+        return Rating.findOne({ playlistId: playlistId }).exec();
+      })
+      .then(function (rating) {
+        should.exist(rating);
+        rating.points.should.be.equal(1);
+        done();
+      })
+      .catch(done);
     });
 
     it('should increase class rating points', function (done) {
       Rating.create({
         playlistId: playlistId,
         points: 1
-      }, function (err) {
-        if (err) { return done(err); }
-
-        request(app)
+      })
+      .then(function () {
+        return request(app)
         .post('/api/users/' + user._id + '/notes')
         .set('Authorization', 'Bearer ' + user.token)
         .field('playlistId', playlistId)
@@ -125,20 +116,17 @@ describe('REST API:', function () {
         .field('type', 'editor')
         .attach('file', './test/fixtures/dummy.html')
         .expect(201)
-        .expect('Content-Type', /json/)
-        .end(function (err, res) {
-          if (err) { return done(err); }
-          nid = res.body._id;
-
-          Rating.findOne({ playlistId: playlistId }).exec()
-          .then(function (rating) {
-            rating.points.should.be.equal(2);
-            done();
-          })
-          .catch(function (err) { done(err); });
-        });
-      });
-
+        .expect('Content-Type', /json/);
+      })
+      .then(function (res) {
+        nid = res.body._id;
+        return Rating.findOne({ playlistId: playlistId }).exec();
+      })
+      .then(function (rating) {
+        rating.points.should.be.equal(2);
+        done();
+      })
+      .catch(done);
     });
   });
 
@@ -155,20 +143,18 @@ describe('REST API:', function () {
       .field('videoId', videoId)
       .field('type', 'editor')
       .attach('file', './test/fixtures/dummy.html')
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         nid = res.body._id;
         done();
-      });
+      })
+      .catch(done);
     });
 
     after(function (done) {
       request(app)
       .delete('/api/users/' + user._id + '/notes/' + nid)
-      .end(function (err) {
-        if (err) { return done(err); }
-        done();
-      });
+      .set('Authorization', 'Bearer ' + user.token)
+      .then(done.bind(null, null), done);
     });
 
     it('should return queried notes', function (done) {
@@ -178,13 +164,13 @@ describe('REST API:', function () {
       .query({ videoId: videoId })
       .expect(200)
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         res.body.should.have.instanceof(Array);
         res.body.should.have.length(1);
         res.body[0].should.have.property('_id');
         done();
-      });
+      })
+      .catch(done);
     });
 
 
@@ -195,11 +181,11 @@ describe('REST API:', function () {
         .set('Authorization', 'Bearer ' + user.token)
         .expect(200)
         .expect('Content-Type', /json/)
-        .end(function (err, res) {
-          if (err) { return done(err); }
+        .then(function (res) {
           res.body.should.have.property('_id');
           done();
-        });
+        })
+        .catch(done);
       });
 
       describe('/get-contents', function () {
@@ -209,12 +195,12 @@ describe('REST API:', function () {
           .set('Authorization', 'Bearer ' + user.token)
           .expect(200)
           .expect('Content-Type', /json/)
-          .end(function (err, res) {
-            if (err) { return done(err); }
+          .then(function (res) {
             res.body.should.have.property('_id');
             res.body.should.have.property('contents');
             done();
-          });
+          })
+          .catch(done);
         });
       });
     });
@@ -232,21 +218,18 @@ describe('REST API:', function () {
       .field('videoId', videoId)
       .field('type', 'editor')
       .attach('file', './test/fixtures/dummy.html')
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         nid = res.body._id;
         done();
-      });
+      })
+      .catch(done);
     });
 
     after(function (done) {
       request(app)
       .delete('/api/users/' + user._id + '/notes/' + nid)
       .set('Authorization', 'Bearer ' + user.token)
-      .end(function (err) {
-        if (err) { return done(err); }
-        done();
-      });
+      .then(done.bind(null, null), done);
     });
 
     it('should return updated note', function (done) {
@@ -259,11 +242,11 @@ describe('REST API:', function () {
       .attach('file', './test/fixtures/dummy.html')
       .expect(201)
       .expect('Content-Type', /json/)
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         res.body.should.have.property('_id');
         done();
-      });
+      })
+      .catch(done);
     });
   });
 
@@ -279,11 +262,11 @@ describe('REST API:', function () {
       .field('videoId', videoId)
       .field('type', 'editor')
       .attach('file', './test/fixtures/dummy.html')
-      .end(function (err, res) {
-        if (err) { return done(err); }
+      .then(function (res) {
         nid = res.body._id;
         done();
-      });
+      })
+      .catch(done);
     });
 
     afterEach(function (done) {
@@ -291,7 +274,7 @@ describe('REST API:', function () {
         Note.remove({}),
         Rating.remove({})
       ])
-      .then(function () { done(); });
+      .then(done.bind(null, null), done);
     });
 
     it('should return 204 status code when note is removed', function (done) {
@@ -299,10 +282,7 @@ describe('REST API:', function () {
       .delete('/api/users/' + user._id + '/notes/' + nid)
       .set('Authorization', 'Bearer ' + user.token)
       .expect(204)
-      .end(function (err) {
-        if (err) { return done(err); }
-        done();
-      });
+      .then(done.bind(null, null), done);
     });
 
     it('should decrease class rating points', function (done) {
@@ -310,24 +290,21 @@ describe('REST API:', function () {
         playlistId: playlistId
       }, {
         $inc: { points: 2 }
-      }, function (err) {
-        if (err) { return done(err); }
-
-        request(app)
+      }).exec()
+      .then(function () {
+        return request(app)
         .delete('/api/users/' + user._id + '/notes/' + nid)
         .set('Authorization', 'Bearer ' + user.token)
-        .expect(204)
-        .end(function (err) {
-          if (err) { return done(err); }
-
-          Rating.findOne({ playlistId: playlistId }).exec()
-          .then(function (rating) {
-            rating.points.should.be.equal(2);
-            done();
-          })
-          .catch(function (err) { done(err); });
-        });
-      });
+        .expect(204);
+      })
+      .then(function () {
+        return Rating.findOne({ playlistId: playlistId }).exec();
+      })
+      .then(function (rating) {
+        rating.points.should.be.equal(2);
+        done();
+      })
+      .catch(done);
     });
 
     it('should remove a rating doc when class have no notes', function (done) {
@@ -335,16 +312,14 @@ describe('REST API:', function () {
       .delete('/api/users/' + user._id + '/notes/' + nid)
       .set('Authorization', 'Bearer ' + user.token)
       .expect(204)
-      .end(function (err) {
-        if (err) { return done(err); }
-
-        Rating.findOne({ playlistId: playlistId }).exec()
-        .then(function (rating) {
-          should.not.exist(rating);
-          done();
-        })
-        .catch(function (err) { done(err); });
-      });
+      .then(function () {
+        return Rating.findOne({ playlistId: playlistId }).exec();
+      })
+      .then(function (rating) {
+        should.not.exist(rating);
+        done();
+      })
+      .catch(done);
     });
   });
 
