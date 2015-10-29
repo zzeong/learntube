@@ -1,5 +1,6 @@
 'use strict';
 
+var Promise = require('promise');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');
@@ -142,6 +143,14 @@ UserSchema.methods = {
     if (!password || !this.salt) { return ''; }
     var salt = new Buffer(this.salt, 'base64');
     return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
+  },
+
+  updateAccessToken: function (gapi) {
+    if (gapi.isTokenUpdated()) {
+      this.google.accessToken = gapi.getToken().accessToken;
+      return this.save();
+    }
+    return Promise.resolve();
   }
 };
 

@@ -4,12 +4,12 @@ var _ = require('lodash');
 var g = require('../../../../components/google-api');
 var config = require('../../../../config/environment');
 var Promise = require('promise');
+var gapiHelper = require('../youtube-mine-service');
 
 function figureIdOutAndDelete(params) {
   return g.youtube('playlistItems.list', params)
   .then(function (res) {
     return g.youtube('playlistItems.delete', {
-      auth: params.auth,
       id: res.items[0].id
     });
   });
@@ -17,7 +17,6 @@ function figureIdOutAndDelete(params) {
 
 function deleteAllPlaylistItems(params) {
   var paramsUnit = {
-    auth: params.auth,
     part: 'id',
     playlistId: params.playlistId,
     videoId: params.videoId.shift()
@@ -65,9 +64,9 @@ function deleteAllPlaylistItems(params) {
  *       "pageToken": "DJGNdN"
  *     }
  */
-exports.index = function (req, res) {
+exports.index = function (req, res, next) {
+  var body = {};
   var params = {
-    auth: g.oauth2Client,
     part: 'id,snippet,status',
     playlistId: req.query.playlistId,
     maxResults: config.google.maxResults,
@@ -76,43 +75,23 @@ exports.index = function (req, res) {
 
   g.youtube('playlistItems.list', params)
   .then(function (response) {
-    var resBody = {
+    body = {
       pageToken: response.nextPageToken,
       items: response.items
     };
 
     if (req.query.withDuration) {
-      g.youtube('videos.list', {
-        auth: g.oauth2Client,
-        part: 'contentDetails,status',
-        id: resBody.items.map(function (item) {
-          return item.snippet.resourceId.videoId;
-        }).join(','),
-        fields: 'items(contentDetails(duration),status(uploadStatus,rejectionReason,privacyStatus))',
-      })
-      .then(function (response) {
-        resBody.items.forEach(function (item, i) {
-          item.contentDetails = response.items[i].contentDetails;
-          item.status = response.items[i].status;
-        });
-        if (req.user.google.accessToken !== g.oauth2Client.credentials.access_token) {
-          req.user.google.accessToken = g.oauth2Client.credentials.access_token;
-          return req.user.save()
-          .then(function () { res.status(200).json(resBody); })
-          .catch(res.status(500).send);
-        }
-        return res.status(200).json(resBody);
-      }, function (error) {
-        return res.status(500).send(error);
-      });
-
-      return;
+      return gapiHelper.applyDuration(g, body.items);
     }
-
-    return res.status(200).json(resBody);
-  }, function (error) {
-    return res.status(500).send(error);
-  });
+    return Promise.resolve();
+  })
+  .then(function () {
+    return req.user.updateAccessToken(g);
+  })
+  .then(function () {
+    return res.status(200).json(body);
+  })
+  .catch(next);
 };
 
 
@@ -158,44 +137,28 @@ exports.index = function (req, res) {
  *       playlistItem_resource_properties
  *     }
  */
-exports.create = function (req, res) {
+exports.create = function (req, res, next) {
+  var body = {};
   var params = _.assign({
-    auth: g.oauth2Client,
     part: 'snippet,status',
     fields: 'id,snippet,status',
   }, req.body);
 
-
   g.youtube('playlistItems.insert', params)
   .then(function (item) {
+    body = item;
     if (req.query.withDuration) {
-      g.youtube('videos.list', {
-        auth: g.oauth2Client,
-        part: 'contentDetails,status',
-        id: item.snippet.resourceId.videoId,
-        fields: 'items(contentDetails(duration),status(uploadStatus,rejectionReason,privacyStatus))',
-      })
-      .then(function (response) {
-        item.contentDetails = response.items[0].contentDetails;
-        item.status = response.items[0].status;
-        if (req.user.google.accessToken !== g.oauth2Client.credentials.access_token) {
-          req.user.google.accessToken = g.oauth2Client.credentials.access_token;
-          return req.user.save()
-          .then(function () { res.status(201).json(item); })
-          .catch(res.status(500).send);
-        }
-        return res.status(201).json(item);
-      }, function (error) {
-        return res.status(500).send(error);
-      });
-
-      return;
+      return gapiHelper.applyDuration(g, body);
     }
-
-    return res.status(201).json(item);
-  }, function (error) {
-    return res.status(500).send(error);
-  });
+    return Promise.resolve();
+  })
+  .then(function () {
+    return req.user.updateAccessToken(g);
+  })
+  .then(function () {
+    return res.status(201).json(body);
+  })
+  .catch(next);
 };
 
 /**
@@ -221,16 +184,13 @@ exports.create = function (req, res) {
  *     }
  */
 
-exports.destroy = function (req, res) {
+exports.destroy = function (req, res, next) {
   deleteAllPlaylistItems({
-    auth: g.oauth2Client,
     playlistId: req.query.playlistId,
     videoId: req.query.videoId.split(',')
   })
   .then(function () {
     return res.status(204).send();
   })
-  .catch(function (error) {
-    return res.status(500).send(error);
-  });
+  .catch(next);
 };

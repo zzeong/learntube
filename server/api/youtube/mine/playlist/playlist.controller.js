@@ -3,9 +3,9 @@
 var _ = require('lodash');
 var g = require('../../../../components/google-api');
 var config = require('../../../../config/environment');
+var gapiHelper = require('../youtube-mine-service');
 
 require('mongoose').Promise = require('promise');
-
 
 /**
  * @apiDefine TokenAuth
@@ -38,9 +38,9 @@ require('mongoose').Promise = require('promise');
  *       "pageToken": "DJGNdN"
  *     }
  */
-exports.index = function (req, res) {
+exports.index = function (req, res, next) {
+  var body = {};
   var params = {
-    auth: g.oauth2Client,
     part: 'id,snippet,status',
     mine: true,
     maxResults: config.google.maxResults,
@@ -49,20 +49,13 @@ exports.index = function (req, res) {
 
   g.youtube('playlists.list', params)
   .then(function (response) {
-    var resBody = { items: response.items };
-    if (response.nextPageToken) {
-      resBody.pageToken = response.nextPageToken;
-    }
-    if (req.user.google.accessToken !== g.oauth2Client.credentials.access_token) {
-      req.user.google.accessToken = g.oauth2Client.credentials.access_token;
-      return req.user.save()
-      .then(function () { res.status(200).json(resBody); })
-      .catch(res.status(500).send);
-    }
-    return res.status(200).json(resBody);
-  }, function (error) {
-    return res.status(500).send(error);
-  });
+    body = gapiHelper.createBodyForList(response);
+    return req.user.updateAccessToken(g);
+  })
+  .then(function () {
+    res.status(200).json(body);
+  })
+  .catch(next);
 };
 
 
@@ -97,25 +90,22 @@ exports.index = function (req, res) {
  *       playlist_resource_properties
  *     }
  */
-exports.create = function (req, res) {
+exports.create = function (req, res, next) {
+  var body = {};
   var params = _.assign({
-    auth: g.oauth2Client,
     part: 'snippet,status',
     fields: 'id,snippet,status',
   }, req.body);
 
   g.youtube('playlists.insert', params)
   .then(function (item) {
-    if (req.user.google.accessToken !== g.oauth2Client.credentials.access_token) {
-      req.user.google.accessToken = g.oauth2Client.credentials.access_token;
-      return req.user.save()
-      .then(function () { res.status(201).json(item); })
-      .catch(res.status(500).send);
-    }
-    return res.status(201).json(item);
-  }, function (error) {
-    return res.status(500).send(error);
-  });
+    body = item;
+    return req.user.updateAccessToken(g);
+  })
+  .then(function () {
+    res.status(201).json(body);
+  })
+  .catch(next);
 };
 
 
@@ -136,22 +126,15 @@ exports.create = function (req, res) {
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 204 No Content
  */
-exports.destroy = function (req, res) {
-  var params = {
-    auth: g.oauth2Client,
-    id: req.query.playlistId,
-  };
+exports.destroy = function (req, res, next) {
+  var params = { id: req.query.playlistId, };
 
   g.youtube('playlists.delete', params)
   .then(function () {
-    if (req.user.google.accessToken !== g.oauth2Client.credentials.access_token) {
-      req.user.google.accessToken = g.oauth2Client.credentials.access_token;
-      return req.user.save()
-      .then(function () { res.status(204).send(); })
-      .catch(res.status(500).send);
-    }
-    return res.status(204).send();
-  }, function (error) {
-    return res.status(500).send(error);
-  });
+    return req.user.updateAccessToken(g);
+  })
+  .then(function () {
+    res.status(204).send();
+  })
+  .catch(next);
 };

@@ -2,7 +2,8 @@
 
 var g = require('../../../../components/google-api');
 var config = require('../../../../config/environment');
-
+var Promise = require('promise');
+var gapiHelper = require('../youtube-mine-service');
 
 /**
  * @api {get} /api/youtube/mine/videos Get my YouTube videos
@@ -30,60 +31,35 @@ var config = require('../../../../config/environment');
  *       "pageToken": "DJGNdN"
  *     }
  */
-exports.index = function (req, res) {
+exports.index = function (req, res, next) {
+  var body = {};
+
   g.youtube('channels.list', {
-    auth: g.oauth2Client,
     part: 'contentDetails',
     mine: true,
     fields: 'items(contentDetails)',
   })
   .then(function (response) {
-    return g.youtube('playlistItems.list', {
-      auth: g.oauth2Client,
+    var params = {
       part: 'id,snippet,status',
       playlistId: response.items[0].contentDetails.relatedPlaylists.uploads,
       maxResults: config.google.maxResults,
       fields: 'items(id,snippet,status),nextPageToken',
-    });
-  }, function (error) {
-    if (error) { return res.status(500).send(error); }
+    };
+    return g.youtube('playlistItems.list', params);
   })
   .then(function (response) {
-    var resBody = { items: response.items };
-    if (response.nextPageToken) {
-      resBody.pageToken = response.nextPageToken;
-    }
-
+    body = gapiHelper.createBodyForList(response);
     if (req.query.withDuration) {
-      g.youtube('videos.list', {
-        auth: g.oauth2Client,
-        part: 'contentDetails',
-        id: resBody.items.map(function (item) {
-          return item.snippet.resourceId.videoId;
-        }).join(','),
-        fields: 'items(contentDetails(duration))',
-      })
-      .then(function (response) {
-        resBody.items.forEach(function (item, i) {
-          item.contentDetails = response.items[i].contentDetails;
-        });
-        if (req.user.google.accessToken !== g.oauth2Client.credentials.access_token) {
-          req.user.google.accessToken = g.oauth2Client.credentials.access_token;
-          return req.user.save()
-          .then(function () { res.status(204).json(resBody); })
-          .catch(res.status(500).send);
-        }
-        return res.status(200).json(resBody);
-      }, function (error) {
-        return res.status(500).send(error);
-      });
-
-      return;
+      return gapiHelper.applyDuration(g, body.items);
     }
-
-
-    return res.status(200).json(resBody);
-  }, function (error) {
-    if (error) { return res.status(500).send(error); }
-  });
+    return Promise.resolve();
+  })
+  .then(function () {
+    return req.user.updateAccessToken(g);
+  })
+  .then(function () {
+    return res.status(200).json(body);
+  })
+  .catch(next);
 };
