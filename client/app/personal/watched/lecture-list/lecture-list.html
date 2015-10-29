@@ -21,7 +21,7 @@
         <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
         infinite-scroll-distance="1">
 
-          <div class="lecturelist" ng-repeat="lecture in lectureList | onlyPublic">
+          <div class="lecturelist" ng-repeat="lecture in lectureList">
             <md-list-item class="md-2-line" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })"
             ng-class="{'lecturelist--highlight': lecture.highlight}">
 
