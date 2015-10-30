@@ -53,7 +53,7 @@
           <br>
 
           <div layout="row" layout-wrap>
-            <div  class="lecture-content-bottom" flex="900">
+            <div class="lecture-content-bottom" flex="900">
               <span>
                 <md-icon md-font-set="material-icons">thumb_up</md-icon>
                 <span class="md-body-2">{{ item.statistics.likeCount }}</span>
@@ -74,7 +74,7 @@
       </div>
       <div class="md-actions" layout="row" layout-align="end center">
         <md-menu>
-          <md-button class="md-raised" ng-click="$mdOpenMenu()">Note</md-button>
+          <md-button class="md-raised" ng-click="$mdOpenMenu()" ng-disabled="!isLoggedIn()">Note</md-button>
 
           <md-menu-content width="3">
             <md-menu-item>
@@ -93,7 +93,7 @@
           </md-menu-content>
         </md-menu>
 
-        <md-button class="md-raised md-primary md-hue-2" ng-click="completeLecture()" ng-disabled="haveLecture">Complete</md-button>
+        <md-button class="md-raised md-primary md-hue-2" ng-click="completeLecture()" ng-disabled="haveLecture || !isLoggedIn()">Complete</md-button>
       </div>
     </div>
 

@@ -15,21 +15,23 @@ angular.module('learntubeApp')
   $scope.cid = null;
   $scope.haveLecture = false;
 
-  Class.query({ playlistId: $scope.playlistId }).$promise
-  .then(function (items) {
-    if (items.length) {
-      var item = items[0];
+  if ($scope.isLoggedIn()) {
+    Class.query({ playlistId: $scope.playlistId }).$promise
+    .then(function (items) {
+      if (items.length) {
+        var item = items[0];
 
-      $scope.cid = item._id;
-      for (var i = 0; i < item.lectures.length; i++) {
-        if (item.lectures[i].videoId === $scope.videoId) {
-          $scope.haveLecture = true;
-          break;
+        $scope.cid = item._id;
+        for (var i = 0; i < item.lectures.length; i++) {
+          if (item.lectures[i].videoId === $scope.videoId) {
+            $scope.haveLecture = true;
+            break;
+          }
         }
       }
-    }
-  })
-  .catch(console.error);
+    })
+    .catch(console.error);
+  }
 
   var compileToHTML = function (str) {
     var html = str.split('\n')

@@ -63,16 +63,18 @@ angular.module('learntubeApp')
   })
   .catch(console.error);
 
-  Class.query().$promise
-  .then(function (items) {
-    for (var i = 0; i < items.length; i++) {
-      if (items[i].playlistId === $scope.playlistId) {
-        $scope.haveClass = true;
-        break;
+  if ($scope.isLoggedIn()) {
+    Class.query().$promise
+    .then(function (items) {
+      for (var i = 0; i < items.length; i++) {
+        if (items[i].playlistId === $scope.playlistId) {
+          $scope.haveClass = true;
+          break;
+        }
       }
-    }
-  })
-  .catch(console.error);
+    })
+    .catch(console.error);
+  }
 
   PlaylistItem.get({ playlistId: $scope.playlistId }, {
     initialToken: true,
