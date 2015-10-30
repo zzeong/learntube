@@ -70,13 +70,13 @@ describe('Controller: LectureCtrl', function () {
         contents: 'Hi, Guys'
       }];
 
-
       $httpBackend.when('GET', /https\:\/\/www\.googleapis\.com\/youtube\/v3\/videos\?.*/).respond(resultItems);
       $httpBackend.when('POST', /\/api\/users\/.*\/notes/).respond({ _id: 'NQWER' });
       $httpBackend.when('GET', /\/api\/users\/.*\/notes\?.*/).respond([{ _id: 'NQWER' }]);
       $httpBackend.when('PUT', /\/api\/users\/.*\/notes\/.*/).respond({ _id: 'NQWER', });
       $httpBackend.when('GET', /\/api\/users\/.*\/notes\/.*\/get-contents.*/).respond({ _id: 'NQWER', contents: '<h1>IHAVENOMONEY</h1>' });
       $httpBackend.when('DELETE', /\/api\/users\/.*\/notes\/.*/).respond({ _id: 'NQWER' });
+      $httpBackend.when('GET', /\/api\/users\/.*\/classes/).respond([{ _id: 'QAWS', lectures: [] }]);
       $httpBackend.when('POST', /\/api\/users\/.*\/classes/).respond({ _id: 'QAWS' });
       $httpBackend.when('POST', /\/api\/users\/.*\/classes\/.*\/lectures/).respond({ _id: 'ZXCV' });
       $httpBackend.when('GET', /\/api\/others-notes\?.*/).respond(othersNotes);
