@@ -663,6 +663,12 @@ module.exports = function (grunt) {
       }
     },
 
+    githooks: {
+      all: {
+        'pre-commit': 'test:js',
+        'pre-push': 'test:client test:server',
+      }
+    },
   });
 
   // Used for delaying livereload until after server has restarted
@@ -808,8 +814,7 @@ module.exports = function (grunt) {
       ]);
     } else {
       grunt.task.run([
-        'jscs',
-        'jshint',
+        'test:js',
         'test:server',
         'test:client'
       ]);
