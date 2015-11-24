@@ -670,6 +670,12 @@ module.exports = function (grunt) {
         'pre-push': 'test:client test:server',
       }
     },
+
+    shell: {
+      encrypt: {
+        command: 'tar cvfh encrypt.tar .travis/id_rsa server/config/local.env.js && travis encrypt-file encrypt.tar --add --force'
+      },
+    },
   });
 
   // Used for delaying livereload until after server has restarted
