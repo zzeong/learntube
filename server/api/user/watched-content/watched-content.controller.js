@@ -1,14 +1,14 @@
 'use strict';
 
 var _ = require('lodash');
-var Class = require('../../../models/class.model');
+var WContent = require('../../../models/watched-content.model');
 
 require('mongoose').Promise = require('promise');
 
 exports.index = function (req, res) {
   var data = _.assign(req.query, { userId: req.params.id });
 
-  Class.find(data, function (err, classes) {
+  WContent.find(data, function (err, classes) {
     if (err) { return res.status(500).send(err); }
     return res.status(200).json(classes);
   });
@@ -24,7 +24,7 @@ exports.create = function (req, res, next) {
     playlistId: req.body.playlistId
   };
 
-  Class.create(data)
+  WContent.create(data)
   .then(function (classe) {
     return res.status(201).json(classe);
   })
@@ -32,7 +32,7 @@ exports.create = function (req, res, next) {
 };
 
 exports.destroy = function (req, res) {
-  Class.findById(req.params.cid, function (err, classe) {
+  WContent.findById(req.params.cid, function (err, classe) {
     if (err) { return res.status(500).send(err); }
     if (!classe) { return res.status(404).send(err); }
 

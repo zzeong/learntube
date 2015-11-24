@@ -5,7 +5,7 @@ var app = require('../../../../app');
 var request = require('supertest-as-promised');
 var Promise = require('promise');
 var auth = require('../../../../auth/auth.service.js');
-var Class = require('../../../../models/class.model');
+var WContent = require('../../../../models/watched-content.model');
 var User = require('../../../../models/user.model');
 
 require('mongoose').Promise = Promise;
@@ -16,7 +16,7 @@ describe('REST API:', function () {
   before(function (done) {
     Promise.all([
       User.remove({}),
-      Class.remove({})
+      WContent.remove({})
     ])
     .then(function () {
       user = new User({
@@ -37,16 +37,16 @@ describe('REST API:', function () {
   after(function (done) {
     Promise.all([
       User.remove({}),
-      Class.remove({})
+      WContent.remove({})
     ])
     .then(done.bind(null, null), done);
   });
 
-  describe('POST /api/users/:id/classes/:cid/lectures/', function () {
+  describe('POST /api/users/:id/watched-contents/:cid/lectures/', function () {
     var classe;
 
     beforeEach(function (done) {
-      classe = new Class({
+      classe = new WContent({
         playlistId: 'SNSD',
         userId: user._id
       });
@@ -55,7 +55,7 @@ describe('REST API:', function () {
     });
 
     afterEach(function (done) {
-      Class.remove({})
+      WContent.remove({})
       .then(done.bind(null, null), done);
     });
 
@@ -63,7 +63,7 @@ describe('REST API:', function () {
       var params = { videoId: 'CRACCCK' };
 
       request(app)
-      .post('/api/users/' + user._id + '/classes/' + classe._id + '/lectures/')
+      .post('/api/users/' + user._id + '/watched-contents/' + classe._id + '/lectures/')
       .set('Authorization', 'Bearer ' + user.token)
       .send(params)
       .expect(201)
@@ -79,14 +79,14 @@ describe('REST API:', function () {
       var params = { videoId: 'CRACCCK' };
 
       request(app)
-      .post('/api/users/' + user._id + '/classes/' + classe._id + '/lectures/')
+      .post('/api/users/' + user._id + '/watched-contents/' + classe._id + '/lectures/')
       .send(params)
       .set('Authorization', 'Bearer ' + user.token)
       .expect(201)
       .expect('Content-Type', /json/)
       .then(function () {
         return request(app)
-        .post('/api/users/' + user._id + '/classes/' + classe._id + '/lectures/')
+        .post('/api/users/' + user._id + '/watched-contents/' + classe._id + '/lectures/')
         .send(params)
         .set('Authorization', 'Bearer ' + user.token)
         .expect(500)

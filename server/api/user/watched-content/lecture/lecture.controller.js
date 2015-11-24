@@ -1,13 +1,13 @@
 'use strict';
 
-var Class = require('../../../../models/class.model');
+var WContent = require('../../../../models/watched-content.model');
 
 exports.create = function (req, res, next) {
   if (!req.body.videoId) {
     return next(new Error('required parameter is not exist'));
   }
 
-  Class.findById(req.params.cid)
+  WContent.findById(req.params.cid)
   .then(function (classe) {
     classe.lectures.push({ videoId: req.body.videoId });
     return classe.save();

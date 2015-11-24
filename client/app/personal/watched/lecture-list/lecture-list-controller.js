@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('WatchedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, Class, $filter, Note, GApi, GoogleConst, $q, PlaylistItem) {
+.controller('WatchedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, WatchedContent, $filter, Note, GApi, GoogleConst, $q, PlaylistItem) {
   $scope.playlistId = $stateParams.pid;
   $scope.getPageToken = PlaylistItem.getPageToken;
 
@@ -84,7 +84,7 @@ angular.module('learntubeApp')
     }
 
     // DB에서 시청한 동영상 목록 가져오기 (seenLectures)
-    Class.query({ playlistId: $scope.playlistId })
+    WatchedContent.query({ playlistId: $scope.playlistId })
     .$promise
     .then(function (response) {
       $scope.watchedLectures = response[0].lectures;

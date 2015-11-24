@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('ClassCtrl', function ($scope, $http, $stateParams, $state, Class, Auth, $filter, GoogleConst, GApi, $q, $mdToast, $document, PlaylistItem) {
+.controller('ClassCtrl', function ($scope, $http, $stateParams, $state, WatchedContent, Auth, $filter, GoogleConst, GApi, $q, $mdToast, $document, PlaylistItem) {
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.playlistId = $stateParams.pid;
   $scope.httpBusy = true;
@@ -18,7 +18,7 @@ angular.module('learntubeApp')
   };
 
   $scope.addClass = function () {
-    Class.create({
+    WatchedContent.create({
       playlistId: $scope.playlistId
     }).$promise
     .then(function () {
@@ -64,7 +64,7 @@ angular.module('learntubeApp')
   .catch(console.error);
 
   if ($scope.isLoggedIn()) {
-    Class.query().$promise
+    WatchedContent.query().$promise
     .then(function (items) {
       for (var i = 0; i < items.length; i++) {
         if (items[i].playlistId === $scope.playlistId) {

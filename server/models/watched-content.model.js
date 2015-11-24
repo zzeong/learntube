@@ -4,7 +4,7 @@ var _ = require('lodash');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
-var ClassSchema = new Schema({
+var WatchedContentSchema = new Schema({
   userId: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
@@ -18,11 +18,11 @@ var ClassSchema = new Schema({
   }]
 });
 
-ClassSchema
+WatchedContentSchema
 .pre('save', function (next) {
   var that = this;
 
-  mongoose.models.Class.findOne({
+  mongoose.models.WatchedContent.findOne({
     userId: that.userId,
     playlistId: that.playlistId,
   })
@@ -46,4 +46,4 @@ ClassSchema
   });
 });
 
-module.exports = mongoose.model('Class', ClassSchema);
+module.exports = mongoose.model('WatchedContent', WatchedContentSchema);

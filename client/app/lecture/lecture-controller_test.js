@@ -76,9 +76,9 @@ describe('Controller: LectureCtrl', function () {
       $httpBackend.when('PUT', /\/api\/users\/.*\/notes\/.*/).respond({ _id: 'NQWER', });
       $httpBackend.when('GET', /\/api\/users\/.*\/notes\/.*\/get-contents.*/).respond({ _id: 'NQWER', contents: '<h1>IHAVENOMONEY</h1>' });
       $httpBackend.when('DELETE', /\/api\/users\/.*\/notes\/.*/).respond({ _id: 'NQWER' });
-      $httpBackend.when('GET', /\/api\/users\/.*\/classes/).respond([{ _id: 'QAWS', lectures: [] }]);
-      $httpBackend.when('POST', /\/api\/users\/.*\/classes/).respond({ _id: 'QAWS' });
-      $httpBackend.when('POST', /\/api\/users\/.*\/classes\/.*\/lectures/).respond({ _id: 'ZXCV' });
+      $httpBackend.when('GET', /\/api\/users\/.*\/watched-contents/).respond([{ _id: 'QAWS', lectures: [] }]);
+      $httpBackend.when('POST', /\/api\/users\/.*\/watched-contents/).respond({ _id: 'QAWS' });
+      $httpBackend.when('POST', /\/api\/users\/.*\/watched-contents\/.*\/lectures/).respond({ _id: 'ZXCV' });
       $httpBackend.when('GET', /\/api\/others-notes\?.*/).respond(othersNotes);
     }));
 
@@ -166,8 +166,8 @@ describe('Controller: LectureCtrl', function () {
 
       $scope.completeLecture();
 
-      $httpBackend.expectPOST(/\/api\/users\/.*\/classes/);
-      $httpBackend.expectPOST(/\/api\/users\/.*\/classes\/.*\/lectures/);
+      $httpBackend.expectPOST(/\/api\/users\/.*\/watched-contents/);
+      $httpBackend.expectPOST(/\/api\/users\/.*\/watched-contents\/.*\/lectures/);
       $httpBackend.flush();
 
       expect($log.info.logs).toContain(['Saved Lecture']);

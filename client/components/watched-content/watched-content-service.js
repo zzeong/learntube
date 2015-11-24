@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('learntubeApp')
-.factory('Class', function (Auth, $resource) {
-  return $resource('/api/users/:id/classes/:cid', {
+.factory('WatchedContent', function (Auth, $resource) {
+  var watchedContent = $resource('/api/users/:id/watched-contents/:cid', {
     id: '@id',
     cid: '@cid',
   }, {
@@ -24,4 +24,17 @@ angular.module('learntubeApp')
       params: { id: Auth.getCurrentUser()._id }
     },
   });
+
+  watchedContent.lecture = $resource('/api/users/:id/watched-contents/:cid/lectures/:lid/:controller', {
+    id: '@id',
+    cid: '@cid',
+    lid: '@lid',
+  }, {
+    create: {
+      method: 'POST',
+      params: { id: Auth.getCurrentUser()._id }
+    },
+  });
+
+  return watchedContent;
 });

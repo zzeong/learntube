@@ -1,8 +1,8 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('WatchedContentsCtrl', function ($scope, $http, Class, Note, $state, GoogleConst, GApi) {
-  Class.query()
+.controller('WatchedContentsCtrl', function ($scope, $http, WatchedContent, Note, $state, GoogleConst, GApi) {
+  WatchedContent.query()
   .$promise
   .then(function (response) {
     $scope.classes = response;
@@ -35,7 +35,7 @@ angular.module('learntubeApp')
 
 
   $scope.deleteClass = function (classe) {
-    Class.remove({ cid: classe._id })
+    WatchedContent.remove({ cid: classe._id })
     .$promise
     .then(function () {
       _.remove($scope.classes, classe);
@@ -49,7 +49,7 @@ angular.module('learntubeApp')
     classe.imgHeight = img.height;
 
     // DB에서 시청한 동영상 목록 가져오기 (seenLectures)
-    Class.query({ playlistId: classe.playlistId })
+    WatchedContent.query({ playlistId: classe.playlistId })
     .$promise
     .then(function (response) {
       classe.numberOfWatched = response[0].lectures.length;

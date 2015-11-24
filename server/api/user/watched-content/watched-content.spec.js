@@ -6,7 +6,7 @@ var request = require('supertest-as-promised');
 var mongoose = require('mongoose');
 var auth = require('../../../auth/auth.service');
 var User = require('../../../models/user.model');
-var Class = require('../../../models/class.model');
+var WContent = require('../../../models/watched-content.model');
 
 var Promise = mongoose.Promise = require('promise');
 
@@ -16,7 +16,7 @@ describe('REST API:', function () {
   before(function (done) {
     Promise.all([
       User.remove({}),
-      Class.remove({})
+      WContent.remove({})
     ])
     .then(function () {
       user = new User({
@@ -39,19 +39,19 @@ describe('REST API:', function () {
   after(function (done) {
     Promise.all([
       User.remove({}),
-      Class.remove({})
+      WContent.remove({})
     ])
     .then(done.bind(null, null), done);
   });
 
-  describe('POST /api/users/:id/classes', function () {
+  describe('POST /api/users/:id/watched-contents', function () {
     beforeEach(function (done) {
-      Class.remove({})
+      WContent.remove({})
       .then(done.bind(null, null), done);
     });
 
     afterEach(function (done) {
-      Class.remove({})
+      WContent.remove({})
       .then(done.bind(null, null), done);
     });
 
@@ -61,7 +61,7 @@ describe('REST API:', function () {
       };
 
       request(app)
-      .post('/api/users/' + user._id + '/classes/')
+      .post('/api/users/' + user._id + '/watched-contents/')
       .set('Authorization', 'Bearer ' + user.token)
       .send(params)
       .expect(201)
@@ -81,14 +81,14 @@ describe('REST API:', function () {
       var params = { playlistId: 'CRACCCK' };
 
       request(app)
-      .post('/api/users/' + user._id + '/classes/')
+      .post('/api/users/' + user._id + '/watched-contents/')
       .set('Authorization', 'Bearer ' + user.token)
       .send(params)
       .expect(201)
       .expect('Content-Type', /json/)
       .then(function () {
         return request(app)
-        .post('/api/users/' + user._id + '/classes/')
+        .post('/api/users/' + user._id + '/watched-contents/')
         .set('Authorization', 'Bearer ' + user.token)
         .send(params)
         .expect(500)
@@ -102,7 +102,7 @@ describe('REST API:', function () {
     });
   });
 
-  describe('GET /api/users/:id/classes/', function () {
+  describe('GET /api/users/:id/watched-contents/', function () {
     beforeEach(function (done) {
       var classes = [{
         userId: user._id,
@@ -112,16 +112,16 @@ describe('REST API:', function () {
         playlistId: 'E3R4'
       }];
 
-      Class.remove({})
+      WContent.remove({})
       .then(function () {
-        return Class.create(classes);
+        return WContent.create(classes);
       })
       .then(done.bind(null, null), done);
     });
 
     it('should get all classes that have 2 items', function (done) {
       request(app)
-      .get('/api/users/' + user._id + '/classes/')
+      .get('/api/users/' + user._id + '/watched-contents/')
       .set('Authorization', 'Bearer ' + user.token)
       .expect(200)
       .expect('Content-Type', /json/)
@@ -133,13 +133,13 @@ describe('REST API:', function () {
     });
   });
 
-  describe('DELETE /api/users/:id/classes/:cid', function () {
+  describe('DELETE /api/users/:id/watched-contents/:cid', function () {
     var cid;
 
     beforeEach(function (done) {
-      Class.remove({})
+      WContent.remove({})
       .then(function () {
-        var classe = new Class({
+        var classe = new WContent({
           userId: user._id,
           playlistId: 'ZZZ'
         });
@@ -152,13 +152,13 @@ describe('REST API:', function () {
       .catch(done);
     });
 
-    it('should makes Class collection has no docs after class is removed', function (done) {
+    it('should makes watched-content collection has no docs after class is removed', function (done) {
       request(app)
-      .delete('/api/users/' + user._id + '/classes/' + cid)
+      .delete('/api/users/' + user._id + '/watched-contents/' + cid)
       .set('Authorization', 'Bearer ' + user.token)
       .expect(204)
       .then(function () {
-        return Class.find({}).exec();
+        return WContent.find({}).exec();
       })
       .then(function (classes) {
         classes.should.have.length(0);

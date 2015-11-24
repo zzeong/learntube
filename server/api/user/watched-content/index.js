@@ -1,7 +1,7 @@
 'use strict';
 
 var express = require('express');
-var controller = require('./class.controller');
+var controller = require('./watched-content.controller');
 
 var router = express.Router({ mergeParams: true });
 

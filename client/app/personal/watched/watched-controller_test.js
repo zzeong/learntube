@@ -48,14 +48,14 @@ describe('Controller: WatchedContentsCtrl', function () {
         youtube: { items: [{}, {}] },
       };
 
-      $httpBackend.when('GET', /\/api\/users\/.*\/classes/).respond(res.classQuery);
-      $httpBackend.when('DELETE', /\/api\/users\/.*\/classes\/.*/).respond();
+      $httpBackend.when('GET', /\/api\/users\/.*\/watched-contents/).respond(res.classQuery);
+      $httpBackend.when('DELETE', /\/api\/users\/.*\/watched-contents\/.*/).respond();
     });
 
 
 
-    xit('should get all classes', function () {
-      $httpBackend.expectGET(/\/api\/users\/.*\/classes/);
+    xit('should get all watched contents as classes', function () {
+      $httpBackend.expectGET(/\/api\/users\/.*\/watched-contents/);
       $httpBackend.expectGET(/https\:\/\/www\.googleapis\.com\/youtube\/v3\/playlists\?.*/);
       $httpBackend.flush();
 
@@ -69,7 +69,7 @@ describe('Controller: WatchedContentsCtrl', function () {
       var beforeLength = $scope.classes.length;
       $scope.deleteClass($scope.classes[0]);
 
-      $httpBackend.expectDELETE(/\/api\/users\/.*\/classes\/.*/);
+      $httpBackend.expectDELETE(/\/api\/users\/.*\/watched-contents\/.*/);
       $httpBackend.flush();
 
       expect($scope.classes.length).toEqual(beforeLength - 1);

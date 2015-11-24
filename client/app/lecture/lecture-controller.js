@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('LectureCtrl', function ($scope, $stateParams, $http, Auth, Note, GoogleConst, GApi, Upload, PlaylistItem, $mdToast, Class, Lecture) {
+.controller('LectureCtrl', function ($scope, $stateParams, $http, Auth, Note, GoogleConst, GApi, Upload, PlaylistItem, $mdToast, WatchedContent) {
   $scope.videoId = $stateParams.vid;
   $scope.playlistId = $stateParams.pid;
   $scope.playerVars = {
@@ -16,7 +16,7 @@ angular.module('learntubeApp')
   $scope.haveLecture = false;
 
   if ($scope.isLoggedIn()) {
-    Class.query({ playlistId: $scope.playlistId }).$promise
+    WatchedContent.query({ playlistId: $scope.playlistId }).$promise
     .then(function (items) {
       if (items.length) {
         var item = items[0];
@@ -126,16 +126,16 @@ angular.module('learntubeApp')
     var params = { videoId: $scope.videoId };
 
     if ($scope.cid === null) {
-      return Class.create({
+      return WatchedContent.create({
         playlistId: $scope.playlistId
       }).$promise
       .then(function (item) {
         params.cid = item._id;
-        return Lecture.create(params).$promise;
+        return WatchedContent.lecture.create(params).$promise;
       });
     } else {
       params.cid = $scope.cid;
-      return Lecture.create(params).$promise;
+      return WatchedContent.lecture.create(params).$promise;
     }
   };
 

@@ -8,7 +8,7 @@ var router = express.Router();
 
 router.use('/:id', auth.isAuthenticated());
 
-router.use('/:id/classes', require('./class'));
+router.use('/:id/watched-contents', require('./watched-content'));
 router.use('/:id/notes', require('./note'));
 router.use('/:id/uploads', require('./upload'));
 

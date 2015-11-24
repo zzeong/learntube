@@ -9,14 +9,14 @@ var _ = require('lodash');
 var User = require('../models/user.model');
 var Note = require('../models/note.model');
 var Upload = require('../models/upload.model');
-var Class = require('../models/class.model');
+var WContent = require('../models/watched-content.model');
 var Rating = require('../models/rating.model');
 var mongoose = require('mongoose');
-var Promise = mongoose.Promise = require('promise');
 var aws = require('aws-sdk');
 var s3 = new aws.S3();
 var config = require('./environment');
 
+mongoose.Promise = Promise;
 
 var initialUser = function () {
   return User.create([{
@@ -108,14 +108,14 @@ var seedNote = function (users) {
   return Note.create(docs);
 };
 
-var seedClass = function (users) {
+var seedWContent = function (users) {
   var timeMachine = function (offset) {
     var d = new Date();
     d.setDate(d.getDate() + offset);
     return d;
   };
 
-  return Class.create([{
+  return WContent.create([{
     userId: users[0]._id,
     playlistId: 'PLtEAazd2E1Vr5ycRfR2pRQSjqFlB9uSow',
     lectures: [{
@@ -285,7 +285,7 @@ var seedUpload = function (users) {
 Promise.all([
   User.remove({}).exec(),
   Note.remove({}).exec(),
-  Class.remove({}).exec(),
+  WContent.remove({}).exec(),
   Rating.remove({}).exec(),
   Upload.remove({}).exec()
 ])
@@ -293,7 +293,7 @@ Promise.all([
 .then(function (users) {
   return Promise.all([
     seedNote(users),
-    seedClass(users),
+    seedWContent(users),
     seedUpload(users),
     seedRating()
   ]);
