@@ -5,7 +5,6 @@ var youtube = google.youtube('v3');
 var config = require('../../config/environment');
 var OAuth2 = google.auth.OAuth2;
 var oauth2Client = new OAuth2(config.google.clientID, config.google.clientSecret, config.google.callbackURL);
-var Promise = require('promise');
 
 function Youtube(s, p) {
   this.step = s;

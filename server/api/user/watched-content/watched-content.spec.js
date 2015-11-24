@@ -8,7 +8,7 @@ var auth = require('../../../auth/auth.service');
 var User = require('../../../models/user.model');
 var WContent = require('../../../models/watched-content.model');
 
-var Promise = mongoose.Promise = require('promise');
+mongoose.Promise = Promise;
 
 describe('REST API:', function () {
   var user;

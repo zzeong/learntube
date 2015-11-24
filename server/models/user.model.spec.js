@@ -3,7 +3,7 @@
 var should = require('should');
 var User = require('./user.model');
 
-require('mongoose').Promise = require('promise');
+require('mongoose').Promise = Promise;
 
 var user = new User({
   name: 'Fake User',

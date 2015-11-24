@@ -3,7 +3,7 @@
 var _ = require('lodash');
 var WContent = require('../../../models/watched-content.model');
 
-require('mongoose').Promise = require('promise');
+require('mongoose').Promise = Promise;
 
 exports.index = function (req, res) {
   var data = _.assign(req.query, { userId: req.params.id });

@@ -3,7 +3,6 @@
 require('should');
 var app = require('../../../../app');
 var request = require('supertest-as-promised');
-var Promise = require('promise');
 var auth = require('../../../../auth/auth.service.js');
 var WContent = require('../../../../models/watched-content.model');
 var User = require('../../../../models/user.model');

@@ -5,7 +5,7 @@ var g = require('../../../../components/google-api');
 var config = require('../../../../config/environment');
 var gapiHelper = require('../youtube-mine-service');
 
-require('mongoose').Promise = require('promise');
+require('mongoose').Promise = Promise;
 
 /**
  * @apiDefine TokenAuth

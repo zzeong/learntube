@@ -2,7 +2,6 @@
 
 var g = require('../../../../components/google-api');
 var config = require('../../../../config/environment');
-var Promise = require('promise');
 var gapiHelper = require('../youtube-mine-service');
 
 /**

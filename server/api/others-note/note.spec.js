@@ -11,7 +11,7 @@ var config = require('../../config/environment');
 var app = require('../../app');
 var auth = require('../../auth/auth.service');
 
-var Promise = mongoose.Promise = require('promise');
+mongoose.Promise = Promise;
 
 var s3 = knox.createClient({
   key: config.aws.accessKeyId,

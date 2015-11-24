@@ -10,7 +10,7 @@ var Upload = require('../../../../models/upload.model');
 var config = require('../../../../config/environment');
 var knox = require('knox');
 
-var Promise = mongoose.Promise = require('promise');
+mongoose.Promise = Promise;
 
 describe('REST API:', function () {
   var user;

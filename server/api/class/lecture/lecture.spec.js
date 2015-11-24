@@ -7,8 +7,7 @@ var Upload = require('../../../models/upload.model');
 var User = require('../../../models/user.model');
 var app = require('../../../app');
 
-var Promise = mongoose.Promise = require('promise');
-
+mongoose.Promise = Promise;
 
 describe('REST API:', function () {
   var id;

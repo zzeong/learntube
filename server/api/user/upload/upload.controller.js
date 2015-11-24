@@ -4,7 +4,7 @@ var _ = require('lodash');
 var Upload = require('../../../models/upload.model');
 var mongoose = require('mongoose');
 
-mongoose.Promise = require('promise');
+mongoose.Promise = Promise;
 
 
 var handleError = function (res, statusCode) {

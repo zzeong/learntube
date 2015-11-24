@@ -1,6 +1,5 @@
 'use strict';
 
-var Promise = require('promise');
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 var crypto = require('crypto');

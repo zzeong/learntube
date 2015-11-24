@@ -9,7 +9,7 @@ var Note = require('../../../models/note.model');
 var Rating = require('../../../models/rating.model');
 var auth = require('../../../auth/auth.service');
 
-var Promise = mongoose.Promise = require('promise');
+mongoose.Promise = Promise;
 
 
 describe('REST API:', function () {

@@ -25,7 +25,6 @@
     "node-env-injector": "0.0.0",
     "passport": "~0.3.0",
     "passport-google-oauth": "latest",
-    "promise": "^7.0.4",
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
