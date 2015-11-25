@@ -1,3 +1,5 @@
+'use strict';
+
 function applyDuration(g, list) {
   if (!list.length) { list = [list]; }
   var id = serializeId(list, ',');

@@ -6,11 +6,14 @@
 'use strict';
 
 var _ = require('lodash');
+var fs = require('fs');
+var csv = require('fast-csv');
 var User = require('../models/user.model');
 var Note = require('../models/note.model');
 var Upload = require('../models/upload.model');
 var WContent = require('../models/watched-content.model');
 var Rating = require('../models/rating.model');
+var Class = require('../models/class.model.js');
 var mongoose = require('mongoose');
 var aws = require('aws-sdk');
 var s3 = new aws.S3();
@@ -108,7 +111,7 @@ var seedNote = function (users) {
   return Note.create(docs);
 };
 
-var seedWContent = function (users) {
+var seedWatchedContent = function (users) {
   var timeMachine = function (offset) {
     var d = new Date();
     d.setDate(d.getDate() + offset);
@@ -270,6 +273,20 @@ var seedUpload = function (users) {
   }]);
 };
 
+function seedClassFromFile(path) {
+  return new Promise(function (resolve, reject) {
+    var bucket = [];
+    var rs = fs.createReadStream(path);
+    rs.pipe(csv({ headers: true }))
+    .on('data', function (data) { bucket.push(data); })
+    .on('end', function () {
+      Class.create(bucket)
+      .then(function (classes) { resolve(classes); })
+      .catch(function (err) { console.log(err); reject(err); });
+    });
+  });
+}
+
 
 
 
@@ -287,15 +304,17 @@ Promise.all([
   Note.remove({}).exec(),
   WContent.remove({}).exec(),
   Rating.remove({}).exec(),
-  Upload.remove({}).exec()
+  Upload.remove({}).exec(),
+  Class.remove({}).exec()
 ])
 .then(initialUser)
 .then(function (users) {
   return Promise.all([
     seedNote(users),
-    seedWContent(users),
+    seedWatchedContent(users),
     seedUpload(users),
-    seedRating()
+    seedRating(),
+    seedClassFromFile('db/class.csv')
   ]);
 })
 .then(function () {
@@ -304,3 +323,5 @@ Promise.all([
 .catch(function (err) {
   console.error(err.stack);
 });
+
+exports.seedClassFromFile = seedClassFromFile;

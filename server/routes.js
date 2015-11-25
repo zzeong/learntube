@@ -15,6 +15,7 @@ module.exports = function (app) {
   app.use('/api/youtube', require('./api/youtube'));
   app.use('/api/s3', require('./api/s3'));
   app.use('/api/classes', require('./api/class'));
+  app.use('/api/categories', require('./api/category'));
 
   app.use('/auth', require('./auth'));
 

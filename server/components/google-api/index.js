@@ -16,7 +16,7 @@ Youtube.prototype.execute = function (method, params) {
   var that = this;
   this.step = method ? method.split('.') : this.step;
   this.params = params || this.params;
-  this.params.auth = oauth2Client;
+  this.params.auth = this.params.auth || oauth2Client;
   this.previousAccessToken = oauth2Client.credentials.access_token;
 
   return new Promise(function (resolve, reject) {

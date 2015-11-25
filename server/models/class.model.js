@@ -12,4 +12,4 @@ var ClassSchema = new Schema({
   registeredAt: { type: Date, default: Date.now },
 });
 
-module.exprts = mongoose.model('Class', ClassSchema);
+module.exports = mongoose.model('Class', ClassSchema);
