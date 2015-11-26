@@ -24,3 +24,17 @@ md-list-item {
     white-space: normal;
   }
 }
+
+.category-sidenav {
+  md-sidenav {
+    width: calc(100% - 56px);
+    min-width: calc(100% - 56px);
+    max-width: calc(100% - 56px);
+
+    &.md-locked-open {
+      width: 240px;
+      min-width: 240px;
+      max-width: 240px;
+    }
+  }
+}
