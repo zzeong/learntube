@@ -6,6 +6,10 @@ html {
   box-sizing: border-box;
 }
 
+body {
+  overflow: hidden;
+}
+
 md-content,
 body {
   background-color: $main-bg-color;

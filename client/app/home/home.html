@@ -1,37 +1,32 @@
-<div ng-include="'components/sidenav/sidenav.html'"></div>
-<div ng-include="'components/toolbar/toolbar.html'"></div>
+<div class="intro" layout="column" layout-align="center center">
 
-<md-content>
-  <div class="intro" layout="column" layout-align="center center">
+  <h2 class="intro__slogan" class="md-headline"><strong>All you need is knowledge</strong></h2>
 
-    <h2 class="intro__slogan" class="md-headline"><strong>All you need is knowledge</strong></h2>
-
-    <form ng-submit="go('Search', { q: q })">
-      <div class="search-content">
-        <input class="md-body-1" ng-model="q" type="search" placeholder="Search anything">
-        <md-button class="md-icon-button search-content__search-icon-button" aria-label="Search" ng-click="go('Search', { q: q })">
-          <md-icon md-font-set="material-icons">search</md-icon>
-        </md-button>
-      </div>
-    </form>
-
-  </div>
-
-  <div class="class-area" layout-padding>
-    <h3 class="md-headline">Best classes</h3>
-    <md-divider></md-divider>
-    <div class="class-area__grid-list-cont">
-      <md-grid-list md-cols="2" md-cols-gt-md="3" md-row-height="4:3" md-gutter="8px" class="class-grid">
-        <md-grid-tile ng-repeat="classe in classes" ng-click="go('Summary', { pid: classe.id })">
-          <img ng-src="{{ classe.snippet.thumbnails.high.url }}" alt="Class Image">
-          <md-grid-tile-footer>
-            <h3>{{ classe.snippet.title }}</h3>
-          </md-grid-tile-footer>
-        </md-grid-tile>
-      </md-grid-list>
+  <form ng-submit="go('Search', { q: q })">
+    <div class="search-content">
+      <input class="md-body-1" ng-model="q" type="search" placeholder="Search anything">
+      <md-button class="md-icon-button search-content__search-icon-button" aria-label="Search" ng-click="go('Search', { q: q })">
+        <md-icon md-font-set="material-icons">search</md-icon>
+      </md-button>
     </div>
-  </div>
+  </form>
 
-</md-content>
+</div>
+
+<div class="class-area" layout-padding>
+  <h3 class="md-headline">Best classes</h3>
+  <md-divider></md-divider>
+  <div class="class-area__grid-list-cont">
+    <md-grid-list md-cols="2" md-cols-gt-md="3" md-row-height="4:3" md-gutter="8px" class="class-grid">
+      <md-grid-tile ng-repeat="classe in classes" ng-click="go('Summary', { pid: classe.id })">
+        <img ng-src="{{ classe.snippet.thumbnails.high.url }}" alt="Class Image">
+        <md-grid-tile-footer>
+          <h3>{{ classe.snippet.title }}</h3>
+        </md-grid-tile-footer>
+      </md-grid-tile>
+    </md-grid-list>
+  </div>
+</div>
+
 
 <footer class="footer" hide-sm></footer>

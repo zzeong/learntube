@@ -1,20 +1,13 @@
-<div ng-include="'components/sidenav/sidenav.html'"></div>
-<div ng-include="'components/toolbar/toolbar.html'"></div>
-
-<md-content>
-
-  <div class="container-without-bg" layout-padding>
-    <div infinite-scroll="loadMore(pageToken)" infinite-scroll-disabled="httpBusy || !pageToken"
+<div class="container-without-bg" layout-padding>
+  <div infinite-scroll="loadMore(pageToken)" infinite-scroll-disabled="httpBusy || !pageToken"
     infinite-scroll-distance="1">
-      <md-grid-list md-cols="2" md-cols-gt-md="3" md-row-height="4:3" md-gutter="8px" class="class-grid">
-        <md-grid-tile ng-repeat="classe in classes" ng-click="go('Summary', { pid: classe.id.playlistId })">
-          <img ng-src="{{ classe.snippet.thumbnails.high.url }}" alt="Class Image">
-          <md-grid-tile-footer>
-            <h3>{{ classe.snippet.title }}</h3>
-          </md-grid-tile-footer>
-        </md-grid-tile>
-      </md-grid-list>
-    </div>
+    <md-grid-list md-cols="2" md-cols-gt-md="3" md-row-height="4:3" md-gutter="8px" class="class-grid">
+      <md-grid-tile ng-repeat="classe in classes" ng-click="go('Summary', { pid: classe.id.playlistId })">
+        <img ng-src="{{ classe.snippet.thumbnails.high.url }}" alt="Class Image">
+        <md-grid-tile-footer>
+          <h3>{{ classe.snippet.title }}</h3>
+        </md-grid-tile-footer>
+      </md-grid-tile>
+    </md-grid-list>
   </div>
-
-</md-content>
+</div>
