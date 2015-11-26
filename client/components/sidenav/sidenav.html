@@ -1,26 +1,13 @@
-<md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')"
-hide-gt-sm>
-  <div class="sidenav-account-area md-hue-1" ng-controller="SidenavDrawerCtrl">
-    <div class="sidenav-account-area__thumb">
-      <img ng-src="{{ getUserImage() }}" alt="Account Image" />
-    </div>
-    <div class="sidenav-account-area__content">
-      <md-button ng-hide="isLoggedIn()" ng-click="loginOauth('google')" class="md-raised sidenav-account-area__login-btn">
-        Login with <i class="fa fa-youtube-play"></i>
-      </md-button>
-      <div ng-show="isLoggedIn()">
-        <p class="md-body-2">{{ getCurrentUser().name }}</p>
-        <p class="md-body-1">{{ getCurrentUser().email }}</p>
-      </div>
-    </div>
+<md-sidenav class="md-sidenav-left md-whiteframe-z2 category-sidenav" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+  <div class="category-sidenav__list" ng-controller="SidenavCtrl">
+    <md-list ng-cloak>
+      <md-list-item href="/category/all">
+        <span>All</span>
+      </md-list-item>
+      <md-list-item ng-href="/category/{{ category.orig | lowercase }}" ng-repeat="category in categories">
+        <span>{{ category.orig }}</span>
+      </md-list-item>
+    </md-list>
   </div>
-  <md-list ng-show="isLoggedIn()" ng-controller="SidenavDrawerCtrl">
-    <md-list-item ng-repeat="item in personalMenu" ng-click="navTo(item.url)">
-      <p>{{ item.name }}</p>
-    </md-list-item>
-    <md-divider></md-divider>
-    <md-list-item ng-click="logout()">
-      <p>Log out</p>
-    </md-list-item>
-  </md-list>
 </md-sidenav>
+
