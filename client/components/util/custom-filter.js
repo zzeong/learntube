@@ -34,4 +34,9 @@ angular.module('learntubeApp')
   return function (val) {
     return $sce.trustAsResourceUrl(val);
   };
+})
+.filter('urlSafely', function () {
+  return function (string) {
+    return string.replace(/\ /g, '-').toLowerCase();
+  };
 });

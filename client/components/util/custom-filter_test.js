@@ -72,3 +72,20 @@ describe('Filter: humanable', function () {
     expect(filter('PT20S')).toEqual('00:20');
   });
 });
+
+fdescribe('Filter: urlSafely', function () {
+  beforeEach(module('learntubeApp'));
+  var filter;
+
+  beforeEach(inject(function ($filter) {
+    filter = $filter('urlSafely');
+  }));
+
+  it('should return lowercase letters', function () {
+    expect(filter('IMILL')).toEqual('imill');
+  });
+
+  it('should return hyphen replaced from blank', function () {
+    expect(filter('you are so hot')).toEqual('you-are-so-hot');
+  });
+});

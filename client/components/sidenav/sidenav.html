@@ -4,7 +4,7 @@
       <md-list-item href="/category/all">
         <span>All</span>
       </md-list-item>
-      <md-list-item ng-href="/category/{{ category.orig | lowercase }}" ng-repeat="category in categories">
+      <md-list-item ng-href="/category/{{ category.orig | urlSafely }}" ng-repeat="category in categories">
         <span>{{ category.orig }}</span>
       </md-list-item>
     </md-list>
