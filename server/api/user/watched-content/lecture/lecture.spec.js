@@ -2,7 +2,7 @@
 
 require('should');
 var app = require('../../../../app');
-var request = require('supertest-as-promised');
+var request = require('supertest-as-promised').agent(app);
 var auth = require('../../../../auth/auth.service.js');
 var WContent = require('../../../../models/watched-content.model');
 var User = require('../../../../models/user.model');
@@ -61,7 +61,7 @@ describe('REST API:', function () {
     it('should return saved lecture', function (done) {
       var params = { videoId: 'CRACCCK' };
 
-      request(app)
+      request
       .post('/api/users/' + user._id + '/watched-contents/' + classe._id + '/lectures/')
       .set('Authorization', 'Bearer ' + user.token)
       .send(params)
@@ -77,14 +77,14 @@ describe('REST API:', function () {
     it('should return duplication error when video id is existed', function (done) {
       var params = { videoId: 'CRACCCK' };
 
-      request(app)
+      request
       .post('/api/users/' + user._id + '/watched-contents/' + classe._id + '/lectures/')
       .send(params)
       .set('Authorization', 'Bearer ' + user.token)
       .expect(201)
       .expect('Content-Type', /json/)
       .then(function () {
-        return request(app)
+        return request
         .post('/api/users/' + user._id + '/watched-contents/' + classe._id + '/lectures/')
         .send(params)
         .set('Authorization', 'Bearer ' + user.token)

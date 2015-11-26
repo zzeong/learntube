@@ -2,7 +2,7 @@
 
 var should = require('should');
 var app = require('../../../app');
-var request = require('supertest-as-promised');
+var request = require('supertest-as-promised').agent(app);
 var mongoose = require('mongoose');
 var User = require('../../../models/user.model');
 var Note = require('../../../models/note.model');
@@ -54,7 +54,7 @@ describe('REST API:', function () {
     var nid;
 
     afterEach(function (done) {
-      request(app)
+      request
       .delete('/api/users/' + user._id + '/notes/' + nid)
       .set('Authorization', 'Bearer ' + user.token)
       .then(function () {
@@ -65,7 +65,7 @@ describe('REST API:', function () {
     });
 
     it('should return saved note id when note is saved', function (done) {
-      request(app)
+      request
       .post('/api/users/' + user._id + '/notes')
       .set('Authorization', 'Bearer ' + user.token)
       .field('playlistId', playlistId)
@@ -81,7 +81,7 @@ describe('REST API:', function () {
     });
 
     it('should create rating model with initial point', function (done) {
-      request(app)
+      request
       .post('/api/users/' + user._id + '/notes')
       .set('Authorization', 'Bearer ' + user.token)
       .field('playlistId', playlistId)
@@ -108,7 +108,7 @@ describe('REST API:', function () {
         points: 1
       })
       .then(function () {
-        return request(app)
+        return request
         .post('/api/users/' + user._id + '/notes')
         .set('Authorization', 'Bearer ' + user.token)
         .field('playlistId', playlistId)
@@ -136,7 +136,7 @@ describe('REST API:', function () {
     var nid;
 
     before(function (done) {
-      request(app)
+      request
       .post('/api/users/' + user._id + '/notes')
       .set('Authorization', 'Bearer ' + user.token)
       .field('playlistId', playlistId)
@@ -151,14 +151,14 @@ describe('REST API:', function () {
     });
 
     after(function (done) {
-      request(app)
+      request
       .delete('/api/users/' + user._id + '/notes/' + nid)
       .set('Authorization', 'Bearer ' + user.token)
       .then(done.bind(null, null), done);
     });
 
     it('should return queried notes', function (done) {
-      request(app)
+      request
       .get('/api/users/' + user._id + '/notes')
       .set('Authorization', 'Bearer ' + user.token)
       .query({ videoId: videoId })
@@ -176,7 +176,7 @@ describe('REST API:', function () {
 
     describe('/:nid', function () {
       it('should return specific note doc', function (done) {
-        request(app)
+        request
         .get('/api/users/' + user._id + '/notes/' + nid)
         .set('Authorization', 'Bearer ' + user.token)
         .expect(200)
@@ -190,7 +190,7 @@ describe('REST API:', function () {
 
       describe('/get-contents', function () {
         it('should return note contents equal to contents which have been saved when note is got', function (done) {
-          request(app)
+          request
           .get('/api/users/' + user._id + '/notes/' + nid + '/get-contents')
           .set('Authorization', 'Bearer ' + user.token)
           .expect(200)
@@ -211,7 +211,7 @@ describe('REST API:', function () {
     var nid;
 
     before(function (done) {
-      request(app)
+      request
       .post('/api/users/' + user._id + '/notes')
       .set('Authorization', 'Bearer ' + user.token)
       .field('playlistId', playlistId)
@@ -226,14 +226,14 @@ describe('REST API:', function () {
     });
 
     after(function (done) {
-      request(app)
+      request
       .delete('/api/users/' + user._id + '/notes/' + nid)
       .set('Authorization', 'Bearer ' + user.token)
       .then(done.bind(null, null), done);
     });
 
     it('should return updated note', function (done) {
-      request(app)
+      request
       .put('/api/users/' + user._id + '/notes/' + nid)
       .set('Authorization', 'Bearer ' + user.token)
       .field('playlistId', playlistId)
@@ -255,7 +255,7 @@ describe('REST API:', function () {
     var nid;
 
     beforeEach(function (done) {
-      request(app)
+      request
       .post('/api/users/' + user._id + '/notes')
       .set('Authorization', 'Bearer ' + user.token)
       .field('playlistId', playlistId)
@@ -278,7 +278,7 @@ describe('REST API:', function () {
     });
 
     it('should return 204 status code when note is removed', function (done) {
-      request(app)
+      request
       .delete('/api/users/' + user._id + '/notes/' + nid)
       .set('Authorization', 'Bearer ' + user.token)
       .expect(204)
@@ -292,7 +292,7 @@ describe('REST API:', function () {
         $inc: { points: 2 }
       }).exec()
       .then(function () {
-        return request(app)
+        return request
         .delete('/api/users/' + user._id + '/notes/' + nid)
         .set('Authorization', 'Bearer ' + user.token)
         .expect(204);
@@ -308,7 +308,7 @@ describe('REST API:', function () {
     });
 
     it('should remove a rating doc when class have no notes', function (done) {
-      request(app)
+      request
       .delete('/api/users/' + user._id + '/notes/' + nid)
       .set('Authorization', 'Bearer ' + user.token)
       .expect(204)

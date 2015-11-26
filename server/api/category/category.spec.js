@@ -1,10 +1,10 @@
 'use strict';
 
 require('should');
-var request = require('supertest-as-promised');
 var Class = require('../../models/class.model');
 var app = require('../../app.js');
 var seeder = require('../../config/seed');
+var request = require('supertest-as-promised').agent(app);
 
 describe('REST API:', function () {
   before(function (done) {
@@ -36,7 +36,7 @@ describe('REST API:', function () {
 
   describe('GET /api/cateogires', function () {
     it('should return sorted and limited classes', function (done) {
-      request(app)
+      request
       .get('/api/categories')
       .expect(200)
       .expect('Content-Type', /json/)
@@ -52,7 +52,7 @@ describe('REST API:', function () {
     });
 
     it('should return classes queried with slug', function (done) {
-      request(app)
+      request
       .get('/api/categories?slug=HUMA')
       .expect(200)
       .expect('Content-Type', /json/)
@@ -67,7 +67,7 @@ describe('REST API:', function () {
     });
 
     it('should return classes having additional property', function (done) {
-      request(app)
+      request
       .get('/api/categories')
       .expect(200)
       .expect('Content-Type', /json/)
@@ -84,9 +84,9 @@ describe('REST API:', function () {
   });
 
 
-  describe.only('GET /api/cateogires/get-each-top', function () {
+  describe('GET /api/cateogires/get-each-top', function () {
     it('should return classes which have 5 in each category', function (done) {
-      request(app)
+      request
       .get('/api/categories/get-each-top')
       .expect(200)
       .expect('Content-Type', /json/)
@@ -106,7 +106,7 @@ describe('REST API:', function () {
     });
 
     it('should return classes which are sorted by rate in each category', function (done) {
-      request(app)
+      request
       .get('/api/categories/get-each-top')
       .expect(200)
       .expect('Content-Type', /json/)

@@ -1,11 +1,11 @@
 'use strict';
 
 var should = require('should');
-var request = require('supertest-as-promised');
 var mongoose = require('mongoose');
 var Upload = require('../../../models/upload.model');
 var User = require('../../../models/user.model');
 var app = require('../../../app');
+var request = require('supertest-as-promised').agent(app);
 
 mongoose.Promise = Promise;
 
@@ -61,7 +61,7 @@ describe('REST API:', function () {
 
 
     it('should return a file which will be downloaded', function (done) {
-      request(app)
+      request
       .get('/api/classes/PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx/lectures/F-xd3G0PW0k/get-handout')
       .expect(200)
       .expect('Content-Type', /application\/octet-stream/)

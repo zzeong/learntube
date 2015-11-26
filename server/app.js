@@ -32,10 +32,12 @@ var server = require('http').createServer(app);
 require('./config/express')(app);
 require('./routes')(app);
 
-// Start server
-server.listen(config.port, config.ip, function () {
-  console.log('Express server listening on http://%s:%d, in %s mode', config.ip, config.port, app.get('env'));
-});
+// Start server and prevent multiple listening
+if (!module.parent) {
+  server.listen(config.port, config.ip, function () {
+    console.log('Express server listening on http://%s:%d, in %s mode', config.ip, config.port, app.get('env'));
+  });
+}
 
 // Expose app
 exports = module.exports = app;

@@ -2,7 +2,7 @@
 
 require('should');
 var app = require('../../../app');
-var request = require('supertest-as-promised');
+var request = require('supertest-as-promised').agent(app);
 var mongoose = require('mongoose');
 var auth = require('../../../auth/auth.service');
 var User = require('../../../models/user.model');
@@ -60,7 +60,7 @@ describe('REST API:', function () {
         playlistId: 'CRACCCK'
       };
 
-      request(app)
+      request
       .post('/api/users/' + user._id + '/watched-contents/')
       .set('Authorization', 'Bearer ' + user.token)
       .send(params)
@@ -80,14 +80,14 @@ describe('REST API:', function () {
     it('should return duplication error when video id is existed', function (done) {
       var params = { playlistId: 'CRACCCK' };
 
-      request(app)
+      request
       .post('/api/users/' + user._id + '/watched-contents/')
       .set('Authorization', 'Bearer ' + user.token)
       .send(params)
       .expect(201)
       .expect('Content-Type', /json/)
       .then(function () {
-        return request(app)
+        return request
         .post('/api/users/' + user._id + '/watched-contents/')
         .set('Authorization', 'Bearer ' + user.token)
         .send(params)
@@ -120,7 +120,7 @@ describe('REST API:', function () {
     });
 
     it('should get all classes that have 2 items', function (done) {
-      request(app)
+      request
       .get('/api/users/' + user._id + '/watched-contents/')
       .set('Authorization', 'Bearer ' + user.token)
       .expect(200)
@@ -153,7 +153,7 @@ describe('REST API:', function () {
     });
 
     it('should makes watched-content collection has no docs after class is removed', function (done) {
-      request(app)
+      request
       .delete('/api/users/' + user._id + '/watched-contents/' + cid)
       .set('Authorization', 'Bearer ' + user.token)
       .expect(204)

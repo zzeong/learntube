@@ -2,9 +2,9 @@
 
 require('should');
 var _ = require('lodash');
-var request = require('supertest-as-promised');
 var Rating = require('../../models/rating.model');
 var app = require('../../app.js');
+var request = require('supertest-as-promised').agent(app);
 
 describe('REST API:', function () {
   before(function (done) {
@@ -30,7 +30,7 @@ describe('REST API:', function () {
 
   describe('GET /api/classes/get-tops', function () {
     it('should return rating docs which are limited in number', function (done) {
-      request(app)
+      request
       .get('/api/classes/get-tops')
       .query({ num: 6 })
       .expect(200)
@@ -43,7 +43,7 @@ describe('REST API:', function () {
     });
 
     it('should return sorted docs', function (done) {
-      request(app)
+      request
       .get('/api/classes/get-tops')
       .query({ num: 6 })
       .expect(200)

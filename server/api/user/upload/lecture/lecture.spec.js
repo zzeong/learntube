@@ -2,7 +2,7 @@
 
 require('should');
 var app = require('../../../../app');
-var request = require('supertest-as-promised');
+var request = require('supertest-as-promised').agent(app);
 var mongoose = require('mongoose');
 var auth = require('../../../../auth/auth.service');
 var User = require('../../../../models/user.model');
@@ -92,7 +92,7 @@ describe('REST API:', function () {
     });
 
     it('should return 204 when lecture sub-doc is removed', function (done) {
-      request(app)
+      request
       .delete('/api/users/' + user._id + '/uploads/' + upload._id + '/lectures/' + upload.lectures[0]._id)
       .set('Authorization', 'Bearer ' + user.token)
       .expect(204)

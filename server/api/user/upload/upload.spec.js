@@ -2,7 +2,7 @@
 
 require('should');
 var app = require('../../../app');
-var request = require('supertest-as-promised');
+var request = require('supertest-as-promised').agent(app);
 var mongoose = require('mongoose');
 var auth = require('../../../auth/auth.service');
 var User = require('../../../models/user.model');
@@ -51,7 +51,7 @@ describe('REST API:', function () {
     });
 
     it('should return created \'upload model doc\'', function (done) {
-      request(app)
+      request
       .post('/api/users/' + user._id + '/uploads')
       .set('Authorization', 'Bearer ' + user.token)
       .send({
@@ -92,7 +92,7 @@ describe('REST API:', function () {
 
       upload.save()
       .then(function () {
-        return request(app)
+        return request
         .post('/api/users/' + user._id + '/uploads')
         .set('Authorization', 'Bearer ' + user.token)
         .send({
@@ -127,7 +127,7 @@ describe('REST API:', function () {
     beforeEach(function (done) {
       Upload.remove({})
       .then(function () {
-        return request(app)
+        return request
         .post('/api/users/' + user._id + '/uploads')
         .set('Authorization', 'Bearer ' + user.token)
         .send({
@@ -147,7 +147,7 @@ describe('REST API:', function () {
     });
 
     it('should return uploads when query with playlistId', function (done) {
-      request(app)
+      request
       .get('/api/users/' + user._id + '/uploads')
       .set('Authorization', 'Bearer ' + user.token)
       .query({ playlistId: 'QWER' })
@@ -167,7 +167,7 @@ describe('REST API:', function () {
     });
 
     it('should return uploads with no query', function (done) {
-      request(app)
+      request
       .get('/api/users/' + user._id + '/uploads')
       .set('Authorization', 'Bearer ' + user.token)
       .expect(200)

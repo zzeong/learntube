@@ -2,7 +2,6 @@
 
 require('should');
 var knox  = require('knox');
-var request = require('supertest-as-promised');
 var mongoose = require('mongoose');
 var url = require('url');
 var User = require('../../models/user.model');
@@ -10,6 +9,7 @@ var Note = require('../../models/note.model');
 var config = require('../../config/environment');
 var app = require('../../app');
 var auth = require('../../auth/auth.service');
+var request = require('supertest-as-promised').agent(app);
 
 mongoose.Promise = Promise;
 
@@ -73,7 +73,7 @@ describe('REST API:', function () {
   describe('GET /api/notes', function () {
     before(function (done) {
       function req(user, vid) {
-        return request(app)
+        return request
         .post('/api/users/' + user._id + '/notes')
         .set('Authorization', 'Bearer ' + user.token)
         .field('playlistId', 'PLASDF')
@@ -105,7 +105,7 @@ describe('REST API:', function () {
     });
 
     it('should return all note docs', function (done) {
-      request(app)
+      request
       .get('/api/others-notes')
       .expect(200)
       .expect('Content-Type', /json/)
@@ -122,7 +122,7 @@ describe('REST API:', function () {
     });
 
     it('should return queried note docs', function (done) {
-      request(app)
+      request
       .get('/api/others-notes')
       .query({ videoId: 'QWER1' })
       .expect(200)

@@ -2,9 +2,9 @@
 
 require('should');
 var app = require('../../app');
-var request = require('supertest-as-promised');
 var User = require('../../models/user.model');
 var auth = require('../../auth/auth.service');
+var request = require('supertest-as-promised').agent(app);
 
 describe('REST API:', function () {
   var id;
@@ -41,7 +41,7 @@ describe('REST API:', function () {
     });
 
     it('should return S3 credentials', function (done) {
-      request(app)
+      request
       .get('/api/s3/credential')
       .set('authorization', 'Bearer ' + token)
       .query({
