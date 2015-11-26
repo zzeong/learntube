@@ -23,7 +23,8 @@
 
       <md-button class="md-menu__account-content" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()"
       hide-sm>
-        <img class="md-menu__account-thumb" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image" />
+        <img class="md-menu__account-thumb" ng-src="{{ getUserImgPath(getCurrentUser()) }}"
+        alt="Account Image" />
 
         <div>
           <p class="md-body-2">{{ getCurrentUser().name }}</p>
@@ -47,9 +48,24 @@
 
     </md-menu>
 
-    <md-button class="md-raised login-btn youtube-bg" ng-hide="isLoggedIn()" ng-click="loginOauth('google')"
+    <md-button class="login-btn" ng-hide="isLoggedIn()" ng-click="loginOauth('google')"
     hide-sm>
-      Login with <i class="fa fa-youtube-play"></i>
+      Sign in with <i class="fa fa-youtube-play youtube-logo"></i>
     </md-button>
+
+    <md-menu md-offset="12 -1" md-position-mode="target-right target" hide-gt-sm>
+      <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+        <md-icon md-menu-origin md-font-set="material-icons">more_vert</md-icon>
+      </md-button>
+      <md-menu-content width="3">
+        <md-menu-item>
+          <md-button ng-hide="isLoggedIn()" ng-click="loginOauth('google')">
+            Sign in with <i class="fa fa-youtube-play youtube-logo"></i>
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </md-menu>
+
   </div>
 </md-toolbar>
+
