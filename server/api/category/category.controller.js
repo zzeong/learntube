@@ -50,12 +50,14 @@ function bindAdditionalProp (classes) {
 
 exports.index = function (req, res, next) {
   var params = {};
+  var sortBy = {};
   if (req.query.slug) {
     params.categorySlug = req.query.slug;
   }
+  sortBy[req.query.sort || 'rate'] = 'desc';
 
   Class.find(params)
-  .sort({ rate: 'desc' })
+  .sort(sortBy)
   .limit(40)
   .exec()
   .then(function (classes) {

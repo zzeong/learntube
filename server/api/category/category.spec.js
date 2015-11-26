@@ -81,6 +81,31 @@ describe('REST API:', function () {
       })
       .catch(done);
     });
+
+    it('should return classes sorted by views and rate', function (done) {
+      Promise.all([
+        request
+        .get('/api/categories?sort=views')
+        .expect(200)
+        .expect('Content-Type', /json/),
+        request
+        .get('/api/categories?sort=rate')
+        .expect(200)
+        .expect('Content-Type', /json/)
+      ])
+      .then(function (allres) {
+        allres[0].body.reduce(function (pre, cur) {
+          pre.views.should.be.aboveOrEqual(cur.views);
+          return cur;
+        });
+        allres[1].body.reduce(function (pre, cur) {
+          pre.rate.should.be.aboveOrEqual(cur.rate);
+          return cur;
+        });
+        done();
+      })
+      .catch(done);
+    });
   });
 
 
