@@ -19,22 +19,22 @@ describe('REST API:', function () {
     .catch(done);
   });
 
+  beforeEach(function (done) {
+    Class.remove({})
+    .then(function () {
+      return seeder.seedClassFromFile('test/fixtures/class.csv');
+    })
+    .then(done.bind(null, null))
+    .catch(done);
+  });
+
+  afterEach(function (done) {
+    Class.remove({})
+    .then(done.bind(null, null))
+    .catch(done);
+  });
+
   describe('GET /api/cateogires', function () {
-    beforeEach(function (done) {
-      Class.remove({})
-      .then(function () {
-        return seeder.seedClassFromFile('test/fixtures/class.csv');
-      })
-      .then(done.bind(null, null))
-      .catch(done);
-    });
-
-    afterEach(function (done) {
-      Class.remove({})
-      .then(done.bind(null, null))
-      .catch(done);
-    });
-
     it('should return sorted and limited classes', function (done) {
       request(app)
       .get('/api/categories')
@@ -76,6 +76,55 @@ describe('REST API:', function () {
           item.should.have.property('playlistTitle');
           item.should.have.property('channelTitle');
           item.should.have.property('thumbnailUrl');
+        });
+        done();
+      })
+      .catch(done);
+    });
+  });
+
+
+  describe.only('GET /api/cateogires/get-each-top', function () {
+    it('should return classes which have 5 in each category', function (done) {
+      request(app)
+      .get('/api/categories/get-each-top')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .then(function (res) {
+        var filtered1 = res.body.filter(function (classe) {
+          return classe.categorySlug === 'HUMA';
+        });
+        var filtered2 = res.body.filter(function (classe) {
+          return classe.categorySlug === 'INTE';
+        });
+
+        filtered1.length.should.equal(5);
+        filtered2.length.should.equal(5);
+        done();
+      })
+      .catch(done);
+    });
+
+    it('should return classes which are sorted by rate in each category', function (done) {
+      request(app)
+      .get('/api/categories/get-each-top')
+      .expect(200)
+      .expect('Content-Type', /json/)
+      .then(function (res) {
+        var filtered1 = res.body.filter(function (classe) {
+          return classe.categorySlug === 'HUMA';
+        });
+        var filtered2 = res.body.filter(function (classe) {
+          return classe.categorySlug === 'INTE';
+        });
+
+        filtered1.reduce(function (pre, cur) {
+          pre.rate.should.be.aboveOrEqual(cur.rate);
+          return cur;
+        });
+        filtered2.reduce(function (pre, cur) {
+          pre.rate.should.be.aboveOrEqual(cur.rate);
+          return cur;
         });
         done();
       })

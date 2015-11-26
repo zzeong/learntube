@@ -3,6 +3,7 @@
 var _ = require('lodash');
 var Class = require('../../models/class.model');
 var g = require('../../components/google-api');
+var slugs = require('../../components/slug').categories;
 var apiKey = 'AIzaSyBQVxlBd8w_jm7ucPo9r8iO6g5rQwVnw7o';
 
 
@@ -61,8 +62,25 @@ exports.index = function (req, res, next) {
     return bindAdditionalProp(classes);
   })
   .then(function (classes) {
-    var body = classes;
-    res.status(200).json(body);
+    res.status(200).json(classes);
+  })
+  .catch(next);
+};
+
+exports.getEachTop = function (req, res, next) {
+  var promises = slugs.map(function (slug) {
+    return Class.find({ categorySlug: slug })
+    .sort({ rate: 'desc' })
+    .limit(5).exec();
+  });
+
+  Promise.all(promises)
+  .then(function (classesArr) {
+    var classes = _.flatten(classesArr);
+    return bindAdditionalProp(classes);
+  })
+  .then(function (classes) {
+    res.status(200).json(classes);
   })
   .catch(next);
 };
