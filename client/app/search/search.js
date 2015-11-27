@@ -5,8 +5,12 @@ angular.module('learntubeApp')
   $stateProvider
   .state('Search', {
     url: '/search/:q',
-    templateUrl: 'app/search/search.html',
-    controller: 'SearchCtrl',
-    data: { pageName: 'Search' }
+    views: {
+      common: {
+        templateUrl: 'app/search/search.html',
+        controller: 'SearchCtrl',
+        data: { pageName: 'Search' }
+      },
+    },
   });
 });

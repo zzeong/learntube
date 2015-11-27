@@ -23,20 +23,23 @@
       <!-- endinjector -->
     <!-- endbuild -->
   </head>
-  <body ng-app="learntubeApp" layout="row" flex>
+
+  <body ng-app="learntubeApp" layout="row">
     <!--[if lt IE 7]>
       <p class="browsehappy">You are using an <strong>outdated</strong> browser. Please <a href="http://browsehappy.com/">upgrade your browser</a> to improve your experience.</p>
     <![endif]-->
 
     <!-- Add your site or application content here -->
-    <div class="category-sidenav" ng-include src="'components/sidenav/sidenav.html'"></div>
-    <div layout="column" flex>
-      <div ng-include="'components/toolbar/toolbar.html'"></div>
-      <md-content ui-view="" ng-controller="MasterCtrl" flex md-scroll-y md-swipe-right="onSwipeRight($event)"></md-content>
-      <!--
-      <div ui-view="" ng-controller="MasterCtrl" md-swipe-right="onSwipeRight($event)"></div>
-      -->
+    <md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav" ng-include="'components/sidenav/sidenav.html'"
+      md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+    </md-sidenav>
+
+    <div flex class="main-container" layout="column">
+      <md-toolbar flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
+      <md-content flex ui-view="common" ng-controller="MasterCtrl" md-scroll-y md-swipe-right="onSwipeRight($event)"></md-content>
     </div>
+
+    <div flex="none" ui-view="classroom"></div>
 
     <!-- Google Analytics: change UA-XXXXX-X to be your site's ID -->
     <script>

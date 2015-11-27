@@ -1,71 +1,68 @@
-<md-toolbar ng-controller="ToolbarCtrl">
-  <div class="md-toolbar-tools">
-    <md-button class="md-icon-button" aria-label="Settings" ng-click="mainIconTrigger()"
+<div class="md-toolbar-tools" ng-controller="ToolbarCtrl">
+  <md-button class="md-icon-button" aria-label="Settings" ng-click="mainIconTrigger()"
     hide-gt-sm>
-      <md-icon md-font-set="material-icons">menu</md-icon>
-    </md-button>
-    <a href="/" class="header__logo" hide-sm>
-      <img src="/assets/images/logo_learntube_white.png" show-gt-sm alt="logo" />
-    </a>
-    <h2 ng-hide="onSearching" hide-gt-sm>
-      <span>{{ title }}</span>
-    </h2>
+    <md-icon md-font-set="material-icons">menu</md-icon>
+  </md-button>
+  <a href="/" class="header__logo" hide-sm>
+    <img src="/assets/images/logo_learntube_white.png" show-gt-sm alt="logo" />
+  </a>
+  <h2 ng-hide="onSearching" hide-gt-sm>
+    <span>{{ title }}</span>
+  </h2>
 
-    <span flex>
-      <div class="web-search-content" ng-show="!stateNameCheck('Home')">
-        <form ng-submit="go('Search', { q: q })" hide-sm>
-          <input class="web-search-content__input" type="search" ng-model="q"/>
-        </form>
-      </div>
-    </span>
+  <span flex>
+    <div class="web-search-content" ng-show="!stateNameCheck('Home')">
+      <form ng-submit="go('Search', { q: q })" hide-sm>
+        <input class="web-search-content__input" type="search" ng-model="q"/>
+      </form>
+    </div>
+  </span>
 
-    <md-menu>
+  <md-menu>
 
-      <md-button class="md-menu__account-content" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()"
+    <md-button class="md-menu__account-content" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()"
       hide-sm>
-        <img class="md-menu__account-thumb" ng-src="{{ getUserImgPath(getCurrentUser()) }}"
-        alt="Account Image" />
+      <img class="md-menu__account-thumb" ng-src="{{ getUserImgPath(getCurrentUser()) }}"
+      alt="Account Image" />
 
-        <div>
-          <p class="md-body-2">{{ getCurrentUser().name }}</p>
-          <p class="md-body-1">{{ getCurrentUser().email }}</p>
-        </div>
-      </md-button>
-
-      <md-menu-content width="3">
-        <md-menu-item ng-repeat="item in personalMenu">
-          <md-button ng-href="{{ item.url }}">
-            {{ item.name }}
-          </md-button>
-        </md-menu-item>
-        <md-menu-divider></md-menu-divider>
-        <md-menu-item>
-          <md-button ng-click="logout()">
-            Log out
-          </md-button>
-        </md-menu-item>
-      </md-menu-content>
-
-    </md-menu>
-
-    <md-button class="login-btn" ng-hide="isLoggedIn()" ng-click="loginOauth('google')"
-    hide-sm>
-      Sign in with <i class="fa fa-youtube-play youtube-logo"></i>
+      <div>
+        <p class="md-body-2">{{ getCurrentUser().name }}</p>
+        <p class="md-body-1">{{ getCurrentUser().email }}</p>
+      </div>
     </md-button>
 
-    <md-menu md-offset="12 -1" md-position-mode="target-right target" hide-gt-sm>
-      <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
-        <md-icon md-menu-origin md-font-set="material-icons">more_vert</md-icon>
-      </md-button>
-      <md-menu-content width="3">
-        <md-menu-item>
-          <md-button ng-hide="isLoggedIn()" ng-click="loginOauth('google')">
-            Sign in with <i class="fa fa-youtube-play youtube-logo"></i>
-          </md-button>
-        </md-menu-item>
-      </md-menu-content>
-    </md-menu>
+    <md-menu-content width="3">
+      <md-menu-item ng-repeat="item in personalMenu">
+        <md-button ng-href="{{ item.url }}">
+          {{ item.name }}
+        </md-button>
+      </md-menu-item>
+      <md-menu-divider></md-menu-divider>
+      <md-menu-item>
+        <md-button ng-click="logout()">
+          Log out
+        </md-button>
+      </md-menu-item>
+    </md-menu-content>
 
-  </div>
-</md-toolbar>
+  </md-menu>
 
+  <md-button class="login-btn" ng-hide="isLoggedIn()" ng-click="loginOauth('google')"
+    hide-sm>
+    Sign in with <i class="fa fa-youtube-play youtube-logo"></i>
+  </md-button>
+
+  <md-menu md-offset="12 -1" md-position-mode="target-right target" hide-gt-sm>
+    <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
+      <md-icon md-menu-origin md-font-set="material-icons">more_vert</md-icon>
+    </md-button>
+    <md-menu-content width="3">
+      <md-menu-item>
+        <md-button ng-hide="isLoggedIn()" ng-click="loginOauth('google')">
+          Sign in with <i class="fa fa-youtube-play youtube-logo"></i>
+        </md-button>
+      </md-menu-item>
+    </md-menu-content>
+  </md-menu>
+
+</div>
