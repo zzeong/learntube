@@ -1,121 +1,13 @@
-<div class="video-box">
-  <div class="youtube-video">
-    <youtube-video class="youtube-video__item" video-id="videoId" player-vars="playerVars"></youtube-video>
-  </div>
-</div>
-
-<div class="container lecture-content">
-  <!--
-  <md-list>
-    <md-list-item class="md-2-line" ng-repeat="lecture in lectureList" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
-      <img class="lecture-thumb" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
-      alt="Lecture Thumbnail">
-
-      <div class="md-list-item-text">
-        <div class="lecture-info-cont">
-          <h3 class="lecture-title ellipsis">{{ lecture.snippet.title }}</h3>
-          <p>{{ lecture.contentDetails.duration | humanable }}</p>
-        </div>
+<div layout="column" layout-gt-sm="row">
+  <div flex>
+    <div class="video-box">
+      <div class="youtube-video">
+        <youtube-video class="youtube-video__item" video-id="videoId"></youtube-video>
       </div>
-    </md-list-item>
-  </md-list>
-  -->
-
-  <div class="md-padding">
-    <div layout="row" layout-wrap>
-      <div>
-        <h1 class="md-title">{{ item.snippet.title }}</h1>
-      </div>
-
-      <md-icon md-font-set="material-icons" ng-click="showDetails()" ng-show="!details"
-        class="arrow-icon">arrow_drop_down</md-icon>
-      <md-icon md-font-set="material-icons" ng-click="showDetails()" ng-show="details"
-        class="arrow-icon">arrow_drop_up</md-icon>
-
-      <div class="lecture-content-detail" ng-show="details">
-        <div class="md-body-1" ng-bind-html="item.snippet.description"></div>
-        <!--
-        <p class="md-body-1">{{ item.snippet.description }}</p>
-        -->
-        <span class="lecture-content-detail__ch-title md-body-2">Channel : </span>
-        <span class="md-body-1">{{ item.snippet.channelTitle }}</span>
-        <br>
-        <span class="lecture-content-detail__hits">Hits : </span>
-        <span class="md-body-1">{{ item.statistics.viewCount }}</span>
-        <br>
-        <span class="md-body-2">Upload : </span>
-        <span class="md-body-1">{{ publishedDate }}</span>
-        <br>
-
-        <div layout="row" layout-wrap>
-          <div class="lecture-content-bottom" flex="900">
-            <span>
-              <md-icon md-font-set="material-icons">thumb_up</md-icon>
-              <span class="md-body-2">{{ item.statistics.likeCount }}</span>
-            </span>
-            <span>
-              <md-icon md-font-set="material-icons">thumb_down</md-icon>
-              <span class="md-body-2">{{ item.statistics.dislikeCount }}</span>
-            </span>
-          </div>
-
-          <md-button target="_self" ng-href="{{ getDownloadUrl() }}" download>
-            Download handout
-            <md-icon md-font-set="material-icons">file_download</md-icon>
-          </md-button>
-        </div>
-      </div>
-
-    </div>
-    <div class="md-actions" layout="row" layout-align="end center">
-      <md-menu>
-        <md-button class="md-raised" ng-click="$mdOpenMenu()" ng-disabled="!isLoggedIn()">Note</md-button>
-
-        <md-menu-content width="3">
-          <md-menu-item>
-            <md-button ng-click="toggleEditor()">
-              <md-icon md-font-set="material-icons" md-menu-align-target>description</md-icon>
-              Web editor
-            </md-button>
-          </md-menu-item>
-
-          <md-menu-item>
-            <md-button ng-click="toggleFileUpload()">
-              <md-icon md-font-set="material-icons" md-menu-align-target>file_upload</md-icon>
-              File upload
-            </md-button>
-          </md-menu-item>
-        </md-menu-content>
-      </md-menu>
-
-      <md-button class="md-raised md-primary md-hue-2" ng-click="completeLecture()" ng-disabled="haveLecture || !isLoggedIn()">Complete</md-button>
     </div>
   </div>
 
-  <md-divider></md-divider>
-
-  <div ng-show="isEditorOn">
-    <md-subheader>Note web editor</md-subheader>
-    <form ng-submit="doneNote('editor', noteContents)">
-      <textarea id="newNote" ng-model="noteContents" ckeditor></textarea>
-      <div class="md-actions md-padding" layout="row" layout-align="end center">
-        <md-button type="submit" class="md-raised">Done</md-button>
-      </div>
-    </form>
-    <md-divider></md-divider>
-  </div>
-
-  <div ng-show="isFileUploadOn">
-    <md-subheader>Note file uploader</md-subheader>
-    <div class="md-actions md-padding" layout="row" layout-align="end center">
-      <form class="file-uploader" ng-submit="doneNote('file', noteFile)">
-        <input class="file-uploader__choice" type="file" ngf-select ng-model="noteFile">
-        <md-button type="submit" class="file-uploader__btn md-raised">Done</md-button>
-      </form>
     </div>
-    <md-divider></md-divider>
-  </div>
-
   <div ng-if="isLoggedIn()">
     <section>
       <md-subheader class="md-primary">My notes</md-subheader>
