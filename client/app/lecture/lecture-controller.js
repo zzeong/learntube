@@ -4,16 +4,14 @@ angular.module('learntubeApp')
 .controller('LectureCtrl', function ($scope, $stateParams, $http, Auth, Note, GoogleConst, GApi, Upload, PlaylistItem, $mdToast, WatchedContent) {
   $scope.videoId = $stateParams.vid;
   $scope.playlistId = $stateParams.pid;
-  $scope.playerVars = {
-    listType: 'playlist',
-    list: $scope.playlistId
-  };
   $scope.isEditorOn = false;
   $scope.isFileUploadOn = false;
   $scope.getCurrentUser = Auth.getCurrentUser;
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.cid = null;
   $scope.haveLecture = false;
+  $scope.httpBusy = true;
+  $scope.getPageToken = PlaylistItem.getPageToken;
 
   if ($scope.isLoggedIn()) {
     WatchedContent.query({ playlistId: $scope.playlistId }).$promise
@@ -246,5 +244,55 @@ angular.module('learntubeApp')
         .hideDelay(3000)
     );
   };
+
+  $scope.loadMore = function () {
+    $scope.httpBusy = true;
+
+    PlaylistItem.get({ playlistId: $scope.playlistId })
+    .then(function (list) {
+      $scope.lectureList = $scope.lectureList.concat(list);
+      $scope.lectureList.map(function (obj) {
+
+        GApi.execute('youtube', 'videos.list', {
+          key: GoogleConst.browserKey,
+          part: 'statistics',
+          id: obj.snippet.resourceId.videoId
+        })
+        .then(function (res) {
+          obj.viewCount = {
+            viewCount: res.items[0].statistics.viewCount
+          };
+        })
+        .catch(console.error);
+      });
+
+      $scope.httpBusy = false;
+    })
+    .catch(console.error);
+  };
+
+  PlaylistItem.get({ playlistId: $scope.playlistId }, {
+    initialToken: true,
+  })
+  .then(function (list) {
+    $scope.lectureList = list;
+    $scope.lectureList.map(function (obj) {
+
+      GApi.execute('youtube', 'videos.list', {
+        key: GoogleConst.browserKey,
+        part: 'statistics',
+        id: obj.snippet.resourceId.videoId
+      })
+      .then(function (res) {
+        obj.viewCount = {
+          viewCount: res.items[0].statistics.viewCount
+        };
+      })
+      .catch(console.error);
+    });
+    $scope.httpBusy = false;
+  })
+  .catch(console.error);
+
 
 });
