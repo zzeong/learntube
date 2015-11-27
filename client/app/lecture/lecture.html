@@ -7,64 +7,73 @@
     </div>
   </div>
 
+  <md-content flex class="tab-area">
+    <div class="classroom-tabs" ng-app="MyApp">
+      <md-content>
+        <md-tabs md-dynamic-height="" md-border-bottom="" md-stretch-tabs="yes">
+          <md-tab>
+            <md-tab-label>
+              <i class="material-icons">info_outline</i>
+            </md-tab-label>
+            <md-tab-body>
+              <div class="classroom-tabs__info">
+                <h1 class="md-title">{{ item.snippet.title }}</h1>
+                <p class="md-body-1" ng-bind-html="item.snippet.description"></p>
+                <span class="md-caption lecture-content-detail__hits">Hits : {{ item.statistics.viewCount }}</span>
+                <br>
+                <span class="md-caption">Upload : {{ publishedDate }}</span>
+                <br>
+
+                <div class="classroom-tabs__subinfo" flex="900">
+                  <span>
+                    <md-icon md-font-set="material-icons" class="icon-right">thumb_up</md-icon>
+                    <span class="md-caption">{{ item.statistics.likeCount }}</span>
+                  </span>
+                  <span>
+                    <md-icon md-font-set="material-icons" class="icon-right icon-left">thumb_down</md-icon>
+                    <span class="md-caption">{{ item.statistics.dislikeCount }}</span>
+                  </span>
+                </div>
+
+                <md-button target="_self" ng-href="{{ getDownloadUrl() }}" download>
+                  <md-icon md-font-set="material-icons">file_download</md-icon>
+                  Download handout
+                </md-button>
+
+              </div>
+
+            </md-tab-body>
+          </md-tab>
+
+
+
+          <md-tab>
+            <md-tab-label>
+              <i class="material-icons">description</i>
+            </md-tab-label>
+            <md-tab-body class="md-padding">
+              <h1 class="md-display-2">Tab Three</h1>
+              <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum
+                tellus. Curabitur posuere molestie dictum. Morbi eget congue risus,
+                quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi.
+                Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non
+                ac est. Praesent ligula diam, congue eu enim scelerisque, finibus
+                commodo lectus.</p>
+            </md-tab-body>
+          </md-tab>
+          <md-tab>
+            <md-tab-label>
+              <i class="material-icons">question_answer</i>
+            </md-tab-label>
+            <md-tab-body class="md-padding">
+              <h1 class="md-display-2">Tab Four</h1>
+              <p>Allo Allo!</p>
+            </md-tab-body>
+          </md-tab>
+        </md-tabs>
+      </md-content>
     </div>
-  <div ng-if="isLoggedIn()">
-    <section>
-      <md-subheader class="md-primary">My notes</md-subheader>
 
-      <div class="md-padding" ng-repeat="note in notes">
-        <div ng-hide="note.isEditing">
-          <div class="writer-info">
-            <img class="writer-info__thumb" ng-src="{{ getUserImgPath(getCurrentUser()) }}" alt="Account Image">
-            <div class="writer-info__name">
-              <p class="md-subhead">{{ getCurrentUser().name }}</p>
-            </div>
-          </div>
 
-          <md-divider></md-divider>
-
-          <div class="note-content-viewer">
-            <iframe ng-if="shouldBeEmbedded(note)" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
-            <img ng-if="!shouldBeEmbedded(note)" ng-src="{{ note.url }}" alt="My lecture note">
-          </div>
-
-          <div class="md-actions" layout="row" layout-align="end center">
-            <md-button class="md-raised" ng-if="note.type === 'editor'" ng-click="editNote(note)">Edit</md-button>
-            <md-button class="md-raised md-warn" ng-click="deleteNote(note)">Delete</md-button>
-          </div>
-        </div>
-
-        <div ng-if="note.isEditing">
-          <form ng-submit="updateNote(note)">
-            <textarea ng-model="note.contents" ckeditor></textarea>
-            <md-button class="md-raised md-warn" ng-click="cancelEditing(note)">Cancel</md-button>
-            <md-button type="submit" class="md-raised">Update</md-button>
-          </form>
-        </div>
-      </div>
-
-    </section>
-  </div>
-
-  <section>
-    <md-subheader class="md-primary">Others notes</md-subheader>
-    <div class="others-note">
-      <div class="md-padding" ng-repeat="note in othersNotes">
-        <div class="writer-info">
-          <img class="writer-info__thumb" ng-src="{{ note.userId.google.image.url }}" alt="Account Image">
-          <div class="writer-info__name">
-            <p class="md-subhead">{{ note.userId.name }}</p>
-          </div>
-        </div>
-
-        <md-divider></md-divider>
-
-        <div class="note-content-viewer">
-          <iframe ng-if="shouldBeEmbedded(note)" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
-          <img ng-if="!shouldBeEmbedded(note)" ng-src="{{ note.url }}" alt="My lecture note">
-        </div>
-      </div>
-    </div>
-  </section>
-
+  </md-content>
 </div>

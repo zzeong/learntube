@@ -1,0 +1,6 @@
+.tab-area {
+  @include respond-to('small') {
+    max-width: 320px;
+    height: auto;
+  };
+}
