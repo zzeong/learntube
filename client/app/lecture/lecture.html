@@ -44,9 +44,38 @@
 
             </md-tab-body>
           </md-tab>
+          <md-tab>
+            <md-tab-label>
+              <i class="material-icons">view_list</i>
+            </md-tab-label>
+            <md-tab-body class="md-padding">
+              <div class="classroom-tabs__lecturelist">
+                <md-list class="numbering">
+                  <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
+                  infinite-scroll-distance="1">
 
+                    <div class="lecturelist">
+                      <md-list-item class="lecturelist__item" ng-repeat="lecture in lectureList" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
+                        <div class="lecturelist-thumb-and-duration">
+                          <p class="lecturelist-thumb-and-duration__duration">{{ lecture.contentDetails.duration | humanable }}</p>
+                          <img class="lecturelist-thumb-and-duration__thumbnail" ng-src="{{ lecture.snippet.thumbnails.medium.url }}"
+                          alt="Lecture Thumbnail">
+                        </div>
 
+                        <div class="md-list-item-text lecturelist-info">
+                          <h3 class="ellipsis lecturelist-info__title">{{ lecture.snippet.title }}</h3>
+                          <p class="lecturelist-info__sub">{{ lecture.snippet.channelTitle }}</p>
+                          <p class="lecturelist-info__sub">{{ lecture.viewCount.viewCount }}</p>
+                          <!-- {{ lecture.contentDetails.duration | humanable }} -->
+                        </div>
+                      </md-list-item>
+                    </div>
 
+                  </div>
+                </md-list>
+              </div>
+            </md-tab-body>
+          </md-tab>
           <md-tab>
             <md-tab-label>
               <i class="material-icons">description</i>

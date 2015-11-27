@@ -1,0 +1,25 @@
+.lecturelist-info {
+  position: absolute;
+  top: 0;
+  left: 142px;
+  padding-top: 8px;
+
+  @include respond-to('medium') {
+    width: 176px;
+  }
+}
+
+.lecturelist-info__title {
+  margin: 0;
+  font-family: 'Roboto Regular', sans-serif;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.lecturelist-info__sub {
+  margin: 0;
+  padding-top: 4px;
+  font-family: 'Roboto Regular', sans-serif;
+  font-size: 10px;
+  line-height: 12px;
+}

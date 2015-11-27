@@ -1,10 +1,16 @@
-.lecturelist__thumbnail {
-  $w: 120px;
-  width: $w;
-  height: $w * 0.75;
-  margin-top: 8px;
-  margin-right: 16px;
-  margin-bottom: 8px;
+.lecturelist {
+  md-list-item .md-list-item-inner {
+    display: inline;
+  }
+}
+
+.lecturelist__item {
+  padding: 0;
+
+  button {
+    padding-right: 8px;
+    padding-left: 8px;
+  }
 }
 
 .lecturelist--highlight {
