@@ -22,8 +22,8 @@ angular.module('learntubeApp', [
 })
 .config(function ($mdThemingProvider) {
   $mdThemingProvider.theme('default')
-  .primaryPalette('blue')
-  .accentPalette('amber');
+  .primaryPalette('amber')
+  .accentPalette('blue');
 })
 
 .directive('focusMe', function ($timeout) {
