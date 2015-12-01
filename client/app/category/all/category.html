@@ -5,7 +5,13 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
 <div flex layout="column">
   <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
   <div flex class="flex-scroll">
-    <h1>category-all</h1>
+
+    <div class="classroom-tabs__lecturelist">
+      <div ng-repeat="category in categories">
+        <p class="md-body-2 category-title">{{ category }}</p>
+      </div>
+    </div>
+
   </div>
 </div>
 
