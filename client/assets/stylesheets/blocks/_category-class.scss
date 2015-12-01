@@ -1,0 +1,41 @@
+.category-class {
+  position: relative;
+}
+
+.category-class__thumbnail {
+  width: 144px;
+  height: 88px;
+  float: left;
+}
+
+.category-class__thumbnail-img {
+  max-width: 128px;
+  margin: 8px;
+}
+
+.category-class__info {
+  top: 0;
+  left: 144px;
+  height: 80px;
+  margin-left: 8px;
+  padding-top: 8px;
+
+  @include respond-to('medium') {
+    width: 176px;
+  }
+}
+
+.category-class__info-title {
+  margin: 0;
+  font-family: 'Roboto Regular', sans-serif;
+  font-size: 13px;
+  line-height: 16px;
+}
+
+.category-class__info_sub {
+  margin: 0;
+  padding-top: 4px;
+  font-family: 'Roboto Regular', sans-serif;
+  font-size: 10px;
+  line-height: 12px;
+}
