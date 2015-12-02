@@ -14,34 +14,19 @@
 
       <div class="whiteframe-expander">
         <md-whiteframe class="whiteframe-expander__core responsive-whiteframe">
-          <!-- CLASS INTRODUCE -->
-          <div class="class-intro">
-            <h2 class="class-intro__title">{{classe.snippet.title}}</h2>
-            <!-- description -->
-            <div class="class-intro__description md-body-1" ng-bind-html="desc">
-              <!--
-              <p class="md-body-1 margin-zero"><hm-read class="cursor-pointer" hmtext="{{ desc }}" hmlimit="200" hm-more-text="read more" hm-less-text="read less" ></hm-read></p>
-              -->
-            </div>
-          </div>
+          <h2 class="whiteframe__title md-title">{{classe.snippet.title}}</h2>
+          <div class="md-body-1 whiteframe-desc" ng-bind-html="desc"></div>
         </md-whiteframe>
         <md-divider hide-gt-sm></md-divider>
       </div>
 
       <div class="whiteframe-expander">
         <md-whiteframe class="whiteframe-expander__core responsive-whiteframe">
-          <!-- 선생님 소개  -->
           <div class="tutor-intro">
-            <!-- 선생님 썸네일 (채널 대표 이미지) -->
-            <img class="tutor-intro__thumbnail thumbnail-radius" ng-src="{{ channel.snippet.thumbnails.default.url }}">
-            <!-- 체널 타이틀 -->
-            <div class="tutor-intro-channel">
-              <h4 class="tutor-intro-channel__tutor">Tutor</h4>
-              <h2 class="tutor-intro-channel__title">{{ channel.snippet.title }}.&nbsp</h2>
-            </div>
-            <!-- 선생님 소개 (채널 소개) 더보기 -->
-            <div class="tutor-intro__channel-info md-body-1" ng-bind-html="channel.snippet.description"></div>
+            <img class="tutor-intro__thumb thumb-radius" ng-src="{{ channel.snippet.thumbnails.default.url }}">
+            <h2 class="tutor-intro__title md-title">{{ channel.snippet.title }}.&nbsp</h2>
           </div>
+          <div class="whiteframe-desc md-body-1" ng-bind-html="channel.snippet.description"></div>
         </md-whiteframe>
         <md-divider hide-gt-sm></md-divider>
       </div>
