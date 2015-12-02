@@ -5,12 +5,8 @@ angular.module('learntubeApp')
   $stateProvider
   .state('Lecture', {
     url: '/class/:pid/lecture/:vid',
-    views: {
-      classroom: {
-        templateUrl: 'app/lecture/lecture.html',
-        controller: 'LectureCtrl',
-        data: { pageName: 'Lecture Room' }
-      },
-    },
+    templateUrl: 'app/lecture/lecture.html',
+    controller: 'LectureCtrl',
+    data: { pageName: 'Lecture Room' },
   });
 });

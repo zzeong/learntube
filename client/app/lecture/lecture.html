@@ -1,108 +1,115 @@
-<div layout="column" layout-gt-sm="row">
-  <div flex>
-    <div class="video-box">
-      <div class="youtube-video">
-        <youtube-video class="youtube-video__item" video-id="videoId"></youtube-video>
+<md-content class="classroom-content" layout="column" layout-gt-sm="row">
+  <div flex-sm="none" flex-gt-sm layout-gt-sm="column" class="classroom-view-area">
+    <md-toolbar class="md-whiteframe-z1" flex="none">
+      <div class="md-toolbar-tools">
+        <md-button class="md-icon-button" aria-label="Settings">
+          <md-icon md-font-set="material-icons">arrow_back</md-icon>
+        </md-button>
+        <h2>
+          <span>{{ item.snippet.title }}</span>
+        </h2>
+        <span flex></span>
+        <md-button class="md-icon-button" aria-label="Done">
+          <md-icon md-font-set="material-icons">done</md-icon>
+        </md-button>
+        <md-button class="md-icon-button" aria-label="Download handout">
+          <md-icon md-font-set="material-icons">file_download</md-icon>
+        </md-button>
       </div>
+    </md-toolbar>
+    <div class="youtube-video youtube-video--fullsize" flex>
+      <youtube-video class="youtube-video__item" video-id="videoId"></youtube-video>
     </div>
   </div>
 
-  <md-content flex class="tab-area">
-    <div class="classroom-tabs" ng-app="MyApp">
-      <md-content>
-        <md-tabs md-dynamic-height="" md-border-bottom="" md-stretch-tabs="yes">
-          <md-tab>
-            <md-tab-label>
-              <i class="material-icons">info_outline</i>
-            </md-tab-label>
-            <md-tab-body>
-              <div class="classroom-tabs__info">
-                <h1 class="md-title">{{ item.snippet.title }}</h1>
-                <p class="md-body-1" ng-bind-html="item.snippet.description"></p>
-                <span class="md-caption lecture-content-detail__hits">Hits : {{ item.statistics.viewCount }}</span>
-                <br>
-                <span class="md-caption">Upload : {{ publishedDate }}</span>
-                <br>
+  <md-tabs flex class="tab-area" md-border-bottom md-stretch-tabs="always">
+    <md-tab>
+      <md-tab-label>
+        <md-icon md-font-set="material-icons">info_outline</md-icon>
+      </md-tab-label>
+      <md-tab-body>
+        <div class="classroom-tabs__info">
+          <h1 class="md-title">{{ item.snippet.title }}</h1>
+          <p class="md-body-1" ng-bind-html="item.snippet.description"></p>
+          <span class="md-caption lecture-content-detail__hits">Hits : {{ item.statistics.viewCount }}</span>
+          <br>
+          <span class="md-caption">Upload : {{ publishedDate }}</span>
+          <br>
 
-                <div class="classroom-tabs__subinfo" flex="900">
-                  <span>
-                    <md-icon md-font-set="material-icons" class="icon-right">thumb_up</md-icon>
-                    <span class="md-caption">{{ item.statistics.likeCount }}</span>
-                  </span>
-                  <span>
-                    <md-icon md-font-set="material-icons" class="icon-right icon-left">thumb_down</md-icon>
-                    <span class="md-caption">{{ item.statistics.dislikeCount }}</span>
-                  </span>
-                </div>
+          <div class="classroom-tabs__subinfo" flex="900">
+            <span>
+              <md-icon md-font-set="material-icons" class="icon-right">thumb_up</md-icon>
+              <span class="md-caption">{{ item.statistics.likeCount }}</span>
+            </span>
+            <span>
+              <md-icon md-font-set="material-icons" class="icon-right icon-left">thumb_down</md-icon>
+              <span class="md-caption">{{ item.statistics.dislikeCount }}</span>
+            </span>
+          </div>
 
-                <md-button target="_self" ng-href="{{ getDownloadUrl() }}" download>
-                  <md-icon md-font-set="material-icons">file_download</md-icon>
-                  Download handout
-                </md-button>
+          <md-button target="_self" ng-href="{{ getDownloadUrl() }}" download>
+            <md-icon md-font-set="material-icons">file_download</md-icon>
+            Download handout
+          </md-button>
 
-              </div>
+        </div>
 
-            </md-tab-body>
-          </md-tab>
-          <md-tab>
-            <md-tab-label>
-              <i class="material-icons">view_list</i>
-            </md-tab-label>
-            <md-tab-body class="md-padding">
-              <div class="classroom-tabs__lecturelist">
-                <md-list class="numbering">
-                  <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
-                  infinite-scroll-distance="1">
+      </md-tab-body>
+    </md-tab>
+    <md-tab>
+      <md-tab-label>
+        <md-icon md-font-set="material-icons">view_list</md-icon>
+      </md-tab-label>
+      <md-tab-body class="md-padding">
+        <div class="classroom-tabs__lecturelist">
+          <md-list class="numbering">
+            <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
+              infinite-scroll-distance="1">
 
-                    <div class="lecturelist">
-                      <md-list-item class="lecturelist__item" ng-repeat="lecture in lectureList" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
-                        <div class="lecturelist-thumb-and-duration">
-                          <p class="lecturelist-thumb-and-duration__duration">{{ lecture.contentDetails.duration | humanable }}</p>
-                          <img class="lecturelist-thumb-and-duration__thumbnail" ng-src="{{ lecture.snippet.thumbnails.medium.url }}"
-                          alt="Lecture Thumbnail">
-                        </div>
-
-                        <div class="md-list-item-text lecturelist-info">
-                          <h3 class="ellipsis lecturelist-info__title">{{ lecture.snippet.title }}</h3>
-                          <p class="lecturelist-info__sub">{{ lecture.snippet.channelTitle }}</p>
-                          <p class="lecturelist-info__sub">{{ lecture.viewCount.viewCount }}</p>
-                          <!-- {{ lecture.contentDetails.duration | humanable }} -->
-                        </div>
-                      </md-list-item>
-                    </div>
-
+              <div class="lecturelist">
+                <md-list-item class="lecturelist__item" ng-repeat="lecture in lectureList" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
+                  <div class="lecturelist-thumb-and-duration">
+                    <p class="lecturelist-thumb-and-duration__duration">{{ lecture.contentDetails.duration | humanable }}</p>
+                    <img class="lecturelist-thumb-and-duration__thumbnail" ng-src="{{ lecture.snippet.thumbnails.medium.url }}"
+                    alt="Lecture Thumbnail">
                   </div>
-                </md-list>
+
+                  <div class="md-list-item-text lecturelist-info">
+                    <h3 class="ellipsis lecturelist-info__title">{{ lecture.snippet.title }}</h3>
+                    <p class="lecturelist-info__sub">{{ lecture.snippet.channelTitle }}</p>
+                    <p class="lecturelist-info__sub">{{ lecture.viewCount.viewCount }}</p>
+                    <!-- {{ lecture.contentDetails.duration | humanable }} -->
+                  </div>
+                </md-list-item>
               </div>
-            </md-tab-body>
-          </md-tab>
-          <md-tab>
-            <md-tab-label>
-              <i class="material-icons">description</i>
-            </md-tab-label>
-            <md-tab-body class="md-padding">
-              <h1 class="md-display-2">Tab Three</h1>
-              <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum
-                tellus. Curabitur posuere molestie dictum. Morbi eget congue risus,
-                quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi.
-                Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non
-                ac est. Praesent ligula diam, congue eu enim scelerisque, finibus
-                commodo lectus.</p>
-            </md-tab-body>
-          </md-tab>
-          <md-tab>
-            <md-tab-label>
-              <i class="material-icons">question_answer</i>
-            </md-tab-label>
-            <md-tab-body class="md-padding">
-              <h1 class="md-display-2">Tab Four</h1>
-              <p>Allo Allo!</p>
-            </md-tab-body>
-          </md-tab>
-        </md-tabs>
-      </md-content>
-    </div>
 
-
-  </md-content>
-</div>
+            </div>
+          </md-list>
+        </div>
+      </md-tab-body>
+    </md-tab>
+    <md-tab>
+      <md-tab-label>
+        <md-icon md-font-set="material-icons">description</md-icon>
+      </md-tab-label>
+      <md-tab-body class="md-padding">
+        <h1 class="md-display-2">Tab Three</h1>
+        <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum
+          tellus. Curabitur posuere molestie dictum. Morbi eget congue risus,
+          quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi.
+          Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non
+          ac est. Praesent ligula diam, congue eu enim scelerisque, finibus
+          commodo lectus.</p>
+      </md-tab-body>
+    </md-tab>
+    <md-tab>
+      <md-tab-label>
+        <md-icon md-font-set="material-icons">question_answer</md-icon>
+      </md-tab-label>
+      <md-tab-body class="md-padding">
+        <h1 class="md-display-2">Tab Four</h1>
+        <p>Allo Allo!</p>
+      </md-tab-body>
+    </md-tab>
+  </md-tabs>
+</md-content>

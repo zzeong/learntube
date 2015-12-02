@@ -1,0 +1,8 @@
+.whiteframe-expander__core {
+  padding: 16px;
+
+  @include respond-to('small') {
+    margin: 16px;
+    &:nth-of-type(n) { margin-bottom: 20px; }
+  }
+}

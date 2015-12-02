@@ -1,0 +1,5 @@
+.responsive-whiteframe {
+  display: block;
+  box-shadow: none;
+  @include respond-to('small') { box-shadow: $whiteframe-shadow-1dp; }
+}

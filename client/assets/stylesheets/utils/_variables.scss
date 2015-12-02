@@ -23,6 +23,8 @@ $youtube-color-action: #cc181e;
 $trans-black: rgba(0, 0, 0, 0.7);
 $trans-white: rgba(255, 255, 255, 0.7);
 
+$amber-500: #ffc107;
+
 
 // Container's maximum width
 // Below that is 100%
@@ -41,7 +43,7 @@ $base-url: '/assets/' !default;
 
 
 $md-border-radius: 4px;
-$account-thumb-size: 40px;
+$account-thumb-size: 36px;
 
 $content-padding: 70px;
 $content-inner-width: $content-max-width - ($content-padding * 2);

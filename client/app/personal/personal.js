@@ -5,22 +5,14 @@ angular.module('learntubeApp')
   $stateProvider
   .state('Watched', {
     url: '/watched',
-    views: {
-      common: {
-        templateUrl: 'app/personal/watched/watched.html',
-        controller: 'WatchedContentsCtrl',
-        data: { pageName: 'Watched Contents' }
-      },
-    },
+    templateUrl: 'app/personal/watched/watched.html',
+    controller: 'WatchedContentsCtrl',
+    data: { pageName: 'Watched Contents' }
   })
   .state('Uploaded', {
     url: '/uploaded',
-    views: {
-      common: {
-        templateUrl: 'app/personal/uploaded/uploaded.html',
-        controller: 'UploadedContentsCtrl',
-        data: { pageName: 'Uploaded Contents' }
-      },
-    },
+    templateUrl: 'app/personal/uploaded/uploaded.html',
+    controller: 'UploadedContentsCtrl',
+    data: { pageName: 'Uploaded Contents' }
   });
 });

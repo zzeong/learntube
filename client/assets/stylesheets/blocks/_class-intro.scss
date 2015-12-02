@@ -1,26 +1,8 @@
-.class-intro {
-  @include respond-to('medium') {
-    height: 390px;
-    margin-left: 660px;
-    background-color: $white;
-  }
-}
-
 .class-intro__title {
   margin-top: 0;
   margin-bottom: 15px;
-  padding-top: 15px;
-  padding-left: 10px;
-}
-
-.class-intro__description {
-  padding: 0 10px;
 }
 
 .class-intro__add-class-btn {
   padding-bottom: 10px;
-  @include respond-to('medium') {
-    margin-top: -60px;
-    margin-right: 10px;
-  }
 }

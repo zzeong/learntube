@@ -36,3 +36,41 @@ md-list-item {
     max-width: 240px;
   }
 }
+
+// customizing toolbar height
+md-toolbar {
+  min-height: 56px;
+}
+
+.md-toolbar-tools {
+  height: 56px;
+  max-height: 56px;
+}
+
+// customizing tabs height
+md-tabs-canvas {
+  height: 55px;
+}
+
+md-pagination-wrapper {
+  height: 55px;
+}
+
+.md-tab {
+  line-height: 31px;
+}
+
+md-tabs[md-border-bottom]:not(.md-dynamic-height) md-tabs-content-wrapper {
+  top: 56px;
+}
+
+md-tabs-content-wrapper {
+  top: 55px;
+}
+
+
+// customizing tab indicator
+md-tabs.md-default-theme md-ink-bar,
+md-tabs md-ink-bar {
+  background: $amber-500;
+}

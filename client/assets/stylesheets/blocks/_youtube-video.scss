@@ -1,4 +1,3 @@
-
 .youtube-video {
   display: block;
   position: relative;
@@ -6,6 +5,12 @@
   padding: 0;
   padding-bottom: 56.25%;
   overflow: hidden;
+}
+
+.youtube-video--fullsize {
+  @include respond-to('small') {
+    padding-bottom: 0;
+  }
 }
 
 .youtube-video__item {

@@ -5,12 +5,8 @@ angular.module('learntubeApp')
   $stateProvider
   .state('Home', {
     url: '/',
-    views: {
-      common: {
-        templateUrl: 'app/home/home.html',
-        controller: 'HomeCtrl',
-        data: { pageName: 'Home' }
-      },
-    },
+    templateUrl: 'app/home/home.html',
+    controller: 'HomeCtrl',
+    data: { pageName: 'Home' }
   });
 });

@@ -1,0 +1,19 @@
+.lecturelist-fixer {
+  width: 320px;
+
+  @include respond-to('small') {
+    position: absolute;
+    top: 20px;
+    right: 16px;
+  }
+}
+
+.lecturelist-fixer__whiteframe {
+  width: 320px;
+
+  @include respond-to('small') {
+    position: fixed;
+    height: calc(100% - 96px);
+    overflow: auto;
+  }
+}

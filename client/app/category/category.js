@@ -5,22 +5,14 @@ angular.module('learntubeApp')
   $stateProvider
   .state('Category all', {
     url: '/category/all',
-    views: {
-      common: {
-        templateUrl: 'app/category/all/category.html',
-        controller: 'CategoryAllCtrl',
-        data: { pageName: 'Categories' }
-      },
-    },
+    templateUrl: 'app/category/all/category.html',
+    controller: 'CategoryAllCtrl',
+    data: { pageName: 'Categories' }
   })
   .state('Category other', {
     url: '/category/:ctname',
-    views: {
-      common: {
-        templateUrl: 'app/category/other/category.html',
-        controller: 'CategoryOtherCtrl',
-        data: { pageName: 'Categories' }
-      },
-    },
+    templateUrl: 'app/category/other/category.html',
+    controller: 'CategoryOtherCtrl',
+    data: { pageName: 'Categories' }
   });
 });

@@ -1,0 +1,9 @@
+.class-summary-content {
+  position: relative;
+}
+
+.class-summary-content__wrapper {
+  @include respond-to('small') {
+    margin-right: 320px + 16;
+  }
+}

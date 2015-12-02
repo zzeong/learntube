@@ -1,39 +1,43 @@
-<div class="container-without-bg" layout-padding>
-  <md-card class="personal-class-card" ng-repeat="classe in classes">
+<md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav" ng-include="'components/sidenav/sidenav.html'"
+  md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+</md-sidenav>
 
-    <div class="personal-class-card__image-content">
-      <img id="thumbnail" ng-src="{{ classe.item.snippet.thumbnails.high.url }}" ng-click="go('WatchedLectureList', { pid: classe.playlistId })"
-      class="md-card-image" alt="Class Image">
+<div flex layout="column">
+  <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
+  <div flex class="flex-scroll">
+    <md-card class="personal-class-card" ng-repeat="classe in classes">
+      <div class="personal-class-card__image-content">
+        <img id="thumbnail" ng-src="{{ classe.item.snippet.thumbnails.high.url }}" ng-click="go('WatchedLectureList', { pid: classe.playlistId })"
+        class="md-card-image" alt="Class Image">
 
-      <div class="study-graph-bg" ng-show="classe.graph" ng-click="go('WatchedLectureList', { pid: classe.playlistId })">
-        <div class="study-graph-content">
-          <div class="study-graph-content__title">
-            <p>Progress</p>
-          </div>
-
-          <div class="progressbar-box">
-            <div class="progressbar-box__percentage">
-              <p class="md-caption">{{ classe.percentage }}%</p>
+        <div class="study-graph-bg" ng-show="classe.graph" ng-click="go('WatchedLectureList', { pid: classe.playlistId })">
+          <div class="study-graph-content">
+            <div class="study-graph-content__title">
+              <p>Progress</p>
             </div>
-            <div class="progressbar-box__inline" style="width: {{ classe.percentage }}%; height: 12px;"></div>
-          </div>
 
-          <div class="study-graph-text">
-            <p class="md-caption study-graph-text__watched">Watched: {{ classe.numberOfWatched }} / {{ classe.item.contentDetails.itemCount }}</p>
-            <p class="md-caption study-graph-text__notes">Notes: {{ classe.numberOfNote }}</p>
+            <div class="progressbar-box">
+              <div class="progressbar-box__percentage">
+                <p class="md-caption">{{ classe.percentage }}%</p>
+              </div>
+              <div class="progressbar-box__inline" style="width: {{ classe.percentage }}%; height: 12px;"></div>
+            </div>
+
+            <div class="study-graph-text">
+              <p class="md-caption study-graph-text__watched">Watched: {{ classe.numberOfWatched }} / {{ classe.item.contentDetails.itemCount }}</p>
+              <p class="md-caption study-graph-text__notes">Notes: {{ classe.numberOfNote }}</p>
+            </div>
           </div>
         </div>
-
       </div>
 
-    </div>
-
-    <md-card-content>
-      <h2 class="md-title ellipsis personal-class-card__title">{{ classe.item.snippet.title }}</h2>
-    </md-card-content>
-    <div class="md-actions" layout="row" layout-align="end center">
-      <md-button class="md-button" ng-click="showGraph(classe)">Graph</md-button>
-      <md-button class="md-warn" ng-click="deleteClass(classe)">Delete</md-button>
-    </div>
-  </md-card>
+      <md-card-content>
+        <h2 class="md-title ellipsis personal-class-card__title">{{ classe.item.snippet.title }}</h2>
+      </md-card-content>
+      <div class="md-actions" layout="row" layout-align="end center">
+        <md-button class="md-button" ng-click="showGraph(classe)">Graph</md-button>
+        <md-button class="md-warn" ng-click="deleteClass(classe)">Delete</md-button>
+      </div>
+    </md-card>
+  </div>
 </div>

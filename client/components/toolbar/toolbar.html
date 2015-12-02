@@ -3,10 +3,7 @@
     hide-gt-sm>
     <md-icon md-font-set="material-icons">menu</md-icon>
   </md-button>
-  <a href="/" class="header__logo" hide-sm>
-    <img src="/assets/images/logo_learntube_white.png" show-gt-sm alt="logo" />
-  </a>
-  <h2 ng-hide="onSearching" hide-gt-sm>
+  <h2 ng-hide="onSearching">
     <span>{{ title }}</span>
   </h2>
 
@@ -18,16 +15,15 @@
     </div>
   </span>
 
-  <md-menu>
-
-    <md-button class="md-menu__account-content" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()"
+  <md-menu md-offset="12 -1" md-position-mode="target-right target">
+    <md-button class="account-btn" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()"
       hide-sm>
-      <img class="md-menu__account-thumb" ng-src="{{ getUserImgPath(getCurrentUser()) }}"
+      <img class="account-btn__thumb" ng-src="{{ getUserImgPath(getCurrentUser()) }}"
       alt="Account Image" />
 
-      <div>
+      <div class="account-btn__info">
+        <p class="md-body-1 account-btn__email">{{ getCurrentUser().email }}</p>
         <p class="md-body-2">{{ getCurrentUser().name }}</p>
-        <p class="md-body-1">{{ getCurrentUser().email }}</p>
       </div>
     </md-button>
 
@@ -57,12 +53,25 @@
       <md-icon md-menu-origin md-font-set="material-icons">more_vert</md-icon>
     </md-button>
     <md-menu-content width="3">
-      <md-menu-item>
-        <md-button ng-hide="isLoggedIn()" ng-click="loginOauth('google')">
+      <md-menu-item ng-if="!isLoggedIn()">
+        <md-button ng-click="loginOauth('google')">
           Sign in with <i class="fa fa-youtube-play youtube-logo"></i>
         </md-button>
       </md-menu-item>
-    </md-menu-content>
-  </md-menu>
 
+      <div ng-if="isLoggedIn()">
+        <md-menu-item ng-repeat="item in personalMenu">
+          <md-button ng-href="{{ item.url }}">
+            {{ item.name }}
+          </md-button>
+        </md-menu-item>
+        <md-menu-divider></md-menu-divider>
+        <md-menu-item>
+          <md-button ng-click="logout()">
+            Log out
+          </md-button>
+        </md-menu-item>
+      </md-menu-content>
+    </div>
+  </md-menu>
 </div>

@@ -1,35 +1,3 @@
-.classroom-tabs {
-  @include respond-to('small') {
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 320px;
-    background-color: $white;
-
-    md-tabs-canvas {
-      height: 56px;
-
-      md-pagination-wrapper {
-        height: 56px;
-      }
-
-      md-tab-item {
-        padding-top: 16px;
-      }
-    }
-
-  }
-
-  md-content md-tabs {
-    background: $white;
-  }
-
-  h1:first-child {
-    margin-top: 0;
-  }
-
-}
-
 .classroom-tabs__info {
   padding: 16px;
 

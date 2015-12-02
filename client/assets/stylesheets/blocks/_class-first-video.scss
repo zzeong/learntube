@@ -1,0 +1,5 @@
+.class-first-video {
+  @include respond-to('small') {
+    padding: 20px 16px 0;
+  }
+}

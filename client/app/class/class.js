@@ -5,12 +5,8 @@ angular.module('learntubeApp')
   $stateProvider
   .state('Summary', {
     url: '/class/:pid',
-    views: {
-      common: {
-        templateUrl: 'app/class/class.html',
-        controller: 'ClassCtrl',
-        data: { pageName: 'Class Summary' }
-      },
-    },
+    templateUrl: 'app/class/class.html',
+    controller: 'ClassCtrl',
+    data: { pageName: 'Class Summary' }
   });
 });

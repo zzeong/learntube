@@ -1,4 +1,10 @@
-<div class="category-sidenav__list" ng-controller="SidenavCtrl">
+<header class="category-sidenav__header">
+  <a href="/" class="logo-linker">
+    <img class="logo-linker__logo" src="/assets/images/logo_learntube_black.png" alt="logo">
+  </a>
+</header>
+<md-divider></md-divider>
+<md-content ng-controller="SidenavCtrl">
   <md-list ng-cloak>
     <md-list-item href="/category/all">
       <span>All</span>
@@ -7,4 +13,4 @@
       <span>{{ category.orig }}</span>
     </md-list-item>
   </md-list>
-</div>
+</md-content>

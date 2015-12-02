@@ -1,0 +1,27 @@
+.account-btn {
+  width: 210px;
+  height: 48px;
+  text-transform: none;
+}
+
+.account-btn__thumb {
+  width: $account-thumb-size;
+  height: $account-thumb-size;
+  margin: 6px 0;
+  float: right;
+  border-radius: 50%;
+}
+
+.account-btn__info {
+  margin: 2px 36px 2px 0;
+  padding-right: 15px;
+  text-align: right;
+  p { margin: 0; }
+}
+
+.account-btn__email {
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  overflow: hidden;
+}
+

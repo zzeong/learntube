@@ -1,49 +1,56 @@
+<md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav" ng-include="'components/sidenav/sidenav.html'"
+  md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+</md-sidenav>
+
 <md-button class="md-fab add-btn" aria-label="Add lecture" ng-click="showLectureDialog($event)">
   <md-icon md-font-set="material-icons">add</md-icon>
 </md-button>
 
-<div class="container" layout-padding>
-
-  <div class="inner-content">
-    <h2 class="md-headline">{{ summary.snippet.title }}</h2>
-    <div class="md-body-1" ng-bind-html="summary.snippet.description">
-    </div>
-    </br>
-  </div>
-
-  <md-divider></md-divider>
-
-  <div class="inner-content">
-
-    <md-button class="md-raised" ng-click="deleteLectures()" ng-disabled="!lectureDelBucket.length">Delete</md-button>
-
-    <md-list>
-      <div ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
-        <div class="checkbox">
-          <md-checkbox ng-click="pushLecture(lecture)"></md-checkbox>
-        </div>
-
-        <div class="lecturelist">
-          <md-list-item class="md-2-line" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
-            <img class="lecturelist__thumbnail" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
-            alt="Lecture Thumbnail">
-
-            <div class="md-list-item-text">
-              <div class="second-icon-padding">
-                <h3 class="ellipsis">{{ lecture.snippet.title }}</h3>
-                <p>{{ lecture.contentDetails.duration | humanable }}</p>
-              </div>
-
-              <md-icon md-font-set="material-icons" ng-click="showFileDialog(lecture, $event)"
-                aria-label="Show file dialog" ng-class="{ 'md-accent': haveUploadedFile(lecture), 'md-hue-3': haveUploadedFile(lecture) }"
-                class="md-secondary md-hue-1">
-                file_upload
-              </md-icon>
-            </div>
-          </md-list-item>
-        </div>
+<div flex layout="column">
+  <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
+  <div flex class="flex-scroll">
+    <div class="inner-content">
+      <h2 class="md-headline">{{ summary.snippet.title }}</h2>
+      <div class="md-body-1" ng-bind-html="summary.snippet.description">
       </div>
-    </md-list>
-  </div>
+      </br>
+    </div>
 
+    <md-divider></md-divider>
+
+    <div class="inner-content">
+
+      <md-button class="md-raised" ng-click="deleteLectures()" ng-disabled="!lectureDelBucket.length">Delete</md-button>
+
+      <md-list>
+        <div ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
+          <div class="checkbox">
+            <md-checkbox ng-click="pushLecture(lecture)"></md-checkbox>
+          </div>
+
+          <div class="lecturelist">
+            <md-list-item class="md-2-line" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
+              <img class="lecturelist__thumbnail" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
+              alt="Lecture Thumbnail">
+
+              <div class="md-list-item-text">
+                <div class="second-icon-padding">
+                  <h3 class="ellipsis">{{ lecture.snippet.title }}</h3>
+                  <p>{{ lecture.contentDetails.duration | humanable }}</p>
+                </div>
+
+                <md-icon md-font-set="material-icons" ng-click="showFileDialog(lecture, $event)"
+                  aria-label="Show file dialog" ng-class="{ 'md-accent': haveUploadedFile(lecture), 'md-hue-3': haveUploadedFile(lecture) }"
+                  class="md-secondary md-hue-1">
+                  file_upload
+                </md-icon>
+              </div>
+            </md-list-item>
+          </div>
+        </div>
+      </md-list>
+    </div>
+  </div>
 </div>
+
+
