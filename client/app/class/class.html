@@ -1,5 +1,5 @@
-<md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav" ng-include="'components/sidenav/sidenav.html'"
-  md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+<md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav"
+ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
 </md-sidenav>
 
 <md-button class="md-fab add-btn" ng-disabled="haveClass" aria-label="Add a class"
@@ -41,7 +41,7 @@ ng-click="addClass()" ng-show="isLoggedIn()">
           <div class="classroom-tabs__lecturelist">
             <md-list class="numbering">
               <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
-                infinite-scroll-distance="1">
+              infinite-scroll-distance="1">
 
                 <div class="lecturelist">
                   <md-list-item class="lecturelist__item" ng-repeat="lecture in lectureList" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">

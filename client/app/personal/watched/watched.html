@@ -1,5 +1,5 @@
-<md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav" ng-include="'components/sidenav/sidenav.html'"
-  md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+<md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav"
+ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
 </md-sidenav>
 
 <div flex layout="column">
@@ -24,7 +24,8 @@
             </div>
 
             <div class="study-graph-text">
-              <p class="md-caption study-graph-text__watched">Watched: {{ classe.numberOfWatched }} / {{ classe.item.contentDetails.itemCount }}</p>
+              <p class="md-caption study-graph-text__watched">Watched: {{ classe.numberOfWatched }} / {{ classe.item.contentDetails.itemCount
+                }}</p>
               <p class="md-caption study-graph-text__notes">Notes: {{ classe.numberOfNote }}</p>
             </div>
           </div>
@@ -41,3 +42,4 @@
     </md-card>
   </div>
 </div>
+

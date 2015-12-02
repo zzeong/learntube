@@ -1,6 +1,6 @@
 <div class="md-toolbar-tools" ng-controller="ToolbarCtrl">
   <md-button class="md-icon-button" aria-label="Settings" ng-click="mainIconTrigger()"
-    hide-gt-sm>
+  hide-gt-sm>
     <md-icon md-font-set="material-icons">menu</md-icon>
   </md-button>
   <h2 ng-hide="onSearching">
@@ -16,8 +16,7 @@
   </span>
 
   <md-menu md-offset="12 -1" md-position-mode="target-right target">
-    <md-button class="account-btn" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()"
-      hide-sm>
+    <md-button class="account-btn" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()" hide-sm>
       <img class="account-btn__thumb thumb-radius" ng-src="{{ getUserImgPath(getCurrentUser()) }}"
       alt="Account Image" />
 
@@ -44,7 +43,7 @@
   </md-menu>
 
   <md-button class="login-btn" ng-hide="isLoggedIn()" ng-click="loginOauth('google')"
-    hide-sm>
+  hide-sm>
     Sign in with <i class="fa fa-youtube-play youtube-logo"></i>
   </md-button>
 
@@ -71,7 +70,8 @@
             Log out
           </md-button>
         </md-menu-item>
-      </md-menu-content>
+    </md-menu-content>
     </div>
   </md-menu>
 </div>
+

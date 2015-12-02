@@ -1,5 +1,5 @@
-<md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav" ng-include="'components/sidenav/sidenav.html'"
-  md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+<md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav"
+ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
 </md-sidenav>
 
 <div flex layout="column">
@@ -20,11 +20,11 @@
 
       <md-list>
         <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
-          infinite-scroll-distance="1">
+        infinite-scroll-distance="1">
 
           <div class="lecturelist" ng-repeat="lecture in lectureList">
             <md-list-item class="md-2-line" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })"
-              ng-class="{'lecturelist--highlight': lecture.highlight}">
+            ng-class="{'lecturelist--highlight': lecture.highlight}">
 
               <img class="lecturelist__thumbnail" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
               alt="Lecture Thumbnail">
@@ -36,7 +36,7 @@
               </div>
 
               <md-icon md-font-set="material-icons" class="md-secondary md-hue-1" ng-show="lecture.noteIconVisible"
-                ng-click="showNote(lecture)">
+              ng-click="showNote(lecture)">
                 description
               </md-icon>
             </md-list-item>

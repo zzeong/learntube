@@ -15,8 +15,8 @@
         <md-list>
           <md-list-item class="md-2-line md-hue-1" ng-class="{ 'search-box--lecture-selected': isSelected(video) }"
           ng-repeat="video in searched" ng-click="selectVideo(video)">
-            <img class="search-box__lecture-thumb" ng-src="{{ video.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail"
-            />
+            <img class="search-box__lecture-thumb" ng-src="{{ video.snippet.thumbnails.default.url }}"
+            alt="Lecture Thumbnail" />
             <div class="md-list-item-text">
               <h3>{{ video.snippet.title | limitTo:30 }}{{ video.snippet.title.length > 40 ? '...' : '' }}</h3>
             </div>
@@ -59,3 +59,4 @@
   </form>
 
 </md-dialog>
+

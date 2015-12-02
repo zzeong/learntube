@@ -1,5 +1,5 @@
-<md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav" ng-include="'components/sidenav/sidenav.html'"
-  md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+<md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav"
+ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
 </md-sidenav>
 
 <md-button class="md-fab add-btn" aria-label="Add lecture" ng-click="showLectureDialog($event)">
@@ -40,8 +40,8 @@
                 </div>
 
                 <md-icon md-font-set="material-icons" ng-click="showFileDialog(lecture, $event)"
-                  aria-label="Show file dialog" ng-class="{ 'md-accent': haveUploadedFile(lecture), 'md-hue-3': haveUploadedFile(lecture) }"
-                  class="md-secondary md-hue-1">
+                aria-label="Show file dialog" ng-class="{ 'md-accent': haveUploadedFile(lecture), 'md-hue-3': haveUploadedFile(lecture) }"
+                class="md-secondary md-hue-1">
                   file_upload
                 </md-icon>
               </div>

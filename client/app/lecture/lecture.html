@@ -64,7 +64,7 @@
         <div class="classroom-tabs__lecturelist">
           <md-list class="numbering">
             <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
-              infinite-scroll-distance="1">
+            infinite-scroll-distance="1">
 
               <div class="lecturelist">
                 <md-list-item class="lecturelist__item" ng-repeat="lecture in lectureList" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
@@ -94,12 +94,11 @@
       </md-tab-label>
       <md-tab-body class="md-padding">
         <h1 class="md-display-2">Tab Three</h1>
-        <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum
-          tellus. Curabitur posuere molestie dictum. Morbi eget congue risus,
-          quis rhoncus quam. Suspendisse vitae hendrerit erat, at posuere mi.
-          Cras eu fermentum nunc. Sed id ante eu orci commodo volutpat non
-          ac est. Praesent ligula diam, congue eu enim scelerisque, finibus
-          commodo lectus.</p>
+        <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus.
+          Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus
+          quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum
+          nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula
+          diam, congue eu enim scelerisque, finibus commodo lectus.</p>
       </md-tab-body>
     </md-tab>
     <md-tab>
@@ -113,3 +112,4 @@
     </md-tab>
   </md-tabs>
 </md-content>
+
