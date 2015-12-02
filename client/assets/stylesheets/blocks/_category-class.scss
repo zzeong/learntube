@@ -3,9 +3,8 @@
 }
 
 .category-class__thumbnail {
-  width: 144px;
-  height: 88px;
-  float: left;
+  position: absolute;
+  left: 0;
 }
 
 .category-class__thumbnail-img {
@@ -14,15 +13,9 @@
 }
 
 .category-class__info {
-  top: 0;
-  left: 144px;
-  height: 80px;
-  margin-left: 8px;
+  height: 88px;
+  margin-left: 144px;
   padding-top: 8px;
-
-  @include respond-to('medium') {
-    width: 176px;
-  }
 }
 
 .category-class__info-title {

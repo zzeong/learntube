@@ -4,34 +4,30 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
 
 <div flex layout="column">
   <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
-  <div flex class="flex-scroll">
+  <div flex class="flex-scroll categories">
 
-    <div class="categories">
+    <div ng-repeat="category in classArr">
+      <p class="md-body-2 category-title">{{ category[0].categorySlug }}</p>
 
-      <div ng-repeat="category in classArr">
-        <p class="md-body-2 category-title">{{ category[0].categorySlug }}</p>
-        <md-list class="classes-of-category">
-          <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
-          infinite-scroll-distance="1">
-            <div ng-repeat="class in category">
-              <md-list-item class="lecturelist__item" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
-                <div class="lecturelist-thumb-and-duration">
-                  <img class="lecturelist-thumb-and-duration__thumbnail" ng-src="{{ class.thumbnailUrl }}"
-                  alt="class Thumbnail">
-                </div>
+      <div class="classes-of-category">
+        <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
+        infinite-scroll-distance="1">
+          <div class="category-class" ng-repeat="class in category" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
 
-                <div class="md-list-item-text lecturelist-info">
-                  <h3 class="ellipsis lecturelist-info__title">{{ class.playlistTitle }}</h3>
-                  <p class="lecturelist-info__sub">{{ class.channelTitle }}</p>
-                  <p class="lecturelist-info__sub">{{ class.views }}</p>
-                  <!-- {{ lecture.contentDetails.duration | humanable }} -->
-                </div>
-              </md-list-item>
+            <div class="category-class__thumbnail">
+              <img class="category-class__thumbnail-img" ng-src="{{ class.thumbnailUrl }}" alt="class Thumbnail">
             </div>
+
+            <div class="md-list-item-text category-class__info">
+              <h3 class="ellipsis category-class__info-title">{{ class.playlistTitle }}</h3>
+              <p class="category-class__info_sub">{{ class.channelTitle }}</p>
+              <p class="category-class__info_sub">{{ class.views }}</p>
+              <!-- {{ lecture.contentDetails.duration | humanable }} -->
+            </div>
+
           </div>
-        </md-list>
+        </div>
       </div>
     </div>
-
   </div>
 </div>

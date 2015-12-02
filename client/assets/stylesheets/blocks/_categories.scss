@@ -1,3 +1,7 @@
 .categories {
   background: $white;
+
+  @include respond-to('medium') {
+    background: none;
+  }
 }

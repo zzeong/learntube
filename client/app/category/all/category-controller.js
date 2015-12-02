@@ -3,17 +3,6 @@
 angular.module('learntubeApp')
 .controller('CategoryAllCtrl', function ($scope, $http, Category) {
 
-  Object.defineProperty(Array.prototype, 'chunk_inefficient', {
-    value: function (chunkSize) {
-      var array = this;
-      return [].concat.apply([],
-        array.map(function (elem, i) {
-          return i % chunkSize ? [] : [array.slice(i, i + chunkSize)];
-        })
-      );
-    }
-  });
-
   $http.get('/api/categories/get-each-top')
   .then(function (res) {
     for (var i in res.data) {
@@ -24,7 +13,7 @@ angular.module('learntubeApp')
       }
     }
 
-    $scope.classArr = res.data.chunk_inefficient(5);
+    $scope.classArr = _.chunk(res.data, 5);
   })
   .catch(console.error);
 
