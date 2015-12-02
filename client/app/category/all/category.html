@@ -10,8 +10,7 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
 
       <div ng-repeat="category in classArr">
         <p class="md-body-2 category-title">{{ category[0].categorySlug }}</p>
-
-        <md-list>
+        <md-list class="classes-of-category">
           <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
           infinite-scroll-distance="1">
             <div ng-repeat="class in category">
