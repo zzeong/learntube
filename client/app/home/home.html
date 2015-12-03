@@ -6,11 +6,11 @@
 
         <h2 class="intro__slogan" class="md-headline"><strong>All you need is knowledge</strong></h2>
 
-        <form ng-submit="go('Search', { q: q })">
+        <form ng-submit="go('search', { q: q })">
           <div class="search-content">
             <input class="md-body-1" ng-model="q" type="search" placeholder="Search anything">
             <md-button class="md-icon-button search-content__search-icon-button" aria-label="Search"
-            ng-click="go('Search', { q: q })">
+            ng-click="go('search', { q: q })">
               <md-icon md-font-set="material-icons">search</md-icon>
             </md-button>
           </div>

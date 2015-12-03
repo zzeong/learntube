@@ -3,10 +3,10 @@
 angular.module('learntubeApp')
 .config(function ($stateProvider) {
   $stateProvider
-  .state('Lecture', {
+  .state('classroom', {
     url: '/class/:pid/lecture/:vid',
-    templateUrl: 'app/lecture/lecture.html',
-    controller: 'LectureCtrl',
-    data: { pageName: 'Lecture Room' },
+    templateUrl: 'app/classroom/classroom.html',
+    controller: 'ClassroomCtrl',
+    data: { pageName: 'Classroom' },
   });
 });

@@ -10,7 +10,7 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
   <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
   <div class="flex-scroll" layout-padding>
     <md-card class="personal-class-card" ng-repeat="classe in classes | onlyPublic">
-      <img ng-src="{{ classe.snippet.thumbnails.high.url }}" ng-click="go('UploadedLectureList', { pid: classe.id })"
+      <img ng-src="{{ classe.snippet.thumbnails.high.url }}" ng-click="go('uploaded-lecture-list', { pid: classe.id })"
       class="md-card-image" alt="Class Image">
       <md-card-content>
         <h2 class="md-title ellipsis personal-class-card__title">{{ classe.snippet.title }}</h2>

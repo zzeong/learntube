@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: LectureCtrl', function () {
+describe('Controller: ClassroomCtrl', function () {
   beforeEach(module('learntubeApp'));
   var $scope, $httpBackend;
 
@@ -23,7 +23,7 @@ describe('Controller: LectureCtrl', function () {
     Auth.reget();
     $httpBackend.flush();
 
-    $controller('LectureCtrl', { $scope: $scope });
+    $controller('ClassroomCtrl', { $scope: $scope });
   }));
 
   it('should get video id in URI-parameter', inject(function ($stateParams) {

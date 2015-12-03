@@ -3,16 +3,16 @@
 angular.module('learntubeApp')
 .config(function ($stateProvider) {
   $stateProvider
-  .state('Watched', {
+  .state('watched-contents', {
     url: '/watched',
     templateUrl: 'app/personal/watched/watched.html',
     controller: 'WatchedContentsCtrl',
-    data: { pageName: 'Watched Contents' }
+    data: { pageName: 'Watched contents' }
   })
-  .state('Uploaded', {
+  .state('uploaded-contents', {
     url: '/uploaded',
     templateUrl: 'app/personal/uploaded/uploaded.html',
     controller: 'UploadedContentsCtrl',
-    data: { pageName: 'Uploaded Contents' }
+    data: { pageName: 'Uploaded contents' }
   });
 });

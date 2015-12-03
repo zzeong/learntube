@@ -8,7 +8,7 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
     <div infinite-scroll="loadMore(pageToken)" infinite-scroll-disabled="httpBusy || !pageToken"
     infinite-scroll-distance="1">
       <md-grid-list md-cols="2" md-cols-gt-md="3" md-row-height="4:3" md-gutter="8px" class="class-grid">
-        <md-grid-tile ng-repeat="classe in classes" ng-click="go('Summary', { pid: classe.id.playlistId })">
+        <md-grid-tile ng-repeat="classe in classes" ng-click="go('class-summary', { pid: classe.id.playlistId })">
           <img ng-src="{{ classe.snippet.thumbnails.high.url }}" alt="Class Image">
           <md-grid-tile-footer>
             <h3>{{ classe.snippet.title }}</h3>

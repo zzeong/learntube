@@ -7,10 +7,10 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
   <div flex class="flex-scroll">
     <md-card class="personal-class-card" ng-repeat="classe in classes">
       <div class="personal-class-card__image-content">
-        <img id="thumbnail" ng-src="{{ classe.item.snippet.thumbnails.high.url }}" ng-click="go('WatchedLectureList', { pid: classe.playlistId })"
+        <img id="thumbnail" ng-src="{{ classe.item.snippet.thumbnails.high.url }}" ng-click="go('watched-lecture-list', { pid: classe.playlistId })"
         class="md-card-image" alt="Class Image">
 
-        <div class="study-graph-bg" ng-show="classe.graph" ng-click="go('WatchedLectureList', { pid: classe.playlistId })">
+        <div class="study-graph-bg" ng-show="classe.graph" ng-click="go('watched-lecture-list', { pid: classe.playlistId })">
           <div class="study-graph-content">
             <div class="study-graph-content__title">
               <p>Progress</p>

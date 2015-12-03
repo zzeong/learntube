@@ -66,7 +66,7 @@
             <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
             infinite-scroll-distance="1">
 
-              <md-list-item class="lecturelist__item" ng-repeat="lecture in lectureList" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
+              <md-list-item class="lecturelist__item" ng-repeat="lecture in lectureList" ng-click="go('classroom', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
                 <div class="lecturelist-thumb-and-duration">
                   <p class="lecturelist-thumb-and-duration__duration">{{ lecture.contentDetails.duration | humanable }}</p>
                   <img class="lecturelist-thumb-and-duration__thumbnail" ng-src="{{ lecture.snippet.thumbnails.medium.url }}"

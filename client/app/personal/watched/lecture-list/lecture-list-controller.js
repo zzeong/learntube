@@ -67,7 +67,7 @@ angular.module('learntubeApp')
 
   };
 
-  if (!Auth.isLoggedIn()) { $state.go('Login'); }
+  if (!Auth.isLoggedIn()) { $state.go('login'); }
 
   // 강의들을 가져오기 위한 api사용
   PlaylistItem.get({ playlistId: $scope.playlistId }, {

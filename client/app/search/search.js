@@ -3,7 +3,7 @@
 angular.module('learntubeApp')
 .config(function ($stateProvider) {
   $stateProvider
-  .state('Search', {
+  .state('search', {
     url: '/search/:q',
     templateUrl: 'app/search/search.html',
     controller: 'SearchCtrl',

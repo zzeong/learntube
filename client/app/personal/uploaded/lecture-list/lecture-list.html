@@ -29,7 +29,7 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
           </div>
 
           <div class="lecturelist">
-            <md-list-item class="md-2-line" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
+            <md-list-item class="md-2-line" ng-click="go('lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
               <img class="lecturelist__thumbnail" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
               alt="Lecture Thumbnail">
 
