@@ -1,0 +1,5 @@
+.categories-content {
+  @include respond-to('medium') {
+    margin: auto;
+  }
+}

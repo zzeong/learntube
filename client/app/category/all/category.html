@@ -12,20 +12,27 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
       <div class="classes-of-category">
         <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
         infinite-scroll-distance="1">
-          <div class="category-class" ng-repeat="class in category" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
 
-            <div class="category-class__thumbnail">
-              <img class="category-class__thumbnail-img" ng-src="{{ class.thumbnailUrl }}" alt="class Thumbnail">
+          <div ng-repeat="class in category">
+            <div md-ripple-ink="#333" class="category-class" ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
+              <div class="category-class__thumbnail">
+                <img class="category-class__thumbnail-img" ng-src="{{ class.thumbnailUrl }}" alt="class Thumbnail">
+              </div>
+
+              <div class="md-list-item-text category-class__info">
+                <div class="category-class__info-box">
+                  <h3 class="ellipsis category-class__info-title">{{ class.playlistTitle }}</h3>
+                  <p class="category-class__info-sub">{{ class.channelTitle }}</p>
+                  <p class="category-class__info-sub-views">{{ class.views | thousandSuffix }}</p>
+                  <div class="star-rate">
+                    <img class="star-rate__item" src="assets/images/star_rate.png" alt="star rate">
+                    <div class="star-rate__bar" style="width: {{ class.rate }}%"></div>
+                  </div>
+                </div>
+              </div>
             </div>
-
-            <div class="md-list-item-text category-class__info">
-              <h3 class="ellipsis category-class__info-title">{{ class.playlistTitle }}</h3>
-              <p class="category-class__info_sub">{{ class.channelTitle }}</p>
-              <p class="category-class__info_sub">{{ class.views }}</p>
-              <!-- {{ lecture.contentDetails.duration | humanable }} -->
-            </div>
-
           </div>
+
         </div>
       </div>
     </div>

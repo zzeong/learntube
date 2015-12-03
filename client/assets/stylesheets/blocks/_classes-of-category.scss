@@ -1,3 +1,8 @@
 .classes-of-category {
   padding-bottom: 0;
+
+  @include respond-to('medium') {
+    display: block;
+    margin-left: 24px;
+  }
 }
