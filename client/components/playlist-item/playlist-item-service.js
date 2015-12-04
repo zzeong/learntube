@@ -34,7 +34,7 @@ angular.module('learntubeApp')
         } else {
           list[i].contentDetails = { duration: 'PT0M00S' };
           list[i].snippet.title = 'Private video';
-          list[i].snippet.thumbnails = { default: { url: 'assets/images/private_video.png' } };
+          list[i].snippet.thumbnails = { medium: { url: 'assets/images/private_video.png' } };
         }
       }
       return list;
