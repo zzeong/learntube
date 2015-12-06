@@ -7,6 +7,7 @@ angular.module('learntubeApp')
     restrict: 'A',
     link: function (scope, elem, attrs, ngModel) {
       var ck = CKEDITOR.replace(elem[0], {
+        skin: 'minimalist',
         toolbarGroups: [
           { name: 'basicstyles', groups: ['basicstyles'] },
           { name: 'links', groups: ['links'] },
