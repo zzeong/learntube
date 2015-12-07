@@ -5,8 +5,8 @@
   padding-top: 8px;
   padding-right: 8px;
 
-  @include respond-to('medium') {
-    width: 176px;
+  @include respond-to('small') {
+    max-width: 480px;
   }
 }
 
@@ -15,6 +15,10 @@
   font-family: 'Roboto Regular', sans-serif;
   font-size: 13px;
   line-height: 16px;
+
+  @include respond-to('medium') {
+    font-size: 16px;
+  }
 }
 
 .lecturelist-info__sub {
@@ -23,4 +27,22 @@
   font-family: 'Roboto Regular', sans-serif;
   font-size: 10px;
   line-height: 12px;
+
+  @include respond-to('medium') {
+    font-size: 12px;
+  }
+}
+
+.lecturelist-info__complete-date {
+  margin: 0;
+  margin-left: 12px;
+  padding-top: 6px;
+  padding-left: 6px;
+  font-family: 'Roboto Regular', sans-serif;
+  font-size: 10px;
+  line-height: 12px;
+
+  @include respond-to('medium') {
+    font-size: 12px;
+  }
 }

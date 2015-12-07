@@ -5,6 +5,11 @@ angular.module('learntubeApp')
   $scope.playlistId = $stateParams.pid;
   $scope.getPageToken = PlaylistItem.getPageToken;
 
+  $scope.message = {
+    text: 'hello world!',
+    time: new Date()
+  };
+
   $scope.loadMore = function () {
     $scope.httpBusy = true;
 
@@ -16,16 +21,14 @@ angular.module('learntubeApp')
     .catch(console.error);
   };
 
-  var separateLecture = function (identity, specificLecture) {
+  var separateLecture = function (specificLecture) {
 
-    for (var k = 0; k < $scope.lectureList.length; k++) {
-      for (var s = 0; s < specificLecture.length; s++) {
+    for (var k in $scope.lectureList) {
+      for (var s in specificLecture) {
         if ($scope.lectureList[k].snippet.resourceId.videoId === specificLecture[s].videoId) {
-          if (identity === 'highlight') {
-            $scope.lectureList[k].highlight = true;
-          } else {
-            $scope.lectureList[k].noteIconVisible = true;
-          }
+          $scope.lectureList[k].highlight = true;
+          $scope.lectureList[k].completedAt = new Date(specificLecture[s].completedAt);
+          $scope.lectureList[k].noteIconVisible = true;
         }
       }
     }
@@ -81,15 +84,17 @@ angular.module('learntubeApp')
     for (var i = 0; i < $scope.lectureList.length; i++) {
       $scope.lectureList[i].highlight = false;
       $scope.lectureList[i].noteIconVisible = false;
+      $scope.lectureList[i].completedAt = '';
     }
 
     // DB에서 시청한 동영상 목록 가져오기 (seenLectures)
     WatchedContent.query({ playlistId: $scope.playlistId })
     .$promise
     .then(function (response) {
+
       $scope.watchedLectures = response[0].lectures;
       $scope.vdata = fitToD3($scope.watchedLectures);
-      separateLecture('highlight', $scope.watchedLectures);
+      separateLecture($scope.watchedLectures);
     })
     .catch(console.error);
 

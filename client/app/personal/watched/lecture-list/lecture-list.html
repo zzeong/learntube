@@ -2,8 +2,10 @@
 ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
 </md-sidenav>
 
+
 <div flex layout="column">
   <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
+
   <div flex class="flex-scroll">
     <div class="inner-content">
       <p class="md-body-2 section-title">My learning info</p>
@@ -12,10 +14,8 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
       </div>
     </div>
 
-    <md-divider></md-divider>
-
     <!-- 클래스 내의 강의 목록 -->
-    <p class="md-body-2 section-title">Lectures in this class</p>
+    <p class="md-body-2 section-title section-title--hide">Lectures in this class</p>
 
     <div class="inner-content">
       <md-list class="numbering inner-content__box">
@@ -34,36 +34,20 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
               <div class="md-list-item-text lecturelist-info">
                 <h3 class="ellipsis lecturelist-info__title">{{ lecture.snippet.title }}</h3>
                 <p class="lecturelist-info__sub">{{ lecture.snippet.channelTitle }}</p>
-                <i class="material-icons" ng-show="lecture.highlight" style="font-size:16px; color: #2979FF; margin-top: 4px;">check_circle</i>
+                <i class="material-icons" ng-show="lecture.highlight" style="font-size:16px; color: #2979FF; margin-top: 4px; float:left;">check_circle</i>
+                <p am-time-ago="lecture.completedAt" class="lecturelist-info__complete-date"></p>
                 <!-- {{ lecture.contentDetails.duration | humanable }} -->
               </div>
             </div>
 
-              <md-button class="view-note-btn" ng-show="lecture.noteIconVisible" ng-click="showNote(lecture)">VIEW NOTE</md-button>
+            <md-button class="view-note-btn" ng-show="lecture.noteIconVisible" ng-click="showNote(lecture)">VIEW NOTE</md-button>
           </md-list-item>
-
-
-
-
-
-
-          <!-- <md-icon md-font-set="material-icons" class="md-secondary md-hue-1" ng-show="lecture.noteIconVisible"
-                          ng-click="showNote(lecture)">
-                            description
-                          </md-icon> -->
-
-
-
-
-
-
 
           <div class="note-content-viewer" ng-if="isSelected(lecture)" ng-repeat="note in lecture.notes">
             <iframe ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
           </div>
         </div>
+      </md-list>
     </div>
-    </md-list>
   </div>
-</div>
 </div>

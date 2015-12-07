@@ -1,3 +1,9 @@
 .section-title {
   margin: 16px;
 }
+
+.section-title--hide {
+  @include respond-to('small') {
+    display: none;
+  }
+}
