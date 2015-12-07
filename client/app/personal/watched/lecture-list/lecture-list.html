@@ -17,16 +17,17 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
     <!-- 클래스 내의 강의 목록 -->
     <p class="md-body-2 section-title">Lectures in this class</p>
 
-    <div class="">
-      <md-list class="numbering">
+    <div class="inner-content">
+      <md-list class="numbering inner-content__box">
         <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
         infinite-scroll-distance="1">
 
-          <div class="lecturelist" ng-repeat="lecture in lectureList">
+          <md-list-item class="lecturelist__item watched-lecturelist" ng-repeat="lecture in lectureList">
+
             <div ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
               <div class="lecturelist-thumb-and-duration">
                 <p class="lecturelist-thumb-and-duration__duration">{{ lecture.contentDetails.duration | humanable }}</p>
-                <img class="lecturelist-thumb-and-duration__thumbnail watched-lec-list-thumb" ng-src="{{ lecture.snippet.thumbnails.medium.url }}"
+                <img class="lecturelist-thumb-and-duration__thumbnail" ng-src="{{ lecture.snippet.thumbnails.medium.url }}"
                 alt="Lecture Thumbnail">
               </div>
 

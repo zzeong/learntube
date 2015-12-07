@@ -2,5 +2,9 @@
   width: $content-inner-width;
   max-width: 100%;
   margin: 0 auto;
-  h2 { text-align: center; }
+  background: $white;
+}
+
+.inner-content__box {
+  padding: 0;
 }
