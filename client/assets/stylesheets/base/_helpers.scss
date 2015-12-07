@@ -36,14 +36,6 @@ md-list {
   -webkit-box-orient: vertical;
 }
 
-.icon-right {
-  margin-right: 8px;
-}
-
-.icon-left {
-  margin-left: 10px;
-}
-
 .flex-scroll {
   overflow: auto;
 }
@@ -51,3 +43,22 @@ md-list {
 .thumb-radius {
   border-radius: 50%;
 }
+
+.frame-padding {
+  padding: 16px;
+
+  >* {
+    margin: 4px 0;
+  }
+
+  .md-body-1,
+  .md-body-2,
+  .frame-top-padding {
+    padding-top: 6px;
+  }
+}
+
+.invisible {
+  visibility: hidden;
+}
+

@@ -12,7 +12,8 @@
         <md-button class="md-icon-button" aria-label="Done">
           <md-icon md-font-set="material-icons">done</md-icon>
         </md-button>
-        <md-button class="md-icon-button" aria-label="Download handout">
+        <md-button class="md-icon-button" target="_self" ng-href="{{ getDownloadUrl() }}"
+        aria-label="Download handout" download>
           <md-icon md-font-set="material-icons">file_download</md-icon>
         </md-button>
       </div>
@@ -28,30 +29,24 @@
         <md-icon md-font-set="material-icons">info_outline</md-icon>
       </md-tab-label>
       <md-tab-body>
-        <div class="classroom-tabs__info">
+        <div class="frame-padding">
           <h1 class="md-title">{{ item.snippet.title }}</h1>
           <p class="md-body-1" ng-bind-html="item.snippet.description"></p>
-          <span class="md-caption lecture-content-detail__hits">Hits : {{ item.statistics.viewCount }}</span>
-          <br>
-          <span class="md-caption">Upload : {{ publishedDate }}</span>
-          <br>
+          <div class="lecture-info frame-top-padding">
+            <span class="md-caption lecture-info__etc">Hits : {{ item.statistics.viewCount }}</span>
+            <span class="md-caption lecture-info__etc">Upload : {{ publishedDate }}</span>
+          </div>
 
-          <div class="classroom-tabs__subinfo" flex="900">
-            <span>
-              <md-icon md-font-set="material-icons" class="icon-right">thumb_up</md-icon>
+          <div class="lecture-info frame-top-padding">
+            <span class="lecture-info__sub">
+              <md-icon md-font-set="material-icons">thumb_up</md-icon>
               <span class="md-caption">{{ item.statistics.likeCount }}</span>
             </span>
-            <span>
-              <md-icon md-font-set="material-icons" class="icon-right icon-left">thumb_down</md-icon>
+            <span class="lecture-info__sub">
+              <md-icon md-font-set="material-icons">thumb_down</md-icon>
               <span class="md-caption">{{ item.statistics.dislikeCount }}</span>
             </span>
           </div>
-
-          <md-button target="_self" ng-href="{{ getDownloadUrl() }}" download>
-            <md-icon md-font-set="material-icons">file_download</md-icon>
-            Download handout
-          </md-button>
-
         </div>
 
       </md-tab-body>
@@ -60,8 +55,8 @@
       <md-tab-label>
         <md-icon md-font-set="material-icons">view_list</md-icon>
       </md-tab-label>
-      <md-tab-body class="md-padding">
-        <div class="classroom-tabs__lecturelist">
+      <md-tab-body>
+        <div>
           <md-list class="numbering">
             <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
             infinite-scroll-distance="1">
@@ -104,7 +99,7 @@
       <md-tab-label>
         <md-icon md-font-set="material-icons">question_answer</md-icon>
       </md-tab-label>
-      <md-tab-body class="md-padding">
+      <md-tab-body>
         <h1 class="md-display-2">Tab Four</h1>
         <p>Allo Allo!</p>
       </md-tab-body>
