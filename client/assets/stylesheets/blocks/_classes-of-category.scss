@@ -1,7 +1,7 @@
 .classes-of-category {
   padding-bottom: 0;
 
-  @include respond-to('medium') {
+  @include respond-to('small') {
     display: block;
     margin-left: 24px;
   }

@@ -1,5 +1,5 @@
 .categories-content {
-  @include respond-to('medium') {
+  @include respond-to('small') {
     margin: auto;
   }
 }

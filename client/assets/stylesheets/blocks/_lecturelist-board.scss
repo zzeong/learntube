@@ -7,7 +7,7 @@
 }
 
 .lecturelist-board__list {
-  @include respond-to('medium') {
+  @include respond-to('small') {
     width: 660px;
   }
 }

@@ -6,6 +6,7 @@
   padding-right: 8px;
 
   @include respond-to('small') {
+    width: 176px;
     max-width: 480px;
   }
 }

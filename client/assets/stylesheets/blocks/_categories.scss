@@ -1,7 +1,7 @@
 .categories {
   background: $white;
 
-  @include respond-to('medium') {
+  @include respond-to('small') {
     background: none;
   }
 }
