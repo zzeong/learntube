@@ -2,6 +2,7 @@
 
 angular.module('learntubeApp')
 .controller('CategoryAllCtrl', function ($scope, $http, Category) {
+  $scope.href = function (pid) { return '/class/' + pid; };
 
   $http.get('/api/categories/get-each-top')
   .then(function (res) {

@@ -1,0 +1,11 @@
+.anchor-mask {
+  display: block;
+  color: initial;
+
+  &:hover,
+  &:active,
+  &:visited {
+    color: initial;
+    text-decoration: none;
+  }
+}
