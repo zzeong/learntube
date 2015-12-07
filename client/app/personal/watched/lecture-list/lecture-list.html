@@ -6,7 +6,7 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
   <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
   <div flex class="flex-scroll">
     <div class="inner-content">
-      <h3 class="md-headline">My learning info</h3>
+      <p class="md-body-2 section-title">My learning info</p>
       <div class="d3-visaul-content">
         <d3-bars data="vdata"></d3-bars>
       </div>
@@ -14,41 +14,55 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
 
     <md-divider></md-divider>
 
-    <div class="inner-content">
-      <!-- 클래스 내의 강의 목록 -->
-      <h3 class="md-headline">Lectures in this class</h3>
+    <!-- 클래스 내의 강의 목록 -->
+    <p class="md-body-2 section-title">Lectures in this class</p>
 
-      <md-list>
+    <div class="">
+      <md-list class="numbering">
         <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
         infinite-scroll-distance="1">
 
           <div class="lecturelist" ng-repeat="lecture in lectureList">
-            <md-list-item class="md-2-line" ng-click="go('classroom', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })"
-            ng-class="{'lecturelist--highlight': lecture.highlight}">
-
-              <img class="lecturelist__thumbnail" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
-              alt="Lecture Thumbnail">
-              <div class="md-list-item-text">
-                <div class="second-icon-padding">
-                  <h3 class="ellipsis">{{ lecture.snippet.title }}</h3>
-                  <p>{{ lecture.contentDetails.duration | humanable }}</p>
-                </div>
+            <div ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
+              <div class="lecturelist-thumb-and-duration">
+                <p class="lecturelist-thumb-and-duration__duration">{{ lecture.contentDetails.duration | humanable }}</p>
+                <img class="lecturelist-thumb-and-duration__thumbnail watched-lec-list-thumb" ng-src="{{ lecture.snippet.thumbnails.medium.url }}"
+                alt="Lecture Thumbnail">
               </div>
 
-              <md-icon md-font-set="material-icons" class="md-secondary md-hue-1" ng-show="lecture.noteIconVisible"
-              ng-click="showNote(lecture)">
-                description
-              </md-icon>
-            </md-list-item>
-
-            <div class="note-content-viewer" ng-if="isSelected(lecture)" ng-repeat="note in lecture.notes">
-              <iframe ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
+              <div class="md-list-item-text lecturelist-info">
+                <h3 class="ellipsis lecturelist-info__title">{{ lecture.snippet.title }}</h3>
+                <p class="lecturelist-info__sub">{{ lecture.snippet.channelTitle }}</p>
+                <i class="material-icons" ng-show="lecture.highlight" style="font-size:16px; color: #2979FF; margin-top: 4px;">check_circle</i>
+                <!-- {{ lecture.contentDetails.duration | humanable }} -->
+              </div>
             </div>
+
+              <md-button class="view-note-btn" ng-show="lecture.noteIconVisible" ng-click="showNote(lecture)">VIEW NOTE</md-button>
+          </md-list-item>
+
+
+
+
+
+
+          <!-- <md-icon md-font-set="material-icons" class="md-secondary md-hue-1" ng-show="lecture.noteIconVisible"
+                          ng-click="showNote(lecture)">
+                            description
+                          </md-icon> -->
+
+
+
+
+
+
+
+          <div class="note-content-viewer" ng-if="isSelected(lecture)" ng-repeat="note in lecture.notes">
+            <iframe ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
           </div>
         </div>
-      </md-list>
     </div>
+    </md-list>
   </div>
 </div>
-
-
+</div>
