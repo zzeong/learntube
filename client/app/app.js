@@ -11,7 +11,8 @@ angular.module('learntubeApp', [
   'angular-google-gapi',
   'file-model',
   'infinite-scroll',
-  'ngFileUpload'
+  'ngFileUpload',
+  'angularMoment'
 ])
 .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
   $urlRouterProvider

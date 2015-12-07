@@ -33,6 +33,8 @@ module.exports = function (config) {
       'client/bower_components/lodash/lodash.js',
       'client/bower_components/ng-file-upload/ng-file-upload.js',
       'client/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
+      'client/bower_components/moment/moment.js',
+      'client/bower_components/angular-moment/angular-moment.js',
       'client/bower_components/Blob/Blob.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
       // endbower
