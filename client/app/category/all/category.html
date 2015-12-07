@@ -25,10 +25,7 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
                     <h3 class="ellipsis class-listcard__info-title lt-title-s">{{ class.playlistTitle }}</h3>
                     <p class="class-listcard__info-sub lt-subhead-s">{{ class.channelTitle }}</p>
                     <span class="class-listcard__info-sub-views lt-caption-s">{{ class.views | thousandSuffix }}</span>
-                    <div class="star-rate">
-                      <img class="star-rate__item" src="assets/images/star_rate.png" alt="star rate">
-                      <div class="star-rate__bar" style="width: {{ class.rate }}%"></div>
-                    </div>
+                    <lt-star-rate lt-rate="class.rate"></lt-star-rate>
                   </div>
                 </md-content>
               </a>
