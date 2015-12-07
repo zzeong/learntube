@@ -1,0 +1,74 @@
+.class-listcard {
+  position: relative;
+
+  @include respond-to('small') {
+    margin-right: 8px;
+    margin-bottom: 20px;
+    margin-left: 8px;
+    float: left;
+    box-shadow: $whiteframe-shadow-1dp;
+  }
+}
+
+.class-listcard__thumbnail-img {
+  position: absolute;
+  left: 0;
+  max-width: 128px;
+  margin: 8px;
+
+  @include respond-to('small') {
+    max-width: 230px;
+    margin: 0;
+    z-index: 2;
+  }
+}
+
+.class-listcard__info {
+  height: 88px;
+  margin-left: 144px;
+  padding-top: 8px;
+
+  @include respond-to('small') {
+    position: relative;
+    width: 230px;
+    height: 240px;
+    margin: 0;
+    padding: 0;
+    background: $white;
+    z-index: 1;
+  }
+}
+
+.class-listcard__info-box {
+  @include respond-to('small') {
+    position: relative;
+    top: 146px;
+    left: 16px;
+    width: 198px;
+    height: 78px;
+  }
+}
+
+.class-listcard__info-title {
+  width: 150px;
+  margin: 0;
+}
+
+.class-listcard__info-sub {
+  margin: 0;
+  padding-top: 4px;
+}
+
+.class-listcard__info-sub-views {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  margin: 0;
+
+  @include respond-to('small') {
+    position: absolute;
+    top: 0;
+    right: 0;
+    padding: 0;
+  }
+}

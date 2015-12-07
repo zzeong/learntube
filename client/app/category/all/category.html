@@ -14,17 +14,17 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
         infinite-scroll-distance="1">
 
           <div ng-repeat="class in category">
-            <div class="category-class">
+            <div class="class-listcard">
               <a class="anchor-mask" ng-href="{{ href(class.playlistId) }}">
-                <div class="category-class__thumbnail">
-                  <img class="category-class__thumbnail-img" ng-src="{{ class.thumbnailUrl }}" alt="class Thumbnail">
+                <div class="class-listcard__thumbnail">
+                  <img class="class-listcard__thumbnail-img" ng-src="{{ class.thumbnailUrl }}" alt="class Thumbnail">
                 </div>
 
-                <md-content class="md-list-item-text category-class__info">
-                  <div class="category-class__info-box">
-                    <h3 class="ellipsis category-class__info-title">{{ class.playlistTitle }}</h3>
-                    <p class="category-class__info-sub">{{ class.channelTitle }}</p>
-                    <span class="category-class__info-sub-views">{{ class.views | thousandSuffix }}</span>
+                <md-content class="md-list-item-text class-listcard__info">
+                  <div class="class-listcard__info-box">
+                    <h3 class="ellipsis class-listcard__info-title lt-title-s">{{ class.playlistTitle }}</h3>
+                    <p class="class-listcard__info-sub lt-subhead-s">{{ class.channelTitle }}</p>
+                    <span class="class-listcard__info-sub-views lt-caption-s">{{ class.views | thousandSuffix }}</span>
                     <div class="star-rate">
                       <img class="star-rate__item" src="assets/images/star_rate.png" alt="star rate">
                       <div class="star-rate__bar" style="width: {{ class.rate }}%"></div>

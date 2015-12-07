@@ -20,15 +20,16 @@
 @import 'base/override';
 @import 'base/typography';
 @import 'base/fonts';
+@import 'blocks/arrow-icon';
 @import 'blocks/categories-content';
 @import 'blocks/categories';
-@import 'blocks/category-class';
 @import 'blocks/category-sidenav';
 @import 'blocks/category-title';
 @import 'blocks/checkbox';
 @import 'blocks/class-area';
 @import 'blocks/class-first-video';
 @import 'blocks/class-grid';
+@import 'blocks/class-listcard';
 @import 'blocks/class-summary';
 @import 'blocks/classes-of-category';
 @import 'blocks/classroom-content';
@@ -75,6 +76,6 @@
 @import 'blocks/youtube-video';
 @import 'blocks/account-btn';
 @import 'blocks/add-dialog';
-@import 'blocks/arrow-icon';
+@import 'blocks/anchor-mask';
 @import 'visualization/bars';
 // endinjector
