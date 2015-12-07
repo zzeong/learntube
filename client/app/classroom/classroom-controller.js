@@ -4,14 +4,70 @@ angular.module('learntubeApp')
 .controller('ClassroomCtrl', function ($scope, $stateParams, $http, Auth, Note, GoogleConst, GApi, Upload, PlaylistItem, $mdToast, WatchedContent, $timeout) {
   $scope.videoId = $stateParams.vid;
   $scope.playlistId = $stateParams.pid;
-  $scope.isEditorOn = false;
-  $scope.isFileUploadOn = false;
   $scope.getCurrentUser = Auth.getCurrentUser;
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.cid = null;
   $scope.haveLecture = false;
   $scope.httpBusy = true;
   $scope.getPageToken = PlaylistItem.getPageToken;
+  $scope.fab = {
+    DURATION: 200,
+    isShowing: false,
+    isOpen: false,
+    isDisabled: false,
+    ngClass: '',
+    disable: function () {
+      $timeout(function () {
+        $scope.fab.isDisabled = true;
+        $scope.fab.ngClass = 'invisible';
+      }, this.DURATION);
+    },
+    enable: function () {
+      $scope.fab.isDisabled = false;
+      $timeout(function () {
+        $scope.fab.ngClass = '';
+      }, this.DURATION);
+    },
+    show: function (flag) {
+      this.isShowing = flag;
+    },
+    toggleOpen: function ($event) {
+      // md-fab-spped-dial directive change md-open variable automatically
+      $event.stopPropagation();
+
+      if (!$scope.note.isActivated()) {
+        this.isOpen = !this.isOpen;
+      }
+    },
+  };
+
+  $scope.note = {
+    upload: function (type, file) {
+      console.log(type, file);
+      return Note.upload(type, file)
+      .then(function (res) {
+        $scope.notes.push(res.data);
+      })
+      .catch(console.error);
+    },
+    editor: Note.editor,
+    file: Note.file,
+    isActivated: function () {
+      return !!$scope.editor.activator || !!$scope.file.activator;
+    },
+  };
+
+  $scope.showUpNote = function (note, activator) {
+    if (!_.isNull(activator)) {
+      $scope.fab.disable();
+    }
+    note.setActivator(activator);
+  };
+
+  Note.setIds({
+    video: $scope.videoId,
+    playlist: $scope.playlistId,
+  });
 
   if ($scope.isLoggedIn()) {
     WatchedContent.query({ playlistId: $scope.playlistId }).$promise
@@ -66,45 +122,16 @@ angular.module('learntubeApp')
     $scope.details = !$scope.details;
   };
 
-  var textToFile = function (text) {
-    return new Blob([text], { type: 'text/html' });
-  };
-
-  var keepNoteSoundly = function (note, src) {
-    if (typeof src !== 'undefined') { _.assign(note, src); }
-
-    if (!_.has(note, 'isEditing')) {
-      note.isEditing = false;
-    }
-    return note;
-  };
-
   if ($scope.isLoggedIn()) {
     Note.query({ videoId: $scope.videoId })
     .$promise
     .then(function (notes) {
       $scope.notes = notes.map(function (note) {
-        return keepNoteSoundly(note);
+        return note;
       });
     })
     .catch(console.error);
   }
-
-  var initializeNotePanel = function (type) {
-    if (type === 'file') {
-      $scope.noteFile = undefined;
-      if ($scope.isFileUploadOn) {
-        $scope.toggleFileUpload();
-      }
-    } else if (type === 'editor') {
-      $scope.noteContents = '';
-      if ($scope.isEditorOn) {
-        $scope.toggleEditor();
-      }
-    } else {
-      return;
-    }
-  };
 
   $http.get('/api/others-notes', {
     params: { videoId: $scope.videoId }
@@ -146,13 +173,6 @@ angular.module('learntubeApp')
     .catch(console.error);
   };
 
-  $scope.toggleEditor = function () {
-    $scope.isEditorOn = !$scope.isEditorOn;
-  };
-  $scope.toggleFileUpload = function () {
-    $scope.isFileUploadOn = !$scope.isFileUploadOn;
-  };
-
   $scope.editNote = function (note) {
     Note.getContents({ nid: note._id })
     .$promise
@@ -176,46 +196,17 @@ angular.module('learntubeApp')
     .catch(console.error);
   };
 
-  $scope.updateNote = function (note) {
-    var file = textToFile(note.contents);
-
-    Upload.upload({
-      url: '/api/users/' + Auth.getCurrentUser()._id + '/notes/' + note._id,
-      method: 'PUT',
-      file: file
-    })
+  $scope.updateNote = function (file) {
+    Upload.upload(file)
     .then(function (res) {
       $scope.notes = $scope.notes.map(function (note) {
-        if (note._id === res.data._id) { return keepNoteSoundly(res.data); }
+        if (note._id === res.data._id) { return res.data; }
         return note;
       });
     })
     .catch(console.error);
   };
 
-  $scope.doneNote = function (type, file) {
-    if (type === 'editor') {
-      file = textToFile(file);
-    }
-
-    Upload.upload({
-      url: '/api/users/' + Auth.getCurrentUser()._id + '/notes',
-      method: 'POST',
-      fields: {
-        videoId: $scope.videoId,
-        playlistId: $scope.playlistId,
-        type: type
-      },
-      file: file
-    })
-    .then(function (res) {
-      var note = keepNoteSoundly(res.data);
-      $scope.notes.push(note);
-
-      initializeNotePanel(type);
-    })
-    .catch(console.error);
-  };
 
   $scope.shouldBeEmbedded = function (note) {
     if (note.resourceType.match(/^text\//)) {
@@ -234,7 +225,6 @@ angular.module('learntubeApp')
   };
 
   $scope.showSimpleToast = function () {
-
     var positionArr = 'top right';
 
     $mdToast.show(
@@ -293,6 +283,4 @@ angular.module('learntubeApp')
     $scope.httpBusy = false;
   })
   .catch(console.error);
-
-
 });

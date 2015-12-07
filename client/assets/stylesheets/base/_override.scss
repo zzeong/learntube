@@ -11,6 +11,10 @@ md-list-item {
     background-color: $youtube-color;
     &:not([disabled]):hover { background-color: $youtube-color-action; }
   }
+
+  &.md-raised-color-accent {
+    color: rgba($blue-a200, 0.87);
+  }
 }
 
 .lecturelist {
@@ -73,4 +77,10 @@ md-tabs-content-wrapper {
 md-tabs.md-default-theme md-ink-bar,
 md-tabs md-ink-bar {
   background: $amber-500;
+}
+
+md-fab-actions {
+  .md-button.md-fab md-icon {
+    color: $grey-600;
+  }
 }

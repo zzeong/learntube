@@ -23,6 +23,27 @@
     </div>
   </div>
 
+  <md-fab-speed-dial class="md-fling fixed-fab" md-open="fab.isOpen" md-direction="up"
+  ng-show="fab.isShowing">
+    <md-fab-trigger>
+      <md-button class="md-fab" aria-label="Add note menu"
+      ng-disabled="fab.isDisabled" ng-click="toggle">
+        <md-icon md-font-set="material-icons">add</md-icon>
+      </md-button>
+    </md-fab-trigger>
+
+    <md-fab-actions>
+      <md-button aria-label="File" class="md-fab md-raised md-mini" ng-class="fab.ngClass"
+      type="file" ngf-select="showUpNote(note.file, $file)" accept="image/*">
+        <md-icon md-font-set="material-icons">file_upload</md-icon>
+      </md-button>
+      <md-button aria-label="Web-editor" class="md-fab md-raised md-mini" ng-class="fab.ngClass"
+      ng-click="showUpNote(note.editor, true)">
+        <md-icon md-font-set="material-icons">mode_edit</md-icon>
+      </md-button>
+    </md-fab-actions>
+  </md-fab-speed-dial>
+
   <md-tabs flex class="tab-area" md-border-bottom md-stretch-tabs="always">
     <md-tab>
       <md-tab-label>
@@ -82,26 +103,29 @@
         </div>
       </md-tab-body>
     </md-tab>
-    <md-tab>
+    <md-tab md-on-select="fab.show(true)" md-on-deselect="fab.show(false)" ng-disabled="!isLoggedIn()">
       <md-tab-label>
         <md-icon md-font-set="material-icons">description</md-icon>
       </md-tab-label>
-      <md-tab-body class="md-padding">
-        <h1 class="md-display-2">Tab Three</h1>
-        <p>Integer turpis erat, porttitor vitae mi faucibus, laoreet interdum tellus.
-          Curabitur posuere molestie dictum. Morbi eget congue risus, quis rhoncus
-          quam. Suspendisse vitae hendrerit erat, at posuere mi. Cras eu fermentum
-          nunc. Sed id ante eu orci commodo volutpat non ac est. Praesent ligula
-          diam, congue eu enim scelerisque, finibus commodo lectus.</p>
+      <md-tab-body>
+        <div class="frame-padding tab-area__note">
+          <lt-note-unit lt-note-type="editor" ng-if="note.editor.activator" lt-note-model="note.editor">
+            <lt-note-object></lt-note-object>
+            <lt-note-actions lt-on-cancel="fab.enable()" lt-on-add="note.upload($type, $file)"></lt-note-actions>
+          </lt-note-unit>
+
+          <lt-note-unit lt-note-type="file" ng-if="note.file.activator" lt-note-model="note.file">
+            <lt-note-object></lt-note-object>
+            <lt-note-actions lt-on-cancel="fab.enable()" lt-on-add="note.upload($type, $file)"></lt-note-actions>
+          </lt-note-unit>
+        </div>
       </md-tab-body>
     </md-tab>
-    <md-tab>
+    <md-tab ng-disabled="true">
       <md-tab-label>
         <md-icon md-font-set="material-icons">question_answer</md-icon>
       </md-tab-label>
       <md-tab-body>
-        <h1 class="md-display-2">Tab Four</h1>
-        <p>Allo Allo!</p>
       </md-tab-body>
     </md-tab>
   </md-tabs>
