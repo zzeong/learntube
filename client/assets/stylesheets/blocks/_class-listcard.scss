@@ -1,74 +1,72 @@
 .class-listcard {
-  position: relative;
+  background-color: $white;
 
   @include respond-to('small') {
+    display: inline-block;
     margin-right: 8px;
     margin-bottom: 20px;
     margin-left: 8px;
-    float: left;
     box-shadow: $whiteframe-shadow-1dp;
   }
 }
 
-.class-listcard__thumbnail-img {
-  position: absolute;
-  left: 0;
-  max-width: 128px;
-  margin: 8px;
+.class-listcard__thumbnail {
+  padding: 8px;
+  float: left;
 
   @include respond-to('small') {
-    max-width: 230px;
-    margin: 0;
-    z-index: 2;
+    padding: 0;
+    float: none;
   }
 }
 
-.class-listcard__info {
-  height: 88px;
-  margin-left: 144px;
-  padding-top: 8px;
+.class-listcard__thumbnail-img {
+  width: 128px;
 
   @include respond-to('small') {
-    position: relative;
     width: 230px;
-    height: 240px;
     margin: 0;
-    padding: 0;
-    background: $white;
-    z-index: 1;
   }
 }
 
 .class-listcard__info-box {
+  @extend .frame-padding;
+  height: 88px;
+  padding: 8px;
+
   @include respond-to('small') {
-    position: relative;
-    top: 146px;
-    left: 16px;
-    width: 198px;
-    height: 78px;
+    height: auto;
+    padding: 16px;
+  }
+
+  >*:first-of-type { margin-top: 0; }
+}
+
+.class-listcard__info-title { padding-right: 38px; }
+.class-listcard__info-sub { padding-top: 4px; }
+
+.class-listcard__info-title,
+.class-listcard__info-sub {
+  margin: 0;
+  @include respond-to('small') { max-width: 198px; }
+}
+
+.class-listcard__info-sub-small {
+  $mobile-offset: 8px;
+  $web-offset: $mobile-offset * 2;
+  position: absolute;
+  top: $mobile-offset;
+  right: $mobile-offset;
+  margin: 0;
+
+  @include respond-to('small') {
+    top: $web-offset;
+    right: $web-offset;
   }
 }
 
-.class-listcard__info-title {
-  width: 150px;
-  margin: 0;
-}
-
-.class-listcard__info-sub {
-  margin: 0;
-  padding-top: 4px;
-}
-
-.class-listcard__info-sub-views {
-  position: absolute;
-  top: 8px;
-  right: 8px;
-  margin: 0;
-
+.class-listcard__height-keeper {
   @include respond-to('small') {
-    position: absolute;
-    top: 0;
-    right: 0;
-    padding: 0;
+    min-height: 48px;
   }
 }

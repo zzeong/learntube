@@ -5,35 +5,34 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
 <div flex layout="column">
   <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
   <div flex class="flex-scroll categories">
+    <div class="categories__contents">
+      <div ng-repeat="category in classArr" class="classes-of-category">
+        <h2 class="md-body-2 category-title">{{ category[0].categorySlug }}</h2>
 
-    <div ng-repeat="category in classArr">
-      <p class="md-body-2 category-title">{{ category[0].categorySlug }}</p>
-
-      <div class="classes-of-category">
-        <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
-        infinite-scroll-distance="1">
-
-          <div ng-repeat="class in category">
-            <div class="class-listcard">
+        <ul class="classes-of-category__body">
+          <li class="class-listcard" ng-repeat="class in category">
+            <lt-class>
               <a class="anchor-mask" ng-href="{{ href(class.playlistId) }}">
                 <div class="class-listcard__thumbnail">
                   <img class="class-listcard__thumbnail-img" ng-src="{{ class.thumbnailUrl }}" alt="class Thumbnail">
                 </div>
 
-                <md-content class="md-list-item-text class-listcard__info">
+                <md-content>
                   <div class="class-listcard__info-box">
-                    <h3 class="ellipsis class-listcard__info-title lt-title-s">{{ class.playlistTitle }}</h3>
-                    <p class="class-listcard__info-sub lt-subhead-s">{{ class.channelTitle }}</p>
-                    <span class="class-listcard__info-sub-views lt-caption-s">{{ class.views | thousandSuffix }}</span>
+                    <div class="class-listcard__height-keeper">
+                      <h3 class="ellipsis-2 class-listcard__info-title lt-title-s">{{ class.playlistTitle }}</h3>
+                      <p class="ellipsis-1 class-listcard__info-sub lt-subhead-s">{{ class.channelTitle }}</p>
+                    </div>
+                    <span class="class-listcard__info-sub-small lt-caption-s">{{ class.views | thousandSuffix }}</span>
                     <lt-star-rate lt-rate="class.rate"></lt-star-rate>
                   </div>
                 </md-content>
               </a>
-            </div>
-          </div>
-
-        </div>
+            </lt-class>
+          </li>
+        </ul>
       </div>
     </div>
   </div>
 </div>
+

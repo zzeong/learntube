@@ -1,38 +1,23 @@
 .star-rate {
   position: relative;
-  width: 90px;
   margin-top: 4px;
 
   @include respond-to('small') {
-    position: absolute;
-    bottom: 0;
-    margin: 0;
   }
 }
 
-.star-rate__item {
-  position: absolute;
-  top: 0;
+.star-rate__depressor {
   width: 90px;
-  height: 18px;
-  z-index: 2;
+}
 
+.star-rate__item {
+  width: 100%;
   @include respond-to('small') {
-    position: relative;
-    top: 16px;
   }
 }
 
 .star-rate__bar {
-  position: absolute;
-  top: 1px;
   height: 17px;
+  margin-top: -17px;
   background: $star-color;
-  z-index: 1;
-
-  @include respond-to('small') {
-    position: relative;
-    top: auto;
-    bottom: 5px;
-  }
 }

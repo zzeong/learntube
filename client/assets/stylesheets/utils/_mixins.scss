@@ -33,3 +33,9 @@
     @content;
   }
 }
+
+@mixin adapt-to($width) {
+  @media (min-width: #{$width}) {
+    @content;
+  }
+}

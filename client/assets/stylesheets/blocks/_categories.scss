@@ -1,7 +1,5 @@
-.categories {
-  background: $white;
-
+.categories__contents {
   @include respond-to('small') {
-    background: none;
+    margin: 20px 0;
   }
 }

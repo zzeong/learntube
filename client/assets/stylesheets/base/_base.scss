@@ -44,6 +44,23 @@ figure {
 lt-note-unit,
 lt-note-object,
 lt-note-actions,
-lt-star-rate {
+lt-star-rate,
+lt-class {
   display: block;
+}
+
+md-icon {
+  outline: none;
+}
+
+img {
+  vertical-align: middle;
+}
+
+ul { list-style-type: none; }
+
+ul,
+li {
+  margin: 0;
+  padding: 0;
 }

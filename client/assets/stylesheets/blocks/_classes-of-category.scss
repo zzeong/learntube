@@ -1,8 +1,27 @@
 .classes-of-category {
-  padding-bottom: 0;
+  $card-outer-width: 246px;
+  width: 100%;
+
+  @function calc-adaptive-width($card-num) {
+    $side-width: 240px;
+    $offset: 20;
+    @return $side-width + $card-num * $card-outer-width + $offset;
+  }
 
   @include respond-to('small') {
-    display: block;
-    margin-left: 24px;
+    max-width: 246px;
+    margin: 0 auto 16px;
+  }
+
+  @include adapt-to(calc-adaptive-width(2)) { max-width: $card-outer-width * 2; }
+  @include adapt-to(calc-adaptive-width(3)) { max-width: $card-outer-width * 3; }
+  @include adapt-to(calc-adaptive-width(4)) { max-width: $card-outer-width * 4; }
+  @include adapt-to(calc-adaptive-width(5)) { max-width: $card-outer-width * 5; }
+}
+
+.classes-of-category__body {
+  @include respond-to('small') {
+    margin-bottom: 10px;
   }
 }
+

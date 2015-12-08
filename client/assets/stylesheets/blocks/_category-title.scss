@@ -1,12 +1,8 @@
 .category-title {
   margin: 0;
   padding: 16px;
-  padding-bottom: 8px;
 
   @include respond-to('small') {
-    padding-top: 21px;
-    padding-bottom: 10px;
-    padding-left: 34px;
-    clear: left;
+    padding: 10px 8px;
   }
 }
