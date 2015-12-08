@@ -8,17 +8,45 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
 
 <div flex layout="column">
   <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
-  <div class="flex-scroll" layout-padding>
-    <md-card class="personal-class-card" ng-repeat="classe in classes | onlyPublic">
-      <img ng-src="{{ classe.snippet.thumbnails.high.url }}" ng-click="go('uploaded-lecture-list', { pid: classe.id })"
-      class="md-card-image" alt="Class Image">
-      <md-card-content>
-        <h2 class="md-title ellipsis personal-class-card__title">{{ classe.snippet.title }}</h2>
-      </md-card-content>
-      <div class="md-actions" layout="row" layout-align="end center">
-        <md-button class="md-warn" ng-click="deleteClass(classe)">Delete</md-button>
-      </div>
-    </md-card>
+  <div class="flex-scroll">
+    <div class="categories__contents">
+      <ul class="adaptable-card-wrapper">
+        <li class="class-listcard" ng-repeat="class in classes">
+          <lt-class>
+            <a class="anchor-mask" ng-href="#">
+              <div class="class-listcard__thumbnail">
+                <img class="class-listcard__thumbnail-img" ng-src="{{ class.thumbnailUrl }}" alt="class Thumbnail">
+              </div>
+
+              <md-content>
+                <div class="class-listcard__info-box">
+                  <div class="class-listcard__height-keeper">
+                    <h3 class="ellipsis-2 class-listcard__info-title lt-title-s">{{ class.title }}</h3>
+                    <p class="ellipsis-1 class-listcard__info-sub lt-subhead-s">{{ class.views | thousandSuffix }}</p>
+                  </div>
+                  <span class="class-listcard__info-sub-small lt-caption-s"></span>
+                  <lt-star-rate lt-rate="class.rate"></lt-star-rate>
+
+                  <md-menu md-offset="-4 34" md-position-mode="target-right target" hide-gt-sm>
+                    <md-icon md-menu-origin class="class-listcard__info-sub-small" mg-font-set="material-icons"
+                    ng-click="$mdOpenMenu($event)" aria-label="Actions menu">more_vert</md-icon>
+                    <md-menu-content width="2">
+                      <md-menu-item>
+                        <md-button ng-click="bar()">Delete</md-button>
+                      </md-menu-item>
+                    </md-menu-content>
+                  </md-menu>
+
+                  <div class="actions-area class-listcard__actions" layout="row" layout-align="end center" hide-sm>
+                    <md-button class="lt-button-s md-accent" ng-click="bar()">Delete</md-button>
+                  </div>
+                </div>
+              </md-content>
+            </a>
+          </lt-class>
+        </li>
+      </ul>
+    </div>
   </div>
 </div>
 

@@ -20,6 +20,7 @@
 @import 'base/override';
 @import 'base/typography';
 @import 'base/fonts';
+@import 'blocks/anchor-mask';
 @import 'blocks/arrow-icon';
 @import 'blocks/categories';
 @import 'blocks/category-sidenav';
@@ -64,7 +65,6 @@
 @import 'blocks/tab-area';
 @import 'blocks/tutor-intro';
 @import 'blocks/video-box';
-@import 'blocks/view-note-btn';
 @import 'blocks/watched-lecturelist';
 @import 'blocks/web-search-content';
 @import 'blocks/whiteframe-desc';
@@ -74,7 +74,7 @@
 @import 'blocks/youtube-logo';
 @import 'blocks/youtube-video';
 @import 'blocks/account-btn';
+@import 'blocks/actions-area';
 @import 'blocks/add-dialog';
-@import 'blocks/anchor-mask';
 @import 'visualization/bars';
 // endinjector

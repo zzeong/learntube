@@ -6,7 +6,7 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
   <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
   <div flex class="flex-scroll categories">
     <div class="categories__contents">
-      <div ng-repeat="category in classArr" class="classes-of-category">
+      <div ng-repeat="category in classArr" class="classes-of-category adaptable-card-wrapper">
         <h2 class="md-body-2 category-title">{{ category[0].categorySlug }}</h2>
 
         <ul class="classes-of-category__body">

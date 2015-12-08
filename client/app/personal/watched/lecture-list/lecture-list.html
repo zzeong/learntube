@@ -40,7 +40,7 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
               </div>
             </div>
 
-            <md-button class="view-note-btn" ng-show="lecture.noteIconVisible" ng-click="showNote(lecture)">VIEW NOTE</md-button>
+            <md-button class="lecturelist__second-action lt-button-s md-accent" ng-show="lecture.noteIconVisible" ng-click="showNote(lecture)">VIEW NOTE</md-button>
           </md-list-item>
 
           <div class="note-content-viewer" ng-if="isSelected(lecture)" ng-repeat="note in lecture.notes">
