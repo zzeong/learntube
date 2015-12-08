@@ -4,6 +4,7 @@ var _ = require('lodash');
 var g = require('../../../../components/google-api');
 var config = require('../../../../config/environment');
 var gapiHelper = require('../youtube-mine-service');
+var Class = require('../../../../models/class.model');
 
 require('mongoose').Promise = Promise;
 
@@ -51,6 +52,26 @@ exports.index = function (req, res, next) {
   .then(function (response) {
     body = gapiHelper.createBodyForList(response);
     return req.user.updateAccessToken(g);
+  })
+  .then(function () {
+    body.items = body.items.map(function (item) {
+      return {
+        thumbnailUrl: item.snippet.thumbnails.medium.url,
+        title: item.snippet.title,
+        id: item.id,
+      };
+    });
+
+    var promises = body.items.map(function (item) {
+      return Class.findOne({ playlistId: item.id }).exec()
+      .then(function (classe) {
+        item.rate = _.has(classe.toObject(), 'rate') ? classe.rate : 0;
+        item.views = classe.views;
+        return Promise.resolve();
+      });
+    });
+
+    return Promise.all(promises);
   })
   .then(function () {
     res.status(200).json(body);
