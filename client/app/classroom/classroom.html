@@ -26,8 +26,8 @@
   <md-fab-speed-dial class="md-fling fixed-fab" md-open="fab.isOpen" md-direction="up"
   ng-show="fab.isShowing">
     <md-fab-trigger>
-      <md-button class="md-fab" aria-label="Add note menu"
-      ng-disabled="fab.isDisabled" ng-click="toggle">
+      <md-button class="md-fab" aria-label="Add note menu" ng-disabled="fab.isDisabled"
+      ng-click="toggle">
         <md-icon md-font-set="material-icons">add</md-icon>
       </md-button>
     </md-fab-trigger>
@@ -82,19 +82,21 @@
             <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
             infinite-scroll-distance="1">
 
-              <md-list-item class="lecturelist__item" ng-repeat="lecture in lectureList" ng-click="go('classroom', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
-                <div class="lecturelist-thumb-and-duration">
-                  <p class="lecturelist-thumb-and-duration__duration">{{ lecture.contentDetails.duration | humanable }}</p>
-                  <img class="lecturelist-thumb-and-duration__thumbnail" ng-src="{{ lecture.snippet.thumbnails.medium.url }}"
-                  alt="Lecture Thumbnail">
-                </div>
+              <md-list-item class="lecturelist__item" ng-repeat="lecture in lectureList">
+                <a class="anchor-mask" ng-href="/class/{{ playlistId }}/lecture/{{ lecture.snippet.resourceId.videoId}}">
+                  <div class="lecturelist-thumb-and-duration">
+                    <p class="lecturelist-thumb-and-duration__duration">{{ lecture.contentDetails.duration | humanable }}</p>
+                    <img class="lecturelist-thumb-and-duration__thumbnail" ng-src="{{ lecture.snippet.thumbnails.medium.url }}"
+                    alt="Lecture Thumbnail">
+                  </div>
 
-                <div class="md-list-item-text lecturelist-info">
-                  <h3 class="ellipsis-2 lecturelist-info__title">{{ lecture.snippet.title }}</h3>
-                  <p class="lecturelist-info__sub">{{ lecture.snippet.channelTitle }}</p>
-                  <p class="lecturelist-info__sub">{{ lecture.viewCount.viewCount }}</p>
-                  <!-- {{ lecture.contentDetails.duration | humanable }} -->
-                </div>
+                  <div class="md-list-item-text lecturelist-info">
+                    <h3 class="ellipsis-2 lecturelist-info__title">{{ lecture.snippet.title }}</h3>
+                    <p class="lecturelist-info__sub">{{ lecture.snippet.channelTitle }}</p>
+                    <p class="lecturelist-info__sub">{{ lecture.viewCount.viewCount }}</p>
+                    <!-- {{ lecture.contentDetails.duration | humanable }} -->
+                  </div>
+                </a>
               </md-list-item>
             </div>
 
@@ -130,4 +132,3 @@
     </md-tab>
   </md-tabs>
 </md-content>
-
