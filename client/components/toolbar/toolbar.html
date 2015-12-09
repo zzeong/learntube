@@ -1,6 +1,6 @@
 <div class="md-toolbar-tools" ng-controller="ToolbarCtrl">
   <md-button class="md-icon-button" aria-label="Settings" ng-click="mainIconTrigger()"
-  hide-gt-sm>
+  hide-gt-xs>
     <md-icon md-font-set="material-icons">menu</md-icon>
   </md-button>
   <h2 ng-hide="onSearching">
@@ -9,14 +9,14 @@
 
   <span flex>
     <div class="web-search-content" ng-show="!stateNameCheck('home')">
-      <form ng-submit="go('search', { q: q })" hide-sm>
+      <form ng-submit="go('search', { q: q })" hide-xs>
         <input class="web-search-content__input" type="search" ng-model="q"/>
       </form>
     </div>
   </span>
 
   <md-menu md-offset="12 -1" md-position-mode="target-right target">
-    <md-button class="account-btn" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()" hide-sm>
+    <md-button class="account-btn" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()" hide-xs>
       <img class="account-btn__thumb thumb-radius" ng-src="{{ getUserImgPath(getCurrentUser()) }}"
       alt="Account Image" />
 
@@ -43,11 +43,11 @@
   </md-menu>
 
   <md-button class="login-btn" ng-hide="isLoggedIn()" ng-click="loginOauth('google')"
-  hide-sm>
+  hide-xs>
     Sign in with <i class="fa fa-youtube-play youtube-logo"></i>
   </md-button>
 
-  <md-menu md-offset="12 -1" md-position-mode="target-right target" hide-gt-sm>
+  <md-menu md-offset="12 -1" md-position-mode="target-right target" hide-gt-xs>
     <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
       <md-icon md-menu-origin md-font-set="material-icons">more_vert</md-icon>
     </md-button>
@@ -74,4 +74,3 @@
     </div>
   </md-menu>
 </div>
-

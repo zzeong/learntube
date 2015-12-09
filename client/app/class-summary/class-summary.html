@@ -1,5 +1,5 @@
 <md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav"
-ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-xs')">
 </md-sidenav>
 
 <md-button class="md-fab fixed-fab" ng-disabled="haveClass" aria-label="Add a class"
@@ -22,7 +22,7 @@ ng-click="addClass()" ng-show="isLoggedIn()">
           <h2 class="whiteframe__title md-title">{{classe.snippet.title}}</h2>
           <div class="md-body-1 whiteframe-desc" ng-bind-html="desc"></div>
         </md-whiteframe>
-        <md-divider hide-gt-sm></md-divider>
+        <md-divider hide-gt-xs></md-divider>
       </div>
 
       <div class="whiteframe-expander">
@@ -33,7 +33,7 @@ ng-click="addClass()" ng-show="isLoggedIn()">
           </div>
           <div class="whiteframe-desc md-body-1" ng-bind-html="channel.snippet.description"></div>
         </md-whiteframe>
-        <md-divider hide-gt-sm></md-divider>
+        <md-divider hide-gt-xs></md-divider>
       </div>
 
       <div class="lecturelist-fixer">
@@ -68,4 +68,3 @@ ng-click="addClass()" ng-show="isLoggedIn()">
     </div>
   </div>
 </div>
-

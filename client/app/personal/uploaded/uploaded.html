@@ -1,5 +1,5 @@
 <md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav"
-ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-sm')">
+ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-xs')">
 </md-sidenav>
 
 <md-button class="md-fab fixed-fab" aria-label="Add class" ng-click="showDialog($event)">
@@ -27,7 +27,7 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
                   <span class="class-listcard__info-sub-small lt-caption-s"></span>
                   <lt-star-rate lt-rate="class.rate"></lt-star-rate>
 
-                  <md-menu md-offset="-4 34" md-position-mode="target-right target" hide-gt-sm>
+                  <md-menu md-offset="-4 34" md-position-mode="target-right target" hide-gt-xs>
                     <md-icon md-menu-origin class="class-listcard__info-sub-small" mg-font-set="material-icons"
                     ng-click="$mdOpenMenu($event)" aria-label="Actions menu">more_vert</md-icon>
                     <md-menu-content width="2">
@@ -37,7 +37,7 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
                     </md-menu-content>
                   </md-menu>
 
-                  <div class="actions-area class-listcard__actions" layout="row" layout-align="end center" hide-sm>
+                  <div class="actions-area class-listcard__actions" layout="row" layout-align="end center" hide-xs>
                     <md-button class="lt-button-s md-accent" ng-click="bar()">Delete</md-button>
                   </div>
                 </div>
@@ -49,5 +49,3 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
     </div>
   </div>
 </div>
-
-
