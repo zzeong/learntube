@@ -4,17 +4,26 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
 
 <div flex layout="column">
   <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
-  <div flex class="flex-scroll" layout-padding>
-    <div infinite-scroll="loadMore(pageToken)" infinite-scroll-disabled="httpBusy || !pageToken"
-    infinite-scroll-distance="1">
-      <md-grid-list md-cols="2" md-cols-gt-md="3" md-row-height="4:3" md-gutter="8px" class="class-grid">
-        <md-grid-tile ng-repeat="classe in classes" ng-click="go('class-summary', { pid: classe.id.playlistId })">
-          <img ng-src="{{ classe.snippet.thumbnails.high.url }}" alt="Class Image">
-          <md-grid-tile-footer>
-            <h3>{{ classe.snippet.title }}</h3>
-          </md-grid-tile-footer>
-        </md-grid-tile>
-      </md-grid-list>
+  <div class="flex-scroll">
+    <div class="main-content__inner">
+      <ul class="adaptable-card-wrapper">
+        <li class="adaptable-card" ng-repeat="class in classes">
+          <a class="anchor-mask" ng-href="{{ href(class.id.playlistId) }}">
+            <lt-listcard lt-responsive-morph="true">
+              <lt-listcard-media>
+                <img ng-src="{{ class.snippet.thumbnails.medium.url }}" alt="Class thumbnail">
+              </lt-listcard-media>
+
+              <lt-listcard-content>
+                <div class="lt-listcard__height-keeper">
+                  <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ class.snippet.title }}</h3>
+                  <p class="ellipsis-1 lt-subhead-s">{{ class.snippet.channelTitle }}</p>
+                </div>
+              </lt-listcard-content>
+            </lt-listcard>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>

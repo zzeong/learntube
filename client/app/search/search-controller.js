@@ -4,6 +4,7 @@ angular.module('learntubeApp')
 .controller('SearchCtrl', function ($scope, $http, $stateParams, GApi, GoogleConst) {
   $scope.q = $stateParams.q;
   $scope.httpBusy = true;
+  $scope.href = function (pid) { return '/class/' + pid; };
 
   var params = {
     key: GoogleConst.browserKey,

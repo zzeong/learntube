@@ -2,6 +2,8 @@
 
 angular.module('learntubeApp')
 .controller('UploadedContentsCtrl', function ($state, $scope, $mdDialog, $http) {
+  $scope.href = function (pid) { return '/uploaded/lecture-list/' + pid; };
+
   $http.get('/api/youtube/mine/playlists')
   .then(function (res) {
     $scope.classes = res.data.items;

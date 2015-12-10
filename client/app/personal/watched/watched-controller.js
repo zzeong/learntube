@@ -2,8 +2,9 @@
 
 angular.module('learntubeApp')
 .controller('WatchedContentsCtrl', function ($scope, $http, WatchedContent, Note, $state, GoogleConst, GApi) {
-  WatchedContent.query()
-  .$promise
+  $scope.href = function (pid) { return '/watched/lecture-list/' + pid; };
+
+  WatchedContent.query().$promise
   .then(function (response) {
     $scope.classes = response;
 
@@ -13,60 +14,38 @@ angular.module('learntubeApp')
 
     return GApi.execute('youtube', 'playlists.list', {
       key: GoogleConst.browserKey,
-      part: 'snippet,contentDetails',
+      part: 'id,snippet,contentDetails',
       id: playlistIds,
-      fields: 'items(snippet(title,thumbnails),contentDetails)',
+      fields: 'items(id,snippet(title,thumbnails),contentDetails)',
     });
   })
-  .then(function (responseFromYT) {
-    $scope.classes = $scope.classes.map(function (classe, i) {
-      classe.item = responseFromYT.items[i];
-      classe.graph = false;
-      classe.imgWidth = 0;
-      classe.imgHeight = 0;
-      classe.numberOfWatched = 0;
-      classe.numberOfNote = 0;
-      classe.percentage = 0;
+  .then(function (res) {
+    var extraData = _(res.items)
+    .groupBy('id')
+    .forEach(function (val, key, iteratee) {
+      iteratee[key] = val.map(function (item) {
+        return {
+          title: item.snippet.title,
+          videoCount: item.contentDetails.itemCount,
+          thumbnailUrl: item.snippet.thumbnails.medium.url,
+        };
+      })[0];
+    })
+    .value();
+
+    $scope.classes = $scope.classes.map(function (classe) {
+      classe = _.assign(classe, extraData[classe.playlistId]);
+      classe.watchingRatio = classe.lectures.length / classe.videoCount;
       return classe;
     });
   })
   .catch(console.error);
 
-
-
   $scope.deleteClass = function (classe) {
-    WatchedContent.remove({ cid: classe._id })
-    .$promise
+    WatchedContent.remove({ cid: classe._id }).$promise
     .then(function () {
       _.remove($scope.classes, classe);
     })
     .catch(console.error);
-  };
-
-  $scope.showGraph = function (classe) {
-    var img = document.getElementById('thumbnail');
-    classe.imgWidth = img.width;
-    classe.imgHeight = img.height;
-
-    // DB에서 시청한 동영상 목록 가져오기 (seenLectures)
-    WatchedContent.query({ playlistId: classe.playlistId })
-    .$promise
-    .then(function (response) {
-      classe.numberOfWatched = response[0].lectures.length;
-      classe.percentage = ((classe.numberOfWatched / classe.item.contentDetails.itemCount) * 100).toPrecision(3);
-    })
-    .catch(console.error);
-
-
-    // DB에서 필기 목록 가져오기 (Note)
-    Note.query({ playlistId: classe.playlistId })
-    .$promise
-    .then(function (response) {
-      classe.numberOfNote = response.length;
-    })
-    .catch(console.error);
-
-    classe.graph = !classe.graph;
-
   };
 });
