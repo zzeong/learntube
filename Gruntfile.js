@@ -94,6 +94,10 @@ module.exports = function (grunt) {
         files: ['<%= yeoman.client %>/assets/stylesheets/**/*.scss'],
         tasks: ['injector:sass']
       },
+      copyComponentsSass: {
+        files: ['<%= yeoman.client %>/components/**/*.scss'],
+        tasks: ['copy:componentsSass'],
+      },
       sass: {
         files: ['<%= yeoman.client %>/assets/stylesheets/**/*.scss'],
         tasks: ['sass', 'autoprefixer']
@@ -433,6 +437,16 @@ module.exports = function (grunt) {
         dest: '<%= yeoman.client %>/bower_components/ckeditor/skins/minimalist/',
         src: '**',
       },
+      componentsSass: {
+        expand: true,
+        flatten: true,
+        cwd: '<%= yeoman.client %>',
+        src: ['components/**/*.scss'],
+        dest: '<%= yeoman.client %>/assets/stylesheets/components/',
+        rename: function (dest, src) {
+          return dest + '_' + src;
+        },
+      },
     },
 
     buildcontrol: {
@@ -595,11 +609,11 @@ module.exports = function (grunt) {
         }
       },
 
-      // Inject component scss into app.scss
+      // Inject component scss into main.scss
       sass: {
         options: {
           sort: function (a, b) {
-            var sortBy = ['/utils/', '/base/', '/blocks/', '/visualization/'];
+            var sortBy = ['/utils/', '/base/', '/blocks/', '/components/', '/visualization/'];
             var ai, bi;
             ai = bi = -1;
 
@@ -707,6 +721,11 @@ module.exports = function (grunt) {
     grunt.task.run('watch');
   });
 
+  grunt.registerTask('injectSass', [
+    'copy:componentsSass',
+    'injector:sass',
+  ]);
+
   grunt.registerTask('serve', function (target) {
     if (target === 'dist') {
       return grunt.task.run(['build', 'env:all', 'env:prod', 'express:prod', 'wait', 'open', 'express-keepalive']);
@@ -716,7 +735,7 @@ module.exports = function (grunt) {
       return grunt.task.run([
         'clean:server',
         'env:all',
-        'injector:sass',
+        'injectSass',
         'concurrent:server',
         'injector',
         'wiredep',
@@ -728,7 +747,7 @@ module.exports = function (grunt) {
     grunt.task.run([
       'clean:server',
       'env:all',
-      'injector:sass',
+      'injectSass',
       'concurrent:server',
       'injector',
       'wiredep',
@@ -771,7 +790,7 @@ module.exports = function (grunt) {
       return grunt.task.run([
         'clean:server',
         'env:all',
-        'injector:sass',
+        'injectSass',
         'concurrent:test',
         'injector',
         'autoprefixer',
@@ -782,7 +801,7 @@ module.exports = function (grunt) {
         'clean:server',
         'env:all',
         'env:test',
-        'injector:sass',
+        'injectSass',
         'concurrent:test',
         'injector',
         'wiredep',
@@ -811,7 +830,7 @@ module.exports = function (grunt) {
         return grunt.task.run([
           'clean:server',
           'env:all',
-          'injector:sass',
+          'injectSass',
           'concurrent:test',
           'injector',
           'autoprefixer',
@@ -838,7 +857,7 @@ module.exports = function (grunt) {
 
   grunt.registerTask('build', [
     'clean:dist',
-    'injector:sass',
+    'injectSass',
     'concurrent:dist',
     'injector',
     'wiredep',

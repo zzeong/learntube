@@ -14,3 +14,4 @@ apidoc/
 .travis/
 encrypt.tar
 docker/
+client/assets/stylesheets/components
