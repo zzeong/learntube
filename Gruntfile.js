@@ -510,12 +510,8 @@ module.exports = function (grunt) {
         configFile: 'karma.conf.js',
         singleRun: true
       },
-      debug: {
-        reporters: ['spec'],
-      },
-      coverage: {
-        reporters: ['spec', 'coverage'],
-      },
+      debug: {},
+      coverage: { reporters: ['coverage'] },
     },
 
     mochaTest: {
