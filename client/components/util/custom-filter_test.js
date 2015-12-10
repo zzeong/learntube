@@ -73,7 +73,7 @@ describe('Filter: humanable', function () {
   });
 });
 
-fdescribe('Filter: urlSafely', function () {
+describe('Filter: urlSafely', function () {
   beforeEach(module('learntubeApp'));
   var filter;
 
@@ -87,5 +87,31 @@ fdescribe('Filter: urlSafely', function () {
 
   it('should return hyphen replaced from blank', function () {
     expect(filter('you are so hot')).toEqual('you-are-so-hot');
+  });
+});
+
+describe('Filter: percentage', function () {
+  beforeEach(module('learntubeApp'));
+  var filter;
+
+  beforeEach(inject(function ($filter) {
+    filter = $filter('percentage');
+  }));
+
+  it('should return percentage form', function () {
+    expect(filter('0', 1)).toEqual('0.0%');
+    expect(filter('0.23', 1)).toEqual('23.0%');
+    expect(filter('0.2', 1)).toEqual('20.0%');
+    expect(filter('1', 1)).toEqual('100.0%');
+  });
+
+  it('should return limited number of decimals', function () {
+    expect(filter('0.2344', 1)).toEqual('23.4%');
+  });
+
+  it('should return rounded decimals', function () {
+    expect(filter('0.2344', 1)).toEqual('23.4%');
+    expect(filter('0.2345', 1)).toEqual('23.5%');
+    expect(filter('0.2346', 1)).toEqual('23.5%');
   });
 });

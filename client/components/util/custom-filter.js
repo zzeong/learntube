@@ -57,4 +57,9 @@ angular.module('learntubeApp')
 
       return (input / Math.pow(1000, exp)).toFixed(decimals) + suffixes[exp - 1];
     };
-  });
+  })
+.filter('percentage', function ($filter) {
+  return function (input, decimals) {
+    return $filter('number')(input * 100, decimals) + '%';
+  };
+});
