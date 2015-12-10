@@ -5,16 +5,10 @@
 @import 'normalize-scss/normalize';
 @import 'angular-material/angular-material';
 
-//      utils: configuration and helpers
-//       base: base stuff
-//     layout: layout-related sections
-// components: components
-//      pages: page-specific styles
-
 // injector
+@import 'utils/variables';
 @import 'utils/functions';
 @import 'utils/mixins';
-@import 'utils/variables';
 @import 'base/base';
 @import 'base/helpers';
 @import 'base/override';
