@@ -1,0 +1,13 @@
+.video-thumb {
+  position: relative;
+}
+
+.video-thumb__duration {
+  position: absolute;
+  right: 4px;
+  bottom: 4px;
+  margin: 0;
+  padding: 4px;
+  background: $black;
+  color: rgba($white, 0.87);
+}

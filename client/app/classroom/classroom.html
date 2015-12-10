@@ -77,32 +77,26 @@
         <md-icon md-font-set="material-icons">view_list</md-icon>
       </md-tab-label>
       <md-tab-body>
-        <div>
-          <md-list class="numbering">
-            <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
-            infinite-scroll-distance="1">
-
-              <md-list-item class="lecturelist__item" ng-repeat="lecture in lectureList">
-                <a class="anchor-mask" ng-href="/class/{{ playlistId }}/lecture/{{ lecture.snippet.resourceId.videoId}}">
-                  <div class="lecturelist-thumb-and-duration">
-                    <p class="lecturelist-thumb-and-duration__duration">{{ lecture.contentDetails.duration | humanable }}</p>
-                    <img class="lecturelist-thumb-and-duration__thumbnail" ng-src="{{ lecture.snippet.thumbnails.medium.url }}"
-                    alt="Lecture Thumbnail">
+        <ul class="numbering">
+          <li ng-repeat="lecture in lectureList">
+            <a class="anchor-mask" ng-href="/class/{{ playlistId }}/lecture/{{ lecture.snippet.resourceId.videoId}}">
+              <lt-listcard lt-responsive-morph="false">
+                <lt-listcard-media>
+                  <div class="video-thumb">
+                    <img ng-src="{{ lecture.snippet.thumbnails.medium.url }}" alt="Lecture thumbnail">
+                    <p class="video-thumb__duration lt-caption-s">{{ lecture.contentDetails.duration | humanable }}</p>
                   </div>
+                </lt-listcard-media>
 
-                  <div class="md-list-item-text lecturelist-info">
-                    <h3 class="ellipsis-2 lecturelist-info__title">{{ lecture.snippet.title }}</h3>
-                    <p class="lecturelist-info__sub">{{ lecture.snippet.channelTitle }}</p>
-                    <p class="lecturelist-info__sub">{{ lecture.viewCount.viewCount }}</p>
-                    <!-- {{ lecture.contentDetails.duration | humanable }} -->
-                  </div>
-                </a>
-              </md-list-item>
-            </div>
-
-        </div>
-        </md-list>
-        </div>
+                <lt-listcard-content>
+                  <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ lecture.snippet.title }}</h3>
+                  <p class="ellipsis-1 lt-subhead-s">{{ lecture.snippet.channelTitle }}</p>
+                  <span class="lt-listcard__small-sign lt-caption-s">{{ lecture.viewCount.viewCount | thousandSuffix }}</span>
+                </lt-listcard-content>
+              </lt-listcard>
+            </a>
+          </li>
+        </ul>
       </md-tab-body>
     </md-tab>
     <md-tab md-on-select="fab.show(true)" md-on-deselect="fab.show(false)" ng-disabled="!isLoggedIn()">
@@ -132,3 +126,4 @@
     </md-tab>
   </md-tabs>
 </md-content>
+

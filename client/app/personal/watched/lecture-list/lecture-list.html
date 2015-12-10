@@ -18,36 +18,37 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
     <p class="md-body-2 section-title section-title--hide">Lectures in this class</p>
 
     <div class="inner-content">
-      <md-list class="numbering inner-content__box">
-        <div infinite-scroll="loadMore()" infinite-scroll-disabled="httpBusy || !getPageToken()"
-        infinite-scroll-distance="1">
+      <ul class="numbering">
+        <li ng-repeat="lecture in lectureList">
+          <a class="anchor-mask" ng-href="{{ href(lecture.snippet.resourceId.videoId) }}">
+            <lt-listcard lt-responsive-morph="false">
+              <lt-listcard-media>
+                <div class="video-thumb">
+                  <img ng-src="{{ lecture.snippet.thumbnails.medium.url }}" alt="Lecture thumbnail">
+                  <p class="video-thumb__duration lt-caption-s">{{ lecture.contentDetails.duration | humanable }}</p>
+                </div>
+              </lt-listcard-media>
 
-          <md-list-item class="lecturelist__item watched-lecturelist" ng-repeat="lecture in lectureList">
+              <lt-listcard-content>
+                <div>
+                  <h3 class="ellipsis-2 lt-title-s">{{ lecture.snippet.title }}</h3>
+                  <p class="ellipsis-1 lt-subhead-s">{{ lecture.snippet.channelTitle }}</p>
+                </div>
+                <div>
+                  <i class="material-icons lecturelist__complete-icon" ng-show="lecture.highlight">check_circle</i>
+                  <p am-time-ago="lecture.completedAt" class="lecturelist__complete-date lt-caption-s"></p>
+                </div>
+              </lt-listcard-content>
 
-            <div ng-click="go('Lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
-              <div class="lecturelist-thumb-and-duration">
-                <p class="lecturelist-thumb-and-duration__duration">{{ lecture.contentDetails.duration | humanable }}</p>
-                <img class="lecturelist-thumb-and-duration__thumbnail" ng-src="{{ lecture.snippet.thumbnails.medium.url }}"
-                alt="Lecture Thumbnail">
-              </div>
-
-              <div class="md-list-item-text lecturelist-info">
-                <h3 class="ellipsis-2 lecturelist-info__title">{{ lecture.snippet.title }}</h3>
-                <p class="lecturelist-info__sub">{{ lecture.snippet.channelTitle }}</p>
-                <i class="material-icons" ng-show="lecture.highlight" style="font-size:16px; color: #2979FF; margin-top: 4px; float:left;">check_circle</i>
-                <p am-time-ago="lecture.completedAt" class="lecturelist-info__complete-date"></p>
-                <!-- {{ lecture.contentDetails.duration | humanable }} -->
-              </div>
-            </div>
-
-            <md-button class="lecturelist__second-action lt-button-s md-accent" ng-show="lecture.noteIconVisible" ng-click="showNote(lecture)">VIEW NOTE</md-button>
-          </md-list-item>
-
-          <div class="note-content-viewer" ng-if="isSelected(lecture)" ng-repeat="note in lecture.notes">
-            <iframe ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
-          </div>
-        </div>
-      </md-list>
+              <lt-listcard-actions>
+                <md-button class="lecturelist__second-action lt-button-s md-accent" ng-show="lecture.noteIconVisible"
+                ng-click="showNote(lecture, $event)">VIEW NOTE</md-button>
+              </lt-listcard-actions>
+            </lt-listcard>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
+

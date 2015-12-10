@@ -10,6 +10,24 @@
 
 .lecturelist__second-action {
   position: absolute;
-  right: 0;
-  bottom: 2px;
+  right: 8px;
+  bottom: 8px;
+}
+
+.lecturelist__second-action--centered {
+  @include centerer(false, true);
+  right: 8px;
+}
+
+.lecturelist__complete-icon {
+  margin: 0;
+  float: left;
+  color: $blue-a200;
+  font-size: 16px;
+}
+
+.lecturelist__complete-date {
+  margin: 0;
+  margin-left: 20px;
+  line-height: 16px;
 }

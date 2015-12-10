@@ -3,6 +3,7 @@
 angular.module('learntubeApp')
 .controller('WatchedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, WatchedContent, $filter, Note, GApi, GoogleConst, $q, PlaylistItem) {
   $scope.playlistId = $stateParams.pid;
+  $scope.href = function (vid) { return '/class/' + $scope.playlistId + '/lecture/' + vid; };
   $scope.getPageToken = PlaylistItem.getPageToken;
 
   $scope.message = {
@@ -107,7 +108,9 @@ angular.module('learntubeApp')
     })
     .catch(console.error);
 
-    $scope.showNote = function (lecture) {
+    $scope.showNote = function (lecture, ev) {
+      ev.preventDefault();
+
       $scope.selectedLecture = lecture;
       if (_.has(lecture, 'notes')) { return; }
 

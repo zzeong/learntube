@@ -22,33 +22,31 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
 
       <md-button class="md-raised" ng-click="deleteLectures()" ng-disabled="!lectureDelBucket.length">Delete</md-button>
 
-      <md-list>
-        <div ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
-          <div class="checkbox">
-            <md-checkbox ng-click="pushLecture(lecture)"></md-checkbox>
-          </div>
-
-          <div class="lecturelist">
-            <md-list-item class="md-2-line" ng-click="go('lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId })">
-              <img class="lecturelist__thumbnail" ng-src="{{ lecture.snippet.thumbnails.default.url }}"
-              alt="Lecture Thumbnail">
-
-              <div class="md-list-item-text">
-                <div class="second-icon-padding">
-                  <h3 class="ellipsis-2">{{ lecture.snippet.title }}</h3>
-                  <p>{{ lecture.contentDetails.duration | humanable }}</p>
+      <ul class="numbering">
+        <li ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
+          <a class="anchor-mask" href="#">
+            <lt-listcard lt-responsive-morph="false">
+              <lt-listcard-media>
+                <div class="video-thumb">
+                  <img ng-src="{{ lecture.snippet.thumbnails.medium.url }}" alt="Lecture thumbnail">
+                  <p class="video-thumb__duration lt-caption-s">{{ lecture.contentDetails.duration | humanable }}</p>
                 </div>
+              </lt-listcard-media>
 
-                <md-icon md-font-set="material-icons" ng-click="showFileDialog(lecture, $event)"
-                aria-label="Show file dialog" ng-class="{ 'md-accent': haveUploadedFile(lecture), 'md-hue-3': haveUploadedFile(lecture) }"
-                class="md-secondary md-hue-1">
-                  file_upload
-                </md-icon>
-              </div>
-            </md-list-item>
-          </div>
-        </div>
-      </md-list>
+              <lt-listcard-content class="lt-listcard__inner--squashed-only-desktop">
+                <h3 class="ellipsis-2 lt-title-s">{{ lecture.snippet.title }}</h3>
+                <p class="ellipsis-1 lt-subhead-s">{{ lecture.contentDetails.duration | humanable }}</p>
+                <p class="lt-subhead-s">views</p>
+              </lt-listcard-content>
+
+              <lt-listcard-actions hide-xs>
+                <md-checkbox class="lecturelist__second-action--centered" ng-click="pushLecture(lecture)"></md-checkbox>
+              </lt-listcard-actions>
+            </lt-listcard>
+          </a>
+        </li>
+      </ul>
     </div>
   </div>
 </div>
+

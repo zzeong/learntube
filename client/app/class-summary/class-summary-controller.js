@@ -7,6 +7,7 @@ angular.module('learntubeApp')
   $scope.httpBusy = true;
   $scope.getPageToken = PlaylistItem.getPageToken;
   $scope.haveClass = false;
+  $scope.href = function (vid) { return '/class/' + $scope.playlistId + '/lecture/' + vid; };
 
   var compileToHTML = function (str) {
     var html = str.split('\n')
@@ -34,6 +35,20 @@ angular.module('learntubeApp')
     PlaylistItem.get({ playlistId: $scope.playlistId })
     .then(function (list) {
       $scope.lectureList = $scope.lectureList.concat(list);
+      $scope.lectureList.map(function (obj) {
+        GApi.execute('youtube', 'videos.list', {
+          key: GoogleConst.browserKey,
+          part: 'statistics',
+          id: obj.snippet.resourceId.videoId
+        })
+        .then(function (res) {
+          obj.viewCount = {
+            viewCount: res.items[0].statistics.viewCount
+          };
+        })
+        .catch(console.error);
+      });
+
       $scope.httpBusy = false;
     })
     .catch(console.error);
@@ -81,6 +96,21 @@ angular.module('learntubeApp')
   })
   .then(function (list) {
     $scope.lectureList = list;
+    $scope.lectureList.map(function (obj) {
+      GApi.execute('youtube', 'videos.list', {
+        key: GoogleConst.browserKey,
+        part: 'statistics',
+        id: obj.snippet.resourceId.videoId
+      })
+      .then(function (res) {
+        obj.viewCount = {
+          viewCount: res.items[0].statistics.viewCount
+        };
+      })
+      .catch(console.error);
+    });
+
+
     $scope.httpBusy = false;
   })
   .catch(console.error);
