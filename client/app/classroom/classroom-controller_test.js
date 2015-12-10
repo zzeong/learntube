@@ -30,15 +30,6 @@ describe('Controller: ClassroomCtrl', function () {
     expect($scope.videoId).toBe($stateParams.vid);
   }));
 
-
-  it('should be able to toggle note editor', inject(function () {
-    expect($scope.isEditorOn).toBe(false);
-    $scope.toggleEditor();
-    expect($scope.isEditorOn).toBe(true);
-    $scope.toggleEditor();
-    expect($scope.isEditorOn).toBe(false);
-  }));
-
   describe('with HTTP', function () {
     var $cookieStore, resultItems;
 
@@ -112,7 +103,7 @@ describe('Controller: ClassroomCtrl', function () {
     }));
 
 
-    it('should save editor contents and push saved notes', inject(function () {
+    xit('should save editor contents and push saved notes', inject(function () {
       $httpBackend.flush();
       var beforeLength = $scope.notes.length;
 
@@ -132,7 +123,7 @@ describe('Controller: ClassroomCtrl', function () {
       expect($scope.toggleEditor).toHaveBeenCalled();
     }));
 
-    it('should change the editor window to a note viewer when note is updated', function () {
+    xit('should change the editor window to a note viewer when note is updated', function () {
       $httpBackend.flush();
 
       var note = {
