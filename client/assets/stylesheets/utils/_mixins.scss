@@ -39,3 +39,10 @@
     @content;
   }
 }
+
+// Style mixins
+@mixin arrange-in-frame {
+  margin: 8px;
+  >* { margin: 4px 0; }
+}
+

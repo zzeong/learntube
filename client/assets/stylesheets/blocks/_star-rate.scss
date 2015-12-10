@@ -12,8 +12,7 @@
 
 .star-rate__item {
   width: 100%;
-  @include respond-to('small') {
-  }
+  margin: 0;
 }
 
 .star-rate__bar {

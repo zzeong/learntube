@@ -22,14 +22,12 @@
 @import 'base/fonts';
 @import 'blocks/anchor-mask';
 @import 'blocks/arrow-icon';
-@import 'blocks/categories';
 @import 'blocks/category-sidenav';
 @import 'blocks/category-title';
 @import 'blocks/checkbox';
 @import 'blocks/class-area';
 @import 'blocks/class-first-video';
 @import 'blocks/class-grid';
-@import 'blocks/class-listcard';
 @import 'blocks/class-summary';
 @import 'blocks/classes-of-category';
 @import 'blocks/classroom-content';
@@ -49,6 +47,7 @@
 @import 'blocks/lecturelist';
 @import 'blocks/logo-linker';
 @import 'blocks/main-container';
+@import 'blocks/main-content';
 @import 'blocks/note-content-viewer';
 @import 'blocks/outermost-view';
 @import 'blocks/personal-class-card';
@@ -75,6 +74,8 @@
 @import 'blocks/youtube-video';
 @import 'blocks/account-btn';
 @import 'blocks/actions-area';
+@import 'blocks/adaptable-card';
 @import 'blocks/add-dialog';
+@import 'components/listcard';
 @import 'visualization/bars';
 // endinjector

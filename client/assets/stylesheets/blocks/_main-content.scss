@@ -1,0 +1,5 @@
+.main-content__inner {
+  @include respond-to('small') {
+    margin: 32px 0;
+  }
+}
