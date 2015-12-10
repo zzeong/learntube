@@ -1,0 +1,22 @@
+.lt-note__file-preview {
+  img {
+    max-width: 100%;
+    text-align: center;
+  }
+
+  figcaption {
+    text-align: left;
+  }
+}
+
+.lt-note__actions {
+  margin-top: 8px;
+}
+
+.lt-note__object--full {
+  $fill-margin: -16px;
+  margin-top: $fill-margin;
+  margin-right: $fill-margin;
+  margin-left: $fill-margin;
+}
+

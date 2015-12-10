@@ -1,28 +1,6 @@
 .tab-area {
   @include respond-to('small') {
     max-width: 320px;
-  };
-}
-
-.note-area__file-preview {
-  img {
-    max-width: 100%;
-    text-align: center;
   }
-
-  figcaption {
-    text-align: left;
-  }
-}
-
-.note-area__actions {
-  margin-top: 8px;
-}
-
-.note-area__object--full {
-  $fill-margin: -16px;
-  margin-top: $fill-margin;
-  margin-right: $fill-margin;
-  margin-left: $fill-margin;
 }
 

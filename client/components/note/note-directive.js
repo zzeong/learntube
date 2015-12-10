@@ -16,7 +16,7 @@
     };
 
     function compile(elem) {
-      elem.addClass('note-area');
+      elem.addClass('lt-note');
     }
 
     function Controller($scope) {
@@ -44,7 +44,7 @@
 
     function postLink(scope, elem, attr, ctrl) {
       if (ctrl.type === 'editor') {
-        elem.addClass('note-area__object--full');
+        elem.addClass('lt-note__object--full');
       }
       scope.model = ctrl.model;
     }
@@ -67,7 +67,7 @@
     };
 
     function postLink(scope, elem, attr, ctrl) {
-      elem.addClass('actions-area note-area__actions');
+      elem.addClass('actions-area lt-note__actions');
       elem.attr({
         layout: 'row',
         'layout-align': 'start center'
