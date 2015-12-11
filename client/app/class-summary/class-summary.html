@@ -9,58 +9,58 @@ ng-click="addClass()" ng-show="isLoggedIn()">
 
 <div flex layout="column">
   <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
-  <div flex layout="column" class="class-summary-content flex-scroll">
-    <div class="class-summary-content__wrapper">
-      <div class="video-box class-first-video">
-        <div class="youtube-video">
-          <youtube-video class="youtube-video__item" video-id="lectureList[0].snippet.resourceId.videoId"></youtube-video>
+  <div flex layout="column" class="flex-scroll">
+    <div class="main-content__inner">
+      <div class="main-content__whiteframe-wrapper">
+        <div class="whiteframe-wrapper">
+          <div class="video-box">
+            <div class="youtube-video">
+              <youtube-video class="youtube-video__item" video-id="lectureList[0].snippet.resourceId.videoId"></youtube-video>
+            </div>
+          </div>
+
+          <md-whiteframe class="frame-padding responsive-whiteframe whiteframe">
+            <h2 class="whiteframe__title md-title">{{classe.snippet.title}}</h2>
+            <div class="md-body-1 whiteframe-desc" ng-bind-html="desc"></div>
+          </md-whiteframe>
+          <md-divider hide-gt-xs></md-divider>
+
+          <md-whiteframe class="frame-padding responsive-whiteframe whiteframe">
+            <div class="tutor-intro">
+              <img class="tutor-intro__thumb thumb-radius" ng-src="{{ channel.snippet.thumbnails.default.url }}">
+              <h2 class="tutor-intro__title md-title">{{ channel.snippet.title }}.&nbsp</h2>
+            </div>
+            <div class="whiteframe-desc md-body-1" ng-bind-html="channel.snippet.description"></div>
+          </md-whiteframe>
+          <md-divider hide-gt-xs></md-divider>
         </div>
-      </div>
 
-      <div class="whiteframe-expander">
-        <md-whiteframe class="whiteframe-expander__core responsive-whiteframe">
-          <h2 class="whiteframe__title md-title">{{classe.snippet.title}}</h2>
-          <div class="md-body-1 whiteframe-desc" ng-bind-html="desc"></div>
-        </md-whiteframe>
-        <md-divider hide-gt-xs></md-divider>
-      </div>
+        <div class="lecturelist-fixer">
+          <md-whiteframe class="lecturelist-fixer__whiteframe responsive-whiteframe">
+            <div class="classroom-tabs__lecturelist">
+              <ul class="numbering whiteframe__lecturelist">
+                <li ng-repeat="lecture in lectureList">
+                  <a class="anchor-mask" ng-href="{{ href('classroom', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
+                    <lt-listcard lt-responsive-morph="false">
+                      <lt-listcard-media>
+                        <div class="video-thumb">
+                          <img ng-src="{{ lecture.snippet.thumbnails.medium.url }}" alt="Lecture thumbnail">
+                          <p class="video-thumb__duration lt-caption-s">{{ lecture.contentDetails.duration | humanable }}</p>
+                        </div>
+                      </lt-listcard-media>
 
-      <div class="whiteframe-expander">
-        <md-whiteframe class="whiteframe-expander__core responsive-whiteframe">
-          <div class="tutor-intro">
-            <img class="tutor-intro__thumb thumb-radius" ng-src="{{ channel.snippet.thumbnails.default.url }}">
-            <h2 class="tutor-intro__title md-title">{{ channel.snippet.title }}.&nbsp</h2>
-          </div>
-          <div class="whiteframe-desc md-body-1" ng-bind-html="channel.snippet.description"></div>
-        </md-whiteframe>
-        <md-divider hide-gt-xs></md-divider>
-      </div>
-
-      <div class="lecturelist-fixer">
-        <md-whiteframe class="lecturelist-fixer__whiteframe responsive-whiteframe">
-          <div class="classroom-tabs__lecturelist">
-            <ul class="numbering">
-              <li ng-repeat="lecture in lectureList">
-                <a class="anchor-mask" ng-href="{{ href('classroom', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
-                  <lt-listcard lt-responsive-morph="false">
-                    <lt-listcard-media>
-                      <div class="video-thumb">
-                        <img ng-src="{{ lecture.snippet.thumbnails.medium.url }}" alt="Lecture thumbnail">
-                        <p class="video-thumb__duration lt-caption-s">{{ lecture.contentDetails.duration | humanable }}</p>
-                      </div>
-                    </lt-listcard-media>
-
-                    <lt-listcard-content>
-                      <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ lecture.snippet.title }}</h3>
-                      <p class="ellipsis-1 lt-subhead-s">{{ lecture.snippet.channelTitle }}</p>
-                      <span class="lt-listcard__small-sign lt-caption-s">{{ lecture.viewCount.viewCount | thousandSuffix }}</span>
-                    </lt-listcard-content>
-                  </lt-listcard>
-                </a>
-              </li>
-            </ul>
-          </div>
-        </md-whiteframe>
+                      <lt-listcard-content>
+                        <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ lecture.snippet.title }}</h3>
+                        <p class="ellipsis-1 lt-subhead-s">{{ lecture.snippet.channelTitle }}</p>
+                        <span class="lt-listcard__small-sign lt-caption-s">{{ lecture.viewCount.viewCount | thousandSuffix }}</span>
+                      </lt-listcard-content>
+                    </lt-listcard>
+                  </a>
+                </li>
+              </ul>
+            </div>
+          </md-whiteframe>
+        </div>
       </div>
     </div>
   </div>

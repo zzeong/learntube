@@ -18,7 +18,7 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
     <p class="md-body-2 section-title section-title--hide">Lectures in this class</p>
 
     <div class="inner-content">
-      <ul class="numbering">
+      <ul class="numbering whiteframe__lecturelist">
         <li ng-repeat="lecture in lectureList">
           <a class="anchor-mask" ng-href="{{ href('classroom', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
             <lt-listcard lt-responsive-morph="false">

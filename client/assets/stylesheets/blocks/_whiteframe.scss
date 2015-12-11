@@ -1,3 +1,33 @@
-.whiteframe__title {
-  margin: 4px 0 10px;
+.whiteframe-wrapper,
+.whiteframe-wrapper--behind {
+  @include respond-to('small') {
+    $video-width: 320px;
+    margin: 0 ($video-width + 16);
+  }
+}
+
+.whiteframe-wrapper {
+  @include respond-to('small') { margin-left: 0; }
+}
+
+.whiteframe-wrapper--behind {
+  @include respond-to('small') { margin-right: 0; }
+}
+
+.whiteframe {
+  @include respond-to('small') {
+    margin: 16px 0;
+    &:last-of-type { margin-bottom: 0; }
+  }
+}
+
+.whiteframe--narrowed {
+  @include respond-to('small') {
+    width: 320px;
+    float: left;
+  }
+}
+
+.whiteframe__lecturelist {
+  padding: 16px 0;
 }

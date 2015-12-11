@@ -22,7 +22,7 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
 
       <md-button class="md-raised" ng-click="deleteLectures()" ng-disabled="!lectureDelBucket.length">Delete</md-button>
 
-      <ul class="numbering">
+      <ul class="numbering whiteframe__lecturelist">
         <li ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
           <a class="anchor-mask" ng-href="{{ href('edit-lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
             <lt-listcard lt-responsive-morph="false">

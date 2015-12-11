@@ -67,7 +67,7 @@
     };
 
     function postLink(scope, elem, attr, ctrl) {
-      elem.addClass('actions-area lt-note__actions');
+      elem.addClass('lt-note__actions');
       elem.attr({
         layout: 'row',
         'layout-align': 'start center'

@@ -14,12 +14,12 @@
 @import 'base/override';
 @import 'base/typography';
 @import 'base/fonts';
+@import 'blocks/add-dialog';
 @import 'blocks/anchor-mask';
 @import 'blocks/arrow-icon';
 @import 'blocks/category-sidenav';
 @import 'blocks/category-title';
 @import 'blocks/checkbox';
-@import 'blocks/class-first-video';
 @import 'blocks/class-summary';
 @import 'blocks/classes-of-category';
 @import 'blocks/classroom-content';
@@ -57,8 +57,8 @@
 @import 'blocks/youtube-logo';
 @import 'blocks/youtube-video';
 @import 'blocks/account-btn';
+@import 'blocks/action-area';
 @import 'blocks/adaptable-card';
-@import 'blocks/add-dialog';
 @import 'components/star-rate';
 @import 'components/note';
 @import 'components/listcard';

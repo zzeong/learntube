@@ -1,15 +1,15 @@
 .lecturelist-fixer {
   @include respond-to('small') {
     position: absolute;
-    top: 20px;
-    right: 16px;
+    top: 0;
+    right: 0;
   }
 }
 
 .lecturelist-fixer__whiteframe {
   @include respond-to('small') {
     position: fixed;
-    height: calc(100% - 96px);
+    height: calc(100% - 120px);
     overflow: auto;
   }
 }

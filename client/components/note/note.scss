@@ -5,12 +5,20 @@
   }
 
   figcaption {
+    margin-top: 4px;
     text-align: left;
   }
 }
 
 .lt-note__actions {
   margin-top: 8px;
+
+  .md-button {
+    margin-top: 0;
+    margin-bottom: 0;
+    &:first-of-type { margin-left: 0; }
+    &:last-of-type { margin-right: 0; }
+  }
 }
 
 .lt-note__object--full {
