@@ -1,0 +1,82 @@
+<md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav"
+ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-xs')">
+</md-sidenav>
+
+
+<div flex layout="column">
+  <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
+  <div class="flex-scroll">
+    <div class="main-content__inner">
+      <div class="main-content__whiteframe-wrapper">
+        <md-whiteframe class="responsive-whiteframe whiteframe--narrowed">
+          <div class="video-box">
+            <div class="youtube-video">
+              <youtube-video class="youtube-video__item" video-id="videoId"></youtube-video>
+            </div>
+          </div>
+
+          <div class="frame-padding">
+            <table>
+              <tr>
+                <td class="md-body-2 table-layout__key">Published At</td>
+                <td class="md-body-1 table-layout__value">ipsum lorem</td>
+              </tr>
+              <tr>
+                <td class="md-body-2 table-layout__key">Duration</td>
+                <td class="md-body-1 table-layout__value">ipsum lorem</td>
+              </tr>
+              <tr>
+                <td class="md-body-2 table-layout__key">Views</td>
+                <td class="md-body-1 table-layout__value">ipsum lorem</td>
+              </tr>
+              <tr>
+                <td class="md-body-2 table-layout__key">Like</td>
+                <td class="md-body-1 table-layout__value">ipsum lorem</td>
+              </tr>
+              <tr>
+                <td class="md-body-2 table-layout__key">Dislike</td>
+                <td class="md-body-1 table-layout__value">ipsum lorem</td>
+              </tr>
+            </table>
+          </div>
+          <md-divider hide-gt-xs></md-divider>
+        </md-whiteframe>
+
+        <div class="whiteframe-wrapper--behind">
+          <md-whiteframe class="frame-padding responsive-whiteframe whiteframe">
+            <h2 class="md-title">Edit lecture</h2>
+            <md-content class="frame-top-padding">
+              <md-input-container class="md-block md-accent">
+                <label>Title</label>
+                <input ng-model="lecture.title">
+              </md-input-container>
+              <md-input-container class="md-block md-accent">
+                <label>Description</label>
+                <textarea ng-model="lecture.description" columns="1" md-maxlength="1000" rows="50"></textarea>
+              </md-input-container>
+            </md-content>
+            <div layout="row" layout-align="end center" class="action-area">
+              <md-button>Cancel</md-button>
+              <md-button class="md-accent">Save</md-button>
+            </div>
+          </md-whiteframe>
+
+          <md-divider hide-gt-xs></md-divider>
+
+          <md-whiteframe class="frame-padding responsive-whiteframe whiteframe">
+            <h2 class="md-title">Upload handout</h2>
+            <div class="action-area frame-top-padding">
+              <md-button class="md-raised md-raised-color-accent">Select file</md-button>
+              <span class="md-body-1 align-span-with-button">No file selected</span>
+            </div>
+            <div layout="row" layout-align="end center" class="action-area">
+              <md-button>Cancel</md-button>
+              <md-button class="md-accent">Save</md-button>
+            </div>
+          </md-whiteframe>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
