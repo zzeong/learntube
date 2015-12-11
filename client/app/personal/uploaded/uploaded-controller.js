@@ -2,7 +2,7 @@
 
 angular.module('learntubeApp')
 .controller('UploadedContentsCtrl', function ($state, $scope, $mdDialog, $http) {
-  $scope.href = function (pid) { return '/uploaded/lecture-list/' + pid; };
+  $scope.href = $state.href.bind(null);
 
   $http.get('/api/youtube/mine/playlists')
   .then(function (res) {

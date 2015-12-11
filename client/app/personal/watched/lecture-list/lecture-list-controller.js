@@ -1,9 +1,9 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('WatchedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, WatchedContent, $filter, Note, GApi, GoogleConst, $q, PlaylistItem) {
-  $scope.playlistId = $stateParams.pid;
-  $scope.href = function (vid) { return '/class/' + $scope.playlistId + '/lecture/' + vid; };
+.controller('WatchedLectureListCtrl', function ($scope, Auth, $state, $http, WatchedContent, $filter, Note, GApi, GoogleConst, $q, PlaylistItem) {
+  $scope.playlistId = $state.params.pid;
+  $scope.href = $state.href.bind(null);
   $scope.getPageToken = PlaylistItem.getPageToken;
 
   $scope.message = {

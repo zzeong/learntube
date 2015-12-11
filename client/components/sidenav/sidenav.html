@@ -6,10 +6,10 @@
 <md-divider></md-divider>
 <md-content ng-controller="SidenavCtrl">
   <md-list ng-cloak>
-    <md-list-item href="/category/all">
+    <md-list-item href="{{ href('category-all') }}">
       <span>All</span>
     </md-list-item>
-    <md-list-item ng-href="/category/{{ category.orig | urlSafely }}" ng-repeat="category in categories">
+    <md-list-item ng-href="{{ href('category-other', { ctname: getSafeUrl(category.orig) }) }}" ng-repeat="category in categories">
       <span>{{ category.orig }}</span>
     </md-list-item>
   </md-list>

@@ -1,10 +1,10 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('SearchCtrl', function ($scope, $http, $stateParams, GApi, GoogleConst) {
-  $scope.q = $stateParams.q;
+.controller('SearchCtrl', function ($scope, $http, $state, GApi, GoogleConst) {
+  $scope.q = $state.params.q;
   $scope.httpBusy = true;
-  $scope.href = function (pid) { return '/class/' + pid; };
+  $scope.href = $state.href.bind(null);
 
   var params = {
     key: GoogleConst.browserKey,

@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('UploadedLectureListCtrl', function ($scope, $stateParams, Auth, $state, $http, $mdDialog, $q, $mdToast, GApi, GoogleConst) {
-  $scope.playlistId = $stateParams.pid;
+.controller('UploadedLectureListCtrl', function ($scope, $state, Auth, $http, $mdDialog, $q, $mdToast, GApi, GoogleConst) {
+  $scope.href = $state.href.bind(null);
+  $scope.playlistId = $state.params.pid;
   $scope.lectureDelBucket = [];
   var scope = $scope;
 

@@ -79,7 +79,7 @@
       <md-tab-body>
         <ul class="numbering">
           <li ng-repeat="lecture in lectureList">
-            <a class="anchor-mask" ng-href="/class/{{ playlistId }}/lecture/{{ lecture.snippet.resourceId.videoId}}">
+            <a class="anchor-mask" ng-href="{{ href('classroom', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
               <lt-listcard lt-responsive-morph="false">
                 <lt-listcard-media>
                   <div class="video-thumb">

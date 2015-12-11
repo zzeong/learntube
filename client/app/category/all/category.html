@@ -11,7 +11,7 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
 
         <ul class="classes-of-category__body">
           <li class="adaptable-card" ng-repeat="class in category">
-            <a class="anchor-mask" ng-href="{{ href(class.playlistId) }}">
+            <a class="anchor-mask" ng-href="{{ href('class-summary', { pid: class.playlistId }) }}">
               <lt-listcard lt-responsive-morph="true">
                 <lt-listcard-media>
                   <img ng-src="{{ class.thumbnailUrl }}" alt="class Thumbnail">

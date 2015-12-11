@@ -15,9 +15,9 @@ xdescribe('Controller: UploadedLectureListCtrl', function () {
   describe('with HTTP', function () {
     var $httpBackend;
 
-    beforeEach(inject(function (_$httpBackend_, $stateParams) {
+    beforeEach(inject(function (_$httpBackend_, $state) {
       $httpBackend = _$httpBackend_;
-      $stateParams.pid = 'PL12A65DE93A8357D6';
+      $state.params.pid = 'PL12A65DE93A8357D6';
 
       var lecturelist = [{
         snippet: { resourceId: { videoId: 'QWER' } },

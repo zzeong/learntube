@@ -80,10 +80,10 @@ angular.module('learntubeApp')
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.personalMenu = [{
     name: 'Watched contents',
-    url: '/watched',
+    url: $state.href('watched-contents'),
   }, {
     name: 'Uploaded contents',
-    url: '/uploaded',
+    url: $state.href('uploaded-contents'),
   }];
 
   $scope.toggleSearchingState = function () {

@@ -1,14 +1,15 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('ClassroomCtrl', function ($scope, $stateParams, $http, Auth, Note, GoogleConst, GApi, Upload, PlaylistItem, $mdToast, WatchedContent, $timeout) {
-  $scope.videoId = $stateParams.vid;
-  $scope.playlistId = $stateParams.pid;
+.controller('ClassroomCtrl', function ($scope, $state, $http, Auth, Note, GoogleConst, GApi, Upload, PlaylistItem, $mdToast, WatchedContent, $timeout) {
+  $scope.videoId = $state.params.vid;
+  $scope.playlistId = $state.params.pid;
   $scope.getCurrentUser = Auth.getCurrentUser;
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.cid = null;
   $scope.haveLecture = false;
   $scope.httpBusy = true;
+  $scope.href = $state.href.bind(null);
   $scope.getPageToken = PlaylistItem.getPageToken;
   $scope.fab = {
     DURATION: 200,

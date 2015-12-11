@@ -4,7 +4,7 @@ angular.module('learntubeApp')
 .config(function ($stateProvider) {
   $stateProvider
   .state('class-summary', {
-    url: '/class/:pid',
+    url: '/classes/:pid',
     templateUrl: 'app/class-summary/class-summary.html',
     controller: 'ClassSummaryCtrl',
     data: { pageName: 'Class summary' }

@@ -41,7 +41,7 @@ ng-click="addClass()" ng-show="isLoggedIn()">
           <div class="classroom-tabs__lecturelist">
             <ul class="numbering">
               <li ng-repeat="lecture in lectureList">
-                <a class="anchor-mask" ng-href="{{ href(lecture.snippet.resourceId.videoId) }}">
+                <a class="anchor-mask" ng-href="{{ href('classroom', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
                   <lt-listcard lt-responsive-morph="false">
                     <lt-listcard-media>
                       <div class="video-thumb">

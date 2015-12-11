@@ -24,7 +24,7 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
 
       <ul class="numbering">
         <li ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
-          <a class="anchor-mask" href="#">
+          <a class="anchor-mask" ng-href="{{ href('edit-lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
             <lt-listcard lt-responsive-morph="false">
               <lt-listcard-media>
                 <div class="video-thumb">

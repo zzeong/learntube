@@ -4,7 +4,7 @@ describe('Controller: ClassroomCtrl', function () {
   beforeEach(module('learntubeApp'));
   var $scope, $httpBackend;
 
-  beforeEach(inject(function ($controller, $stateParams, _$httpBackend_, Auth, $cookieStore) {
+  beforeEach(inject(function ($controller, $state, _$httpBackend_, Auth, $cookieStore) {
     var userData = {
       __v: 0,
       _id: 'QWER',
@@ -19,15 +19,15 @@ describe('Controller: ClassroomCtrl', function () {
 
     $httpBackend.when('GET', '/api/users/me').respond(userData);
 
-    $stateParams.vid = '2rde3';
+    $state.params.vid = '2rde3';
     Auth.reget();
     $httpBackend.flush();
 
     $controller('ClassroomCtrl', { $scope: $scope });
   }));
 
-  it('should get video id in URI-parameter', inject(function ($stateParams) {
-    expect($scope.videoId).toBe($stateParams.vid);
+  it('should get video id in URI-parameter', inject(function ($state) {
+    expect($scope.videoId).toBe($state.params.vid);
   }));
 
   describe('with HTTP', function () {

@@ -1,13 +1,13 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('ClassSummaryCtrl', function ($scope, $http, $stateParams, $state, WatchedContent, Auth, $filter, GoogleConst, GApi, $q, $mdToast, $document, PlaylistItem) {
+.controller('ClassSummaryCtrl', function ($scope, $http, $state, WatchedContent, Auth, $filter, GoogleConst, GApi, $q, $mdToast, $document, PlaylistItem) {
   $scope.isLoggedIn = Auth.isLoggedIn;
-  $scope.playlistId = $stateParams.pid;
+  $scope.playlistId = $state.params.pid;
   $scope.httpBusy = true;
   $scope.getPageToken = PlaylistItem.getPageToken;
   $scope.haveClass = false;
-  $scope.href = function (vid) { return '/class/' + $scope.playlistId + '/lecture/' + vid; };
+  $scope.href = $state.href.bind(null);
 
   var compileToHTML = function (str) {
     var html = str.split('\n')
