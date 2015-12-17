@@ -104,7 +104,7 @@ angular.module('learntubeApp')
   })
   .then(function (res) {
     $scope.item = res.items[0];
-    $scope.publishedDate = ($scope.item.snippet.publishedAt).substring(0,10);
+    $scope.publishedDate = ($scope.item.snippet.publishedAt).substring(0, 10);
     $scope.item.snippet.description = compileToHTML($scope.item.snippet.description);
   })
   .catch(console.error);

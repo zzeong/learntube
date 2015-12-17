@@ -83,5 +83,6 @@
     "beforeOpeningCurlyBrace": true
   },
   "disallowMultipleLineBreaks": false,
-  "disallowUnusedParams": true
+  "disallowUnusedParams": true,
+  "requireSpaceBetweenArguments": true
 }

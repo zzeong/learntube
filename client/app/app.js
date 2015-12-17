@@ -75,7 +75,7 @@ angular.module('learntubeApp', [
 })
 
 .run(function ($rootScope, $location, Auth, GApi, GAuth, GoogleConst) {
-  GApi.load('youtube','v3');
+  GApi.load('youtube', 'v3');
   GAuth.setClient(GoogleConst.oauth.clientId);
   GAuth.setScope(GoogleConst.oauth.scope);
 

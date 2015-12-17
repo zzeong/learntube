@@ -9,7 +9,7 @@ angular.module('learntubeApp')
       .then(function () {
         $log.debug('toggle ' + navID + ' is done');
       });
-    },200);
+    }, 200);
     return debounceFn;
   };
   var toggleLeft = buildToggler('left');
