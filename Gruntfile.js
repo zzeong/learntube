@@ -550,7 +550,8 @@ module.exports = function (grunt) {
     // Compiles ES6 to JavaScript using Babel
     babel: {
       options: {
-        sourceMap: true
+        sourceMap: true,
+        presets: ['es2015'],
       },
       server: {
         files: [{
