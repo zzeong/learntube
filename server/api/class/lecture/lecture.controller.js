@@ -13,52 +13,43 @@ var s3 = knox.createClient({
 });
 
 
-var handleError = function (res, statusCode) {
-  statusCode = statusCode || 500;
-  return function (err) {
-    res.status(statusCode).send(err);
-  };
-};
-
-var removeFile = function (path) {
-  fs.unlink(path, function () {
+function removeFile(path) {
+  fs.unlink(path, () => {
     console.log('Successfully deleted %s', path);
   });
-};
+}
 
-var streamFile = function (res, path) {
-  return function () {
-    var readStream = fs.createReadStream(path);
-    readStream.pipe(res);
-    readStream.on('end', function () {
-      removeFile(path);
-    });
+function streamFile(res, path) {
+  return () => {
+    var rs = fs.createReadStream(path);
+    rs.pipe(res);
+    rs.on('end', () => { removeFile(path); });
   };
-};
+}
 
-exports.getHandout = function (req, res) {
-  Upload.findOne({ playlistId: req.params.pid }).exec()
-  .then(function (upload) {
-    var lecture = upload.lectures.filter(function (lecture) {
-      return lecture.videoId === req.params.vid;
-    });
+exports.getHandout = (req, res, next) => {
+  var query = {
+    playlistId: req.params.pid,
+    videoId: req.params.vid
+  };
 
-    if (!lecture.length) { return res.status(404).send('Not found'); }
-    lecture = lecture[0];
+  Upload.findOne(query).exec()
+  .then((upload) => {
+    if (!upload) { throw new Error('not found'); }
 
-    var filePath = './' + lecture.fileName;
-    var writeStream = fs.createWriteStream(filePath);
-    var s3Path = url.parse(lecture.url).pathname;
+    var filePath = './' + upload.fileName;
+    var ws = fs.createWriteStream(filePath);
+    var s3Path = url.parse(upload.url).pathname;
 
     res.setHeader('Content-Type', 'application/octet-stream');
-    res.setHeader('Content-Disposition', 'attachment; filename=' + lecture.fileName);
+    res.setHeader('Content-Disposition', 'attachment; filename=' + upload.fileName);
 
-    s3.getFile(s3Path.substring(s3Path.indexOf('/', 1)), function (error, response) {
-      if (error) { res.status(500).send(error); }
+    s3.getFile(s3Path.substring(s3Path.indexOf('/', 1)), (error, response) => {
+      if (error) { throw new Error(); }
 
-      response.pipe(writeStream);
+      response.pipe(ws);
       response.on('end', streamFile(res, filePath));
     });
   })
-  .catch(handleError(res));
+  .catch(next);
 };

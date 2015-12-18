@@ -65,13 +65,21 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
 
           <md-whiteframe class="frame-padding responsive-whiteframe whiteframe">
             <h2 class="md-title">Upload handout</h2>
-            <div class="action-area frame-top-padding">
-              <md-button class="md-raised md-raised-color-accent">Select file</md-button>
-              <span class="md-body-1 align-span-with-button">No file selected</span>
+
+            <md-list class="frame-padding--full-width" ng-show="handout.uploaded">
+              <md-list-item class="secondary-button-padding" ng-click="doPrimaryAction($event)">
+                <span>{{ handout.uploaded.fileName }}</span>
+                <md-icon class="md-secondary" md-font-set="material-icons" ng-click="doSecondaryAction($event)">clear</md-icon>
+              </md-list-item>
+            </md-list>
+
+            <div class="frame-top-padding">
+              <md-button type="file" class="md-raised md-raised-color-accent" ngf-select="selectFile($file)" ng-disabled="handout.uploaded">Select file</md-button>
+              <span class="md-body-1 align-span-with-button">{{ handout.selected.name || 'No file selected'  }}</span>
             </div>
+
             <div layout="row" layout-align="end center" class="action-area">
-              <md-button class="md-warn">Clear</md-button>
-              <md-button class="md-accent">Save</md-button>
+              <md-button class="md-accent" ng-click="uploadHandout(handout.selected)" ng-disabled="handout.uploaded">Upload</md-button>
             </div>
           </md-whiteframe>
         </div>

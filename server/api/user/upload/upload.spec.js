@@ -7,16 +7,18 @@ var mongoose = require('mongoose');
 var auth = require('../../../auth/auth.service');
 var User = require('../../../models/user.model');
 var Upload = require('../../../models/upload.model');
+var config = require('../../../config/environment');
+var knox = require('knox');
 
 mongoose.Promise = Promise;
 
 
-describe('REST API:', function () {
+describe('REST API:', () => {
   var user;
 
-  before(function (done) {
+  before((done) => {
     User.remove({})
-    .then(function () {
+    .then(() => {
       user = new User({
         name: 'Fake User',
         email: 'test@test.com',
@@ -25,7 +27,7 @@ describe('REST API:', function () {
 
       return user.save();
     })
-    .then(function () {
+    .then(() => {
       user = user.toObject();
       user.token = auth.signToken(user._id);
       done();
@@ -33,88 +35,38 @@ describe('REST API:', function () {
     .catch(done);
   });
 
-  after(function (done) {
+  after((done) => {
     User.remove({})
     .then(done.bind(null, null), done);
   });
 
-  describe('POST /api/users/:id/uploads', function () {
-
-    beforeEach(function (done) {
+  describe('POST /api/users/:id/uploads', () => {
+    beforeEach((done) => {
       Upload.remove({})
       .then(done.bind(null, null), done);
     });
 
-    afterEach(function (done) {
+    afterEach((done) => {
       Upload.remove({})
       .then(done.bind(null, null), done);
     });
 
-    it('should return created \'upload model doc\'', function (done) {
-      request
-      .post('/api/users/' + user._id + '/uploads')
-      .set('Authorization', 'Bearer ' + user.token)
-      .send({
+    it('should return created \'upload model doc\'', (done) => {
+      var params = {
         videoId: 'ASDF',
         playlistId: 'QWER',
         url: 'http://foo.com',
         fileName: 'foo.txt',
-      })
+      };
+
+      request
+      .post('/api/users/' + user._id + '/uploads')
+      .set('Authorization', 'Bearer ' + user.token)
+      .send(params)
       .expect(201)
       .expect('Content-Type', /json/)
-      .then(function (res) {
-        res.body.should.have.property('_id');
-        res.body.should.have.property('userId');
-        res.body.should.have.property('playlistId');
-        res.body.should.have.property('lectures');
-        res.body.lectures.should.have.length(1);
-
-        return Upload.find({}).exec();
-      })
-      .then(function (uploads) {
-        uploads.should.have.length(1);
-        done();
-      })
-      .catch(done);
-    });
-
-    it('should return \'upload model doc\' where lecture was pushed in', function (done) {
-      var upload = new Upload({
-        userId: user._id,
-        playlistId: 'PL34d',
-        lectures: [{
-          videoId: 'ASDF',
-          playlistId: 'QWER',
-          url: 'http://foo.com',
-          fileName: 'foo.txt',
-        }]
-      });
-
-      upload.save()
-      .then(function () {
-        return request
-        .post('/api/users/' + user._id + '/uploads')
-        .set('Authorization', 'Bearer ' + user.token)
-        .send({
-          videoId: 'ASDF2',
-          playlistId: 'PL34d',
-          url: 'http://fooo.com',
-          fileName: 'foo2.txt',
-        })
-        .expect(201)
-        .expect('Content-Type', /json/);
-      })
-      .then(function (res) {
-        res.body.should.have.property('_id');
-        res.body.should.have.property('userId');
-        res.body.should.have.property('playlistId');
-        res.body.should.have.property('lectures');
-        res.body.lectures.should.have.length(2);
-
-        return Upload.find({}).exec();
-      })
-      .then(function (uploads) {
-        uploads.should.have.length(1);
+      .then((res) => {
+        res.body.should.have.properties(Object.keys(params));
         done();
       })
       .catch(done);
@@ -122,66 +74,115 @@ describe('REST API:', function () {
   });
 
 
-  describe('GET /api/users/:id/uploads', function () {
-
-    beforeEach(function (done) {
+  describe('GET /api/users/:id/uploads', () => {
+    beforeEach((done) => {
       Upload.remove({})
-      .then(function () {
-        return request
-        .post('/api/users/' + user._id + '/uploads')
-        .set('Authorization', 'Bearer ' + user.token)
-        .send({
-          videoId: 'ASDF',
-          playlistId: 'QWER',
-          url: 'http://foo.com'
-        })
-        .expect(201)
-        .expect('Content-Type', /json/);
+      .then(() => {
+        var requests = [0, 1, 2].map((n) => {
+          return request
+          .post('/api/users/' + user._id + '/uploads')
+          .set('Authorization', 'Bearer ' + user.token)
+          .send({
+            videoId: 'ASDF' + n,
+            playlistId: 'QWER',
+            url: 'http://foo.com',
+            fileName: 'foo' + n + '.txt',
+          })
+          .expect(201)
+          .expect('Content-Type', /json/);
+        });
+
+        return Promise.all(requests);
       })
       .then(done.bind(null, null), done);
     });
 
-    afterEach(function (done) {
+    afterEach((done) => {
       Upload.remove({})
       .then(done.bind(null, null), done);
     });
 
-    it('should return uploads when query with playlistId', function (done) {
+    it('should return uploads when query with playlistId', (done) => {
       request
       .get('/api/users/' + user._id + '/uploads')
       .set('Authorization', 'Bearer ' + user.token)
       .query({ playlistId: 'QWER' })
       .expect(200)
       .expect('Content-Type', /json/)
-      .then(function (res) {
+      .then((res) => {
         res.body.should.have.instanceof(Array);
-        res.body.should.have.length(1);
-        res.body[0].should.have.property('_id');
-        res.body[0].should.have.property('userId');
-        res.body[0].should.have.property('playlistId');
-        res.body[0].should.have.property('lectures');
-        res.body[0].lectures.should.have.length(1);
+        res.body.should.have.length(3);
+        res.body[0].should.have.properties(['videoId', 'playlistId', 'url', 'fileName']);
         done();
       })
       .catch(done);
     });
 
-    it('should return uploads with no query', function (done) {
+    it('should return empty array when no one equals with query condition', (done) => {
       request
       .get('/api/users/' + user._id + '/uploads')
       .set('Authorization', 'Bearer ' + user.token)
+      .query({ playlistId: 'IAMNOTTHERE' })
       .expect(200)
       .expect('Content-Type', /json/)
-      .then(function (res) {
+      .then((res) => {
         res.body.should.have.instanceof(Array);
-        res.body.should.have.length(1);
-        res.body[0].should.have.property('_id');
-        res.body[0].should.have.property('userId');
-        res.body[0].should.have.property('playlistId');
-        res.body[0].should.have.property('lectures');
-        res.body[0].lectures.should.have.length(1);
+        res.body.should.have.length(0);
         done();
       })
+      .catch(done);
+    });
+  });
+
+  describe('DELETE /api/users/:id/uploads/:uid', () => {
+    var upload;
+
+    beforeEach((done) => {
+      var awsClient = knox.createClient({
+        key: config.aws.accessKeyId,
+        secret: config.aws.secretKey,
+        bucket: config.aws.s3Bucket
+      });
+
+      Upload.remove({})
+      .then(function () {
+        var string = 'hello';
+        var fileName = 'foo.txt';
+
+        var req = awsClient.put('/' + user.email + '/' + fileName, {
+          'x-amz-acl': 'private',
+          'Content-Length': Buffer.byteLength(string),
+          'Content-Type': 'text/plain'
+        });
+
+        req.on('response', function (res) {
+          if (200 === +res.statusCode) {
+            upload = new Upload({
+              userId: user._id,
+              playlistId: 'PL34d',
+              videoId: 'ASDF0',
+              url: req.url,
+              fileName: fileName,
+            });
+
+            upload.save()
+            .then(done.bind(null, null), done);
+          }
+        })
+        .end(string);
+      })
+      .catch(done);
+    });
+
+    it('should return 204 when upload resource is removed', (done) => {
+      Upload.findOne({ videoId: 'ASDF0' }).exec()
+      .then((upload) => {
+        return request
+        .delete('/api/users/' + user._id + '/uploads/' + upload._id)
+        .set('Authorization', 'Bearer ' + user.token)
+        .expect(204);
+      })
+      .then(done.bind(null, null))
       .catch(done);
     });
   });

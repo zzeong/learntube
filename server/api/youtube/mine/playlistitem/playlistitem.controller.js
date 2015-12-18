@@ -63,17 +63,16 @@ function deleteAllPlaylistItems(params) {
  *       "pageToken": "DJGNdN"
  *     }
  */
-exports.index = function (req, res, next) {
+exports.index = (req, res, next) => {
   var body = {};
-  var params = {
+  var params = _.assign({
     part: 'id,snippet,status',
-    playlistId: req.query.playlistId,
-    maxResults: config.google.maxResults,
     fields: 'items(id,snippet,status),nextPageToken',
-  };
+    maxResults: config.google.maxResults,
+  }, _.omit(req.query, 'withDuration'));
 
   g.youtube('playlistItems.list', params)
-  .then(function (response) {
+  .then((response) => {
     body = {
       pageToken: response.nextPageToken,
       items: response.items
@@ -84,15 +83,10 @@ exports.index = function (req, res, next) {
     }
     return Promise.resolve();
   })
-  .then(function () {
-    return req.user.updateAccessToken(g);
-  })
-  .then(function () {
-    return res.status(200).json(body);
-  })
+  .then(() => req.user.updateAccessToken(g))
+  .then(() => res.status(200).json(body))
   .catch(next);
 };
-
 
 /**
  * @api {post} /api/youtube/mine/playlistitems Create my YouTube playlistItem

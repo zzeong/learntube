@@ -9,11 +9,9 @@ var UploadSchema = new Schema({
     ref: 'User'
   },
   playlistId: String,
-  lectures: [{
-    videoId: String,
-    fileName: String,
-    url: String,
-  }],
+  videoId: String,
+  fileName: String,
+  url: String,
 });
 
 module.exports = mongoose.model('Upload', UploadSchema);

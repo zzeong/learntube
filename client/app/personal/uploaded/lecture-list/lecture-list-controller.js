@@ -25,56 +25,6 @@ angular.module('learntubeApp')
     );
   };
 
-  var uploadFile = function (file, urls) {
-    var deferred = $q.defer();
-    var xhr = new XMLHttpRequest();
-    xhr.file = file;
-
-    xhr.onreadystatechange = function () {
-      if (this.readyState === 4) {
-        if (this.status === 200) {
-          deferred.resolve(urls.accessUrl);
-        } else {
-          deferred.reject(this);
-        }
-      }
-    };
-    xhr.open('PUT', urls.signedUrl, true);
-    xhr.send(file);
-
-    return deferred.promise;
-  };
-
-  var postToBack = function (params) {
-    var deferred = $q.defer();
-
-    $http.post('/api/users/' + Auth.getCurrentUser()._id + '/uploads', params)
-    .then(function (res) {
-      deferred.resolve(res.data);
-    })
-    .catch(console.error);
-
-    return deferred.promise;
-  };
-
-  var getSignedUrl = function (file) {
-    var deferred = $q.defer();
-
-    $http.get('/api/s3/credential', {
-      params: {
-        fileName: file.name,
-        fileType: file.type,
-      },
-    })
-    .then(function (res) {
-      deferred.resolve(res.data);
-    })
-    .catch(console.error);
-
-    return deferred.promise;
-  };
-
-
   $http.get('/api/youtube/mine/playlists', {
     params: {
       playlistId: $scope.playlistId,
@@ -125,57 +75,6 @@ angular.module('learntubeApp')
 
   $scope.haveUploadedFile = function (lecture) {
     return 'file' in lecture;
-  };
-
-  $scope.showFileDialog = function (lecture, ev) {
-    $mdDialog.show({
-      controller: function ($scope, $mdDialog) {
-        $scope.haveUploadedFile = scope.haveUploadedFile;
-        $scope.lecture = lecture;
-
-        $scope.deleteFile = function (lecture) {
-          $http.delete('/api/users/' + Auth.getCurrentUser()._id + '/uploads/' + scope.upload._id + '/lectures/' + lecture.file._id)
-          .then(function () {
-            delete lecture.file;
-            showToast('File deleted');
-          })
-          .catch(console.error);
-        };
-        $scope.cancel = function () {
-          $mdDialog.cancel();
-        };
-        $scope.attachFile = function (file) {
-          getSignedUrl(file)
-          .then(function (s3Urls) {
-            return uploadFile(file, s3Urls);
-          })
-          .then(function (url) {
-            return postToBack({
-              videoId: lecture.snippet.resourceId.videoId,
-              playlistId: scope.playlistId,
-              url: url,
-              fileName: file.name
-            });
-          })
-          .then(function (uploaded) {
-            $mdDialog.hide(uploaded);
-          })
-          .catch(console.error);
-        };
-      },
-      templateUrl: 'components/dialog/attach-file.html',
-      parent: angular.element(document.body),
-      targetEvent: ev,
-      clickOutsideToClose: true
-    })
-    .then(function (uploaded) {
-      showToast('File uploaded');
-      lecture.file = uploaded.lectures.filter(function (fileMeta) {
-        return fileMeta.videoId === lecture.snippet.resourceId.videoId;
-      })[0];
-      console.log(uploaded);
-    })
-    .catch(console.error);
   };
 
   $scope.showLectureDialog = function (lecture, ev) {

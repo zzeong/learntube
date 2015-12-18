@@ -40,27 +40,32 @@ describe('REST API:', function () {
     .then(done.bind(null, null), done);
   });
 
+  describe('GET /api/classes/:pid/lectures/:vid/get-handout', () => {
+    before((done) => {
+      var uploads = [{
+        videoId: 'miUYEpXDitc',
+        fileName: 'just.txt',
+        url: 'https://s3.amazonaws.com/learntubebucket/learntubebot01%40gmail.com/uploads/dummytxt'
+      }, {
+        videoId: 'F-xd3G0PW0k',
+        fileName: 'just.pdf',
+        url: 'https://s3.amazonaws.com/learntubebucket/learntubebot01%40gmail.com/uploads/dummypdf'
+      }].map((el) => {
+        el.userId = id;
+        el.playlistId = 'PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx';
+        return el;
+      });
 
-  describe('GET /api/classes/:pid/lectures/:vid/get-handout', function () {
-    before(function (done) {
-      Upload.create([{
-        userId: id,
-        playlistId: 'PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx',
-        lectures: [{
-          videoId: 'miUYEpXDitc',
-          fileName: 'just.txt',
-          url: 'https://s3.amazonaws.com/learntubebucket/learntubebot01%40gmail.com/uploads/24ebf6590e230c823d1afd1dd01911e2'
-        }, {
-          videoId: 'F-xd3G0PW0k',
-          fileName: 'just.pdf',
-          url: 'https://s3.amazonaws.com/learntubebucket/learntubebot01%40gmail.com/uploads/2bd6387e8333e63dec3e1cea9617accb'
-        }],
-      }])
+      Upload.create(uploads)
       .then(done.bind(null, null), done);
     });
 
+    after((done) => {
+      Upload.remove({})
+      .then(done.bind(null, null), done);
+    });
 
-    it('should return a file which will be downloaded', function (done) {
+    it('should return a file which will be downloaded', (done) => {
       request
       .get('/api/classes/PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx/lectures/F-xd3G0PW0k/get-handout')
       .expect(200)
