@@ -12,21 +12,20 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser
     files: [
       // bower:js
-      'client/bower_components/es5-shim/es5-shim.js',
+      'client/bower_components/es6-shim/es6-shim.js',
       'client/bower_components/angular/angular.js',
       'client/bower_components/angular-cookies/angular-cookies.js',
       'client/bower_components/angular-file-model/angular-file-model.js',
       'client/bower_components/angular-google-gapi/angular-google-gapi.min.js',
       'client/bower_components/angular-animate/angular-animate.js',
       'client/bower_components/angular-aria/angular-aria.js',
-      'client/bower_components/angular-material/angular-material.js',
       'client/bower_components/angular-messages/angular-messages.js',
+      'client/bower_components/angular-material/angular-material.js',
       'client/bower_components/angular-resource/angular-resource.js',
       'client/bower_components/angular-sanitize/angular-sanitize.js',
       'client/bower_components/angular-ui-router/release/angular-ui-router.js',
       'client/bower_components/angular-youtube-mb/src/angular-youtube-embed.js',
       'client/bower_components/ckeditor/ckeditor.js',
-      'client/bower_components/json3/lib/json3.js',
       'client/bower_components/lodash/lodash.js',
       'client/bower_components/ng-file-upload/ng-file-upload.js',
       'client/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',

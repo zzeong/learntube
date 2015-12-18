@@ -244,10 +244,12 @@ module.exports = function (grunt) {
 
     // Automatically inject Bower components into the app
     wiredep: {
+      options: {
+        exclude: [/json3/, /es5-shim/, /font-awesome.css/, /angular-material.css/],
+      },
       target: {
         src: '<%= yeoman.client %>/index.html',
         ignorePath: '<%= yeoman.client %>/',
-        exclude: ['/json3/', '/es5-shim/', /font-awesome.css/, /angular-material.css/],
         fileTypes: {
           html: {
             replace: {
@@ -271,7 +273,6 @@ module.exports = function (grunt) {
             }
           },
         },
-        exclude: [/angular-scenario/]
       },
     },
 
