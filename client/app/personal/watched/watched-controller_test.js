@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: WatchedContentsCtrl', function () {
+xdescribe('Controller: WatchedContentsCtrl', function () {
   beforeEach(module('learntubeApp'));
   var $scope, $httpBackend;
 
@@ -54,7 +54,7 @@ describe('Controller: WatchedContentsCtrl', function () {
 
 
 
-    xit('should get all watched contents as classes', function () {
+    it('should get all watched contents as classes', function () {
       $httpBackend.expectGET(/\/api\/users\/.*\/watched-contents/);
       $httpBackend.expectGET(/https\:\/\/www\.googleapis\.com\/youtube\/v3\/playlists\?.*/);
       $httpBackend.flush();

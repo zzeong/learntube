@@ -1,6 +1,6 @@
 'use strict';
 
-describe('Controller: ClassroomCtrl', function () {
+xdescribe('Controller: ClassroomCtrl', function () {
   beforeEach(module('learntubeApp'));
   var $scope, $httpBackend;
 
@@ -80,18 +80,11 @@ describe('Controller: ClassroomCtrl', function () {
     });
 
 
-    xit('should assign item which YouTube API responsed to scope item', inject(function () {
+    it('should assign item which YouTube API responsed to scope item', inject(function () {
       $httpBackend.expectGET(/https\:\/\/www\.googleapis\.com\/youtube\/v3\/videos\?.*/);
       $httpBackend.flush();
 
       expect($scope.item).toEqual(resultItems.items[0]);
-    }));
-
-    it('should provide editing status to notes', inject(function () {
-      $httpBackend.expectGET(/\/api\/users\/.*\/notes\?videoId=2rde3/);
-      $httpBackend.flush();
-
-      expect($scope.notes[0].isEditing).toBeFalsy();
     }));
 
     it('should get notes which user have been saving', inject(function () {
@@ -102,8 +95,7 @@ describe('Controller: ClassroomCtrl', function () {
       expect($scope.notes[0]._id).toEqual('NQWER');
     }));
 
-
-    xit('should save editor contents and push saved notes', inject(function () {
+    it('should save editor contents and push saved notes', inject(function () {
       $httpBackend.flush();
       var beforeLength = $scope.notes.length;
 
@@ -123,7 +115,7 @@ describe('Controller: ClassroomCtrl', function () {
       expect($scope.toggleEditor).toHaveBeenCalled();
     }));
 
-    xit('should change the editor window to a note viewer when note is updated', function () {
+    it('should change the editor window to a note viewer when note is updated', function () {
       $httpBackend.flush();
 
       var note = {
@@ -152,7 +144,7 @@ describe('Controller: ClassroomCtrl', function () {
     });
 
 
-    xit('should save current lecture with class', inject(function ($log) {
+    it('should save current lecture with class', inject(function ($log) {
       $httpBackend.flush();
 
       $scope.completeLecture();
