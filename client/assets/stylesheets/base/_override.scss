@@ -75,9 +75,9 @@ md-tabs-content-wrapper {
 
 // customizing tab indicator
 md-tabs.md-default-theme md-ink-bar,
-md-tabs md-ink-bar {
-  background: $amber-500;
-}
+md-tabs md-ink-bar { background: $amber-500; }
+
+md-tabs.md-primary md-ink-bar { background: $amber-900; }
 
 md-fab-actions {
   .md-button.md-fab md-icon {
