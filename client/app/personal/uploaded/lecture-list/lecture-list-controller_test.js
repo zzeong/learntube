@@ -2,6 +2,8 @@
 
 xdescribe('Controller: UploadedLectureListCtrl', function () {
   beforeEach(module('learntubeApp'));
+  beforeEach(module(($urlRouterProvider) => { $urlRouterProvider.deferIntercept(); }));
+
   var $scope, createController;
 
   beforeEach(inject(function ($controller) {
