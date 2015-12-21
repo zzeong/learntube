@@ -508,6 +508,7 @@ module.exports = function (grunt) {
         autoWatch: true,
         singleRun: false
       },
+      once: {},
       coverage: { reporters: ['coverage'] },
     },
 
@@ -758,93 +759,68 @@ module.exports = function (grunt) {
     grunt.task.run(['serve']);
   });
 
+  grunt.registerTask('lintJS', ['jscs', 'jshint']);
+  grunt.registerTask('beforeMocha', ['env:all', 'env:test']);
 
-  grunt.registerTask('test', function (target, option) {
-    if (target === 'server') {
-      if (option === 'watch') {
-        return grunt.task.run([
-          'test:server',
-          'watch:mochaTest'
-        ]);
-      }
+  grunt.registerTask('beforeKarma', [
+    'clean:server',
+    'env:all',
+    'injectSass',
+    'concurrent:test',
+    'injector',
+    'autoprefixer'
+  ]);
 
-      return grunt.task.run([
-        'env:all',
-        'env:test',
-        'mochaTest:test',
-      ]);
-    } else if (target === 'client') {
-      if (option === 'watch') {
-        return grunt.task.run([
-          'test:client',
-          'watch:unitTest'
-        ]);
-      }
+  grunt.registerTask('beforeE2e', [
+    'clean:server',
+    'env:all',
+    'env:test',
+    'injectSass',
+    'concurrent:test',
+    'injector',
+    'wiredep',
+    'autoprefixer',
+    'express:dev'
+  ]);
 
-      return grunt.task.run([
-        'clean:server',
-        'env:all',
-        'injectSass',
-        'concurrent:test',
-        'injector',
-        'autoprefixer',
-        'karma:debug'
-      ]);
-    } else if (target === 'e2e') {
-      return grunt.task.run([
-        'clean:server',
-        'env:all',
-        'env:test',
-        'injectSass',
-        'concurrent:test',
-        'injector',
-        'wiredep',
-        'autoprefixer',
-        'express:dev',
-        'protractor'
-      ]);
-    } else if (target === 'js') {
-      if (option === 'watch') {
-        return grunt.task.run([
-          'jscs',
-          'jshint',
-          'watch:lintJS'
-        ]);
-      }
+  grunt.registerTask('coverage', [
+    'beforeMocha',
+    'mocha_istanbul:unit',
+    'beforeKarma',
+    'karma:coverage'
+  ]);
 
-      return grunt.task.run(['jscs', 'jshint']);
-    } else if (target === 'coverage') {
-      if (option === 'server') {
-        return grunt.task.run([
-          'env:all',
-          'env:test',
-          'mocha_istanbul:unit'
-        ]);
-      } else if (option === 'client') {
-        return grunt.task.run([
-          'clean:server',
-          'env:all',
-          'injectSass',
-          'concurrent:test',
-          'injector',
-          'autoprefixer',
-          'karma:coverage'
-        ]);
-      }
-    } else if (target === 'ci') {
-      return grunt.task.run([
-        'jscs',
-        'jshint',
-        'test:coverage:server',
-        'test:coverage:client'
-      ]);
-    } else {
-      grunt.task.run([
-        'test:js',
-        'test:server',
-        'test:client'
-      ]);
-    }
+  grunt.registerTask('test', (target, option) => {
+    option = option || 'normal';
+
+    var taskList = [];
+    var tasks = {
+      server: {
+        before: ['beforeMocha'],
+        normal: ['mochaTest:test'],
+        watch: ['mochaTest:test', 'watch:mochaTest'],
+      },
+      client: {
+        before: ['beforeKarma'],
+        normal: ['karma:once'],
+        watch: ['karma:debug'],
+      },
+      js: {
+        normal: ['lintJS'],
+        watch: ['lintJS', 'watch:lintJS'],
+      },
+      ci: {
+        before: ['lintJS'],
+        normal: ['coverage'],
+      },
+      e2e: {
+        before: ['beforeE2e'],
+        normal: ['protractor'],
+      },
+    };
+
+    taskList = taskList.concat(tasks[target].before || [], tasks[target][option] || []);
+    return grunt.task.run(taskList);
   });
 
   grunt.registerTask('doc', ['apidoc']);
