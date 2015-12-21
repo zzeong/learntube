@@ -1,21 +1,36 @@
-<div class="md-toolbar-tools" ng-controller="ToolbarCtrl">
-  <md-button class="md-icon-button" aria-label="Settings" ng-click="mainIconTrigger()"
-  hide-gt-xs>
-    <md-icon md-font-set="material-icons">menu</md-icon>
+<div class="md-toolbar-tools" ng-controller="ToolbarCtrl" ng-class="{ 'toolbar--onsearch': greyToolbar }">
+
+  <!-- Mobile - basic element -->
+  <div class="toolbar-icon-left" hide-gt-xs>
+    <md-button class="toolbar-icon-left__btn md-icon-button" aria-label="Settings">
+      <md-icon ng-hide="onSearching" ng-click="mainIconTrigger()" md-font-set="material-icons">menu</md-icon>
+      <md-icon ng-show="onSearching" ng-click="goBackward()" md-font-set="material-icons">arrow_back</md-icon>
+    </md-button>
+  </div>
+
+  <!-- PAGE TITLE -->
+  <div class="page-title" ng-hide="searchAtMobile">
+    <h2>
+      <span>{{ title }}</span>
+    </h2>
+  </div>
+
+  <!-- onSearching으로 진입하는 search icon -->
+  <md-button hide-gt-xs ng-hide="onSearching" class="md-icon-button" aria-label="More"
+  ng-click="toggleSearchingState()">
+    <md-icon md-font-set="material-icons">search</md-icon>
   </md-button>
-  <h2 ng-hide="onSearching">
-    <span>{{ title }}</span>
-  </h2>
 
-  <span flex>
-    <div class="web-search-content" ng-show="!stateNameCheck('home')">
-      <form ng-submit="go('search', { q: q })" hide-xs>
-        <input class="web-search-content__input" type="search" ng-model="q"/>
-      </form>
-    </div>
-  </span>
+  <!-- SEARCH INPUT -->
+  <div class="toolbar-search" ng-show="onSearching">
+    <form class="toolbar-search__form" ng-submit="go('search', { q: q });">
+      <input class="toolbar-search__input" ng-class="{ 'yellow-input': yellowInput }" ng-model="q" type="search" placeholder="search class"/>
+      <md-icon class="toolbar-search__icon" md-font-set="material-icons" ng-show="webSearchIcon">search</md-icon>
+    </form>
+  </div>
 
-  <md-menu md-offset="12 -1" md-position-mode="target-right target">
+  <!-- USER INFO -->
+  <md-menu md-offset="12 -1" md-position-mode="target-right target" style="margin-right:0">
     <md-button class="account-btn" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()" hide-xs>
       <img class="account-btn__thumb thumb-radius" ng-src="{{ getUserImgPath(getCurrentUser()) }}"
       alt="Account Image" />
@@ -42,15 +57,23 @@
 
   </md-menu>
 
-  <md-button class="login-btn" ng-hide="isLoggedIn()" ng-click="loginOauth('google')"
-  hide-xs>
-    Sign in with <i class="fa fa-youtube-play youtube-logo"></i>
-  </md-button>
+  <div>
+    <md-button class="web-sign-in" ng-hide="isLoggedIn()" ng-click="loginOauth('google')" hide-xs>
+      Sign in with <i class="fa fa-youtube-play youtube-logo"></i>
+    </md-button>
+  </div>
 
   <md-menu md-offset="12 -1" md-position-mode="target-right target" hide-gt-xs>
-    <md-button class="md-icon-button" aria-label="More" ng-click="$mdOpenMenu($event)">
-      <md-icon md-menu-origin md-font-set="material-icons">more_vert</md-icon>
+    <md-button class="md-icon-button" aria-label="More">
+      <!-- 로그인 메뉴를 여는 more icon -->
+      <md-icon ng-hide="onSearching" ng-click="$mdOpenMenu($event)"
+      md-menu-origin md-font-set="material-icons">more_vert</md-icon>
+
+      <!-- 검색어를 한번에 지우는 clear icon -->
+      <md-icon ng-show="onSearching" ng-click="deleteValue(); toggleSearchingIcon()"
+      md-font-set="material-icons">clear</md-icon>
     </md-button>
+
     <md-menu-content width="3">
       <md-menu-item ng-if="!isLoggedIn()">
         <md-button ng-click="loginOauth('google')">

@@ -64,3 +64,11 @@ li {
   margin: 0;
   padding: 0;
 }
+
+input:focus {
+  outline: none;
+
+  @include respond-to('small') {
+    background: $white;
+  }
+}

@@ -1,0 +1,9 @@
+.page-title {
+  left: 50px;
+  width: 100%;
+  max-width: 500px;
+
+  @include respond-to('small') {
+    width: 416px;
+  }
+}
