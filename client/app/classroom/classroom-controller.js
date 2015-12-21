@@ -70,24 +70,6 @@ angular.module('learntubeApp')
     playlist: $scope.playlistId,
   });
 
-  if ($scope.isLoggedIn()) {
-    WatchedContent.query({ playlistId: $scope.playlistId }).$promise
-    .then(function (items) {
-      if (items.length) {
-        var item = items[0];
-
-        $scope.cid = item._id;
-        for (var i = 0; i < item.lectures.length; i++) {
-          if (item.lectures[i].videoId === $scope.videoId) {
-            $scope.haveLecture = true;
-            break;
-          }
-        }
-      }
-    })
-    .catch(console.error);
-  }
-
   var compileToHTML = function (str) {
     var html = str.split('\n')
     .filter(function (p) { return p.length; })
@@ -96,6 +78,22 @@ angular.module('learntubeApp')
 
     return html;
   };
+
+  WatchedContent.query({ playlistId: $scope.playlistId }).$promise
+  .then((items) => {
+    if (items.length) {
+      markHaveLecture(items[0]);
+    }
+
+    function markHaveLecture(item) {
+      $scope.cid = item._id;
+      satisfy(item.lectures, (lecture) => _.isEqual(lecture.videoId, $scope.videoId), () => {
+        $scope.haveLecture = true;
+      });
+    }
+  })
+  .catch(console.error);
+
 
   GApi.execute('youtube', 'videos.list', {
     key: GoogleConst.browserKey,
@@ -148,28 +146,11 @@ angular.module('learntubeApp')
   })
   .catch(console.error);
 
-  var completeLectureHelper = function () {
-    var params = { videoId: $scope.videoId };
-
-    if ($scope.cid === null) {
-      return WatchedContent.create({
-        playlistId: $scope.playlistId
-      }).$promise
-      .then(function (item) {
-        params.cid = item._id;
-        return WatchedContent.lecture.create(params).$promise;
-      });
-    } else {
-      params.cid = $scope.cid;
-      return WatchedContent.lecture.create(params).$promise;
-    }
-  };
-
-  $scope.completeLecture = function () {
-    completeLectureHelper()
-    .then(function () {
+  $scope.completeLecture = () => {
+    addCompletedLecture({ videoId: $scope.videoId })
+    .then(() => {
       $scope.haveLecture = true;
-      $scope.showSimpleToast();
+      $scope.showToast('Lecture completed');
     })
     .catch(console.error);
   };
@@ -225,14 +206,12 @@ angular.module('learntubeApp')
     return _.has(user, 'google') ? user.google.image.url : guestImgPath;
   };
 
-  $scope.showSimpleToast = function () {
-    var positionArr = 'top right';
-
+  $scope.showToast = (string) => {
     $mdToast.show(
       $mdToast.simple()
-        .content('Lecture Complete!')
-        .position(positionArr)
-        .hideDelay(3000)
+      .content(string)
+      .position('bottom right')
+      .hideDelay(3000)
     );
   };
 
@@ -284,4 +263,23 @@ angular.module('learntubeApp')
     $scope.httpBusy = false;
   })
   .catch(console.error);
+
+
+  function addCompletedLecture(params) {
+    if (_.isNull($scope.cid)) {
+      return WatchedContent.create({ playlistId: $scope.playlistId }).$promise
+      .then((item) => {
+        params.cid = item._id;
+        return WatchedContent.lecture.create(params).$promise;
+      });
+    } else {
+      params.cid = $scope.cid;
+      return WatchedContent.lecture.create(params).$promise;
+    }
+  }
+
+  function satisfy(arr, fn, onSatisfy) {
+    var filtered = Array.prototype.filter.call(arr, fn);
+    if (filtered.length) { onSatisfy(); }
+  }
 });

@@ -9,7 +9,8 @@
           <span>{{ item.snippet.title }}</span>
         </h2>
         <span flex></span>
-        <md-button class="md-icon-button" aria-label="Done">
+        <md-button class="md-icon-button" aria-label="Complete lecture" ng-show="isLoggedIn()" ng-disabled="haveLecture"
+        ng-click="completeLecture()">
           <md-icon md-font-set="material-icons">done</md-icon>
         </md-button>
         <md-button class="md-icon-button" target="_self" ng-href="{{ getDownloadUrl() }}"
