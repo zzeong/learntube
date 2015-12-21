@@ -12,6 +12,7 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser
     files: [
       // bower:js
+      'client/bower_components/es5-shim/es5-shim.js',
       'client/bower_components/es6-shim/es6-shim.js',
       'client/bower_components/angular/angular.js',
       'client/bower_components/angular-cookies/angular-cookies.js',
@@ -42,9 +43,9 @@ module.exports = function (config) {
     ],
 
     preprocessors: {
-      '**/*.html': 'html2js',
-      'client/app/**/*.js': 'babel',
-      'client/{app,components}/**/!(*test).js': 'coverage'
+      '**/*.html': ['ng-html2js'],
+      'client/app/**/*.js': ['babel'],
+      'client/{app,components}/**/!(*test).js': ['coverage']
     },
 
     ngHtml2JsPreprocessor: {
@@ -53,7 +54,8 @@ module.exports = function (config) {
 
     babelPreprocessor: {
       options: {
-        sourceMap: 'inline'
+        presets: ['es2015'],
+        sourceMap: 'inline',
       },
       filename: function (file) {
         return file.originalPath.replace(/\.js$/, '.es5.js');
@@ -98,6 +100,6 @@ module.exports = function (config) {
 
     // Continuous Integration mode
     // if true, it capture browsers, run tests and exit
-    singleRun: false
+    singleRun: true
   });
 };

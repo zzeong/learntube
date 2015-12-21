@@ -83,13 +83,6 @@ module.exports = function (grunt) {
         ],
         tasks: ['jscs', 'jshint']
       },
-      unitTest: {
-        files: [
-          'karma.conf.js',
-          '<%= yeoman.client %>/{app,components}/**/*.js'
-        ],
-        tasks: ['karma:debug']
-      },
       injectSass: {
         files: ['<%= yeoman.client %>/assets/stylesheets/**/*.scss'],
         tasks: ['injector:sass']
@@ -245,11 +238,12 @@ module.exports = function (grunt) {
     // Automatically inject Bower components into the app
     wiredep: {
       options: {
-        exclude: [/json3/, /es5-shim/, /font-awesome.css/, /angular-material.css/],
+        exclude: [/json3/, /font-awesome.css/, /angular-material.css/],
       },
       target: {
         src: '<%= yeoman.client %>/index.html',
         ignorePath: '<%= yeoman.client %>/',
+        exclude: [/es5-shim/],
         fileTypes: {
           html: {
             replace: {
@@ -509,9 +503,11 @@ module.exports = function (grunt) {
     karma: {
       options: {
         configFile: 'karma.conf.js',
-        singleRun: true
       },
-      debug: {},
+      debug: {
+        autoWatch: true,
+        singleRun: false
+      },
       coverage: { reporters: ['coverage'] },
     },
 
