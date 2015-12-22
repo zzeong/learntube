@@ -8,7 +8,7 @@
     var pageToken = null;
 
     return {
-      get: function (p, opts) {
+      get: (p, opts) => {
         opts = opts || {};
         opts.initialToken = opts.initialToken || false;
 
@@ -28,9 +28,7 @@
           return applyAdditional(res.items);
         });
       },
-      getPageToken: function () {
-        return pageToken;
-      },
+      getPageToken: () => pageToken,
     };
 
     function serializeIds(list) {

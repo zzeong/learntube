@@ -44,7 +44,7 @@ module.exports = function (config) {
 
     preprocessors: {
       '**/*.html': ['ng-html2js'],
-      'client/app/**/*.js': ['babel'],
+      'client/{app,components}/**/*.js': ['babel'],
       'client/{app,components}/**/!(*test).js': ['coverage']
     },
 
