@@ -105,14 +105,6 @@
     })
     .catch(console.error);
 
-    PlaylistItem.get({ playlistId: $scope.playlistId }, {
-      initialToken: true,
-    })
-    .then(function (list) {
-      $scope.lectureList = list;
-    })
-    .catch(console.error);
-
     if ($scope.isLoggedIn()) {
       Note.query({ videoId: $scope.videoId })
       .$promise
@@ -125,23 +117,7 @@
     PlaylistItem.get({ playlistId: $scope.playlistId }, {
       initialToken: true,
     })
-    .then(function (list) {
-      $scope.lectureList = list;
-      $scope.lectureList.map(function (obj) {
-
-        GApi.execute('youtube', 'videos.list', {
-          key: GoogleConst.browserKey,
-          part: 'statistics',
-          id: obj.snippet.resourceId.videoId
-        })
-        .then(function (res) {
-          obj.viewCount = {
-            viewCount: res.items[0].statistics.viewCount
-          };
-        })
-        .catch(console.error);
-      });
-    })
+    .then(function (list) { $scope.lectureList = list; })
     .catch(console.error);
 
 

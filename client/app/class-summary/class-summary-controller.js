@@ -96,21 +96,6 @@ angular.module('learntubeApp')
   })
   .then(function (list) {
     $scope.lectureList = list;
-    $scope.lectureList.map(function (obj) {
-      GApi.execute('youtube', 'videos.list', {
-        key: GoogleConst.browserKey,
-        part: 'statistics',
-        id: obj.snippet.resourceId.videoId
-      })
-      .then(function (res) {
-        obj.viewCount = {
-          viewCount: res.items[0].statistics.viewCount
-        };
-      })
-      .catch(console.error);
-    });
-
-
     $scope.httpBusy = false;
   })
   .catch(console.error);

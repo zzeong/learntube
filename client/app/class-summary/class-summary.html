@@ -52,7 +52,7 @@ ng-click="addClass()" ng-show="isLoggedIn()">
                       <lt-listcard-content>
                         <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ lecture.snippet.title }}</h3>
                         <p class="ellipsis-1 lt-subhead-s">{{ lecture.snippet.channelTitle }}</p>
-                        <span class="lt-listcard__small-sign lt-caption-s">{{ lecture.viewCount.viewCount | thousandSuffix }}</span>
+                        <span class="lt-listcard__small-sign lt-caption-s">{{ lecture.statistics.viewCount | thousandSuffix }}</span>
                       </lt-listcard-content>
                     </lt-listcard>
                   </a>
