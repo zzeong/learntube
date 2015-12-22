@@ -30,15 +30,15 @@ exports.index = function (req, res) {
   });
 };
 
-exports.create = function (req, res, next) {
+exports.create = (req, res, next) => {
   var hash = createRandomHash();
   var uploadPath = '/' + req.user.email + '/' + hash;
 
   s3.putFile(req.files.file.path, uploadPath, {
     'Content-Type': req.files.file.type,
     'x-amz-acl': 'public-read'
-  }, function (error) {
-    if (error) { return res.status(500).send(error); }
+  }, (err) => {
+    if (err) { next(err); }
 
     var uploadUrl = s3.url(uploadPath);
     console.log('[S3]:PUT saved to %s', uploadUrl);
@@ -52,25 +52,20 @@ exports.create = function (req, res, next) {
       url: uploadUrl
     });
 
-    note.save(function (error) {
-      if (error) { return res.status(500).send(error); }
-
+    note.save()
+    .then(() => {
       var query = { playlistId: note.playlistId };
-      Rating.findOneAndUpdate(query, {
+      return Rating.findOneAndUpdate(query, {
         $setOnInsert: query
       }, {
         new: true,
         upsert: true
       })
-      .exec()
-      .then(function (rating) {
-        rating.update({ $inc: { points: 1 }}, function (error) {
-          if (error) { return res.status(500).send(error); }
-          return res.status(201).json(note);
-        });
-      })
-      .catch(next);
-    });
+      .exec();
+    })
+    .then((rating) => rating.update({ $inc: { points: 1 }}))
+    .then(() => res.status(201).json(_.omit(note.toObject(), 'userId')))
+    .catch(next);
   });
 };
 

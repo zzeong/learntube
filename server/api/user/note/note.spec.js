@@ -50,7 +50,7 @@ describe('REST API:', function () {
   });
 
 
-  describe('POST /api/users/:id/notes', function () {
+  describe.only('POST /api/users/:id/notes', function () {
     var nid;
 
     afterEach(function (done) {
@@ -73,7 +73,9 @@ describe('REST API:', function () {
       .field('type', 'editor')
       .attach('file', './test/fixtures/dummy.html')
       .then(function (res) {
-        res.body.should.have.property('_id');
+        var properties = ['_id', 'playlistId', 'videoId', 'type', 'resourceType', 'url'];
+        res.body.should.have.properties(properties);
+        res.body.should.not.have.property('userId');
         nid = res.body._id;
         done();
       })
