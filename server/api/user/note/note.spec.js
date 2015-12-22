@@ -50,7 +50,7 @@ describe('REST API:', function () {
   });
 
 
-  describe.only('POST /api/users/:id/notes', function () {
+  describe('POST /api/users/:id/notes', function () {
     var nid;
 
     afterEach(function (done) {
