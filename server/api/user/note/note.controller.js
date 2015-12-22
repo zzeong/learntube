@@ -19,14 +19,6 @@ var createRandomHash = function () {
   return crypto.createHash('md5').update(id).digest('hex');
 };
 
-var handleError = function (res, statusCode) {
-  statusCode = statusCode || 500;
-  return function (err) {
-    res.status(statusCode).send(err);
-  };
-};
-
-
 exports.index = function (req, res) {
   var data = _.assign(req.query, { userId: req.params.id });
 
@@ -38,7 +30,7 @@ exports.index = function (req, res) {
   });
 };
 
-exports.create = function (req, res) {
+exports.create = function (req, res, next) {
   var hash = createRandomHash();
   var uploadPath = '/' + req.user.email + '/' + hash;
 
@@ -77,7 +69,7 @@ exports.create = function (req, res) {
           return res.status(201).json(note);
         });
       })
-      .catch(handleError(res));
+      .catch(next);
     });
   });
 };
