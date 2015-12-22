@@ -27,10 +27,6 @@
         method: 'DELETE',
         params: { id: Auth.getCurrentUser()._id }
       },
-      update: {
-        method: 'PUT',
-        params: { id: Auth.getCurrentUser()._id }
-      },
       getContents: {
         method: 'GET',
         params: {
@@ -43,12 +39,22 @@
     note.editor = new NoteEssence('editor');
     note.file = new NoteEssence('file');
 
-    note.setIds = function (idObj) { ids = idObj; };
-    note.upload = function (type, file) {
-      var fields = _.assign(ids, { type: type });
+    note.setIds = (idObj) => { ids = idObj; };
+    note.upload = (file, params) => {
+      var fields = _.assign(ids, params);
       return Upload.upload({
         url: '/api/users/' + Auth.getCurrentUser()._id + '/notes',
         method: 'POST',
+        fields: fields,
+        file: file,
+      });
+    };
+
+    note.update = (file, params, nid) => {
+      var fields = _.assign(ids, params);
+      return Upload.upload({
+        url: '/api/users/' + Auth.getCurrentUser()._id + '/notes/' + nid,
+        method: 'PUT',
         fields: fields,
         file: file,
       });

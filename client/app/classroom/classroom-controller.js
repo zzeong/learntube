@@ -58,8 +58,8 @@
     };
 
     $scope.note = {
-      upload: (type, file) => {
-        return Note.upload(type, file)
+      upload: (file, type) => {
+        return Note.upload(file, { type })
         .then((res) => {
           $scope.fab.enable();
           $scope.myNotes.push(res.data);
@@ -180,7 +180,7 @@
     function editNote(note) {
       Note.getContents({ nid: note._id })
       .$promise
-      .then(function (res) {
+      .then((res) => {
         note.contents = res.contents;
         note.isEditing = true;
       })
@@ -192,19 +192,21 @@
     function deleteNote(note) {
       Note.remove({ nid: note._id })
       .$promise
-      .then(function () {
+      .then(() => {
         _.remove($scope.myNotes, { _id: note._id });
       })
       .catch(console.error);
     }
 
-    function updateNote(file) {
-      Upload.upload(file)
-      .then(function (res) {
+    function updateNote(note) {
+      var file = new Blob([note.contents], { type: 'text/html' });
+      Note.update(file, { type: note.type }, note._id)
+      .then((res) => {
         $scope.myNotes = $scope.myNotes.map(function (note) {
           if (note._id === res.data._id) { return res.data; }
           return note;
         });
+        note.isEditing = false;
       })
       .catch(console.error);
     }

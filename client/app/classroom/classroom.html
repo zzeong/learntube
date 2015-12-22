@@ -108,20 +108,29 @@
         <div class="frame-padding--constant-offset tab-area__note">
           <lt-note-unit lt-note-type="editor" ng-if="note.editor.activator" lt-note-model="note.editor">
             <lt-note-object></lt-note-object>
-            <lt-note-actions lt-on-cancel="fab.enable()" lt-on-add="note.upload($type, $file)"></lt-note-actions>
+            <lt-note-actions lt-on-cancel="fab.enable()" lt-on-add="note.upload($file, $type)"></lt-note-actions>
           </lt-note-unit>
 
           <lt-note-unit lt-note-type="file" ng-if="note.file.activator" lt-note-model="note.file">
             <lt-note-object></lt-note-object>
-            <lt-note-actions lt-on-cancel="fab.enable()" lt-on-add="note.upload($type, $file)"></lt-note-actions>
+            <lt-note-actions lt-on-cancel="fab.enable()" lt-on-add="note.upload($file, $type)"></lt-note-actions>
           </lt-note-unit>
 
           <div class="my-note">
             <div class="my-note__unit" ng-repeat="note in myNotes | orderBy: '-created'">
-              <lt-note-viewer lt-note="note"></lt-note-viewer>
-              <div class="action-area" layout="row" layout-align="start center">
-                <md-button class="md-raised" ng-click="foo()">Edit</md-button>
-                <md-button class="md-raised md-raised-color-warn" ng-click="bar()">Delete</md-button>
+              <div ng-if="!note.isEditing">
+                <lt-note-viewer lt-note="note"></lt-note-viewer>
+                <div class="action-area" layout="row" layout-align="start center">
+                  <md-button class="md-raised" ng-if="isEqual(note.type, 'editor')" ng-click="editNote(note)">Edit</md-button>
+                  <md-button class="md-raised md-raised-color-warn" ng-click="deleteNote(note)">Delete</md-button>
+                </div>
+              </div>
+              <div ng-if="note.isEditing">
+                <textarea ng-model="note.contents" ckeditor></textarea>
+                <div class="action-area" layout="row" layout-align="start center">
+                  <md-button class="md-raised" ng-if="isEqual(note.type, 'editor')" ng-click="cancelEditing(note)">Cancel</md-button>
+                  <md-button class="md-raised md-raised-color-warn" ng-click="updateNote(note)">Update</md-button>
+                </div>
               </div>
             </div>
           </div>
