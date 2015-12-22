@@ -73,22 +73,45 @@
         'layout-align': 'start center'
       });
 
-      scope.addNote = function () {
+      scope.addNote = addNote;
+      scope.cancelNote = cancelNote;
+
+      function addNote() {
         var file = morphToFile(ctrl.model.obj);
         scope.onAdd({
           $type: ctrl.model.type,
           $file: file,
         });
-      };
-
-      scope.cancelNote = function () {
         ctrl.model.activator = false;
+      }
+
+      function cancelNote() {
         scope.onCancel();
-      };
+        ctrl.model.activator = false;
+      }
 
       function morphToFile(obj) {
         return (typeof obj === 'string') ? new Blob([obj], { type: 'text/html' }) : obj;
       }
+    }
+  }
+
+
+  angular.module('learntubeApp')
+  .directive('ltNoteViewer', ltNoteViewer);
+
+  function ltNoteViewer() {
+    return {
+      restrict: 'E',
+      scope: {
+        note: '=ltNote',
+      },
+      templateUrl: 'components/note/note-viewer.html',
+      controller: Controller,
+    };
+
+    function Controller($scope) {
+      $scope.isEqual = _.isEqual;
     }
   }
 })(angular);

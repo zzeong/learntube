@@ -48,13 +48,14 @@
   border-radius: 50%;
 }
 
-.frame-padding {
+.frame-padding,
+.frame-padding--constant-offset {
   padding: 16px;
+  >* { margin: 4px 0; }
+}
 
-  >* {
-    margin: 4px 0;
-    &:nth-child(2) { padding-top: 6px; }
-  }
+.frame-padding {
+  >*:nth-child(2) { padding-top: 6px; }
 }
 
 .frame-padding--full-width {

@@ -61,7 +61,8 @@
       upload: (type, file) => {
         return Note.upload(type, file)
         .then((res) => {
-          $scope.notes.push(res.data);
+          $scope.fab.enable();
+          $scope.myNotes.push(res.data);
         })
         .catch(console.error);
       },
@@ -73,8 +74,8 @@
     };
 
     Note.setIds({
-      video: $scope.videoId,
-      playlist: $scope.playlistId,
+      videoId: $scope.videoId,
+      playlistId: $scope.playlistId,
     });
 
     WatchedContent.query({ playlistId: $scope.playlistId }).$promise
@@ -116,9 +117,7 @@
       Note.query({ videoId: $scope.videoId })
       .$promise
       .then(function (notes) {
-        $scope.notes = notes.map(function (note) {
-          return note;
-        });
+        $scope.myNotes = notes;
       })
       .catch(console.error);
     }
@@ -218,7 +217,7 @@
       Note.remove({ nid: note._id })
       .$promise
       .then(function () {
-        _.remove($scope.notes, { _id: note._id });
+        _.remove($scope.myNotes, { _id: note._id });
       })
       .catch(console.error);
     }
@@ -226,7 +225,7 @@
     function updateNote(file) {
       Upload.upload(file)
       .then(function (res) {
-        $scope.notes = $scope.notes.map(function (note) {
+        $scope.myNotes = $scope.myNotes.map(function (note) {
           if (note._id === res.data._id) { return res.data; }
           return note;
         });

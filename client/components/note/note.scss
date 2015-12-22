@@ -28,3 +28,11 @@
   margin-left: $fill-margin;
 }
 
+lt-note-viewer {
+  display: block;
+
+  iframe,
+  img {
+    width: 100%;
+  }
+}

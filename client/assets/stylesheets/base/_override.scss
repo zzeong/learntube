@@ -12,9 +12,8 @@ md-list-item {
     &:not([disabled]):hover { background-color: $youtube-color-action; }
   }
 
-  &.md-raised-color-accent {
-    color: rgba($blue-a200, 0.87);
-  }
+  &.md-raised-color-accent { color: rgba($blue-a200, 0.87); }
+  &.md-raised-color-warn { color: rgba($deep-orange-500, 0.87); }
 }
 
 .lecturelist {

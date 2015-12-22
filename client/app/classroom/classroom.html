@@ -105,7 +105,7 @@
         <md-icon md-font-set="material-icons">description</md-icon>
       </md-tab-label>
       <md-tab-body>
-        <div class="frame-padding tab-area__note">
+        <div class="frame-padding--constant-offset tab-area__note">
           <lt-note-unit lt-note-type="editor" ng-if="note.editor.activator" lt-note-model="note.editor">
             <lt-note-object></lt-note-object>
             <lt-note-actions lt-on-cancel="fab.enable()" lt-on-add="note.upload($type, $file)"></lt-note-actions>
@@ -115,6 +115,16 @@
             <lt-note-object></lt-note-object>
             <lt-note-actions lt-on-cancel="fab.enable()" lt-on-add="note.upload($type, $file)"></lt-note-actions>
           </lt-note-unit>
+
+          <div class="my-note">
+            <div class="my-note__unit" ng-repeat="note in myNotes | orderBy: '-created'">
+              <lt-note-viewer lt-note="note"></lt-note-viewer>
+              <div class="action-area" layout="row" layout-align="start center">
+                <md-button class="md-raised" ng-click="foo()">Edit</md-button>
+                <md-button class="md-raised md-raised-color-warn" ng-click="bar()">Delete</md-button>
+              </div>
+            </div>
+          </div>
         </div>
       </md-tab-body>
     </md-tab>
