@@ -1,0 +1,12 @@
+.uploaded-lecturelist__list {
+  @include respond-to('small') {
+    width: 368px;
+    float: right;
+  }
+}
+
+.uploaded-lecturelist__desc {
+  @include respond-to('small') {
+    margin-right: 368px + 16;
+  }
+}

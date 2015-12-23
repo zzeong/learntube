@@ -9,43 +9,45 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
 <div flex layout="column">
   <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
   <div flex class="flex-scroll">
-    <div class="inner-content">
-      <h2 class="md-headline">{{ summary.snippet.title }}</h2>
-      <div class="md-body-1" ng-bind-html="summary.snippet.description">
+    <div class="main-content__inner">
+      <div class="main-content__whiteframe-wrapper">
+        <div class="uploaded-lecturelist__list">
+          <h2 class="md-body-2 category-title" hide-gt-xs>Description</h2>
+          <md-whiteframe class="frame-padding responsive-whiteframe">
+            <h2 class="md-title" hide-xs>Description</h2>
+            <div class="md-body-1" ng-bind-html="class.description"></div>
+          </md-whiteframe>
+        </div>
+        <div class="uploaded-lecturelist__desc">
+          <h2 class="md-body-2 category-title" hide-gt-xs>Lecture list</h2>
+          <md-whiteframe class="responsive-whiteframe">
+            <ul class="numbering whiteframe__lecturelist">
+              <li ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
+                <a class="anchor-mask" ng-href="{{ href('edit-lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
+                  <lt-listcard lt-responsive-morph="false">
+                    <lt-listcard-media>
+                      <div class="video-thumb">
+                        <img ng-src="{{ lecture.snippet.thumbnails.medium.url }}" alt="Lecture thumbnail">
+                        <p class="video-thumb__duration lt-caption-s">{{ lecture.contentDetails.duration | humanable }}</p>
+                      </div>
+                    </lt-listcard-media>
+
+                    <lt-listcard-content class="lt-listcard__inner--squashed-only-desktop">
+                      <h3 class="ellipsis-2 lt-title-s">{{ lecture.snippet.title }}</h3>
+                      <p class="ellipsis-1 lt-subhead-s">{{ lecture.contentDetails.duration | humanable }}</p>
+                      <p class="lt-subhead-s">views</p>
+                    </lt-listcard-content>
+
+                    <lt-listcard-actions hide-xs>
+                      <md-checkbox class="lecturelist__second-action--centered" ng-click="pushLecture(lecture)" aria-label="Select lecture"></md-checkbox>
+                    </lt-listcard-actions>
+                  </lt-listcard>
+                </a>
+              </li>
+            </ul>
+          </md-whiteframe>
+        </div>
       </div>
-      </br>
-    </div>
-
-    <md-divider></md-divider>
-
-    <div class="inner-content">
-
-      <md-button class="md-raised" ng-click="deleteLectures()" ng-disabled="!lectureDelBucket.length">Delete</md-button>
-
-      <ul class="numbering whiteframe__lecturelist">
-        <li ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
-          <a class="anchor-mask" ng-href="{{ href('edit-lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
-            <lt-listcard lt-responsive-morph="false">
-              <lt-listcard-media>
-                <div class="video-thumb">
-                  <img ng-src="{{ lecture.snippet.thumbnails.medium.url }}" alt="Lecture thumbnail">
-                  <p class="video-thumb__duration lt-caption-s">{{ lecture.contentDetails.duration | humanable }}</p>
-                </div>
-              </lt-listcard-media>
-
-              <lt-listcard-content class="lt-listcard__inner--squashed-only-desktop">
-                <h3 class="ellipsis-2 lt-title-s">{{ lecture.snippet.title }}</h3>
-                <p class="ellipsis-1 lt-subhead-s">{{ lecture.contentDetails.duration | humanable }}</p>
-                <p class="lt-subhead-s">views</p>
-              </lt-listcard-content>
-
-              <lt-listcard-actions hide-xs>
-                <md-checkbox class="lecturelist__second-action--centered" ng-click="pushLecture(lecture)"></md-checkbox>
-              </lt-listcard-actions>
-            </lt-listcard>
-          </a>
-        </li>
-      </ul>
     </div>
   </div>
 </div>
