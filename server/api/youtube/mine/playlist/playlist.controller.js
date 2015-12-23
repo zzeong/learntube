@@ -166,15 +166,13 @@ exports.create = (req, res, next) => {
  * @apiSuccessExample Success-Response:
  *     HTTP/1.1 204 No Content
  */
-exports.destroy = function (req, res, next) {
-  var params = { id: req.query.playlistId, };
+exports.destroy = (req, res, next) => {
+  let pid = req.query.playlistId;
+  let params = { id: pid };
 
   g.youtube('playlists.delete', params)
-  .then(function () {
-    return req.user.updateAccessToken(g);
-  })
-  .then(function () {
-    res.status(204).send();
-  })
+  .then(() => Class.findOne({ playlistId: pid }).exec())
+  .then(() => req.user.updateAccessToken(g))
+  .then(() => { res.status(204).send(); })
   .catch(next);
 };

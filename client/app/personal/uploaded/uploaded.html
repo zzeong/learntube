@@ -2,7 +2,7 @@
 ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-xs')">
 </md-sidenav>
 
-<md-button class="md-fab fixed-fab" aria-label="Add class" ng-click="showDialog($event)">
+<md-button class="md-fab fixed-fab" aria-label="Add class" ng-click="showAddDialog($event)">
   <md-icon md-font-set="material-icons">add</md-icon>
 </md-button>
 
@@ -31,14 +31,14 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
                   ng-click="$mdOpenMenu($event)" aria-label="Actions menu">more_vert</md-icon>
                   <md-menu-content width="2">
                     <md-menu-item>
-                      <md-button ng-click="bar()">Delete</md-button>
+                      <md-button ng-click="showDeleteDialog($event, class)">Delete</md-button>
                     </md-menu-item>
                   </md-menu-content>
                 </md-menu>
               </lt-listcard-content>
 
               <lt-listcard-actions layout="row" layout-align="end center" hide-xs>
-                <md-button class="lt-button-s md-accent" ng-click="bar()">Delete</md-button>
+                <md-button class="lt-button-s md-accent" ng-click="showDeleteDialog($event, class)">Delete</md-button>
               </lt-listcard-actions>
             </lt-listcard>
           </a>

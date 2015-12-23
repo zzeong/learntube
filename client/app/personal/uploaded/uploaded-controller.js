@@ -6,7 +6,8 @@
 
   function UploadedContentsCtrl($state, $scope, $mdDialog, $http) {
     $scope.href = $state.href.bind(null);
-    $scope.showDialog = showDialog;
+    $scope.showAddDialog = showAddDialog;
+    $scope.showDeleteDialog = showDeleteDialog;
     $scope.deleteClass = deleteClass;
 
     $http.get('/api/youtube/mine/playlists')
@@ -15,7 +16,7 @@
     })
     .catch(console.error);
 
-    function showDialog(ev) {
+    function showAddDialog(ev) {
       $mdDialog.show({
         controller: Controller,
         templateUrl: 'components/dialog/add-class.html',
@@ -56,8 +57,22 @@
       }
     }
 
-    function deleteClass(classe, ev) {
+    function showDeleteDialog(ev, classe) {
       ev.preventDefault();
+
+      var confirm = $mdDialog.confirm()
+      .title('Delete the class')
+      .textContent('Are you sure?')
+      .ariaLabel('Delete the class')
+      .targetEvent(ev)
+      .ok('Ok')
+      .cancel('Cancel');
+
+      $mdDialog.show(confirm)
+      .then(() => { $scope.deleteClass(classe); });
+    }
+
+    function deleteClass(classe) {
       $http.delete('/api/youtube/mine/playlists', {
         params: { playlistId: classe.id }
       })
