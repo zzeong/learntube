@@ -1,29 +1,43 @@
 <md-dialog class="add-dialog" aria-label="New class">
-  <form ng-submit="addClass(newClass)">
+  <form ng-submit="addClass(newClass)" name="newClassForm">
+    <md-dialog-content class="md-dialog-content">
+      <h2 class="md-title">Add a new class</h2>
 
-    <md-dialog-content>
-      <h2 class="md-title">New Class</h2>
-
-      <md-input-container>
-        <label>Class Title</label>
-        <input required name="name" ng-model="newClass.title">
+      <md-input-container md-no-float class="md-block">
+        <input required placeholder="Title" name="title" ng-model="newClass.title">
+        <div ng-messages="newClassForm.title.$error">
+          <div ng-message="required">This is required.</div>
+        </div>
       </md-input-container>
 
-      <md-input-container>
-        <label>Description</label>
-        <textarea name="desc" ng-model="newClass.desc" columns="1" md-maxlength="200"></textarea>
+      <md-input-container md-no-float class="md-block">
+        <textarea required placeholder="Description" name="desc" ng-model="newClass.desc"
+        columns="1" md-maxlength="200" rows="5"></textarea>
+        <div ng-messages="newClassForm.desc.$error">
+          <div ng-message="required">This is required.</div>
+        </div>
+      </md-input-container>
+
+      <md-input-container md-no-float class="md-block" flex-gt-xs="50">
+        <md-select required ng-model="newClass.slug" name="slug" placeholder="Category">
+          <md-option ng-repeat="category in categories" value="{{ category.slug }}">
+            {{ category.orig }}
+          </md-option>
+        </md-select>
+        <div ng-messages="newClassForm.slug.$error">
+          <div ng-message="required">This is required.</div>
+        </div>
       </md-input-container>
     </md-dialog-content>
 
     <div class="md-actions" layout="row">
-      <md-button type="button" class="md-warn" ng-click="cancel()">
+      <md-button type="button" ng-click="cancel()">
         Cancel
       </md-button>
-      <md-button type="submit">
+      <md-button type="submit" class="md-accent" ng-disabled="newClassForm.$invalid">
         Add
       </md-button>
     </div>
-
   </form>
 </md-dialog>
 

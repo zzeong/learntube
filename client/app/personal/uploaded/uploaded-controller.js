@@ -1,22 +1,39 @@
-'use strict';
+(function (angular) {
+  'use strict';
 
-angular.module('learntubeApp')
-.controller('UploadedContentsCtrl', function ($state, $scope, $mdDialog, $http) {
-  $scope.href = $state.href.bind(null);
+  angular.module('learntubeApp')
+  .controller('UploadedContentsCtrl', UploadedContentsCtrl);
 
-  $http.get('/api/youtube/mine/playlists')
-  .then(function (res) {
-    $scope.classes = res.data.items;
-  })
-  .catch(console.error);
+  function UploadedContentsCtrl($state, $scope, $mdDialog, $http) {
+    $scope.href = $state.href.bind(null);
+    $scope.showDialog = showDialog;
+    $scope.deleteClass = deleteClass;
 
-  $scope.showDialog = function (ev) {
-    $mdDialog.show({
-      controller: function ($scope, $mdDialog) {
-        $scope.cancel = function () {
-          $mdDialog.cancel();
-        };
-        $scope.addClass = function (classe) {
+    $http.get('/api/youtube/mine/playlists')
+    .then((res) => {
+      $scope.classes = res.data.items;
+    })
+    .catch(console.error);
+
+    function showDialog(ev) {
+      $mdDialog.show({
+        controller: Controller,
+        templateUrl: 'components/dialog/add-class.html',
+        parent: angular.element(document.body),
+        targetEvent: ev,
+        clickOutsideToClose: true
+      })
+      .then((item) => {
+        $scope.classes.unshift(item);
+      })
+      .catch(console.error);
+
+      function Controller($scope, $mdDialog, Category) {
+        $scope.cancel = $mdDialog.cancel;
+        $scope.addClass = addClass;
+        $scope.categories = Category.name;
+
+        function addClass(classe) {
           $http.post('/api/youtube/mine/playlists', {
             resource: {
               snippet: {
@@ -27,32 +44,27 @@ angular.module('learntubeApp')
                 privacyStatus: 'public',
               },
             },
+            extras: {
+              categorySlug: classe.slug,
+            },
           })
-          .then(function (res) {
+          .then((res) => {
             $mdDialog.hide(res.data);
           })
           .catch(console.error);
-        };
-      },
-      templateUrl: 'components/dialog/add-class.html',
-      parent: angular.element(document.body),
-      targetEvent: ev,
-      clickOutsideToClose: true
-    })
-    .then(function (item) {
-      $scope.classes.unshift(item);
-    })
-    .catch(console.error);
-  };
+        }
+      }
+    }
 
-  $scope.deleteClass = function (classe) {
-    $http.delete('/api/youtube/mine/playlists', {
-      params: { playlistId: classe.id }
-    })
-    .then(function () {
-      _.remove($scope.classes, classe);
-    })
-    .catch(console.error);
-  };
+    function deleteClass(classe, ev) {
+      ev.preventDefault();
+      $http.delete('/api/youtube/mine/playlists', {
+        params: { playlistId: classe.id }
+      })
+      .then(() => { _.remove($scope.classes, classe); })
+      .catch(console.error);
+    }
+  }
 
-});
+  UploadedContentsCtrl.$inject = ['$state', '$scope', '$mdDialog', '$http'];
+})(angular);

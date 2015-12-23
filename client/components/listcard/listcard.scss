@@ -40,7 +40,9 @@ lt-listcard {
       }
 
       lt-listcard-media img {
-        width: 230px;
+        $w: 230px;
+        width: $w;
+        height: $w * 9 / 16;
         margin: 0;
       }
 
@@ -77,7 +79,12 @@ lt-listcard-media {
   margin: 0 8px;
   padding: 8px 0;
   float: left;
-  img { width: 128px; }
+
+  img {
+    $w: 128px;
+    width: $w;
+    height: $w * 9 / 16;
+  }
 }
 
 lt-listcard-content {

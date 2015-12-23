@@ -65,6 +65,11 @@ exports.index = function (req, res, next) {
     var promises = body.items.map(function (item) {
       return Class.findOne({ playlistId: item.id }).exec()
       .then(function (classe) {
+        if (!classe) {
+          item.rate = 0;
+          item.views = 0; // this is UNTRUSTORTHY value. it will be repalce when a crawler is created.
+          return Promise.resolve();
+        }
         item.rate = _.has(classe.toObject(), 'rate') ? classe.rate : 0;
         item.views = classe.views;
         return Promise.resolve();
@@ -111,21 +116,35 @@ exports.index = function (req, res, next) {
  *       playlist_resource_properties
  *     }
  */
-exports.create = function (req, res, next) {
-  var body = {};
-  var params = _.assign({
+exports.create = (req, res, next) => {
+  let body = {};
+  let params = _.assign({
     part: 'snippet,status',
     fields: 'id,snippet,status',
-  }, req.body);
+  }, _.pick(req.body, 'resource'));
 
   g.youtube('playlists.insert', params)
-  .then(function (item) {
-    body = item;
-    return req.user.updateAccessToken(g);
+  .then((item) => {
+    let doc = {
+      categorySlug: req.body.extras.categorySlug,
+      playlistId: item.id,
+      channelId: item.snippet.channelId,
+      rate: 0,
+      views: 0,
+    };
+
+    body = {
+      thumbnailUrl: item.snippet.thumbnails.medium.url,
+      title: item.snippet.title,
+      id: item.id,
+      rate: doc.rate,
+      views: doc.views,
+    };
+
+    return Class.create(doc);
   })
-  .then(function () {
-    res.status(201).json(body);
-  })
+  .then(() => req.user.updateAccessToken(g))
+  .then(() => { res.status(201).json(body); })
   .catch(next);
 };
 
