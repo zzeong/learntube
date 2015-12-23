@@ -4,15 +4,6 @@ angular.module('learntubeApp')
 .controller('ToolbarCtrl', function ($scope, $location, $state, $window, Auth, navToggler) {
 
   $scope.pageWidth = window.innerWidth;
-  console.log($scope.pageWidth);
-
-  window.onresize = function () {
-    $scope.pageWidth = window.innerWidth;
-
-    if (598 < $scope.pageWidth && $scope.pageWidth < 603) {
-      location.reload();
-    }
-  };
 
   var getMobileTitle = function () {
     var title = _.has($state.current, 'data') ? $state.current.data.pageName : '';
