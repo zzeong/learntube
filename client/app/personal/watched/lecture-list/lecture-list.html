@@ -20,9 +20,9 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
     <div class="inner-content">
       <ul class="numbering whiteframe__lecturelist">
         <li ng-repeat="lecture in lectureList">
-          <a class="anchor-mask" ng-href="{{ href('classroom', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
-            <lt-listcard lt-responsive-morph="false">
-              <lt-listcard-media>
+          <lt-listcard lt-responsive-morph="false">
+            <a class="anchor-mask" ng-href="{{ href('classroom', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
+              <lt-listcard-media class="watched-lecturelist-thumbnail">
                 <div class="video-thumb">
                   <img ng-src="{{ lecture.snippet.thumbnails.medium.url }}" alt="Lecture thumbnail">
                   <p class="video-thumb__duration lt-caption-s">{{ lecture.contentDetails.duration | humanable }}</p>
@@ -39,16 +39,19 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
                   <p am-time-ago="lecture.completedAt" class="lecturelist__complete-date lt-caption-s"></p>
                 </div>
               </lt-listcard-content>
+            </a>
 
-              <lt-listcard-actions>
-                <md-button class="lecturelist__second-action lt-button-s md-accent" ng-show="lecture.noteIconVisible"
-                ng-click="showNote(lecture, $event)">VIEW NOTE</md-button>
-              </lt-listcard-actions>
-            </lt-listcard>
-          </a>
+            <lt-listcard-actions>
+              <md-button class="lecturelist__second-action lt-button-s md-accent" ng-show="lecture.noteIconVisible"
+              ng-click="toggleRight(); showNote(lecture)">VIEW NOTE</md-button>
+            </lt-listcard-actions>
+          </lt-listcard>
         </li>
       </ul>
     </div>
   </div>
 </div>
 
+<md-sidenav flex="none" class="md-sidenav-right md-whiteframe-z2 category-sidenav"
+ng-include="'components/sidenav/sidenavNoteview.html'" md-component-id="right" md-is-locked-open="$mdMedia('gt-xs')">
+</md-sidenav>
