@@ -34,8 +34,8 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
 
                     <lt-listcard-content class="lt-listcard__inner--squashed-only-desktop">
                       <h3 class="ellipsis-2 lt-title-s">{{ lecture.snippet.title }}</h3>
-                      <p class="ellipsis-1 lt-subhead-s">{{ lecture.contentDetails.duration | humanable }}</p>
-                      <p class="lt-subhead-s">views</p>
+                      <p class="ellipsis-1 lt-subhead-s">{{ lecture.snippet.channelTitle }}</p>
+                      <p class="lt-subhead-s">{{ lecture.statistics.viewCount | thousandSuffix }}</p>
                     </lt-listcard-content>
 
                     <lt-listcard-actions hide-xs>

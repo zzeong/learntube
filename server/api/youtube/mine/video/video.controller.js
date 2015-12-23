@@ -50,7 +50,7 @@ exports.index = function (req, res, next) {
   .then(function (response) {
     body = gapiHelper.createBodyForList(response);
     if (req.query.withDuration) {
-      return gapiHelper.applyDuration(g, body.items);
+      return gapiHelper.applyAdditional(g, body.items);
     }
     return Promise.resolve();
   })

@@ -1,6 +1,6 @@
 'use strict';
 
-function applyDuration(g, list) {
+function applyAdditional(g, list) {
   if (!list.length) { list = [list]; }
   var id = serializeId(list, ',');
 
@@ -11,14 +11,15 @@ function applyDuration(g, list) {
   }
 
   return g.youtube('videos.list', {
-    part: 'contentDetails,status',
+    part: 'contentDetails,status,statistics',
     id: id,
-    fields: 'items(contentDetails(duration),status(uploadStatus,rejectionReason,privacyStatus))',
+    fields: 'items(contentDetails(duration),status(uploadStatus,rejectionReason,privacyStatus),statistics)',
   })
   .then(function (response) {
     list.forEach(function (item, i) {
       item.contentDetails = response.items[i].contentDetails;
       item.status = response.items[i].status;
+      item.statistics = response.items[i].statistics;
     });
   });
 }
@@ -31,6 +32,6 @@ function createBodyForList(res) {
   return body;
 }
 
-module.exports.applyDuration = applyDuration;
+module.exports.applyAdditional = applyAdditional;
 module.exports.createBodyForList = createBodyForList;
 

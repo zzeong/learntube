@@ -79,7 +79,7 @@ exports.index = (req, res, next) => {
     };
 
     if (req.query.withDuration) {
-      return gapiHelper.applyDuration(g, body.items);
+      return gapiHelper.applyAdditional(g, body.items);
     }
     return Promise.resolve();
   })
@@ -141,7 +141,7 @@ exports.create = function (req, res, next) {
   .then(function (item) {
     body = item;
     if (req.query.withDuration) {
-      return gapiHelper.applyDuration(g, body);
+      return gapiHelper.applyAdditional(g, body);
     }
     return Promise.resolve();
   })
