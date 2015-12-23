@@ -41,12 +41,15 @@ require('mongoose').Promise = Promise;
  */
 exports.index = function (req, res, next) {
   var body = {};
-  var params = {
+
+  var defaults = {
     part: 'id,snippet,status',
-    mine: true,
     maxResults: config.google.maxResults,
     fields: 'items(id,snippet,status),nextPageToken',
   };
+
+  var params = _.assign(defaults, req.query);
+  if (!_.has(req.query, 'id')) { params.mine = true; }
 
   g.youtube('playlists.list', params)
   .then(function (response) {
@@ -58,6 +61,7 @@ exports.index = function (req, res, next) {
       return {
         thumbnailUrl: item.snippet.thumbnails.medium.url,
         title: item.snippet.title,
+        description: item.snippet.description,
         id: item.id,
       };
     });
@@ -136,6 +140,7 @@ exports.create = (req, res, next) => {
     body = {
       thumbnailUrl: item.snippet.thumbnails.medium.url,
       title: item.snippet.title,
+      description: item.snippet.description,
       id: item.id,
       rate: doc.rate,
       views: doc.views,

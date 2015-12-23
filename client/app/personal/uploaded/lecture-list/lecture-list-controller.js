@@ -15,17 +15,11 @@
     var scope = $scope;
 
     $http.get('/api/youtube/mine/playlists', {
-      params: {
-        playlistId: $scope.playlistId,
-      },
+      params: { id: $scope.playlistId, },
     })
     .then((res) => {
-      for (var i in res.data.items) {
-        if (res.data.items[i].id === $scope.playlistId) {
-          $scope.summary = res.data.items[i];
-          $scope.summary.snippet.description = compileToHTML($scope.summary.snippet.description);
-        }
-      }
+      $scope.class = res.data.items[0];
+      $scope.class.description = compileToHTML($scope.class.description);
     })
     .catch(console.error);
 
