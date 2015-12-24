@@ -32,6 +32,9 @@ module.exports = function (config) {
       'client/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
       'client/bower_components/moment/moment.js',
       'client/bower_components/angular-moment/angular-moment.js',
+      'client/bower_components/d3/d3.js',
+      'client/bower_components/c3/c3.js',
+      'client/bower_components/c3-angular/c3-angular.min.js',
       'client/bower_components/Blob/Blob.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
       // endbower
