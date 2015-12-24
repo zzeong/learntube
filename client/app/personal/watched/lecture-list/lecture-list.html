@@ -9,8 +9,18 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
   <div flex class="flex-scroll">
     <div class="inner-content">
       <p class="md-body-2 section-title">My learning info</p>
-      <div class="d3-visaul-content">
-        <d3-bars data="vdata"></d3-bars>
+      <div class="v11n-content">
+        <c3chart bindto-id="learning-info" chart-data="chart.data" chart-columns="chart.columns"
+        chart-x="chart.x">
+          <chart-axis>
+            <chart-axis-x axis-id="x" axis-type="timeseries">
+              <chart-axis-x-tick tick-format-function="timeFormat"></chart-axis-x-tick>
+            </chart-axis-x>
+            <chart-axis-y>
+              <chart-axis-y-tick tick-format="d"></chart-axis-x-tick>
+            </chart-axis-y>
+          </chart-axis>
+        </c3chart>
       </div>
     </div>
 
@@ -55,3 +65,4 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
 <md-sidenav flex="none" class="md-sidenav-right md-whiteframe-z2 category-sidenav"
 ng-include="'components/sidenav/sidenavNoteview.html'" md-component-id="right" md-is-locked-open="$mdMedia('gt-xs')">
 </md-sidenav>
+

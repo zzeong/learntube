@@ -18,6 +18,7 @@
     "fit": true,
     "expect": true,
     "spyOn": true,
-    "CKEDITOR": true
+    "CKEDITOR": true,
+    "d3": true
   }
 }

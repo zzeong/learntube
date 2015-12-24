@@ -1,15 +1,10 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('WatchedLectureListCtrl', function ($scope, Auth, $state, $http, WatchedContent, $filter, Note, GApi, GoogleConst, $q, PlaylistItem) {
+.controller('WatchedLectureListCtrl', function ($scope, Auth, $state, $http, WatchedContent, Note, GApi, GoogleConst, $q, PlaylistItem, $filter) {
   $scope.playlistId = $state.params.pid;
   $scope.href = $state.href;
   $scope.getPageToken = PlaylistItem.getPageToken;
-
-  $scope.message = {
-    text: 'hello world!',
-    time: new Date()
-  };
 
   $scope.loadMore = function () {
     $scope.httpBusy = true;
@@ -22,8 +17,21 @@ angular.module('learntubeApp')
     .catch(console.error);
   };
 
-  var separateLecture = function (specificLecture) {
+  $scope.chart = {
+    data: [],
+    x: { id: 'x' },
+    columns: [{
+      id: 'lecture', type: 'line', name: 'completed lecture'
+    }, {
+      id: 'note', type: 'line', name: 'created note'
+    }]
+  };
 
+  $scope.timeFormat = function (timestamp) {
+    return d3.time.format('%Y-%m-%d')(new Date(timestamp));
+  };
+
+  var separateLecture = function (specificLecture) {
     for (var k in $scope.lectureList) {
       for (var s in specificLecture) {
         if ($scope.lectureList[k].snippet.resourceId.videoId === specificLecture[s].videoId) {
@@ -33,42 +41,6 @@ angular.module('learntubeApp')
         }
       }
     }
-
-  };
-
-  var fitToD3 = function (data) {
-    var timeMachine = function (offset) {
-      var d = new Date();
-      d.setDate(d.getDate() + offset);
-      return d;
-    };
-
-    var filler = _.range(14).map(function (i) {
-      return {
-        date: timeMachine(-i),
-        value: 0
-      };
-    });
-
-    var source = _(data).countBy(function (lecture) {
-      return lecture.completedAt;
-    })
-    .pairs()
-    .map(function (pair) {
-      return {
-        date: new Date(pair[0]),
-        value: pair[1]
-      };
-    })
-    .value();
-
-    return filler.map(function (d) {
-      d = _.find(source, function (s) {
-        return s.date.getDate() === d.date.getDate();
-      }) || d;
-      return d;
-    });
-
   };
 
   if (!Auth.isLoggedIn()) { $state.go('login'); }
@@ -94,7 +66,6 @@ angular.module('learntubeApp')
     .then(function (response) {
 
       $scope.watchedLectures = response[0].lectures;
-      $scope.vdata = fitToD3($scope.watchedLectures);
       separateLecture($scope.watchedLectures);
     })
     .catch(console.error);
@@ -105,6 +76,7 @@ angular.module('learntubeApp')
     .then(function (response) {
       $scope.haveNoteLectures = response;
       separateLecture('noteIconVisible', $scope.haveNoteLectures);
+      $scope.chart.data = transformToChart($scope.lectureList);
     })
     .catch(console.error);
 
@@ -129,4 +101,39 @@ angular.module('learntubeApp')
     };
   })
   .catch(console.error);
+
+
+  function transformToChart(list) {
+    let v11nData = getC3BaseData();
+    let groupedObj = _.groupBy(list, (el) => y4m2d2Format(el.completedAt));
+
+    return v11nData.map((datum) => {
+      let target = groupedObj[y4m2d2Format(datum.x)] || [];
+      datum.lecture = target.filter((el) => el.highlight || false).length;
+      datum.note = target.filter((el) => el.noteIconVisible || false).length;
+      return datum;
+    });
+  }
+
+  function getC3BaseData() {
+    const DURATION = 10;
+    return _(_.times(DURATION)).reverse()
+    .map((el) => ({
+      x: moveDate(-el),
+      lecture: 0,
+      note: 0
+    }))
+    .value();
+  }
+
+  function y4m2d2Format(date) {
+    date = _.isString(date) ? new Date(date) : date;
+    return $filter('amDateFormat')(date, 'YYYY-MM-DD');
+  }
+
+  function moveDate(offset) {
+    var d = new Date();
+    d.setDate(d.getDate() + offset);
+    return d;
+  }
 });
