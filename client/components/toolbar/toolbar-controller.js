@@ -1,19 +1,33 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('ToolbarCtrl', function ($scope, $location, $state, $window, Auth, navToggler) {
+.controller('ToolbarCtrl', function ($scope, $location, $state, $window, Auth, navToggler, $filter, Category) {
 
-  $scope.pageWidth = window.innerWidth;
+  // url에서 Toolbar title을 받아오자
+  $scope.categoryTitle = _.find(Category.name, (name) => {
+    return _.isEqual($filter('urlSafely')(name.orig), $state.params.ctname);
+  });
+
+  // pageWidth를 측정하여 툴바 모양 결정
+  $scope.pageWidth = document.documentElement.clientWidth;
 
   var getMobileTitle = function () {
     var title = _.has($state.current, 'data') ? $state.current.data.pageName : '';
     if ($scope.pageWidth < 600) {
+
       title = $scope.stateNameCheck('search') ? $state.params.q : title;
     } else {
-      title = $scope.stateNameCheck('search') ? 'Search' : title;
+      if ($scope.stateNameCheck('search') === true) {
+        title = $state.params.q;
+      } else if ($scope.stateNameCheck('category-other') === true) {
+        title = $scope.categoryTitle.orig;
+      } else {
+        title = title;
+      }
     }
     return title;
   };
+
 
   // search input에 대한 판단
   var getOnSearching = function () {
@@ -110,6 +124,7 @@ angular.module('learntubeApp')
 
   $scope.deleteValue = function () {
     $scope.q = null;
+    $scope.focusElement = 'input1';
   };
 
   $scope.goBackward = function () {
@@ -119,4 +134,5 @@ angular.module('learntubeApp')
       $scope.toggleSearchingState();
     }
   };
+
 });

@@ -8,6 +8,7 @@
 
 .toolbar-search {
   width: 100%;
+  min-width: 150px;
   max-width: 500px;
 
   @include respond-to('small') {
@@ -19,12 +20,6 @@
 
 .toolbar-search__form {
   position: relative;
-}
-
-.toolbar-search__icon {
-  position: absolute;
-  top: 7px;
-  right: 0;
 }
 
 .toolbar-search__input {
@@ -40,6 +35,13 @@
     border-radius: $md-border-radius;
     background: $white;
   }
+}
+
+.toolbar-search__icon {
+  position: absolute;
+  top: 7px;
+  right: 0;
+  cursor: pointer;
 }
 
 .toolbar--onsearch {

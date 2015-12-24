@@ -11,21 +11,21 @@
   <!-- PAGE TITLE -->
   <div class="page-title" ng-hide="searchAtMobile">
     <h2>
-      <span>{{ title }}</span>
+      <span class="ellipsis-1">{{ title }}</span>
     </h2>
   </div>
 
   <!-- onSearching으로 진입하는 search icon -->
   <md-button hide-gt-xs ng-hide="onSearching" class="md-icon-button" aria-label="More"
-  ng-click="toggleSearchingState()">
+  ng-click="toggleSearchingState();">
     <md-icon md-font-set="material-icons">search</md-icon>
   </md-button>
 
   <!-- SEARCH INPUT -->
   <div class="toolbar-search" ng-show="onSearching">
     <form class="toolbar-search__form" ng-submit="go('search', { q: q });">
-      <input class="toolbar-search__input" ng-class="{ 'yellow-input': yellowInput }" ng-model="q" type="search" placeholder="search class"/>
-      <md-icon class="toolbar-search__icon" md-font-set="material-icons" ng-show="webSearchIcon">search</md-icon>
+      <input my-focus id="input1" class="toolbar-search__input" ng-class="{ 'yellow-input': yellowInput }" ng-model="q" type="search" placeholder="search class"/>
+      <md-icon ng-click="go('search', { q: q });" class="toolbar-search__icon" md-font-set="material-icons" ng-show="webSearchIcon">search</md-icon>
     </form>
   </div>
 
@@ -63,15 +63,15 @@
     </md-button>
   </div>
 
-  <md-menu md-offset="12 -1" md-position-mode="target-right target" hide-gt-xs>
-    <md-button class="md-icon-button" aria-label="More">
-      <!-- 로그인 메뉴를 여는 more icon -->
-      <md-icon ng-hide="onSearching" ng-click="$mdOpenMenu($event)"
-      md-menu-origin md-font-set="material-icons">more_vert</md-icon>
+  <!-- 검색어를 한번에 지우는 clear icon -->
+  <md-button class="md-icon-button" aria-label="More" ng-show="onSearching" ng-click="deleteValue()">
+    <md-icon md-font-set="material-icons">clear</md-icon>
+  </md-button>
 
-      <!-- 검색어를 한번에 지우는 clear icon -->
-      <md-icon ng-show="onSearching" ng-click="deleteValue(); toggleSearchingIcon()"
-      md-font-set="material-icons">clear</md-icon>
+  <md-menu md-offset="12 -1" md-position-mode="target-right target" hide-gt-xs>
+    <!-- 로그인 메뉴를 여는 more icon -->
+    <md-button ng-hide="onSearching" ng-click="$mdOpenMenu($event)" class="md-icon-button">
+      <md-icon md-menu-origin md-font-set="material-icons">more_vert</md-icon>
     </md-button>
 
     <md-menu-content width="3">

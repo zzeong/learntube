@@ -42,6 +42,26 @@ angular.module('learntubeApp', [
   };
 })
 
+.directive('myFocus', function () {
+  return {
+    restrict: 'A',
+    link: function postLink(scope, element, attrs) {
+      if (attrs.myFocus === '') {
+        attrs.myFocus = 'focusElement';
+      }
+      scope.$watch(attrs.myFocus, function (value) {
+        if (value === attrs.id) {
+          element[0].focus();
+        }
+      });
+      element.on('blur', function () {
+        scope[attrs.myFocus] = '';
+        scope.$apply();
+      });
+    }
+  };
+})
+
 .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location, $window) {
   return {
     // Add authorization token to headers
