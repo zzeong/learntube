@@ -83,3 +83,8 @@ md-fab-actions {
     color: $grey-600;
   }
 }
+
+.md-input-container--no-margin {
+  margin: 0;
+  .md-errors-spacer { min-height: 0; }
+}

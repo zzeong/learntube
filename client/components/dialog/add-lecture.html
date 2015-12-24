@@ -1,62 +1,75 @@
 <md-dialog class="add-dialog" aria-label="Add lecture">
-
-  <md-tabs class="add-dialog__lec" md-border-bottom>
-
-    <md-tab label="Search videos">
-      <md-content class="md-padding">
-
+  <md-tabs class="add-dialog__lec" md-border-bottom md-stretch-tabs="always">
+    <md-tab label="Search">
+      <div layout-padding>
         <form ng-submit="search()">
-          <md-input-container class="search-box">
-            <label>Search</label>
-            <input type="search" ng-model="query" />
+          <md-input-container md-no-float class="md-block md-accent md-input-container--no-margin">
+            <input type="search" ng-model="query" placeholder="Search videos">
           </md-input-container>
         </form>
+      </div>
 
-        <md-list>
-          <md-list-item class="md-2-line md-hue-1" ng-class="{ 'search-box--lecture-selected': isSelected(video) }"
-          ng-repeat="video in searched" ng-click="selectVideo(video)">
-            <img class="search-box__lecture-thumb" ng-src="{{ video.snippet.thumbnails.default.url }}"
-            alt="Lecture Thumbnail" />
-            <div class="md-list-item-text">
-              <h3>{{ video.snippet.title | limitTo:30 }}{{ video.snippet.title.length > 40 ? '...' : '' }}</h3>
-            </div>
-          </md-list-item>
-        </md-list>
+      <ul>
+        <li ng-repeat="video in searched">
+          <button class="anchor-mask">
+            <lt-listcard lt-responsive-morph="false" lt-scale-down="true" ng-click="selectVideo(video)"
+            ng-class="{ 'search-box--lecture-selected': isSelected(video) }">
+              <lt-listcard-media>
+                <div class="video-thumb">
+                  <img ng-src="{{ video.snippet.thumbnails.medium.url }}" alt="Video thumbnail">
+                  <p class="video-thumb__duration lt-caption-s">{{ video.contentDetails.duration | humanable }}</p>
+                </div>
+              </lt-listcard-media>
 
-      </md-content>
+              <lt-listcard-content>
+                <div class="lt-listcard__height-keeper">
+                  <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ video.snippet.title }}</h3>
+                  <p class="ellipsis-1 lt-subhead-s">{{ video.snippet.channelTitle }}</p>
+                </div>
+                <span class="lt-listcard__small-sign lt-caption-s">{{ video.statistics.viewCount | thousandSuffix }}</span>
+              </lt-listcard-content>
+            </lt-listcard>
+          </button>
+        </li>
+      </ul>
     </md-tab>
-
 
     <md-tab label="My videos" md-on-select="getMyVideos()">
-      <md-content class="md-padding">
+      <ul>
+        <li ng-repeat="video in myVideos">
+          <button class="anchor-mask">
+            <lt-listcard lt-responsive-morph="false" lt-scale-down="true" ng-click="selectVideo(video)"
+            ng-class="{ 'search-box--lecture-selected': isSelected(video) }">
+              <lt-listcard-media>
+                <div class="video-thumb">
+                  <img ng-src="{{ video.snippet.thumbnails.medium.url }}" alt="Video thumbnail">
+                  <p class="video-thumb__duration lt-caption-s">{{ video.contentDetails.duration | humanable }}</p>
+                </div>
+              </lt-listcard-media>
 
-        <md-list>
-          <md-list-item class="md-2-line md-hue-1" ng-class="{ selected: isSelected(video) }"
-          ng-repeat="video in myVideos" ng-click="selectVideo(video)">
-            <img class="lecture-thumb" ng-src="{{ video.snippet.thumbnails.default.url }}" alt="Lecture Thumbnail"
-            />
-            <div class="md-list-item-text">
-              <h3>{{ video.snippet.title | limitTo:30 }}{{ video.snippet.title.length > 40 ? '...' : '' }}</h3>
-              <p>{{ video.contentDetails.duration | humanable }}</p>
-            </div>
-          </md-list-item>
-        </md-list>
-
-      </md-content>
+              <lt-listcard-content>
+                <div class="lt-listcard__height-keeper">
+                  <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ video.snippet.title }}</h3>
+                  <p class="ellipsis-1 lt-subhead-s">{{ video.snippet.channelTitle }}</p>
+                </div>
+                <span class="lt-listcard__small-sign lt-caption-s">{{ video.statistics.viewCount | thousandSuffix }}</span>
+              </lt-listcard-content>
+            </lt-listcard>
+          </button>
+        </li>
+      </ul>
     </md-tab>
-
   </md-tabs>
 
   <form ng-submit="addLecture(selectedVideo)">
-    <div class="md-actions" layout="row">
-      <md-button type="button" class="md-warn" ng-click="cancel()">
+    <md-dialog-actions layout="row">
+      <md-button type="button" class="md-accent" ng-click="cancel()">
         Cancel
       </md-button>
-      <md-button type="submit">
+      <md-button type="submit" class="md-accent">
         Add
       </md-button>
-    </div>
+    </md-dialog-actions>
   </form>
-
 </md-dialog>
 

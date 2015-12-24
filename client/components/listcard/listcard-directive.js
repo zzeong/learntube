@@ -9,14 +9,14 @@
       restrict: 'E',
       scope: {
         responsiveMorph: '=ltResponsiveMorph',
+        scaleDown: '=ltScaleDown',
       },
       link: postLink,
     };
 
     function postLink(scope, elem) {
-      if (scope.responsiveMorph) {
-        elem.addClass('lt-listcard--morph');
-      }
+      if (scope.responsiveMorph) { elem.addClass('lt-listcard--morph'); }
+      if (scope.scaleDown) { elem.addClass('lt-listcard--small'); }
     }
   }
 

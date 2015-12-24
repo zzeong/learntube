@@ -11,6 +11,8 @@ body {
   overflow: hidden;
 }
 
+* { outline: none; }
+
 *,
 *::before,
 *::after {
@@ -74,3 +76,9 @@ input:focus {
 }
 
 iframe { border: 0; }
+
+button {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}

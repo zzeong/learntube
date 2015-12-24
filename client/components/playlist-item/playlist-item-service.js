@@ -4,7 +4,7 @@
   angular.module('learntubeApp')
   .factory('PlaylistItem', PlaylistItem);
 
-  function PlaylistItem(GApi, GoogleConst) {
+  function PlaylistItem(GApi, GoogleConst, YoutubeHelper) {
     var pageToken = null;
 
     return {
@@ -25,17 +25,12 @@
         return GApi.execute('youtube', 'playlistItems.list', params)
         .then((res) => {
           pageToken = res.nextPageToken;
-          return applyAdditional(res.items);
-        });
+          return YoutubeHelper.applyAdditional(res.items, 'snippet.resourceId.videoId');
+        })
+        .then((res) => res.map(fillInvalidLecture));
       },
       getPageToken: () => pageToken,
     };
-
-    function serializeIds(list) {
-      return list.map(function (item) {
-        return item.snippet.resourceId.videoId;
-      }).join(',');
-    }
 
     function fillPrivateLecture(lecture) {
       var status = lecture.status.privacyStatus;
@@ -59,27 +54,7 @@
       lecture = fillUnavailableLecture(lecture);
       return lecture;
     }
-
-    function applyAdditional(list) {
-      var ids = serializeIds(list);
-
-      return GApi.execute('youtube', 'videos.list', {
-        key: GoogleConst.browserKey,
-        part: 'id,contentDetails,status,statistics',
-        id: ids,
-        fields: 'items(id,contentDetails(duration),status,statistics)',
-      })
-      .then(function (res) {
-        var mappedById =  _.indexBy(res.items, (item) => item.id);
-
-        list = list.map((lecture) => {
-          return _.assign(lecture, _.omit(mappedById[lecture.snippet.resourceId.videoId], 'id'));
-        })
-        .map(fillInvalidLecture);
-        return list;
-      });
-    }
   }
 
-  PlaylistItem.$inject = ['GApi', 'GoogleConst'];
+  PlaylistItem.$inject = ['GApi', 'GoogleConst', 'YoutubeHelper'];
 })(angular);

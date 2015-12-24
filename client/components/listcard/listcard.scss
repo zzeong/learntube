@@ -9,6 +9,7 @@ lt-listcard {
   // scss-lint:disable NestingDepth
   position: relative;
   background-color: $white;
+  text-align: left;
   overflow: auto;
 
   &.lt-listcard--morph {
@@ -99,9 +100,10 @@ lt-listcard-content {
 }
 
 .lt-listcard__info-box {
+  $img-height: 88px;
   @include arrange-in-frame;
   position: relative;
-  min-height: 88px - (8 * 2);
+  min-height: $img-height - (8 * 2);
   margin-right: 0;
   margin-left: 0;
   >*:first-child { margin-top: 0; }
@@ -127,3 +129,22 @@ lt-listcard-content {
   padding: 0;
 }
 
+.lt-listcard--small {
+  lt-listcard-media {
+    img {
+      $w: 96px;
+      width: $w;
+      height: $w * 9 / 16;
+    }
+  }
+
+  lt-listcard-content {
+    $thumb-outer-width: 112px;
+    margin-left: $thumb-outer-width;
+  }
+
+  .lt-listcard__info-box {
+    $img-height: 70px;
+    min-height: 70px - (8 * 2);
+  }
+}

@@ -1,15 +1,8 @@
-.search-box {
-  max-width: 250px;
-  padding: 0 16px;
-}
-
 .search-box__lecture-thumb {
-  $w: 90px;
+  $w: 96px;
   width: $w;
-  height: $w * 0.75;
-  margin-top: 4px;
+  height: $w * 9 / 16;
   margin-right: 8px;
-  margin-bottom: 4px;
 }
 
 .search-box--lecture-selected {

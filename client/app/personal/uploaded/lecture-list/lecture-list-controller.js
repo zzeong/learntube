@@ -4,7 +4,7 @@
   angular.module('learntubeApp')
   .controller('UploadedLectureListCtrl', UploadedLectureListCtrl);
 
-  function UploadedLectureListCtrl($scope, $state, Auth, $http, $mdDialog, $q, $mdToast, GApi, GoogleConst) {
+  function UploadedLectureListCtrl($scope, $state, Auth, $http, $mdDialog, $q, $mdToast, GApi, GoogleConst, YoutubeHelper) {
     $scope.href = $state.href.bind(null);
     $scope.playlistId = $state.params.pid;
     $scope.pushLecture = pushLecture;
@@ -29,30 +29,7 @@
         withDuration: true,
       },
     })
-    .then((res) => {
-      $scope.lectureList = res.data.items;
-      console.log($scope.lectureList);
-      return $http.get('/api/users/' + Auth.getCurrentUser()._id + '/uploads', {
-        params: {
-          playlistId: $scope.playlistId,
-        },
-      });
-    })
-    .then((res) => {
-      if (_.has(res.data, 'message') && res.data.message === 'empty') {
-        return;
-      }
-
-      $scope.upload = res.data[0];
-      var files = $scope.upload.lectures;
-      files.forEach((fileMeta) => {
-        for (var i = 0; i < $scope.lectureList.length; i++) {
-          if ($scope.lectureList[i].snippet.resourceId.videoId === fileMeta.videoId) {
-            $scope.lectureList[i].file = fileMeta;
-          }
-        }
-      });
-    })
+    .then((res) => { $scope.lectureList = res.data.items; })
     .catch(console.error);
 
 
@@ -105,9 +82,8 @@
             maxResults: 50,
             type: 'video',
           })
-          .then((res) => {
-            $scope.searched = res.items;
-          })
+          .then((res) => YoutubeHelper.applyAdditional(res.items, 'id.videoId'))
+          .then((res) => { $scope.searched = res; })
           .catch(console.error);
         }
 
@@ -127,7 +103,6 @@
           })
           .then((res) => {
             if (res.status === 201) {
-              console.log(res.data);
               scope.lectureList.push(res.data);
               $mdDialog.hide();
             }
@@ -171,11 +146,11 @@
       $mdToast.show(
         $mdToast.simple()
         .content(text)
-        .position('top right')
+        .position('bottom right')
         .hideDelay(3000)
       );
     }
   }
 
-  UploadedLectureListCtrl.$inject = ['$scope', '$state', 'Auth', '$http', '$mdDialog', '$q', '$mdToast', 'GApi', 'GoogleConst'];
+  UploadedLectureListCtrl.$inject = ['$scope', '$state', 'Auth', '$http', '$mdDialog', '$q', '$mdToast', 'GApi', 'GoogleConst', 'YoutubeHelper'];
 })(angular);
