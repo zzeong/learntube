@@ -3,7 +3,7 @@
 angular.module('learntubeApp')
 .controller('WatchedLectureListCtrl', function ($scope, Auth, $state, $http, WatchedContent, $filter, Note, GApi, GoogleConst, $q, PlaylistItem) {
   $scope.playlistId = $state.params.pid;
-  $scope.href = $state.href.bind(null);
+  $scope.href = $state.href;
   $scope.getPageToken = PlaylistItem.getPageToken;
 
   $scope.message = {

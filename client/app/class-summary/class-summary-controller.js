@@ -7,7 +7,7 @@ angular.module('learntubeApp')
   $scope.httpBusy = true;
   $scope.getPageToken = PlaylistItem.getPageToken;
   $scope.haveClass = false;
-  $scope.href = $state.href.bind(null);
+  $scope.href = $state.href;
 
   var compileToHTML = function (str) {
     var html = str.split('\n')

@@ -9,7 +9,7 @@
     $scope.playlistId = $state.params.pid;
     $scope.cid = null;
     $scope.haveLecture = false;
-    $scope.href = $state.href.bind(null);
+    $scope.href = $state.href;
 
     $scope.isEqual = _.isEqual;
     $scope.getCurrentUser = Auth.getCurrentUser;

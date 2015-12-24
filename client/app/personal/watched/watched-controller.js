@@ -2,7 +2,7 @@
 
 angular.module('learntubeApp')
 .controller('WatchedContentsCtrl', function ($scope, $http, WatchedContent, Note, $state, GoogleConst, GApi) {
-  $scope.href = $state.href.bind(null);
+  $scope.href = $state.href;
 
   WatchedContent.query().$promise
   .then(function (response) {

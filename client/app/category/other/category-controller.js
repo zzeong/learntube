@@ -5,7 +5,7 @@
   .controller('CategoryOtherCtrl', CategoryOtherCtrl);
 
   function CategoryOtherCtrl($scope, $state, Category, $filter, $http) {
-    $scope.href = $state.href.bind(null);
+    $scope.href = $state.href;
     $scope.category = _.find(Category.name, (name) => {
       return _.isEqual($filter('urlSafely')(name.orig), $state.params.ctname);
     });

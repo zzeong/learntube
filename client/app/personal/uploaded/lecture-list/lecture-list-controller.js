@@ -5,7 +5,7 @@
   .controller('UploadedLectureListCtrl', UploadedLectureListCtrl);
 
   function UploadedLectureListCtrl($scope, $state, Auth, $http, $mdDialog, $q, $mdToast, GApi, GoogleConst, YoutubeHelper) {
-    $scope.href = $state.href.bind(null);
+    $scope.href = $state.href;
     $scope.playlistId = $state.params.pid;
     $scope.pushLecture = pushLecture;
     $scope.deleteLectures = deleteLectures;

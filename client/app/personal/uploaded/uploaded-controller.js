@@ -5,7 +5,7 @@
   .controller('UploadedContentsCtrl', UploadedContentsCtrl);
 
   function UploadedContentsCtrl($state, $scope, $mdDialog, $http) {
-    $scope.href = $state.href.bind(null);
+    $scope.href = $state.href;
     $scope.showAddDialog = showAddDialog;
     $scope.showDeleteDialog = showDeleteDialog;
     $scope.deleteClass = deleteClass;
