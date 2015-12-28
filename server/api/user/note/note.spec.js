@@ -1,12 +1,11 @@
 'use strict';
 
-var should = require('should');
+require('should');
 var app = require('../../../app');
 var request = require('supertest-as-promised').agent(app);
 var mongoose = require('mongoose');
 var User = require('../../../models/user.model');
 var Note = require('../../../models/note.model');
-var Rating = require('../../../models/rating.model');
 var auth = require('../../../auth/auth.service');
 
 mongoose.Promise = Promise;
@@ -22,7 +21,6 @@ describe('REST API:', function () {
     Promise.all([
       User.remove({}),
       Note.remove({}),
-      Rating.remove({})
     ])
     .then(function () {
       user = new User({
@@ -44,7 +42,6 @@ describe('REST API:', function () {
     Promise.all([
       User.remove({}),
       Note.remove({}),
-      Rating.remove({})
     ])
     .then(done.bind(null, null), done);
   });
@@ -57,9 +54,6 @@ describe('REST API:', function () {
       request
       .delete('/api/users/' + user._id + '/notes/' + nid)
       .set('Authorization', 'Bearer ' + user.token)
-      .then(function () {
-        return Rating.remove({});
-      })
       .then(done.bind(null, null))
       .catch(done);
     });
@@ -77,55 +71,6 @@ describe('REST API:', function () {
         res.body.should.have.properties(properties);
         res.body.should.not.have.property('userId');
         nid = res.body._id;
-        done();
-      })
-      .catch(done);
-    });
-
-    it('should create rating model with initial point', function (done) {
-      request
-      .post('/api/users/' + user._id + '/notes')
-      .set('Authorization', 'Bearer ' + user.token)
-      .field('playlistId', playlistId)
-      .field('videoId', videoId)
-      .field('type', 'editor')
-      .attach('file', './test/fixtures/dummy.html')
-      .expect(201)
-      .expect('Content-Type', /json/)
-      .then(function (res) {
-        nid = res.body._id;
-        return Rating.findOne({ playlistId: playlistId }).exec();
-      })
-      .then(function (rating) {
-        should.exist(rating);
-        rating.points.should.be.equal(1);
-        done();
-      })
-      .catch(done);
-    });
-
-    it('should increase class rating points', function (done) {
-      Rating.create({
-        playlistId: playlistId,
-        points: 1
-      })
-      .then(function () {
-        return request
-        .post('/api/users/' + user._id + '/notes')
-        .set('Authorization', 'Bearer ' + user.token)
-        .field('playlistId', playlistId)
-        .field('videoId', videoId)
-        .field('type', 'editor')
-        .attach('file', './test/fixtures/dummy.html')
-        .expect(201)
-        .expect('Content-Type', /json/);
-      })
-      .then(function (res) {
-        nid = res.body._id;
-        return Rating.findOne({ playlistId: playlistId }).exec();
-      })
-      .then(function (rating) {
-        rating.points.should.be.equal(2);
         done();
       })
       .catch(done);
@@ -272,10 +217,7 @@ describe('REST API:', function () {
     });
 
     afterEach(function (done) {
-      Promise.all([
-        Note.remove({}),
-        Rating.remove({})
-      ])
+      Note.remove({})
       .then(done.bind(null, null), done);
     });
 
@@ -285,43 +227,6 @@ describe('REST API:', function () {
       .set('Authorization', 'Bearer ' + user.token)
       .expect(204)
       .then(done.bind(null, null), done);
-    });
-
-    it('should decrease class rating points', function (done) {
-      Rating.findOneAndUpdate({
-        playlistId: playlistId
-      }, {
-        $inc: { points: 2 }
-      }).exec()
-      .then(function () {
-        return request
-        .delete('/api/users/' + user._id + '/notes/' + nid)
-        .set('Authorization', 'Bearer ' + user.token)
-        .expect(204);
-      })
-      .then(function () {
-        return Rating.findOne({ playlistId: playlistId }).exec();
-      })
-      .then(function (rating) {
-        rating.points.should.be.equal(2);
-        done();
-      })
-      .catch(done);
-    });
-
-    it('should remove a rating doc when class have no notes', function (done) {
-      request
-      .delete('/api/users/' + user._id + '/notes/' + nid)
-      .set('Authorization', 'Bearer ' + user.token)
-      .expect(204)
-      .then(function () {
-        return Rating.findOne({ playlistId: playlistId }).exec();
-      })
-      .then(function (rating) {
-        should.not.exist(rating);
-        done();
-      })
-      .catch(done);
     });
   });
 

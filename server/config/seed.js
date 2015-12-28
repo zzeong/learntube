@@ -12,7 +12,6 @@ var User = require('../models/user.model');
 var Note = require('../models/note.model');
 var Upload = require('../models/upload.model');
 var WContent = require('../models/watched-content.model');
-var Rating = require('../models/rating.model');
 var Class = require('../models/class.model.js');
 var mongoose = require('mongoose');
 var aws = require('aws-sdk');
@@ -224,34 +223,6 @@ var seedWatchedContent = function (users) {
   }]);
 };
 
-var seedRating = function () {
-  return Rating.create([{
-    playlistId: 'PLuHgQVnccGMA4uSig3hCjl7wTDeyIeZVU',
-    points: 99
-  }, {
-    playlistId: 'PLvtbuRelN29hTIX2NyTxnPkEays6u95Qe',
-    points: 82
-  }, {
-    playlistId: 'PLaNNx1k0ao1v8I2C8DAxXOayC3dG00xtj',
-    points: 71
-  }, {
-    playlistId: 'PLJAq9GpGx5BMdIUSwg53JX7LiuYW_EYvP',
-    points: 61
-  }, {
-    playlistId: 'PLcpoB2VESJmekv4lb3uZkMc5k7fyMSIzU',
-    points: 4
-  }, {
-    playlistId: 'PLl4T6p7km9da1BKEAGzloOQqDVw3ZB7SF',
-    points: 68
-  }, {
-    playlistId: 'PL6DB5987C212AC19F',
-    points: 8
-  }, {
-    playlistId: 'PLzX7CTd7CtHl5RQ9fxx_daq9WbVRW8a2z',
-    points: 38
-  }]);
-};
-
 var seedUpload = function (users) {
   var hashes = [
    'd3e6cfa0eb57bab5c50a88a049b42930',
@@ -303,7 +274,6 @@ Promise.all([
   User.remove({}).exec(),
   Note.remove({}).exec(),
   WContent.remove({}).exec(),
-  Rating.remove({}).exec(),
   Upload.remove({}).exec(),
   Class.remove({}).exec()
 ])
@@ -313,7 +283,6 @@ Promise.all([
     seedNote(users),
     seedWatchedContent(users),
     seedUpload(users),
-    seedRating(),
     seedClassFromFile('db/class.csv')
   ]);
 })

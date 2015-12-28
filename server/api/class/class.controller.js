@@ -1,15 +1,14 @@
 'use strict';
 
-var Rating = require('../../models/rating.model');
+var Class = require('../../models/class.model');
 
-exports.getTops = function (req, res) {
+exports.getTops = (req, res, next) => {
   if (!req.query.num) { return res.status(500).send('No required params'); }
 
-  Rating.find({})
-  .sort({ points: 'desc' })
+  Class.find({})
+  .sort({ views: 'desc' })
   .limit(req.query.num)
-  .exec(function (err, ratings) {
-    if (err) { return res.status(500).send(err); }
-    return res.status(200).json(ratings);
-  });
+  .exec()
+  .then((classes) => res.status(200).json(classes))
+  .catch(next);
 };

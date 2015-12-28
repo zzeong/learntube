@@ -5,7 +5,6 @@ var url = require('url');
 var crypto = require('crypto');
 var knox = require('knox');
 var Note = require('../../../models/note.model');
-var Rating = require('../../../models/rating.model');
 var config = require('../../../config/environment');
 
 var s3 = knox.createClient({
@@ -53,17 +52,6 @@ exports.create = (req, res, next) => {
     });
 
     note.save()
-    .then(() => {
-      var query = { playlistId: note.playlistId };
-      return Rating.findOneAndUpdate(query, {
-        $setOnInsert: query
-      }, {
-        new: true,
-        upsert: true
-      })
-      .exec();
-    })
-    .then((rating) => rating.update({ $inc: { points: 1 }}))
     .then(() => res.status(201).json(_.omit(note.toObject(), 'userId')))
     .catch(next);
   });
@@ -131,32 +119,17 @@ exports.update = function (req, res) {
 
 
 
-exports.destroy = function (req, res) {
-  Note.findById(req.params.nid, function (err, note) {
+exports.destroy = (req, res, next) => {
+  Note.findById(req.params.nid, (err, note) => {
     if (err) { return res.status(500).send(err); }
     if (!note) { return res.status(404).send('Not Found'); }
 
-    s3.del(note.s3Path).on('response', function (response) {
+    s3.del(note.s3Path).on('response', (response) => {
       console.log('[S3]:DELETE', response.statusCode, response.headers);
 
-      note.remove(function (error) {
-        if (error) { return res.status(500).send(error); }
-        Rating.findOneAndUpdate({
-          playlistId: note.playlistId
-        }, {
-          $inc: { points: -1 }
-        }, {
-          new: true
-        }, function (error, rating) {
-          if (rating.points < 1) {
-            return rating.remove(function (error) {
-              if (error) { return res.status(500).send(error); }
-              return res.status(204).send();
-            });
-          }
-          return res.status(204).send();
-        });
-      });
+      note.remove()
+      .then(() => res.status(204).send())
+      .catch(next);
     })
     .end();
   });
