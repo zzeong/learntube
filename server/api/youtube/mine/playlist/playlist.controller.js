@@ -153,6 +153,29 @@ exports.create = (req, res, next) => {
   .catch(next);
 };
 
+exports.update = (req, res, next) => {
+  let params = _.assign({ part: 'snippet' }, _.pick(req.body, 'resource'));
+  let body = null;
+
+  g.youtube('playlists.update', params)
+  .then((item) => {
+    let query = { playlistId: item.id };
+    body = {
+      thumbnailUrl: item.snippet.thumbnails.medium.url,
+      title: item.snippet.title,
+      description: item.snippet.description,
+      id: item.id,
+    };
+    return Class.findOne(query).exec();
+  })
+  .then((classe) => {
+    body.rate = classe ? classe.rate : 0;
+    body.views = classe ? classe.views : 0;
+    res.status(200).json(body);
+  })
+  .catch(next);
+};
+
 
 /**
  * @api {delete} /api/youtube/mine/playlists Delete my YouTube playlist
