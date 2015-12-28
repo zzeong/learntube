@@ -69,7 +69,7 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
             <md-list class="frame-padding--full-width" ng-show="handout.uploaded">
               <md-list-item class="secondary-button-padding" ng-click="doPrimaryAction($event)">
                 <span>{{ handout.uploaded.fileName }}</span>
-                <md-icon class="md-secondary" md-font-set="material-icons" ng-click="doSecondaryAction($event)">clear</md-icon>
+                <md-icon class="md-secondary" md-font-set="material-icons" ng-click="showConfirmDialog($event)">clear</md-icon>
               </md-list-item>
             </md-list>
 

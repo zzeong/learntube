@@ -7,6 +7,7 @@
   function EditLectureCtrl($scope, $state, $mdDialog, $q, $http, Auth, $mdToast) {
     $scope.playlistId = $state.params.pid;
     $scope.videoId = $state.params.vid;
+    $scope.showConfirmDialog = showConfirmDialog;
     $scope.handout = {
       uploaded: null,
       seleted: null
@@ -36,7 +37,7 @@
     .catch(console.error);
 
     $scope.selectFile = (file) => { $scope.handout.selected = file; };
-    $scope.clearHandout = (handout) => {};
+    $scope.removeHandout = removeHandout;
     $scope.uploadHandout = (handout) => {
       getSignedUrl(handout)
       .then((s3Urls) => uploadFile(handout, s3Urls))
@@ -106,6 +107,27 @@
         .position('bottom right')
         .hideDelay(3000)
       );
+    }
+
+    function removeHandout() {
+      $http.delete('/api/users/' + Auth.getCurrentUser()._id + '/uploads/' + $scope.handout.uploaded._id)
+      .then(() => {
+        $scope.handout.uploaded = null;
+        showToast('File removed');
+      });
+    }
+
+    function showConfirmDialog(ev) {
+      var confirm = $mdDialog.confirm()
+      .title('Delete the handout')
+      .textContent('Are you sure?')
+      .ariaLabel('Delete the handout')
+      .targetEvent(ev)
+      .ok('Ok')
+      .cancel('Cancel');
+
+      $mdDialog.show(confirm)
+      .then(removeHandout);
     }
   }
 
