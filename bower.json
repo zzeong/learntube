@@ -24,7 +24,8 @@
     "ckeditor-skin-minimalist": "albatrossdigital/ckeditor-skin-minimalist",
     "angular-moment": "~0.10.3",
     "moment": "~2.10.6",
-    "c3-angular": "~0.7.1"
+    "c3-angular": "~0.7.1",
+    "angular-slick": "~0.2.1"
   },
   "devDependencies": {
     "Blob": "*",

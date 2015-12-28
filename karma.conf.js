@@ -12,6 +12,7 @@ module.exports = function (config) {
     // list of files / patterns to load in the browser
     files: [
       // bower:js
+      'client/bower_components/jquery/dist/jquery.js',
       'client/bower_components/es5-shim/es5-shim.js',
       'client/bower_components/es6-shim/es6-shim.js',
       'client/bower_components/angular/angular.js',
@@ -35,6 +36,8 @@ module.exports = function (config) {
       'client/bower_components/d3/d3.js',
       'client/bower_components/c3/c3.js',
       'client/bower_components/c3-angular/c3-angular.min.js',
+      'client/bower_components/slick-carousel/slick/slick.min.js',
+      'client/bower_components/angular-slick/dist/slick.js',
       'client/bower_components/Blob/Blob.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
       // endbower

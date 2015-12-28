@@ -13,7 +13,8 @@ angular.module('learntubeApp', [
   'infinite-scroll',
   'ngFileUpload',
   'angularMoment',
-  'gridshore.c3js.chart'
+  'gridshore.c3js.chart',
+  'slick'
 ])
 .config(function ($stateProvider, $urlRouterProvider, $locationProvider, $httpProvider) {
   $urlRouterProvider
