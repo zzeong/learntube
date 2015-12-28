@@ -3,6 +3,7 @@
 angular.module('learntubeApp')
 .controller('ToolbarCtrl', function ($scope, $location, $state, $window, Auth, navToggler, $filter, Category) {
 
+
   // url에서 Toolbar title을 받아오자
   $scope.categoryTitle = _.find(Category.name, (name) => {
     return _.isEqual($filter('urlSafely')(name.orig), $state.params.ctname);
@@ -18,7 +19,7 @@ angular.module('learntubeApp')
       title = $scope.stateNameCheck('search') ? $state.params.q : title;
     } else {
       if ($scope.stateNameCheck('search') === true) {
-        title = $state.params.q;
+        title = 'search';
       } else if ($scope.stateNameCheck('category-other') === true) {
         title = $scope.categoryTitle.orig;
       } else {
@@ -36,13 +37,17 @@ angular.module('learntubeApp')
     if ($scope.pageWidth < 600) {
       onSearching = $scope.stateNameCheck('search') ? true : false;
       $scope.webSearchIcon = false;
+      $scope.clearIcon = $scope.stateNameCheck('search') ? true : false;
     } else {
       onSearching = true;
       $scope.webSearchIcon = true;
+      $scope.clearIcon = false;
     }
 
     return onSearching;
   };
+
+
 
   // page title에 대한 판단
   var getSearchAtMobile = function () {
@@ -97,6 +102,7 @@ angular.module('learntubeApp')
     $scope.focusInput = true;
     $scope.greyToolbar = !$scope.greyToolbar;
     $scope.searchAtMobile = !$scope.searchAtMobile;
+    $scope.clearIcon = true;
   };
 
   $scope.stateNameCheck = function (name) {
@@ -105,10 +111,9 @@ angular.module('learntubeApp')
 
   $scope.title = getMobileTitle();
   $scope.onSearching = getOnSearching();
+  console.log($scope.onSearching);
   $scope.searchAtMobile = getSearchAtMobile();
   $scope.greyToolbar = getGreyToolbar();
-
-  // $scope.pageWidth = getPageWidth();
 
   $scope.mainIconTrigger = function () {
     navToggler.left();
