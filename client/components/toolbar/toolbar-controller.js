@@ -14,18 +14,16 @@ angular.module('learntubeApp')
 
   var getMobileTitle = function () {
     var title = _.has($state.current, 'data') ? $state.current.data.pageName : '';
-    if ($scope.pageWidth < 600) {
-
-      title = $scope.stateNameCheck('search') ? $state.params.q : title;
+    if ($scope.stateNameCheck('category-other') === true) {
+      title = $scope.categoryTitle.orig;
+    } else if ($scope.stateNameCheck('search') === true) {
+      if ($scope.pageWidth < 600) {
+        title = $state.params.q;
+      } else {title = 'search';}
     } else {
-      if ($scope.stateNameCheck('search') === true) {
-        title = 'search';
-      } else if ($scope.stateNameCheck('category-other') === true) {
-        title = $scope.categoryTitle.orig;
-      } else {
-        title = title;
-      }
+      title = title;
     }
+
     return title;
   };
 
