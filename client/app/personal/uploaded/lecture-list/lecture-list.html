@@ -15,7 +15,15 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
           <h2 class="md-body-2 category-title" hide-gt-xs>Description</h2>
           <md-whiteframe class="frame-padding responsive-whiteframe">
             <h2 class="md-title" hide-xs>Description</h2>
-            <div class="md-body-1" ng-bind-html="class.description"></div>
+            <div class="md-body-1" ng-if="!isOnWrite" ng-bind-html="desc.html"></div>
+            <md-input-container class="md-block" ng-if="isOnWrite">
+              <textarea ng-model="desc.editing" aira-label="Class description"></textarea>
+            </md-input-container>
+            <div class="action-area" layout="row" layout-align="end center">
+              <md-button ng-if="!isOnWrite" class="md-accent" ng-click="editDesc()">Edit</md-button>
+              <md-button ng-if="isOnWrite" ng-click="cancelDesc()">Cancel</md-button>
+              <md-button ng-if="isOnWrite" class="md-accent" ng-click="updateDesc()">Update</md-button>
+            </div>
           </md-whiteframe>
         </div>
         <div class="uploaded-lecturelist__desc">

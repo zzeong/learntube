@@ -12,6 +12,11 @@
     $scope.haveUploadedFile = haveUploadedFile;
     $scope.showLectureDialog = showLectureDialog;
     $scope.lectureDelBucket = [];
+    $scope.isOnWrite = false;
+    $scope.editDesc = editDesc;
+    $scope.cancelDesc = cancelDesc;
+    $scope.updateDesc = updateDesc;
+    $scope.desc = {};
     var scope = $scope;
 
     $http.get('/api/youtube/mine/playlists', {
@@ -19,7 +24,8 @@
     })
     .then((res) => {
       $scope.class = res.data.items[0];
-      $scope.class.description = compileToHTML($scope.class.description);
+      $scope.desc.html = newlineToBr($scope.class.description);
+      $scope.desc.editing = $scope.class.description;
     })
     .catch(console.error);
 
@@ -135,13 +141,6 @@
       .catch(console.error);
     }
 
-    function compileToHTML(str) {
-      return str.split('\n')
-      .filter((p) => p.length)
-      .map((p) => '<p>' + p + '</p>')
-      .join('');
-    }
-
     function showToast(text) {
       $mdToast.show(
         $mdToast.simple()
@@ -149,6 +148,37 @@
         .position('bottom right')
         .hideDelay(3000)
       );
+    }
+
+    function newlineToBr(str) {
+      return str.replace(/(?:\r\n|\r|\n)/g, '<br>');
+    }
+
+    function editDesc() {
+      $scope.isOnWrite = true;
+    }
+
+    function cancelDesc() {
+      $scope.desc.editing = $scope.class.description;
+      $scope.isOnWrite = false;
+    }
+
+    function updateDesc() {
+      $http.put('/api/youtube/mine/playlists', {
+        resource: {
+          id: $scope.playlistId,
+          snippet: {
+            title: $scope.class.title,
+            description: $scope.desc.editing,
+          }
+        },
+      })
+      .then((res) => {
+        $scope.class = res.data;
+        $scope.desc.html = newlineToBr($scope.desc.editing);
+        $scope.isOnWrite = false;
+      })
+      .catch(console.error);
     }
   }
 
