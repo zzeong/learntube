@@ -1,0 +1,19 @@
+.carousel {
+  max-width: 1280px;
+  margin: 0 auto;
+}
+
+.carousel__card {
+  width: 230px;
+  margin: 8px auto;
+}
+
+.carousel__info {
+  min-height: 88px;
+  padding: 16px;
+
+  .lt-title-s,
+  .lt-subhead-s {
+    margin: 4px 0;
+  }
+}

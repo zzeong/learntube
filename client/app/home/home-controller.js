@@ -2,21 +2,34 @@
 
 angular.module('learntubeApp')
 .controller('HomeCtrl', function ($scope, $state, GApi, GoogleConst, $http) {
+  const CARD_WIDTH = 230 + 8 * 2;
+  $scope.popularClasses = null;
+  $scope.slick = {};
+
+  $scope.slick.responsive = _.times(4).reverse().map((i) => {
+    return {
+      breakpoint: CARD_WIDTH * (i + 2),
+      settings: {
+        slidesToShow: i + 1
+      }
+    };
+  });
+
   $http.get('/api/classes/get-tops', {
-    params: { num: 6 }
+    params: { num: 8 }
   })
   .then(function (res) {
     var params = {
       key: GoogleConst.browserKey,
       part: 'snippet',
-      id: res.data.map(function (d) { return d.playlistId; }).join(','),
+      id: res.data.map((d) => { return d.playlistId; }).join(','),
       maxResults: 20
     };
 
     return GApi.execute('youtube', 'playlists.list', params);
   })
   .then(function (res) {
-    $scope.classes = res.items;
+    $scope.popularClasses = res.items;
   })
   .catch(console.error);
 });

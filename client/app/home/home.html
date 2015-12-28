@@ -1,22 +1,31 @@
 <div flex layout="column">
   <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
   <md-content flex md-scroll-y layout="column">
-    <div layout="column" flex>
+    <div flex>
       <div class="intro" layout="column" layout-align="center center">
-
         <h2 class="intro__slogan" class="md-headline"><strong>All you need is knowledge</strong></h2>
-
-        <form ng-submit="go('search', { q: q })">
-          <div class="search-content">
-            <input class="md-body-1" ng-model="q" type="search" placeholder="Search anything">
-            <md-button class="md-icon-button search-content__search-icon-button" aria-label="Search"
-            ng-click="go('search', { q: q })">
-              <md-icon md-font-set="material-icons">search</md-icon>
-            </md-button>
+      </div>
+      <div class="popular-classes">
+        <div class="popular-classes__intro">
+          <h2 class="md-headline">Popular classes</h2>
+          <p class="md-subhead">Consectetur quae voluptate voluptas molestiae veniam ad esse</p>
+        </div>
+        <slick class="carousel" arrows="false" dots="true" infinite="true" init-onload="true"
+        data="popularClasses" autoplay="true" autoplay-speed="5000" slides-to-show="5"
+        speed="1000" touch-move="true" responsive="slick.responsive">
+          <div ng-repeat="classe in popularClasses">
+            <md-card class="carousel__card">
+              <img ng-src="{{ classe.snippet.thumbnails.medium.url }}">
+              <div class="carousel__info">
+                <h2 class="ellipsis-2 lt-title-s">{{ classe.snippet.title }}</h2>
+                <p class="lt-subhead-s">{{ classe.snippet.channelTitle }}</p>
+              </div>
+            </md-card>
           </div>
-        </form>
+        </slick>
       </div>
       <footer class="footer" hide-xs></footer>
     </div>
   </md-content>
 </div>
+
