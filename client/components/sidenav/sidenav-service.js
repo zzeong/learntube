@@ -1,20 +1,23 @@
-'use strict';
+(function (angular) {
+  'use strict';
 
-angular.module('learntubeApp')
-.factory('navToggler', function ($mdUtil, $mdSidenav, $log) {
-  var buildToggler =  function (navID) {
-    var debounceFn =  $mdUtil.debounce(function () {
-      $mdSidenav(navID)
-      .toggle()
-      .then(function () {
-        $log.debug('toggle ' + navID + ' is done');
-      });
-    }, 200);
-    return debounceFn;
-  };
-  var toggleLeft = buildToggler('left');
+  angular.module('learntubeApp')
+  .factory('NavToggler', NavToggler);
 
-  return {
-    left: toggleLeft
-  };
-});
+  function NavToggler($mdUtil, $mdSidenav, $log) {
+    return {
+      left: buildToggler('left'),
+      right: buildToggler('right'),
+    };
+
+    function buildToggler(navID) {
+      return $mdUtil.debounce(() => {
+        $mdSidenav(navID)
+        .toggle()
+        .then(() => {
+          $log.debug('toggle ' + navID + ' is done');
+        });
+      }, 200);
+    }
+  }
+})(angular);

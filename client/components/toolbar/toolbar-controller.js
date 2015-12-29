@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('ToolbarCtrl', function ($scope, $location, $state, $window, Auth, navToggler, $filter, Category) {
+.controller('ToolbarCtrl', function ($scope, $location, $state, $window, Auth, NavToggler, $filter, Category) {
 
 
   // url에서 Toolbar title을 받아오자
@@ -113,7 +113,7 @@ angular.module('learntubeApp')
   $scope.greyToolbar = getGreyToolbar();
 
   $scope.mainIconTrigger = function () {
-    navToggler.left();
+    NavToggler.left();
   };
   $scope.getUserImgPath = function (user) {
     var guestImgPath = '/assets/images/guest.png';
