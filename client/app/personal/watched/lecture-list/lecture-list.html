@@ -1,68 +1,79 @@
 <md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav"
-ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-xs')">
+ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-xs')">
 </md-sidenav>
 
 
 <div flex layout="column">
   <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
 
-  <div flex class="flex-scroll">
-    <div class="inner-content">
-      <p class="md-body-2 section-title">My learning info</p>
-      <div class="v11n-content">
-        <c3chart bindto-id="learning-info" chart-data="chart.data" chart-columns="chart.columns"
-        chart-x="chart.x">
-          <chart-axis>
-            <chart-axis-x axis-id="x" axis-type="timeseries">
-              <chart-axis-x-tick tick-format-function="timeFormat"></chart-axis-x-tick>
-            </chart-axis-x>
-            <chart-axis-y>
-              <chart-axis-y-tick tick-format="d"></chart-axis-x-tick>
-            </chart-axis-y>
-          </chart-axis>
-        </c3chart>
+  <div flex layout="column" class="flex-scroll">
+    <div class="main-content__inner">
+      <div class="main-content__whiteframe-wrapper">
+        <div class="variable-panel--margin-516">
+          <div>
+            <h2 class="md-body-2 category-title" hide-gt-xs>Learning info</h2>
+            <md-whiteframe class="frame-padding responsive-whiteframe">
+              <h2 class="md-title" hide-xs>Learning info</h2>
+              <div class="v11n-content">
+                <c3chart bindto-id="learning-info" chart-data="chart.data" chart-columns="chart.columns"
+                chart-x="chart.x">
+                  <chart-axis>
+                    <chart-axis-x axis-id="x" axis-type="timeseries">
+                      <chart-axis-x-tick tick-format-function="timeFormat"></chart-axis-x-tick>
+                    </chart-axis-x>
+                    <chart-axis-y>
+                      <chart-axis-y-tick tick-format="d"></chart-axis-x-tick>
+                    </chart-axis-y>
+                  </chart-axis>
+                </c3chart>
+              </div>
+            </md-whiteframe>
+          </div>
+
+          <div class="whiteframe">
+            <h2 class="md-body-2 category-title" hide-gt-xs>Lecture list</h2>
+            <md-whiteframe class="responsive-whiteframe">
+              <ul class="numbering whiteframe__lecturelist">
+                <li ng-repeat="lecture in lectureList">
+                  <a class="anchor-mask" ng-href="{{ href('classroom', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
+                    <lt-listcard lt-responsive-morph="false">
+                      <lt-listcard-media class="watched-lecturelist-thumbnail">
+                        <div class="video-thumb">
+                          <img ng-src="{{ lecture.snippet.thumbnails.medium.url }}" alt="Lecture thumbnail">
+                          <p class="video-thumb__duration lt-caption-s">{{ lecture.contentDetails.duration | humanable }}</p>
+                        </div>
+                      </lt-listcard-media>
+
+                      <lt-listcard-content>
+                        <div>
+                          <h3 class="ellipsis-2 lt-title-s">{{ lecture.snippet.title }}</h3>
+                          <p class="ellipsis-1 lt-subhead-s">{{ lecture.snippet.channelTitle }}</p>
+                        </div>
+                        <div>
+                          <i class="material-icons lecturelist__complete-icon" ng-show="lecture.highlight">check_circle</i>
+                          <p am-time-ago="lecture.completedAt" class="lecturelist__complete-date lt-caption-s"></p>
+                        </div>
+                      </lt-listcard-content>
+
+                      <lt-listcard-actions>
+                        <md-button class="lecturelist__second-action lt-button-s md-accent" ng-show="lecture.noteIconVisible"
+                        ng-click="showNote($event)">View note</md-button>
+                      </lt-listcard-actions>
+                    </lt-listcard>
+                  </a>
+                </li>
+              </ul>
+            </md-whiteframe>
+          </div>
+        </div>
+
+        <div class="note-sidenav-wrapper">
+          <md-sidenav class="md-sidenav-right md-whiteframe-z1 note-sidenav" ng-include="'components/sidenav/sidenav-note.html'"
+            md-component-id="right" md-is-locked-open="$mdMedia('gt-xs')">
+          </md-sidenav>
+        </div>
       </div>
-    </div>
-
-    <!-- 클래스 내의 강의 목록 -->
-    <p class="md-body-2 section-title section-title--hide">Lectures in this class</p>
-
-    <div class="inner-content">
-      <ul class="numbering whiteframe__lecturelist">
-        <li ng-repeat="lecture in lectureList">
-          <lt-listcard lt-responsive-morph="false">
-            <a class="anchor-mask" ng-href="{{ href('classroom', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
-              <lt-listcard-media class="watched-lecturelist-thumbnail">
-                <div class="video-thumb">
-                  <img ng-src="{{ lecture.snippet.thumbnails.medium.url }}" alt="Lecture thumbnail">
-                  <p class="video-thumb__duration lt-caption-s">{{ lecture.contentDetails.duration | humanable }}</p>
-                </div>
-              </lt-listcard-media>
-
-              <lt-listcard-content>
-                <div>
-                  <h3 class="ellipsis-2 lt-title-s">{{ lecture.snippet.title }}</h3>
-                  <p class="ellipsis-1 lt-subhead-s">{{ lecture.snippet.channelTitle }}</p>
-                </div>
-                <div>
-                  <i class="material-icons lecturelist__complete-icon" ng-show="lecture.highlight">check_circle</i>
-                  <p am-time-ago="lecture.completedAt" class="lecturelist__complete-date lt-caption-s"></p>
-                </div>
-              </lt-listcard-content>
-            </a>
-
-            <lt-listcard-actions>
-              <md-button class="lecturelist__second-action lt-button-s md-accent" ng-show="lecture.noteIconVisible"
-              ng-click="toggleRight(); showNote(lecture)">VIEW NOTE</md-button>
-            </lt-listcard-actions>
-          </lt-listcard>
-        </li>
-      </ul>
     </div>
   </div>
 </div>
-
-<md-sidenav flex="none" class="md-sidenav-right md-whiteframe-z2 category-sidenav"
-ng-include="'components/sidenav/sidenavNoteview.html'" md-component-id="right" md-is-locked-open="$mdMedia('gt-xs')">
-</md-sidenav>
 

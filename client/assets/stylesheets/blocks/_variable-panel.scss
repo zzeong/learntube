@@ -1,0 +1,5 @@
+.variable-panel--margin-516 {
+  @include respond-to('small') {
+    margin-right: 500px + 16;
+  }
+}

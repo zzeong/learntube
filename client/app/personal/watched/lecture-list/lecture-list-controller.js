@@ -4,7 +4,7 @@
   angular.module('learntubeApp')
   .controller('WatchedLectureListCtrl', WatchedLectureListCtrl);
 
-  function WatchedLectureListCtrl($scope, Auth, $state, $http, WatchedContent, Note, GApi, GoogleConst, $q, PlaylistItem, $filter) {
+  function WatchedLectureListCtrl($scope, Auth, $state, $http, WatchedContent, Note, GApi, GoogleConst, $q, PlaylistItem, $filter, NavToggler) {
     $scope.playlistId = $state.params.pid;
     $scope.href = $state.href;
     $scope.getPageToken = PlaylistItem.getPageToken;
@@ -113,6 +113,7 @@
 
     function showNote(lecture, ev) {
       ev.preventDefault();
+      NavToggler.right();
 
       $scope.selectedLecture = lecture;
       if (_.has(lecture, 'notes')) { return; }
@@ -132,5 +133,5 @@
     }
   }
 
-  WatchedLectureListCtrl.$inject = ['$scope', 'Auth', '$state', '$http', 'WatchedContent', 'Note', 'GApi', 'GoogleConst', '$q', 'PlaylistItem', '$filter'];
+  WatchedLectureListCtrl.$inject = ['$scope', 'Auth', '$state', '$http', 'WatchedContent', 'Note', 'GApi', 'GoogleConst', '$q', 'PlaylistItem', '$filter', 'NavToggler'];
 })(angular);

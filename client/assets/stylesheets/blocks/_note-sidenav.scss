@@ -1,0 +1,10 @@
+.note-sidenav-wrapper {
+  @include respond-to('small') {
+    position: absolute;
+    top: 0;
+    right: 0;
+    width: 500px;
+  }
+}
+
+
