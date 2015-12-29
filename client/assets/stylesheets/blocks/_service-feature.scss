@@ -1,0 +1,42 @@
+.service-feature {
+  margin: 20px 0;
+  text-align: center;
+
+  @include respond-to('small') {
+  }
+
+  .material-icons {
+    color: $home-feature-icon;
+    font-size: 65px;
+  }
+}
+
+.service-feature__container {
+  display: inline-block;
+}
+
+.service-feature__item {
+  max-width: 220px;
+  margin: 20px;
+  padding: 2px;
+  text-align: center;
+
+  @include respond-to('small') {
+    margin: 20px 50px;
+    float: left;
+  }
+}
+
+.service-feature__icon {
+  width: 65px;
+  height: 65px;
+}
+
+.service-feature__title {
+  margin-top: 20px;
+  margin-bottom: 5px;
+}
+
+.service-feature__body {
+  margin: 8px;
+}
