@@ -8,14 +8,39 @@
   @include respond-to('small') {
     height: 450px;
   }
+
+  .md-button.md-raised {
+    background-color: $star-color;
+  }
+
 }
 
 .intro__slogan {
-  margin: 1.15rem 0;
-  color: $text-color;
+  margin: 4px;
+  color: $text-color-alt;
 
   @include respond-to('small') {
     font-size: 45px;
     line-height: 50px;
+  }
+}
+
+.intro__sub-slogan {
+  margin: 4px;
+  color: $text-color-alt;
+
+  @include respond-to('small') {
+    font-size: 34px;
+    line-height: 50px;
+  }
+}
+
+.intro__btn {
+  width: 112px;
+  height: 36px;
+  margin-top: 40px;
+
+  @include respond-to('small') {
+    margin-top: 80px;
   }
 }
