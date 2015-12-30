@@ -19,7 +19,7 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
                 chart-x="chart.x">
                   <chart-axis>
                     <chart-axis-x axis-id="x" axis-type="timeseries">
-                      <chart-axis-x-tick tick-format-function="timeFormat"></chart-axis-x-tick>
+                      <chart-axis-x-tick tick-format-function="tickFormat"></chart-axis-x-tick>
                     </chart-axis-x>
                     <chart-axis-y>
                       <chart-axis-y-tick tick-format="d"></chart-axis-x-tick>
@@ -34,7 +34,7 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
             <h2 class="md-body-2 category-title" hide-gt-xs>Lecture list</h2>
             <md-whiteframe class="responsive-whiteframe">
               <ul class="numbering whiteframe__lecturelist">
-                <li ng-repeat="lecture in lectureList">
+                <li ng-repeat="lecture in lectures">
                   <a class="anchor-mask" ng-href="{{ href('classroom', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
                     <lt-listcard lt-responsive-morph="false">
                       <lt-listcard-media class="watched-lecturelist-thumbnail">
@@ -50,13 +50,13 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
                           <p class="ellipsis-1 lt-subhead-s">{{ lecture.snippet.channelTitle }}</p>
                         </div>
                         <div>
-                          <i class="material-icons lecturelist__complete-icon" ng-show="lecture.highlight">check_circle</i>
-                          <p am-time-ago="lecture.completedAt" class="lecturelist__complete-date lt-caption-s"></p>
+                          <i class="material-icons lecturelist__complete-icon" ng-show="lecture.watched">check_circle</i>
+                          <p am-time-ago="lecture.watched.completedAt" class="lecturelist__complete-date lt-caption-s"></p>
                         </div>
                       </lt-listcard-content>
 
                       <lt-listcard-actions>
-                        <md-button class="lecturelist__second-action lt-button-s md-accent" ng-show="lecture.noteIconVisible"
+                        <md-button class="lecturelist__second-action lt-button-s md-accent" ng-show="lecture.note"
                         ng-click="showNote($event)">View note</md-button>
                       </lt-listcard-actions>
                     </lt-listcard>

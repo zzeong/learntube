@@ -161,9 +161,35 @@ var seedWatchedContent = function (users) {
     userId: users[0]._id,
     playlistId: 'PLuHgQVnccGMCB06JE7zFIAOJtdcZBVrap',
     lectures: [{
-      videoId: 'XUEuYq64HKI'
+      videoId: 'XUEuYq64HKI',
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
-      videoId: 'N_rpDCZxRCY'
+      videoId: 'N_rpDCZxRCY',
+      completedAt: offsetDate(_.random(-8, 0)),
+    }, {
+      videoId: 'vrRS-3tyqvY',
+      completedAt: offsetDate(_.random(-8, 0)),
+    }, {
+      videoId: 'juzviBAjsHc',
+      completedAt: offsetDate(_.random(-8, 0)),
+    }, {
+      videoId: 'Pzi_5lGP3G4',
+      completedAt: offsetDate(_.random(-8, 0)),
+    }, {
+      videoId: 'CUlU_DBJMvw',
+      completedAt: offsetDate(_.random(-8, 0)),
+    }, {
+      videoId: 'yECyP1-NwsE',
+      completedAt: offsetDate(_.random(-8, 0)),
+    }, {
+      videoId: 'UscVvA0eyaM',
+      completedAt: offsetDate(_.random(-8, 0)),
+    }, {
+      videoId: 'Jy20JYhvapg',
+      completedAt: offsetDate(_.random(-8, 0)),
+    }, {
+      videoId: '7hm1g_-BPvs',
+      completedAt: offsetDate(_.random(-8, 0)),
     }]
   }, {
     userId: users[0]._id,
