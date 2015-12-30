@@ -20,6 +20,12 @@ var config = require('./environment');
 
 mongoose.Promise = Promise;
 
+var offsetDate = function (offset) {
+  var d = new Date();
+  d.setDate(d.getDate() + offset);
+  return d;
+};
+
 var initialUser = function () {
   return User.create([{
     provider: 'google',
@@ -36,117 +42,64 @@ var initialUser = function () {
     role: 'user',
     name: 'zzeong team',
     email: 'learntubebot03@gmail.com'
-  }, {
-    provider: 'google',
-    role: 'user',
-    name: 'Jinyoung Kim',
-    email: 'ligeek49@gmail.com'
   }]);
 };
 
+
 var seedNote = function (users) {
-  var bot = {
-    'learntubebot01@gmail.com': {
-      hash: [
-        '2af6cbcc930fec1a4358b8ac63c1d26c',
-        '48c994f54ee679e3715f63c1f615393b'
-      ]
-    },
-    'learntubebot02@gmail.com': {
-      hash: [
-        '2fb8aad5086a0a6fe9967829017fb4c2',
-        'a37fa88288dc8e2acfb9d69715131e01',
-        '5295158d2070c6d600521c5667dd63b8',
-        '4c757fe906a459a8283c830d67466358'
-      ]
-    },
-    'learntubebot03@gmail.com': {
-      hash: [
-        '826b6745d1ce6b449eba72077a99a6f6'
-      ]
-    },
-    'ligeek49@gmail.com': {
-      hash: [
-        'c3126d2c3dca4dcd0c8017aa70d61280'
-      ]
-    },
-  };
-
-  var id = {
-    playlist: 'PLtEAazd2E1Vr5ycRfR2pRQSjqFlB9uSow',
-    video: ['7BafU1p_OKo', '7IWxw8TBPjI', '8rQGMW7nt4s']
-  };
-
   var docs = [{
     userId: users[0]._id,
-    videoId: id.video[1],
-    playlistId: id.playlist,
-    url: 'https://learntubebucket.s3.amazonaws.com/' + users[0].email + '/' + bot[users[0].email].hash[0],
+    videoId: 'XUEuYq64HKI',
+    playlistId: 'PLuHgQVnccGMCB06JE7zFIAOJtdcZBVrap',
     type: 'editor',
     resourceType: 'text/html',
+    url: 'https://learntubebucket.s3.amazonaws.com/learntubebot01@gmail.com/22760531b17c2d835740821a104f41ab',
+    created: offsetDate(_.random(-8, 0)),
   }, {
     userId: users[0]._id,
-    videoId: id.video[2],
-    playlistId: id.playlist,
-    url: 'https://learntubebucket.s3.amazonaws.com/' + users[0].email + '/' + bot[users[0].email].hash[1],
-    type: 'editor',
-    resourceType: 'text/html',
-  }, {
-    userId: users[2]._id,
-    videoId: id.video[0],
-    playlistId: id.playlist,
-    url: 'https://learntubebucket.s3.amazonaws.com/' + users[2].email + '/' + bot[users[2].email].hash[0],
+    videoId: 'juzviBAjsHc',
+    playlistId: 'PLuHgQVnccGMCB06JE7zFIAOJtdcZBVrap',
     type: 'file',
     resourceType: 'image/jpeg',
-  }, {
-    userId: users[3]._id,
-    videoId: id.video[0],
-    playlistId: id.playlist,
-    url: 'https://learntubebucket.s3.amazonaws.com/' + users[3].email + '/' + bot[users[3].email].hash[0],
-    type: 'editor',
-    resourceType: 'text/html',
+    url: 'https://learntubebucket.s3.amazonaws.com/learntubebot01@gmail.com/1fd76c508230960e31cfda588f6bba75',
+    created: offsetDate(_.random(-8, 0)),
   }];
 
   return Note.create(docs);
 };
 
 var seedWatchedContent = function (users) {
-  var timeMachine = function (offset) {
-    var d = new Date();
-    d.setDate(d.getDate() + offset);
-    return d;
-  };
 
   return WContent.create([{
     userId: users[0]._id,
     playlistId: 'PLtEAazd2E1Vr5ycRfR2pRQSjqFlB9uSow',
     lectures: [{
       videoId: '7BafU1p_OKo',
-      completedAt: timeMachine(_.random(-7, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: 'cuwZY0KZK3c',
-      completedAt: timeMachine(_.random(-7, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: 'iokDryA747s',
-      completedAt: timeMachine(_.random(-7, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: '8rQGMW7nt4s',
-      completedAt: timeMachine(_.random(-7, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: '7IWxw8TBPjI',
-      completedAt: timeMachine(_.random(-7, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: 'YxCkAa5rr-4',
-      completedAt: timeMachine(_.random(-7, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: 'btk_iTh55_0',
-      completedAt: timeMachine(_.random(-7, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: 'lDaTVJZ1hPI',
-      completedAt: timeMachine(_.random(-7, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: 'vzTLE5-64c8',
-      completedAt: timeMachine(_.random(-7, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }]
   }, {
     userId: users[0]._id,
@@ -161,40 +114,40 @@ var seedWatchedContent = function (users) {
     playlistId: 'PL46F0A159EC02DF82',
     lectures: [{
       videoId: 'yUyJ1gcaraM',
-      completedAt: timeMachine(_.random(-14, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: 'sY8qiSaAi9g',
-      completedAt: timeMachine(_.random(-14, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: 'yQaAGmHNn9s',
-      completedAt: timeMachine(_.random(-14, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: '7i1f23AVsn4',
-      completedAt: timeMachine(_.random(-14, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: 'BgtdojEoWFI',
-      completedAt: timeMachine(_.random(-14, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: 'waF2Isf-phQ',
-      completedAt: timeMachine(_.random(-14, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: 'og4Zku5VVl0',
-      completedAt: timeMachine(_.random(-14, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: 'AdQcd3sKGC8',
-      completedAt: timeMachine(_.random(-14, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: 'ZH5qZB0UucQ',
-      completedAt: timeMachine(_.random(-14, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: 'VfBr32W-hRA',
-      completedAt: timeMachine(_.random(-14, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: '5gjr15aWp24',
-      completedAt: timeMachine(_.random(-14, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }, {
       videoId: 'ebjo8_u82mI',
-      completedAt: timeMachine(_.random(-14, 0)),
+      completedAt: offsetDate(_.random(-8, 0)),
     }]
   }, {
     userId: users[0]._id,
@@ -225,8 +178,8 @@ var seedWatchedContent = function (users) {
 
 var seedUpload = function (users) {
   var hashes = [
-   'd3e6cfa0eb57bab5c50a88a049b42930',
-   '8af01a82ad2ce86d8d0e16fbc40b069b'
+    'd3e6cfa0eb57bab5c50a88a049b42930',
+    '8af01a82ad2ce86d8d0e16fbc40b069b'
   ];
 
   return Upload.create([{
