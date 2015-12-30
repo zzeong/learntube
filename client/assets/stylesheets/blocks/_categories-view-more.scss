@@ -1,0 +1,25 @@
+.categories-view-more {
+  text-align: center;
+
+  @include respond-to('small') {
+    text-align: right;
+  }
+
+
+  .md-button {
+    display: inline-block;
+    width: 100%;
+    margin: 0;
+    background: $white;
+    color: $view-more-btn;
+
+    @include respond-to('small') {
+      right: 8px;
+      bottom: 10px;
+      width: auto;
+      background: none;
+    }
+
+  }
+
+}

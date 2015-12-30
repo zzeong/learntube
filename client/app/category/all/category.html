@@ -28,9 +28,12 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
               </lt-listcard>
             </a>
           </li>
+          <div class="categories-view-more">
+            <md-divider hide-gt-xs></md-divider>
+            <md-button ng-href="{{ href('category-other', { ctname: getSafeUrl(category[0].categorySlug) }) }}">View more</md-button>
+          </div>
         </ul>
       </div>
     </div>
   </div>
 </div>
-

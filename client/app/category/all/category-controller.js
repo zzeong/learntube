@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('CategoryAllCtrl', function ($scope, $http, Category, $state) {
+.controller('CategoryAllCtrl', function ($scope, $http, Category, $state, $filter) {
   $scope.href = $state.href;
 
   $http.get('/api/categories/get-each-top')
@@ -19,5 +19,9 @@ angular.module('learntubeApp')
     $scope.classArr = _.chunk(res.data, 5);
   })
   .catch(console.error);
+
+  $scope.getSafeUrl = function (string) {
+    return $filter('urlSafely')(string);
+  };
 
 });
