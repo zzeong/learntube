@@ -22,6 +22,7 @@
     })
     .then((res) => {
       $scope.lecture = res.data.items[0];
+      $scope.lectureDate = ($scope.lecture.snippet.publishedAt).substring(0, 10);
       return $http.get('/api/users/' + Auth.getCurrentUser()._id + '/uploads', {
         params: {
           playlistId: $scope.playlistId,

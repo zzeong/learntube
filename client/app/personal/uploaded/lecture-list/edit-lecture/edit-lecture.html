@@ -19,23 +19,23 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
             <table>
               <tr>
                 <td class="md-body-2 table-layout__key">Published At</td>
-                <td class="md-body-1 table-layout__value">ipsum lorem</td>
+                <td class="md-body-1 table-layout__value">{{ lectureDate }}</td>
               </tr>
               <tr>
                 <td class="md-body-2 table-layout__key">Duration</td>
-                <td class="md-body-1 table-layout__value">ipsum lorem</td>
+                <td class="md-body-1 table-layout__value">{{ lecture.contentDetails.duration | humanable}}</td>
               </tr>
               <tr>
                 <td class="md-body-2 table-layout__key">Views</td>
-                <td class="md-body-1 table-layout__value">ipsum lorem</td>
+                <td class="md-body-1 table-layout__value">{{ lecture.statistics.viewCount }}</td>
               </tr>
               <tr>
                 <td class="md-body-2 table-layout__key">Like</td>
-                <td class="md-body-1 table-layout__value">ipsum lorem</td>
+                <td class="md-body-1 table-layout__value">{{ lecture.statistics.likeCount }}</td>
               </tr>
               <tr>
                 <td class="md-body-2 table-layout__key">Dislike</td>
-                <td class="md-body-1 table-layout__value">ipsum lorem</td>
+                <td class="md-body-1 table-layout__value">{{ lecture.statistics.dislikeCount }}</td>
               </tr>
             </table>
           </div>
@@ -87,4 +87,3 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
     </div>
   </div>
 </div>
-
