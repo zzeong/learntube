@@ -109,7 +109,6 @@ angular.module('learntubeApp')
 
   $scope.title = getMobileTitle();
   $scope.onSearching = getOnSearching();
-  console.log($scope.onSearching);
   $scope.searchAtMobile = getSearchAtMobile();
   $scope.greyToolbar = getGreyToolbar();
 
