@@ -44,19 +44,14 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
 
         <div class="whiteframe-wrapper--behind">
           <md-whiteframe class="frame-padding responsive-whiteframe whiteframe">
-            <h2 class="md-title">Edit lecture</h2>
+            <h2 class="md-title">{{ lectureTitle }}</h2>
             <md-content class="frame-top-padding">
 
               <!-- 단순 출력만을 위한 ui -->
-              <p class="md-caption lecture-info-title">Title</label>
-                <div>
-                  <p class="md-body-1 lecture-info-body">{{ lectureTitle }}</p>
-                </div>
               <md-divider></md-divider>
-              <p class="md-caption lecture-info-title">Description</label>
-                <div>
-                  <p class="md-body-1 lecture-info-body">{{ lectureDescription }}</p>
-                </div>
+              <div>
+                <p class="md-body-1 lecture-info-body">{{ lectureDescription }}</p>
+              </div>
 
               <!-- 기존 input과 textarea -->
               <!-- <md-input-container class="md-block md-accent">
