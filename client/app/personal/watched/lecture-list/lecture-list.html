@@ -57,7 +57,7 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
 
                       <lt-listcard-actions>
                         <md-button class="lecturelist__second-action lt-button-s md-accent" ng-show="lecture.note"
-                        ng-click="showNote($event)">View note</md-button>
+                        ng-click="showNote(lecture, $event)">View note</md-button>
                       </lt-listcard-actions>
                     </lt-listcard>
                   </a>
@@ -69,7 +69,7 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
 
         <div class="note-sidenav-wrapper">
           <md-sidenav class="md-sidenav-right md-whiteframe-z1 note-sidenav" ng-include="'components/sidenav/sidenav-note.html'"
-            md-component-id="right" md-is-locked-open="$mdMedia('gt-xs')">
+          md-component-id="right" md-is-locked-open="$mdMedia('gt-xs')">
           </md-sidenav>
         </div>
       </div>

@@ -102,20 +102,20 @@
     }
 
     function showNote(lecture, ev) {
-      ev.preventDefault();
-      NavToggler.right();
-
       $scope.selectedLecture = lecture;
-      if (_.has(lecture, 'notes')) { return; }
 
-      Note.query({
-        videoId: lecture.snippet.resourceId.videoId
-      })
-      .$promise
-      .then((notes) => {
-        lecture.notes = notes;
-      })
-      .catch(console.error);
+      if (lecture.note.type === 'editor') {
+        Note.getContents({ nid: lecture.note._id }).$promise
+        .then((res) => {
+          lecture.note.contents = res.contents;
+          NavToggler.right();
+        })
+        .catch(console.error);
+      } else {
+        NavToggler.right();
+      }
+
+      ev.preventDefault();
     }
 
     function isSelected(lecture) {

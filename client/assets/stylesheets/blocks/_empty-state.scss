@@ -1,0 +1,15 @@
+.empty-state {
+  display: table;
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  background-color: $grey-300;
+  text-align: center;
+}
+
+.empty-state__words {
+  display: table-cell;
+  color: $text-color-alt;
+  font-size: 2em;
+  vertical-align: middle;
+}
