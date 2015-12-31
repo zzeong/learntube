@@ -3,6 +3,7 @@
 angular.module('learntubeApp')
 .controller('HomeCtrl', function ($scope, $state, GApi, GoogleConst, $http) {
   const CARD_WIDTH = 230 + 8 * 2;
+  $scope.href = $state.href;
   $scope.popularClasses = null;
   $scope.slick = {};
 
