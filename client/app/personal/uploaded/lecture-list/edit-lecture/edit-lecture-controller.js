@@ -23,6 +23,9 @@
     .then((res) => {
       $scope.lecture = res.data.items[0];
       $scope.lectureDate = ($scope.lecture.snippet.publishedAt).substring(0, 10);
+      $scope.lectureTitle = $scope.lecture.snippet.title;
+      $scope.lectureDescription = $scope.lecture.snippet.description;
+
       return $http.get('/api/users/' + Auth.getCurrentUser()._id + '/uploads', {
         params: {
           playlistId: $scope.playlistId,
@@ -130,6 +133,7 @@
       $mdDialog.show(confirm)
       .then(removeHandout);
     }
+
   }
 
   EditLectureCtrl.$inject = ['$scope', '$state', '$mdDialog', '$q', '$http', 'Auth', '$mdToast'];

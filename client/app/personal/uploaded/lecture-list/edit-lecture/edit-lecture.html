@@ -46,19 +46,30 @@ ng-include="'components/sidenav/sidenav.html'" md-component-id="left" md-is-lock
           <md-whiteframe class="frame-padding responsive-whiteframe whiteframe">
             <h2 class="md-title">Edit lecture</h2>
             <md-content class="frame-top-padding">
-              <md-input-container class="md-block md-accent">
+
+              <!-- 단순 출력만을 위한 ui -->
+              <p class="md-caption edit-lecture-title">Title</label>
+                <div>
+                  <p class="md-body-1 edit-lecture-body">{{ lectureTitle }}</p>
+                </div>
+              <md-divider></md-divider>
+              <p class="md-caption edit-lecture-title">Description</label>
+                <div>
+                  <p class="md-body-1 edit-lecture-body">{{ lectureDescription }}</p>
+                </div>
+
+              <!-- 기존 input과 textarea -->
+              <!-- <md-input-container class="md-block md-accent">
                 <label>Title</label>
-                <input ng-model="lecture.title">
+                <input ng-model="lectureTitle">
               </md-input-container>
+
               <md-input-container class="md-block md-accent">
                 <label>Description</label>
-                <textarea ng-model="lecture.description" columns="1" md-maxlength="1000" rows="50"></textarea>
-              </md-input-container>
+                <textarea ng-model="lectureDescription" md-maxlength="1000"></textarea>
+              </md-input-container> -->
             </md-content>
-            <div layout="row" layout-align="end center" class="action-area">
-              <md-button class="md-warn">Clear</md-button>
-              <md-button class="md-accent">Save</md-button>
-            </div>
+            <!-- 원래 clear, save 버튼이 있던 자리 -->
           </md-whiteframe>
 
           <md-divider hide-gt-xs></md-divider>
