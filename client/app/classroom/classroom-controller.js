@@ -25,6 +25,7 @@
     $scope.updateNote = updateNote;
     $scope.shouldBeEmbedded = shouldBeEmbedded;
     $scope.getUserImgPath = getUserImgPath;
+    $scope.myNotes = null;
 
     $scope.fab = {
       DURATION: 200,
@@ -51,18 +52,28 @@
         // md-fab-spped-dial directive change md-open variable automatically
         $event.stopPropagation();
 
-        if (!$scope.note.isActivated()) {
+        if (!$scope.noteObj.isActivated()) {
           $scope.fab.isOpen = !$scope.fab.isOpen;
         }
       },
     };
 
-    $scope.note = {
+    $scope.noteObj = {
       upload: (file, type) => {
         return Note.upload(file, { type })
         .then((res) => {
+          let note = res.data;
           $scope.fab.enable();
-          $scope.myNotes.push(res.data);
+
+          if (_.isEqual(note.type, 'editor')) {
+            Note.getContents({ nid: note._id }).$promise
+            .then((res) => {
+              note.contents = res.contents;
+            })
+            .catch(console.error);
+          }
+
+          $scope.myNotes.push(note);
         })
         .catch(console.error);
       },
@@ -109,7 +120,13 @@
       Note.query({ videoId: $scope.videoId })
       .$promise
       .then(function (notes) {
-        $scope.myNotes = notes;
+        $scope.myNotes = notes.map((note) => keepConstantNote(note));
+        let editorNotes = notes.filter((note) => _.isEqual(note.type, 'editor'));
+        editorNotes.forEach((note) => {
+          Note.getContents({ nid: note._id }).$promise
+          .then((res) => { note.contents = res.contents; })
+          .catch(console.error);
+        });
       })
       .catch(console.error);
     }
@@ -177,16 +194,7 @@
       .catch(console.error);
     }
 
-    function editNote(note) {
-      Note.getContents({ nid: note._id })
-      .$promise
-      .then((res) => {
-        note.contents = res.contents;
-        note.isEditing = true;
-      })
-      .catch(console.error);
-    }
-
+    function editNote(note) { note.isEditing = true; }
     function cancelEditing(note) { note.isEditing = false; }
 
     function deleteNote(note) {
@@ -199,13 +207,14 @@
     }
 
     function updateNote(note) {
-      var file = new Blob([note.contents], { type: 'text/html' });
+      let file = new Blob([note.contents], { type: 'text/html' });
       Note.update(file, { type: note.type }, note._id)
       .then((res) => {
-        $scope.myNotes = $scope.myNotes.map(function (note) {
-          if (note._id === res.data._id) { return res.data; }
-          return note;
-        });
+        note = _.assign(note, res.data);
+        return Note.getContents({ nid: note._id }).$promise;
+      })
+      .then((res) => {
+        note.contents = res.contents;
         note.isEditing = false;
       })
       .catch(console.error);
@@ -221,6 +230,11 @@
     function getUserImgPath(user) {
       var guestImgPath = '/assets/images/guest.png';
       return _.has(user, 'google') ? user.google.image.url : guestImgPath;
+    }
+
+    function keepConstantNote(note) {
+      note.isEditing = false;
+      return note;
     }
   }
 

@@ -1,2 +1,2 @@
-<iframe ng-if="isEqual(note.type, 'editor')" ng-src="{{ note.url | trustAsResourceUrl }}"></iframe>
+<div ng-if="isEqual(note.type, 'editor')"  ng-bind-html="note.contents"></div>
 <img ng-if="isEqual(note.type, 'file')" ng-src="{{ note.url }}" alt="A image note">

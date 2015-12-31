@@ -9,8 +9,8 @@
           <span>{{ item.snippet.title }}</span>
         </h2>
         <span flex></span>
-        <md-button class="md-icon-button" aria-label="Complete lecture" ng-show="isLoggedIn()" ng-disabled="haveLecture"
-        ng-click="completeLecture()">
+        <md-button class="md-icon-button" aria-label="Complete lecture" ng-show="isLoggedIn()"
+        ng-disabled="haveLecture" ng-click="completeLecture()">
           <md-icon md-font-set="material-icons">done</md-icon>
         </md-button>
         <md-button class="md-icon-button" target="_self" ng-href="{{ getDownloadUrl() }}"
@@ -35,11 +35,11 @@
 
     <md-fab-actions>
       <md-button aria-label="File" class="md-fab md-raised md-mini" ng-class="fab.ngClass"
-      type="file" ngf-select="showUpNote(note.file, $file)" accept="image/*">
+      type="file" ngf-select="showUpNote(noteObj.file, $file)" accept="image/*">
         <md-icon md-font-set="material-icons">file_upload</md-icon>
       </md-button>
       <md-button aria-label="Web-editor" class="md-fab md-raised md-mini" ng-class="fab.ngClass"
-      ng-click="showUpNote(note.editor, true)">
+      ng-click="showUpNote(noteObj.editor, true)">
         <md-icon md-font-set="material-icons">mode_edit</md-icon>
       </md-button>
     </md-fab-actions>
@@ -106,14 +106,14 @@
       </md-tab-label>
       <md-tab-body>
         <div class="frame-padding--constant-offset tab-area__note">
-          <lt-note-unit lt-note-type="editor" ng-if="note.editor.activator" lt-note-model="note.editor">
+          <lt-note-unit lt-note-type="editor" ng-if="noteObj.editor.activator" lt-note-model="noteObj.editor">
             <lt-note-object></lt-note-object>
-            <lt-note-actions lt-on-cancel="fab.enable()" lt-on-add="note.upload($file, $type)"></lt-note-actions>
+            <lt-note-actions lt-on-cancel="fab.enable()" lt-on-add="noteObj.upload($file, $type)"></lt-note-actions>
           </lt-note-unit>
 
-          <lt-note-unit lt-note-type="file" ng-if="note.file.activator" lt-note-model="note.file">
+          <lt-note-unit lt-note-type="file" ng-if="noteObj.file.activator" lt-note-model="noteObj.file">
             <lt-note-object></lt-note-object>
-            <lt-note-actions lt-on-cancel="fab.enable()" lt-on-add="note.upload($file, $type)"></lt-note-actions>
+            <lt-note-actions lt-on-cancel="fab.enable()" lt-on-add="noteObj.upload($file, $type)"></lt-note-actions>
           </lt-note-unit>
 
           <div class="my-note">
@@ -129,7 +129,7 @@
                 <textarea ng-model="note.contents" ckeditor></textarea>
                 <div class="action-area" layout="row" layout-align="start center">
                   <md-button class="md-raised" ng-if="isEqual(note.type, 'editor')" ng-click="cancelEditing(note)">Cancel</md-button>
-                  <md-button class="md-raised md-raised-color-warn" ng-click="updateNote(note)">Update</md-button>
+                  <md-button class="md-raised md-accent" ng-click="updateNote(note)">Update</md-button>
                 </div>
               </div>
             </div>

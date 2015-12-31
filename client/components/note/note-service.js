@@ -78,6 +78,8 @@
         this.activator = factor;
         if (this.type === 'file') {
           this.obj = this.activator;
+        } else {
+          this.obj = '';
         }
       };
     }
