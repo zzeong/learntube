@@ -68,25 +68,26 @@ exports.show = function (req, res) {
 };
 
 
-exports.getContents = function (req, res) {
-  Note.findById(req.params.nid, function (err, note) {
-    var data = '';
-    s3.get(url.parse(note.url).pathname).on('response', function (response) {
+exports.getContents = (req, res, next) => {
+  Note.findById(req.params.nid).exec()
+  .then((note) => {
+    s3.get(url.parse(note.url).pathname)
+    .on('response', (response) => {
+      let body = {
+        _id: note._id,
+        contents: ''
+      };
       console.log('[S3]:GET', response.statusCode, response.headers);
 
       response.setEncoding('utf8');
-      response.on('data', function (chunk) {
-        data += chunk;
+      response.on('data', (chunked) => {
+        body.contents += chunked;
       });
-      response.on('end', function () {
-        return res.status(200).json({
-          _id: note._id,
-          contents: data
-        });
-      });
+      response.on('end', () => res.status(200).json(body));
     })
     .end();
-  });
+  })
+  .catch(next);
 };
 
 
