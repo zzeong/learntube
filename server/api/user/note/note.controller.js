@@ -121,11 +121,12 @@ exports.update = function (req, res) {
 
 
 exports.destroy = (req, res, next) => {
-  Note.findById(req.params.nid, (err, note) => {
-    if (err) { return res.status(500).send(err); }
+  Note.findById(req.params.nid)
+  .then((note) => {
     if (!note) { return res.status(404).send('Not Found'); }
 
-    s3.del(note.s3Path).on('response', (response) => {
+    let uploadPath = url.parse(note.url).pathname;
+    s3.del(uploadPath).on('response', (response) => {
       console.log('[S3]:DELETE', response.statusCode, response.headers);
 
       note.remove()
@@ -133,6 +134,7 @@ exports.destroy = (req, res, next) => {
       .catch(next);
     })
     .end();
-  });
+  })
+  .catch(next);
 };
 
