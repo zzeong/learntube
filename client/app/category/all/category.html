@@ -29,7 +29,6 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
             </a>
           </li>
           <div class="categories-view-more">
-            <md-divider hide-gt-xs></md-divider>
             <md-button ng-href="{{ href('category-other', { ctname: getSafeUrl(category[0].categorySlug) }) }}">View more</md-button>
           </div>
         </ul>
