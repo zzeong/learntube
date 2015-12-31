@@ -31,7 +31,7 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
           <md-whiteframe class="responsive-whiteframe">
             <ul class="numbering whiteframe__lecturelist">
               <li ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
-                <a class="anchor-mask" ng-href="{{ href('edit-lecture', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
+                <a class="anchor-mask" ng-href="{{ href('lecture-info', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
                   <lt-listcard lt-responsive-morph="false">
                     <lt-listcard-media>
                       <div class="video-thumb">

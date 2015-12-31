@@ -2,9 +2,9 @@
   'use strict';
 
   angular.module('learntubeApp')
-  .controller('EditLectureCtrl', EditLectureCtrl);
+  .controller('LectureInfoCtrl', LectureInfoCtrl);
 
-  function EditLectureCtrl($scope, $state, $mdDialog, $q, $http, Auth, $mdToast) {
+  function LectureInfoCtrl($scope, $state, $mdDialog, $q, $http, Auth, $mdToast) {
     $scope.playlistId = $state.params.pid;
     $scope.videoId = $state.params.vid;
     $scope.showConfirmDialog = showConfirmDialog;
@@ -136,5 +136,5 @@
 
   }
 
-  EditLectureCtrl.$inject = ['$scope', '$state', '$mdDialog', '$q', '$http', 'Auth', '$mdToast'];
+  LectureInfoCtrl.$inject = ['$scope', '$state', '$mdDialog', '$q', '$http', 'Auth', '$mdToast'];
 })(angular);
