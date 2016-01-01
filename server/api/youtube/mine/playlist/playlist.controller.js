@@ -54,9 +54,6 @@ exports.index = function (req, res, next) {
   g.youtube('playlists.list', params)
   .then(function (response) {
     body = gapiHelper.createBodyForList(response);
-    return req.user.updateAccessToken(g);
-  })
-  .then(function () {
     body.items = body.items.map(function (item) {
       return {
         thumbnailUrl: item.snippet.thumbnails.medium.url,
@@ -148,7 +145,6 @@ exports.create = (req, res, next) => {
 
     return Class.create(doc);
   })
-  .then(() => req.user.updateAccessToken(g))
   .then(() => { res.status(201).json(body); })
   .catch(next);
 };
@@ -200,7 +196,6 @@ exports.destroy = (req, res, next) => {
 
   g.youtube('playlists.delete', params)
   .then(() => Class.findOne({ playlistId: pid }).exec())
-  .then(() => req.user.updateAccessToken(g))
   .then(() => { res.status(204).send(); })
   .catch(next);
 };

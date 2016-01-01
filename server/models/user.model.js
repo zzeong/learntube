@@ -143,14 +143,6 @@ UserSchema.methods = {
     var salt = new Buffer(this.salt, 'base64');
     return crypto.pbkdf2Sync(password, salt, 10000, 64).toString('base64');
   },
-
-  updateAccessToken: function (gapi) {
-    if (gapi.isTokenUpdated()) {
-      this.google.accessToken = gapi.getToken().accessToken;
-      return this.save();
-    }
-    return Promise.resolve();
-  }
 };
 
 module.exports = mongoose.model('User', UserSchema);

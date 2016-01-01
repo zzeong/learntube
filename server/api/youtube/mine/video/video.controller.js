@@ -55,9 +55,6 @@ exports.index = function (req, res, next) {
     return Promise.resolve();
   })
   .then(function () {
-    return req.user.updateAccessToken(g);
-  })
-  .then(function () {
     return res.status(200).json(body);
   })
   .catch(next);

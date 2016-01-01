@@ -5,7 +5,7 @@ var router = express.Router();
 var auth = require('../../auth/auth.service');
 var g = require('../../components/google-api');
 
-router.use('/mine', auth.isAuthenticated(), g.setCredentials);
+router.use('/mine', auth.isAuthenticated(), g.readyApi);
 
 router.use('/mine/playlists', require('./mine/playlist'));
 router.use('/mine/playlistitems', require('./mine/playlistitem'));

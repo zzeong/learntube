@@ -83,7 +83,6 @@ exports.index = (req, res, next) => {
     }
     return Promise.resolve();
   })
-  .then(() => req.user.updateAccessToken(g))
   .then(() => res.status(200).json(body))
   .catch(next);
 };
@@ -144,9 +143,6 @@ exports.create = function (req, res, next) {
       return gapiHelper.applyAdditional(g, body);
     }
     return Promise.resolve();
-  })
-  .then(function () {
-    return req.user.updateAccessToken(g);
   })
   .then(function () {
     return res.status(201).json(body);
