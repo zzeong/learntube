@@ -89,21 +89,6 @@
       playlistId: $scope.playlistId,
     });
 
-    WatchedContent.query({ playlistId: $scope.playlistId }).$promise
-    .then((items) => {
-      if (items.length) {
-        markHaveLecture(items[0]);
-      }
-
-      function markHaveLecture(item) {
-        $scope.cid = item._id;
-        satisfy(item.lectures, (lecture) => _.isEqual(lecture.videoId, $scope.videoId), () => {
-          $scope.haveLecture = true;
-        });
-      }
-    })
-    .catch(console.error);
-
     GApi.execute('youtube', 'videos.list', {
       key: GoogleConst.browserKey,
       part: 'snippet,contentDetails,statistics',
@@ -117,8 +102,22 @@
     .catch(console.error);
 
     if ($scope.isLoggedIn()) {
-      Note.query({ videoId: $scope.videoId })
-      .$promise
+      WatchedContent.query({ playlistId: $scope.playlistId }).$promise
+      .then((items) => {
+        if (items.length) {
+          markHaveLecture(items[0]);
+        }
+
+        function markHaveLecture(item) {
+          $scope.cid = item._id;
+          satisfy(item.lectures, (lecture) => _.isEqual(lecture.videoId, $scope.videoId), () => {
+            $scope.haveLecture = true;
+          });
+        }
+      })
+      .catch(console.error);
+
+      Note.query({ videoId: $scope.videoId }).$promise
       .then(function (notes) {
         $scope.myNotes = notes.map((note) => keepConstantNote(note));
         let editorNotes = notes.filter((note) => _.isEqual(note.type, 'editor'));
