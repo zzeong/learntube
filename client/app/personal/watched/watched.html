@@ -29,14 +29,14 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
                   ng-click="$mdOpenMenu($event)" aria-label="Actions menu">more_vert</md-icon>
                   <md-menu-content width="2">
                     <md-menu-item>
-                      <md-button ng-click="bar()">Delete</md-button>
+                      <md-button ng-click="showConfirmDialog(class, $event)">Delete</md-button>
                     </md-menu-item>
                   </md-menu-content>
                 </md-menu>
               </lt-listcard-content>
 
               <lt-listcard-actions layout="row" layout-align="end center" hide-xs>
-                <md-button class="lt-button-s md-accent" ng-click="bar()">Delete</md-button>
+                <md-button class="lt-button-s md-accent" ng-click="showConfirmDialog(class, $event)">Delete</md-button>
               </lt-listcard-actions>
             </lt-listcard>
           </a>
@@ -45,4 +45,3 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
     </div>
   </div>
 </div>
-

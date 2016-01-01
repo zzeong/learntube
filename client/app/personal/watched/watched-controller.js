@@ -1,8 +1,9 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('WatchedContentsCtrl', function ($scope, $http, WatchedContent, Note, $state, GoogleConst, GApi) {
+.controller('WatchedContentsCtrl', function ($scope, $http, WatchedContent, Note, $state, GoogleConst, GApi, $mdDialog) {
   $scope.href = $state.href;
+  $scope.showConfirmDialog = showConfirmDialog;
 
   WatchedContent.query().$promise
   .then(function (response) {
@@ -41,11 +42,26 @@ angular.module('learntubeApp')
   })
   .catch(console.error);
 
-  $scope.deleteClass = function (classe) {
-    WatchedContent.remove({ cid: classe._id }).$promise
-    .then(function () {
-      _.remove($scope.classes, classe);
-    })
-    .catch(console.error);
-  };
+  function showConfirmDialog(classe, ev) {
+    var confirm = $mdDialog.confirm()
+    .title('Delete the class')
+    .textContent('Are you sure?')
+    .ariaLabel('Delete the class')
+    .targetEvent(ev)
+    .ok('Ok')
+    .cancel('Cancel');
+
+    $mdDialog.show(confirm)
+    .then(deleteClass);
+
+    function deleteClass() {
+      WatchedContent.remove({ cid: classe._id }).$promise
+      .then(function () {
+        _.remove($scope.classes, classe);
+      })
+      .catch(console.error);
+    }
+
+    ev.preventDefault();
+  }
 });
