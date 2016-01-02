@@ -24,7 +24,7 @@ angular.module('learntubeApp')
     }).$promise
     .then(function () {
       $scope.haveClass = true;
-      $scope.showSimpleToast();
+      $scope.showToast('Class is added');
     })
     .catch(console.error);
   };
@@ -100,16 +100,12 @@ angular.module('learntubeApp')
   })
   .catch(console.error);
 
-  $scope.showSimpleToast = function () {
-
-    var positionArr = 'top right';
-
+  $scope.showToast = function (text) {
     $mdToast.show(
       $mdToast.simple()
-        .content('Class is added')
-        .position(positionArr)
-        .hideDelay(3000)
+      .content(text)
+      .position('bottom right')
+      .hideDelay(3000)
     );
   };
-
 });
