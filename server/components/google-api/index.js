@@ -26,6 +26,8 @@ function readyApi(req, res, next) {
   });
 
   oauth2Client.getAccessToken((err, token) => {
+    if (err) { next(err); }
+
     let userToken = req.user.google.accessToken;
     if (userToken !== token) {
       userToken = token;
