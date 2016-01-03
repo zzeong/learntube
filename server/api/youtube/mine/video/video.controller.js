@@ -4,32 +4,6 @@ var g = require('../../../../components/google-api');
 var config = require('../../../../config/environment');
 var gapiHelper = require('../youtube-mine-service');
 
-/**
- * @api {get} /api/youtube/mine/videos Get my YouTube videos
- * @apiName GetMyVideos
- * @apiGroup My videos
- *
- * @apiUse TokenAuth
- *
- * @apiParam {Boolean} [withDuration=false] A flag for containing duration.
- * @apiParamExample {json} Request-Example:
- *     {
- *       "withDuration": true
- *     }
- *
- * @apiSuccess {Array} items Set of [playlistItem resource](https://developers.google.com/youtube/v3/docs/playlistItems#resource).\
- * A item of playlistItem resource **only** return `id`, `snippet`, `status` property (when `withDuration` is true in request params, `contentDetails` is added).
- * @apiSuccess {String} pageToken Token which is needed when request for next items set.
- *
- * @apiSuccessExample Success-Response:
- *     HTTP/1.1 200 OK
- *     {
- *       "items": [
- *         playlistItems_resource
- *       ],
- *       "pageToken": "DJGNdN"
- *     }
- */
 exports.index = function (req, res, next) {
   var body = {};
 
