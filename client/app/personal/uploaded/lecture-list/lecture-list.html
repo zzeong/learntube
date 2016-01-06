@@ -33,7 +33,7 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
           <md-whiteframe class="responsive-whiteframe">
             <ul class="numbering whiteframe__lecturelist">
               <li ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
-                <ion-item on-long-press="makeDeleteListMobile(lecture.id)" on-touch-end="itemOnTouchEnd(lecture.id)">
+                <ion-item on-long-press="makeDeleteListMobile(lecture)" on-touch-end="itemOnTouchEnd(lecture.id)">
                   <a class="anchor-mask" ng-href="{{ href('lecture-info', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
                     <lt-listcard ng-class="{ 'uploaded-lecturelist--selected': lecture.selected }"
                     lt-responsive-morph="false">

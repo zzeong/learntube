@@ -204,13 +204,20 @@
     };
 
     // mobile에서는 long-press로 고르기
-    $scope.makeDeleteListMobile = function (lid) {
+    $scope.makeDeleteListMobile = function (lecture) {
       for (var idx in $scope.lectureList) {
-        if ($scope.lectureList[idx].id === lid) {
+        // highlight를 주기 위한 처리
+        if ($scope.lectureList[idx] === lecture) {
           $scope.lectureList[idx].selected = true;
-          $scope.willBeDeleted.push($scope.lectureList[idx]);
         }
       }
+
+      // 중복검사
+      var existIdx = $scope.willBeDeleted.indexOf(lecture);
+      if (existIdx === -1) {
+        $scope.willBeDeleted.push(lecture);
+      }
+
       $scope.deleteToolbarState = true;
     };
 
