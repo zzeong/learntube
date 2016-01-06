@@ -1,0 +1,30 @@
+<div class="md-toolbar-tools toolbar--ondelete">
+
+
+  <!-- Mobile - basic element -->
+  <div class="toolbar-icon-left" hide-gt-xs>
+    <md-button class="toolbar-icon-left__btn md-icon-button" aria-label="Settings">
+      <md-icon ng-click="goBackward()" md-font-set="material-icons">arrow_back</md-icon>
+    </md-button>
+  </div>
+
+  <!-- PAGE TITLE -->
+  <div class="page-title">
+    <h2>
+      <span hide-gt-xs class="ellipsis-1">{{ willBeDeleted.length }}</span>
+      <span hide-xs class="ellipsis-1">{{ willBeDeleted.length }} items selected</span>
+    </h2>
+  </div>
+
+  <!-- 선택된 강의들을 삭제하는 delete icon -->
+  <md-button hide-gt-xs class="md-icon-button" aria-label="Delete" ng-click="deleteLectures()">
+    <md-icon md-font-set="material-icons">delete</md-icon>
+  </md-button>
+
+  <div class="lecturelist__delete-btn">
+    <md-button ng-click="deleteLectures()" hide-xs>
+      Delete
+    </md-button>
+  </div>
+
+</div>

@@ -79,6 +79,7 @@ angular.module('learntubeApp')
     return greyToolbar;
   };
 
+
   $scope.loginOauth = function (provider) {
     $window.location.href = '/auth/' + provider;
   };
@@ -111,6 +112,7 @@ angular.module('learntubeApp')
   $scope.onSearching = getOnSearching();
   $scope.searchAtMobile = getSearchAtMobile();
   $scope.greyToolbar = getGreyToolbar();
+
 
   $scope.mainIconTrigger = function () {
     NavToggler.left();

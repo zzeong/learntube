@@ -14,6 +14,12 @@
   bottom: 8px;
 }
 
+.lecturelist__delete-btn {
+  position: absolute;
+  right: 0;
+  bottom: 10px;
+}
+
 .lecturelist__second-action--centered {
   @include centerer(false, true);
   right: 8px;

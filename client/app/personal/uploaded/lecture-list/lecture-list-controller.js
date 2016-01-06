@@ -7,7 +7,6 @@
   function UploadedLectureListCtrl($scope, $state, Auth, $http, $mdDialog, $q, $mdToast, GApi, GoogleConst, YoutubeHelper) {
     $scope.href = $state.href;
     $scope.playlistId = $state.params.pid;
-    $scope.pushLecture = pushLecture;
     $scope.deleteLectures = deleteLectures;
     $scope.haveUploadedFile = haveUploadedFile;
     $scope.showLectureDialog = showLectureDialog;
@@ -17,6 +16,9 @@
     $scope.cancelDesc = cancelDesc;
     $scope.updateDesc = updateDesc;
     $scope.desc = {};
+    $scope.willBeDeleted = [];
+    $scope.deleteToolbarState = ($scope.willBeDeleted.length > 0) ? true : false;
+
     var scope = $scope;
 
     $http.get('/api/youtube/mine/playlists', {
@@ -35,7 +37,13 @@
         withDuration: true,
       },
     })
-    .then((res) => { $scope.lectureList = res.data.items; })
+    .then((res) => { $scope.lectureList = res.data.items;
+
+      // lectureList에 강의 삭제시 필요한 selected속성 부여
+      for (var lecIdx in $scope.lectureList) {
+        $scope.lectureList[lecIdx].selected = false;
+      }
+    })
     .catch(console.error);
 
 
@@ -118,13 +126,9 @@
       }
     }
 
-    function pushLecture(lecture) {
-      $scope.lectureDelBucket.push(lecture);
-    }
-
     function deleteLectures () {
-      var joinedId = $scope.lectureDelBucket.map((lecture) => {
-        return lecture.snippet.resourceId.videoId;
+      var joinedId = $scope.willBeDeleted.map(function (obj) {
+        return obj.snippet.resourceId.videoId;
       }).join(',');
 
       $http.delete('/api/youtube/mine/playlistitems', {
@@ -134,9 +138,11 @@
         }
       })
       .then(() => {
-        $scope.lectureList = _.xor($scope.lectureList, $scope.lectureDelBucket);
-        $scope.lectureDelBucket = [];
-        showToast('Lecture deleted');
+        var ea = $scope.willBeDeleted.length;
+        showToast(ea + ' Lectures deleted');
+        $scope.lectureList = _.xor($scope.lectureList, $scope.willBeDeleted);
+        $scope.willBeDeleted = [];
+        $scope.deleteToolbarState = false;
       })
       .catch(console.error);
     }
@@ -180,6 +186,38 @@
       })
       .catch(console.error);
     }
+
+    $scope.toggle = function (lecture, list, ev) {
+      var idx = list.indexOf(lecture);
+      if (idx > -1) {
+        list.splice(idx, 1);
+      } else {
+        list.push(lecture);
+      }
+
+      if (list.length > 0) {
+        $scope.deleteToolbarState = true;
+      } else {
+        $scope.deleteToolbarState = false;
+      }
+      ev.preventDefault();
+    };
+
+    // mobile에서는 long-press로 고르기
+    $scope.makeDeleteListMobile = function (lid) {
+      for (var idx in $scope.lectureList) {
+        if ($scope.lectureList[idx].id === lid) {
+          $scope.lectureList[idx].selected = true;
+          $scope.willBeDeleted.push($scope.lectureList[idx]);
+        }
+      }
+      $scope.deleteToolbarState = true;
+    };
+
+    $scope.itemOnTouchEnd = function () {
+      console.log('Touch end');
+    };
+
   }
 
   UploadedLectureListCtrl.$inject = ['$scope', '$state', 'Auth', '$http', '$mdDialog', '$q', '$mdToast', 'GApi', 'GoogleConst', 'YoutubeHelper'];
