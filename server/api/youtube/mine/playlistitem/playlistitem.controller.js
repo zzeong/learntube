@@ -8,6 +8,7 @@ var gapiHelper = require('../youtube-mine-service');
 function figureIdOutAndDelete(params) {
   return g.youtube('playlistItems.list', params)
   .then(function (res) {
+    console.log(res);
     return g.youtube('playlistItems.delete', {
       id: res.items[0].id
     });
@@ -21,7 +22,7 @@ function deleteAllPlaylistItems(params) {
     videoId: params.videoId.shift()
   };
 
-  return new Promise(function (resolve) {
+  return new Promise(function (resolve, reject) {
     (function recursive(p) {
       figureIdOutAndDelete(p)
       .then(function () {
@@ -30,7 +31,8 @@ function deleteAllPlaylistItems(params) {
 
         p.videoId = videoId;
         recursive(p);
-      });
+      })
+      .catch(reject);
     })(paramsUnit);
   });
 }
