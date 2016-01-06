@@ -4,7 +4,7 @@
   angular.module('learntubeApp')
   .controller('UploadedContentsCtrl', UploadedContentsCtrl);
 
-  function UploadedContentsCtrl($state, $scope, $mdDialog, $http) {
+  function UploadedContentsCtrl($state, $scope, $mdDialog, $http, ToolbarService) {
     $scope.href = $state.href;
     $scope.showAddDialog = showAddDialog;
     $scope.showDeleteDialog = showDeleteDialog;
@@ -79,7 +79,11 @@
       .then(() => { _.remove($scope.classes, classe); })
       .catch(console.error);
     }
+
+    $scope.passToToolbar = function (classe) {
+      ToolbarService.setClassTitle(classe);
+    };
   }
 
-  UploadedContentsCtrl.$inject = ['$state', '$scope', '$mdDialog', '$http'];
+  UploadedContentsCtrl.$inject = ['$state', '$scope', '$mdDialog', '$http', 'ToolbarService'];
 })(angular);

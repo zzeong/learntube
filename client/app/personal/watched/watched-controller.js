@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('WatchedContentsCtrl', function ($scope, $http, WatchedContent, Note, $state, GoogleConst, GApi, $mdDialog) {
+.controller('WatchedContentsCtrl', function ($scope, $http, WatchedContent, Note, $state, GoogleConst, GApi, $mdDialog, ToolbarService) {
   $scope.href = $state.href;
   $scope.showConfirmDialog = showConfirmDialog;
 
@@ -64,4 +64,8 @@ angular.module('learntubeApp')
 
     ev.preventDefault();
   }
+
+  $scope.passToToolbar = function (classe) {
+    ToolbarService.setClassTitle(classe);
+  };
 });
