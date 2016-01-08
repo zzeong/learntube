@@ -27,6 +27,7 @@
     "noodlejs": "^0.3.2",
     "passport": "~0.3.0",
     "passport-google-oauth": "latest",
+    "rabbit.js": "^0.4.4",
     "serve-favicon": "~2.3.0"
   },
   "devDependencies": {
