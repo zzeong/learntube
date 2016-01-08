@@ -2,6 +2,7 @@
 
 angular.module('learntubeApp')
 .controller('ToolbarCtrl', function ($scope, $location, $state, $window, Auth, NavToggler, $filter, Category, ToolbarService) {
+  $scope.logout = Auth.logout;
 
 
   // url에서 Toolbar title을 받아오자 (카테고리 이름)
@@ -124,10 +125,6 @@ angular.module('learntubeApp')
   $scope.getUserImgPath = function (user) {
     var guestImgPath = '/assets/images/guest.png';
     return _.has(user, 'google') ? user.google.image.url : guestImgPath;
-  };
-  $scope.logout = function () {
-    Auth.logout();
-    $location.path('/');
   };
 
   $scope.deleteValue = function () {

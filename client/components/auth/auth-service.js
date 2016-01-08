@@ -1,7 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-  .factory('Auth', function Auth($location, $rootScope, $http, User, $cookieStore) {
+  .factory('Auth', function Auth($rootScope, $http, User, $cookieStore, $state) {
     var currentUser = {};
     if ($cookieStore.get('token')) {
       currentUser = User.get();
@@ -17,6 +17,7 @@ angular.module('learntubeApp')
       logout: function () {
         $cookieStore.remove('token');
         currentUser = {};
+        $state.reload();
       },
 
       /**
