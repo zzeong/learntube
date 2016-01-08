@@ -128,7 +128,7 @@ module.exports = function (grunt) {
         tasks: ['express:dev', 'wait'],
         options: {
           livereload: true,
-          nospawn: true //Without this option specified express won't be reloaded
+          spawn: false //Without this option specified express won't be reloaded
         }
       }
     },
