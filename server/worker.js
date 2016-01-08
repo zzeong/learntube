@@ -1,5 +1,7 @@
 'use strict';
 
+process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+
 const g = require('./components/google-api');
 const config = require('./config/environment');
 const scraper = require('./components/scraper');
