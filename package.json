@@ -28,7 +28,8 @@
     "passport": "~0.3.0",
     "passport-google-oauth": "latest",
     "rabbit.js": "^0.4.4",
-    "serve-favicon": "~2.3.0"
+    "serve-favicon": "~2.3.0",
+    "x-ray": "^2.0.2"
   },
   "devDependencies": {
     "babel-preset-es2015": "^6.3.13",

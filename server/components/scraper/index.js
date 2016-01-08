@@ -1,40 +1,60 @@
 'use strict';
 
-var _ = require('lodash');
 var g = require('../google-api');
-var noodle = require('noodlejs');
 var url = require('url');
 var config = require('../../config/environment');
 var Class = require('../../models/class.model');
+var xray = require('x-ray')();
 
-function scrapAndUpdateViews(item) {
-  let query = {
-    url: getPlaylistUrl(item.id),
-    selector: '#pl-header .pl-header-details li',
-    extract: 'text'
-  };
+require('mongoose').Promise = Promise;
 
-  let views = 0;
-  let dbQuery = {};
-
-  return noodle.query(query)
-  .then((result) => {
-    let viewStr = result.results[0].results.find((el) => !!el.match(/views|조회수/)) ||
-      result.results[0].results[2];
-    views = +(viewStr.match(/[0-9]+/) || [''])[0];
-    dbQuery = {
-      playlistId: item.id,
-      channelId: item.snippet.channelId,
-    };
-
-    return Class.findOne(dbQuery).exec();
-  })
-  .then((classe) => {
-    classe = classe || new Class(_.assign(dbQuery, { rate: 0, views }));
-    classe.views = views;
-    return classe.save();
+function x() {
+  let args = arguments;
+  return new Promise((resolve, reject) => {
+    xray.apply(null, args)((err, results) => {
+      if (err) { reject(err); }
+      resolve(results);
+    });
   });
 }
+
+function updateClassModel(item) {
+  return fetchViews(item.id)
+  .then((views) => {
+    let query = {
+      playlistId: item.id,
+      channelId: item.snippet.channelId
+    };
+    let update = {
+      $set: { views },
+      $setOnInsert: { rate: 0 }
+    };
+    let options = {
+      new: true,
+      upsert: true,
+      setDefaultsOnInsert: true
+    };
+    return Class.findOneAndUpdate(query, update, options).exec();
+  })
+  .catch(console.error);
+}
+
+function fetchViews(id) {
+  let selector = '#pl-header .pl-header-details li';
+  return x(getPlaylistUrl(id), [selector])
+  .then(parseViews);
+}
+
+function parseViews(results) {
+  let viewStr = '';
+  try {
+    viewStr = results.find((el) => !!el.match(/views|조회수/)) || results[2] || '0';
+  } catch (e) {
+    console.err(e);
+  }
+  return +(viewStr.match(/[0-9,]+/) || [''])[0].replace(/,/g, '');
+}
+
 
 function getPlaylistUrl(id) {
   let urlObj = {
@@ -46,7 +66,10 @@ function getPlaylistUrl(id) {
   return url.format(urlObj);
 }
 
-exports.bookToGetPlaylists = (req, res, next) => {
+exports.fetchViews = fetchViews;
+exports.updateClassModel = updateClassModel;
+
+exports.updatePlaylistViews = (req, res, next) => {
   let params = {
     part: 'id,snippet,status',
     mine: 'true',
@@ -55,7 +78,8 @@ exports.bookToGetPlaylists = (req, res, next) => {
 
   res.on('finish', () => {
     g.youtube('playlists.list', params)
-    .then((response) => response.items.map(scrapAndUpdateViews))
+    .then((r) => Promise.all(r.items.map((item) => updateClassModel(item))))
+    .then(() => { console.log('All playlists are updated'); })
     .catch(next);
   });
   next();
