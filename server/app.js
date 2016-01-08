@@ -16,6 +16,7 @@ if (process.env.NODE_ENV === 'production') {
 var express = require('express');
 var mongoose = require('mongoose');
 var stealth = require('./components/stealth');
+var spawn = require('child_process').spawn;
 var config = require('./config/environment');
 
 // Connect to database
@@ -43,6 +44,12 @@ if (!module.parent) {
     console.log('Express server listening on http://%s:%d, in %s mode', config.ip, config.port, app.get('env'));
   });
 }
+
+// Register cron
+var service = spawn('node', ['server/cron.js']);
+service.stdout.on('data', (data) => { console.log(`cron:stdout] ${data}`); });
+service.stderr.on('data', (data) => { console.log(`cron:stderr] ${data}`); });
+service.on('close', (code) => { console.log(`cron] exited with code ${code}`); });
 
 // Expose app
 exports = module.exports = app;
