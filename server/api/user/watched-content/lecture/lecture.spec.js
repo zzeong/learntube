@@ -92,7 +92,7 @@ describe('REST API:', function () {
         .expect('Content-Type', /json/);
       })
       .then(function (res) {
-        res.body.message.should.match(/exists/);
+        res.body.message.should.match(/wrong/);
         done();
       })
       .catch(done);
