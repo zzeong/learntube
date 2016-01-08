@@ -15,6 +15,7 @@ if (process.env.NODE_ENV === 'production') {
 
 var express = require('express');
 var mongoose = require('mongoose');
+var stealth = require('./components/stealth');
 var config = require('./config/environment');
 
 // Connect to database
@@ -23,6 +24,10 @@ mongoose.connection.on('error', function (err) {
   console.error('MongoDB connection error: ' + err);
   process.exit(-1);
 });
+
+// Connect to message queue
+stealth.addPorter('mq').activate();
+
 // Populate DB with sample data
 if (config.seedDB) { require('./config/seed'); }
 
