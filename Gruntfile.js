@@ -123,14 +123,24 @@ module.exports = function (grunt) {
       },
       express: {
         files: [
-          'server/**/*.{js,json}'
+          'server/**/*.{js,json}',
+          '!server/worker.js'
         ],
         tasks: ['express:dev', 'wait'],
         options: {
           livereload: true,
           spawn: false //Without this option specified express won't be reloaded
         }
-      }
+      },
+      worker: {
+        files: [
+          'server/components',
+          'server/config',
+          'server/worker.js'
+        ],
+        tasks: ['develop:worker'],
+        options: { spawn: false },
+      },
     },
 
     // Make sure code styles are up to par and there are no obvious mistakes
@@ -218,7 +228,10 @@ module.exports = function (grunt) {
           env: {
             PORT: process.env.PORT || 9000
           },
-          watch: ['server'],
+          watch: [
+            'server',
+            '!server/worker.js'
+          ],
           callback: function (nodemon) {
             nodemon.on('log', function (event) {
               console.log(event.colour);
@@ -691,6 +704,10 @@ module.exports = function (grunt) {
         command: 'tar cvfh encrypt.tar .travis/id_rsa server/config/local.env.js && travis encrypt-file encrypt.tar --add --force'
       },
     },
+
+    develop: {
+      worker: { file: 'server/worker.js' }
+    }
   });
 
   // Used for delaying livereload until after server has restarted
@@ -748,6 +765,7 @@ module.exports = function (grunt) {
       'wiredep',
       'autoprefixer',
       'express:dev',
+      'develop:worker',
       'wait',
       'open',
       'watch:nonTest'
@@ -780,7 +798,8 @@ module.exports = function (grunt) {
     'injector',
     'wiredep',
     'autoprefixer',
-    'express:dev'
+    'express:dev',
+    'develop:worker'
   ]);
 
   grunt.registerTask('coverage', [

@@ -18,13 +18,7 @@ function execute(method, params) {
 }
 
 function readyApi(req, res, next) {
-  oauth2Client = new google.auth.OAuth2(config.clientID, config.clientSecret, config.callbackURL);
-
-  oauth2Client.setCredentials({
-    access_token: req.user.google.accessToken,
-    refresh_token: req.user.google.refreshToken,
-  });
-
+  setOAuth(req.user);
   oauth2Client.getAccessToken((err, token) => {
     if (err) { next(err); }
 
@@ -39,5 +33,16 @@ function readyApi(req, res, next) {
   });
 }
 
+
+function setOAuth(user) {
+  oauth2Client = new google.auth.OAuth2(config.clientID, config.clientSecret, config.callbackURL);
+
+  oauth2Client.setCredentials({
+    access_token: user.google.accessToken,
+    refresh_token: user.google.refreshToken,
+  });
+}
+
 exports.youtube = execute;
 exports.readyApi = readyApi;
+exports.setOAuth = setOAuth;

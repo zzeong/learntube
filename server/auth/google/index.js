@@ -3,8 +3,6 @@
 var express = require('express');
 var passport = require('passport');
 var auth = require('../auth.service');
-var g = require('../../components/google-api');
-var scraper = require('../../components/scraper');
 
 var router = express.Router();
 
@@ -25,6 +23,6 @@ router
 .get('/callback', passport.authenticate('google', {
   failureRedirect: '/signup',
   session: false
-}), g.readyApi, scraper.bookToGetPlaylists, auth.setTokenCookie);
+}), auth.setTokenCookie);
 
 module.exports = router;

@@ -37,6 +37,8 @@ var app = express();
 var server = require('http').createServer(app);
 require('./config/express')(app);
 require('./routes')(app);
+var mqContext = stealth.porter.mq.service;
+require('./config/mq')(mqContext);
 
 // Start server and prevent multiple listening
 if (!module.parent) {
