@@ -1,7 +1,8 @@
 {
-  "ecmaVersion": 5,
+  "ecmaVersion": 6,
   "libs": [
     "ecma5",
+    "ecma6",
     "underscore"
   ],
   "plugins": {
