@@ -3,7 +3,6 @@
 var google = require('googleapis');
 var youtube = google.youtube('v3');
 var _ = require('lodash');
-var config = require('../../config/environment').google;
 var oauth2Client = null;
 
 function execute(method, params) {
@@ -35,7 +34,11 @@ function readyApi(req, res, next) {
 
 
 function setOAuth(user) {
-  oauth2Client = new google.auth.OAuth2(config.clientID, config.clientSecret, config.callbackURL);
+  oauth2Client = new google.auth.OAuth2(
+    process.env.GOOGLE_ID,
+    process.env.GOOGLE_SECRET,
+    process.env.GOOGLE_CALLBACK_URL
+  );
 
   oauth2Client.setCredentials({
     access_token: user.google.accessToken,

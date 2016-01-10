@@ -2,7 +2,6 @@
 
 var _ = require('lodash');
 var g = require('../../../../components/google-api');
-var config = require('../../../../config/environment');
 var gapiHelper = require('../youtube-mine-service');
 
 function figureIdOutAndDelete(params) {
@@ -42,7 +41,7 @@ exports.index = (req, res, next) => {
   var params = _.assign({
     part: 'id,snippet,status',
     fields: 'items(id,snippet,status),nextPageToken',
-    maxResults: config.google.maxResults,
+    maxResults: process.env.GOOGLE_MAX_RESULTS,
   }, _.omit(req.query, 'withDuration'));
 
   g.youtube('playlistItems.list', params)

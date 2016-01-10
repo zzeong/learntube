@@ -6,7 +6,6 @@ var mongoose = require('mongoose');
 var url = require('url');
 var User = require('../../models/user.model');
 var Note = require('../../models/note.model');
-var config = require('../../config/environment');
 var app = require('../../app');
 var auth = require('../../auth/auth.service');
 var request = require('supertest-as-promised').agent(app);
@@ -14,9 +13,9 @@ var request = require('supertest-as-promised').agent(app);
 mongoose.Promise = Promise;
 
 var s3 = knox.createClient({
-  key: config.aws.accessKeyId,
-  secret: config.aws.secretKey,
-  bucket: config.aws.s3Bucket
+  key: process.env.AWS_ACCESSKEY_ID,
+  secret: process.env.AWS_SECRETKEY,
+  bucket: process.env.AWS_S3_BUCKET
 });
 
 

@@ -1,15 +1,14 @@
 'use strict';
 
 var Upload = require('../../../models/upload.model');
-var config = require('../../../config/environment');
 var knox = require('knox');
 var url = require('url');
 var fs = require('fs');
 
 var s3 = knox.createClient({
-  key: config.aws.accessKeyId,
-  secret: config.aws.secretKey,
-  bucket: config.aws.s3Bucket
+  key: process.env.AWS_ACCESSKEY_ID,
+  secret: process.env.AWS_SECRETKEY,
+  bucket: process.env.AWS_S3_BUCKET
 });
 
 

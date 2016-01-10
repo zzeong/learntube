@@ -1,6 +1,6 @@
 'use strict';
 
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
+require('dotenv').load();
 
 const g = require('./components/google-api');
 const config = require('./config/environment');
@@ -29,7 +29,7 @@ function updateViews(usr) {
   let user = JSON.parse(usr);
   let params = {
     part: 'id,snippet,status',
-    maxResults: config.google.maxResults,
+    maxResults: process.env.GOOGLE_MAX_RESULTS,
     mine: true,
   };
 

@@ -5,7 +5,7 @@ var jwt = require('jsonwebtoken');
 var expressJwt = require('express-jwt');
 var compose = require('composable-middleware');
 var User = require('../models/user.model');
-var validateJwt = expressJwt({ secret: config.secrets.session });
+var validateJwt = expressJwt({ secret: process.env.SESSION_SECRET });
 
 /**
  * Attaches the user object to the request if authenticated
@@ -66,7 +66,7 @@ function hasRole(roleRequired) {
  * Returns a jwt token signed by the app secret
  */
 function signToken(id) {
-  return jwt.sign({ _id: id }, config.secrets.session, { expiresIn: '5h' });
+  return jwt.sign({ _id: id }, process.env.SESSION_SECRET, { expiresIn: '5h' });
 }
 
 /**

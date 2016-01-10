@@ -1,7 +1,6 @@
 'use strict';
 
 var g = require('../../../../components/google-api');
-var config = require('../../../../config/environment');
 var gapiHelper = require('../youtube-mine-service');
 
 exports.index = function (req, res, next) {
@@ -16,7 +15,7 @@ exports.index = function (req, res, next) {
     var params = {
       part: 'id,snippet,status',
       playlistId: response.items[0].contentDetails.relatedPlaylists.uploads,
-      maxResults: config.google.maxResults,
+      maxResults: process.env.GOOGLE_MAX_RESULTS,
       fields: 'items(id,snippet,status),nextPageToken',
     };
     return g.youtube('playlistItems.list', params);

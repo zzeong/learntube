@@ -2,7 +2,6 @@
 
 var g = require('../google-api');
 var url = require('url');
-var config = require('../../config/environment');
 var Class = require('../../models/class.model');
 var xray = require('x-ray')();
 
@@ -73,7 +72,7 @@ exports.updatePlaylistViews = (req, res, next) => {
   let params = {
     part: 'id,snippet,status',
     mine: 'true',
-    maxResults: config.google.maxResults,
+    maxResults: process.env.GOOGLE_MAX_RESULTS,
   };
 
   res.on('finish', () => {

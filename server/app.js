@@ -4,14 +4,7 @@
 
 'use strict';
 
-// Set default node environment to development
-process.env.NODE_ENV = process.env.NODE_ENV || 'development';
-
-// Inject environment variables to process.env at production
-if (process.env.NODE_ENV === 'production') {
-  var envInjector = require('node-env-injector');
-  envInjector.load(require('./config/local.env.js'));
-}
+require('dotenv').load();
 
 var express = require('express');
 var mongoose = require('mongoose');
@@ -42,8 +35,8 @@ require('./config/mq')(mqContext);
 
 // Start server and prevent multiple listening
 if (!module.parent) {
-  server.listen(config.port, config.ip, function () {
-    console.log('Express server listening on http://%s:%d, in %s mode', config.ip, config.port, app.get('env'));
+  server.listen(process.env.PORT, process.env.IP, function () {
+    console.log(`Express server listening on http://${process.env.IP}:${process.env.PORT}, in ${app.get('env')} mode`);
   });
 }
 

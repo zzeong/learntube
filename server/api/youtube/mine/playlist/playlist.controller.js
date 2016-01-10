@@ -2,7 +2,6 @@
 
 var _ = require('lodash');
 var g = require('../../../../components/google-api');
-var config = require('../../../../config/environment');
 var gapiHelper = require('../youtube-mine-service');
 var Class = require('../../../../models/class.model');
 
@@ -13,7 +12,7 @@ exports.index = function (req, res, next) {
 
   var defaults = {
     part: 'id,snippet,status',
-    maxResults: config.google.maxResults,
+    maxResults: process.env.GOOGLE_MAX_RESULTS,
     fields: 'items(id,snippet,status),nextPageToken',
   };
 

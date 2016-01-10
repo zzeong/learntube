@@ -16,7 +16,6 @@ var Class = require('../models/class.model.js');
 var mongoose = require('mongoose');
 var aws = require('aws-sdk');
 var s3 = new aws.S3();
-var config = require('./environment');
 
 mongoose.Promise = Promise;
 
@@ -214,11 +213,11 @@ var seedUpload = function (users) {
     lectures: [{
       videoId: '7BafU1p_OKo',
       fileName: 'handout.pdf',
-      url: s3.endpoint.href + config.aws.s3Bucket + '/' + users[1].email + '/uploads/' + hashes[0],
+      url: s3.endpoint.href + process.env.AWS_S3_BUCKET + '/' + users[1].email + '/uploads/' + hashes[0],
     }, {
       videoId: '8rQGMW7nt4s',
       fileName: 'handout.pdf',
-      url: s3.endpoint.href + config.aws.s3Bucket + '/' + users[1].email + '/uploads/' + hashes[1],
+      url: s3.endpoint.href + process.env.AWS_S3_BUCKET + '/' + users[1].email + '/uploads/' + hashes[1],
     }],
   }]);
 };

@@ -3,9 +3,9 @@ var GoogleStrategy = require('passport-google-oauth').OAuth2Strategy;
 
 exports.setup = function (User, config) {
   passport.use(new GoogleStrategy({
-    clientID: config.google.clientID,
-    clientSecret: config.google.clientSecret,
-    callbackURL: config.google.callbackURL
+    clientID: process.env.GOOGLE_ID,
+    clientSecret: process.env.GOOGLE_SECRET,
+    callbackURL: process.env.GOOGLE_CALLBACK_URL
   },
   function (accessToken, refreshToken, profile, done) {
     User.findOne({

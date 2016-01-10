@@ -2,12 +2,6 @@
 'use strict';
 
 module.exports = function (grunt) {
-  var localConfig;
-  try {
-    localConfig = require('./server/config/local.env');
-  } catch (e) { localConfig = {};
-  }
-
   // Load grunt tasks automatically, when needed
   require('jit-grunt')(grunt, {
     express: 'grunt-express-server',
@@ -50,7 +44,7 @@ module.exports = function (grunt) {
     },
     open: {
       server: {
-        url: 'http://<%= express.options.ip %>:<%= express.options.port %>'
+        url: 'http://localhost:9000'
       }
     },
     watch: {
@@ -552,10 +546,6 @@ module.exports = function (grunt) {
       test: {
         NODE_ENV: 'test'
       },
-      prod: {
-        NODE_ENV: 'production'
-      },
-      all: localConfig
     },
 
     // Compiles ES6 to JavaScript using Babel
@@ -722,10 +712,6 @@ module.exports = function (grunt) {
     }, 1500);
   });
 
-  grunt.registerTask('express-keepalive', 'Keep grunt running', function () {
-    this.async();
-  });
-
   grunt.registerTask('watch:nonTest', function () {
     delete grunt.config.data.watch.lintJS;
     delete grunt.config.data.watch.unitTest;
@@ -739,14 +725,9 @@ module.exports = function (grunt) {
   ]);
 
   grunt.registerTask('serve', function (target) {
-    if (target === 'dist') {
-      return grunt.task.run(['build', 'env:all', 'env:prod', 'express:prod', 'wait', 'open', 'express-keepalive']);
-    }
-
     if (target === 'debug') {
       return grunt.task.run([
         'clean:server',
-        'env:all',
         'injectSass',
         'concurrent:server',
         'injector',
@@ -758,7 +739,6 @@ module.exports = function (grunt) {
 
     grunt.task.run([
       'clean:server',
-      'env:all',
       'injectSass',
       'concurrent:server',
       'injector',
@@ -778,11 +758,10 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('lintJS', ['jscs', 'jshint']);
-  grunt.registerTask('beforeMocha', ['env:all', 'env:test']);
+  grunt.registerTask('beforeMocha', ['env:test']);
 
   grunt.registerTask('beforeKarma', [
     'clean:server',
-    'env:all',
     'injectSass',
     'concurrent:test',
     'injector',
@@ -791,7 +770,6 @@ module.exports = function (grunt) {
 
   grunt.registerTask('beforeE2e', [
     'clean:server',
-    'env:all',
     'env:test',
     'injectSass',
     'concurrent:test',

@@ -7,7 +7,6 @@ var mongoose = require('mongoose');
 var auth = require('../../../auth/auth.service');
 var User = require('../../../models/user.model');
 var Upload = require('../../../models/upload.model');
-var config = require('../../../config/environment');
 var knox = require('knox');
 
 mongoose.Promise = Promise;
@@ -139,9 +138,9 @@ describe('REST API:', () => {
 
     beforeEach((done) => {
       var awsClient = knox.createClient({
-        key: config.aws.accessKeyId,
-        secret: config.aws.secretKey,
-        bucket: config.aws.s3Bucket
+        key: process.env.AWS_ACCESSKEY_ID,
+        secret: process.env.AWS_SECRETKEY,
+        bucket: process.env.AWS_S3_BUCKET
       });
 
       Upload.remove({})
