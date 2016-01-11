@@ -1,5 +1,7 @@
 'use strict';
 
+require('dotenv').load();
+
 const schedule = require('node-schedule');
 const winston = require('winston');
 const moment = require('moment');
@@ -7,13 +9,13 @@ const mkdirp = require('mkdirp');
 const scraper = require('./components/scraper');
 const stealth = require('./components/stealth');
 const Class = require('./models/class.model');
-const mconfig = require('./config/environment').mongo;
+const cfg = require('./config/environment');
 
 var logger = null;
 
 mkdirp('logs', (err) => {
   initLogger();
-  stealth.addPorter('db', mconfig.uri, mconfig.options).activate();
+  stealth.addPorter('db', process.env.MONGO_URI, cfg.mongo.options).activate();
   stealth.on('ready', executeJob('* 0 * * *'));
 });
 

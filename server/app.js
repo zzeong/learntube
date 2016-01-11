@@ -7,22 +7,20 @@
 require('dotenv').load();
 
 var express = require('express');
-var mongoose = require('mongoose');
+//var mongoose = require('mongoose');
 var stealth = require('./components/stealth');
-var config = require('./config/environment');
+var cfg = require('./config/environment');
 
-// Connect to database
-mongoose.connect(config.mongo.uri, config.mongo.options);
-mongoose.connection.on('error', function (err) {
-  console.error('MongoDB connection error: ' + err);
-  process.exit(-1);
-});
+// Connect to back services
+stealth
+.addPorter('db', process.env.MONGO_URI, cfg.mongo.options)
+.addPorter('mq', process.env.RABBIT_URI)
+.activate();
 
-// Connect to message queue
-stealth.addPorter('mq').activate();
+stealth.on('error', exitWebapp(1));
 
 // Populate DB with sample data
-if (config.seedDB) { require('./config/seed'); }
+if (cfg.seedDB) { require('./config/seed'); }
 
 // Setup server
 var app = express();
@@ -37,6 +35,10 @@ if (!module.parent) {
   server.listen(process.env.PORT, process.env.IP, function () {
     console.log(`Express server listening on http://${process.env.IP}:${process.env.PORT}, in ${app.get('env')} mode`);
   });
+}
+
+function exitWebapp(code) {
+  return () => { process.exit(code); };
 }
 
 // Expose app

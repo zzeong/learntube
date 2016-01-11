@@ -41,14 +41,21 @@ Stealth.prototype.activate = function () {
   _.forEach(this.porter, (v, k) => {
     let service = v.service = v.init();
     service = k === 'db' ? service.connection : service;
-    service.on(v.readyEventName, this.ready.bind(this));
+    service.on(v.readyEventName, ready.bind(this))
+    .on('error', error.bind(this));
   });
-};
 
-Stealth.prototype.ready = function () {
-  this.readyCount++;
-  if (this.readyCount === Object.keys(this.porter).length) {
-    this.emit('ready');
+  function ready() {
+    // jshint validthis:true
+    this.readyCount++;
+    if (this.readyCount === Object.keys(this.porter).length) {
+      this.emit('ready');
+    }
+  }
+
+  function error(err) {
+    // jshint validthis:true
+    this.emit('error', err);
   }
 };
 

@@ -3,13 +3,13 @@
 require('dotenv').load();
 
 const g = require('./components/google-api');
-const config = require('./config/environment');
+const cfg = require('./config/environment');
 const scraper = require('./components/scraper');
 const stealth = require('./components/stealth');
 
 stealth
-.addPorter('db', config.mongo.uri, config.mongo.options)
-.addPorter('mq')
+.addPorter('db', process.env.MONGO_URI, cfg.mongo.options)
+.addPorter('mq', process.env.RABBIT_URI)
 .activate();
 
 stealth.on('ready', beginWork);
