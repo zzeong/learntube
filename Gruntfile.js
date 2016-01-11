@@ -4,7 +4,6 @@
 module.exports = function (grunt) {
   // Load grunt tasks automatically, when needed
   require('jit-grunt')(grunt, {
-    express: 'grunt-express-server',
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
     cdnify: 'grunt-google-cdn',
@@ -24,28 +23,6 @@ module.exports = function (grunt) {
       // configurable paths
       client: require('./bower.json').appPath || 'client',
       dist: 'dist'
-    },
-    express: {
-      options: {
-        ip: process.env.IP || 'localhost',
-        port: process.env.PORT || 9000
-      },
-      dev: {
-        options: {
-          script: 'server/app.js',
-          debug: true
-        }
-      },
-      prod: {
-        options: {
-          script: 'dist/node/server/app.js'
-        }
-      }
-    },
-    open: {
-      server: {
-        url: 'http://localhost:9000'
-      }
     },
     watch: {
       injectJS: {
@@ -115,26 +92,10 @@ module.exports = function (grunt) {
           livereload: true
         }
       },
-      express: {
-        files: [
-          'server/**/*.{js,json}',
-          '!server/worker.js'
-        ],
-        tasks: ['express:dev', 'wait'],
-        options: {
-          livereload: true,
-          spawn: false //Without this option specified express won't be reloaded
-        }
-      },
-      worker: {
-        files: [
-          'server/components',
-          'server/config',
-          'server/worker.js'
-        ],
-        tasks: ['develop:worker'],
-        options: { spawn: false },
-      },
+      server: {
+        files: ['.rebooted'],
+        options: { livereload: true }
+      }
     },
 
     // Make sure code styles are up to par and there are no obvious mistakes
@@ -213,8 +174,70 @@ module.exports = function (grunt) {
       }
     },
 
-    // Use nodemon to run server in debug mode with an initial breakpoint
     nodemon: {
+      options: { ignore: ['node_modules/**'] },
+      web: {
+        script: 'server/app.js',
+        options: {
+          watch: [
+            'server',
+            '!server/worker.js'
+          ],
+          callback: (nodemon) => {
+            const open = require('open');
+            const fs = require('fs');
+
+            nodemon.on('log', (event) => {
+              let logOnlyStatus = event.type === 'status' ? console.log : function () {};
+              logOnlyStatus(event.colour);
+            });
+
+            nodemon.on('config:update', () => {
+              setTimeout(() => {
+                open('http://localhost:9000');
+              }, 1500);
+            });
+
+            nodemon.on('restart', (ev) => {
+              setTimeout(() => {
+                fs.writeFileSync('.rebooted', 'rebooted');
+              }, 1500);
+            });
+          }
+        },
+      },
+      worker: {
+        script: 'server/worker.js',
+        options: {
+          watch: [
+            'server/components',
+            'server/config',
+            'server/worker.js',
+          ],
+          callback: (nodemon) => {
+            nodemon.on('log', (event) => {
+              let logOnlyStatus = event.type === 'status' ? console.log : function () {};
+              logOnlyStatus(event.colour);
+            });
+          }
+        },
+      },
+      cron: {
+        script: 'server/cron.js',
+        options: {
+          watch: [
+            'server/components',
+            'server/config',
+            'server/cron.js',
+          ],
+          callback: (nodemon) => {
+            nodemon.on('log', (event) => {
+              let logOnlyStatus = event.type === 'status' ? console.log : function () {};
+              logOnlyStatus(event.colour);
+            });
+          }
+        },
+      },
       debug: {
         script: 'server/app.js',
         options: {
@@ -481,6 +504,17 @@ module.exports = function (grunt) {
 
     // Run some tasks in parallel to speed up the build process
     concurrent: {
+      dev: {
+        tasks: [
+          'nodemon:web',
+          'nodemon:worker',
+          'nodemon:cron',
+          'watch:nonTest'
+        ],
+        options: {
+          logConcurrentOutput: true
+        }
+      },
       server: [
         'babel',
         'sass',
@@ -694,22 +728,6 @@ module.exports = function (grunt) {
         command: 'tar cvfh encrypt.tar .travis/id_rsa server/config/local.env.js && travis encrypt-file encrypt.tar --add --force'
       },
     },
-
-    develop: {
-      worker: { file: 'server/worker.js' }
-    }
-  });
-
-  // Used for delaying livereload until after server has restarted
-  grunt.registerTask('wait', function () {
-    grunt.log.ok('Waiting for server reload...');
-
-    var done = this.async();
-
-    setTimeout(function () {
-      grunt.log.writeln('Done waiting!');
-      done();
-    }, 1500);
   });
 
   grunt.registerTask('watch:nonTest', function () {
@@ -744,11 +762,7 @@ module.exports = function (grunt) {
       'injector',
       'wiredep',
       'autoprefixer',
-      'express:dev',
-      'develop:worker',
-      'wait',
-      'open',
-      'watch:nonTest'
+      'concurrent:dev'
     ]);
   });
 
@@ -776,8 +790,7 @@ module.exports = function (grunt) {
     'injector',
     'wiredep',
     'autoprefixer',
-    'express:dev',
-    'develop:worker'
+    'concurrent:dev',
   ]);
 
   grunt.registerTask('coverage', [
