@@ -1,11 +1,15 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('HomeCtrl', function ($scope, $state, GApi, GoogleConst, $http) {
+.controller('HomeCtrl', function ($scope, $window, $state, GApi, GoogleConst, $http) {
   const CARD_WIDTH = 230 + 8 * 2;
   $scope.href = $state.href;
   $scope.popularClasses = null;
   $scope.slick = {};
+
+  $scope.scrollPosition = 0;
+  $scope.changeToYellow = false;
+  $scope.setBackground = '{ background: none }';
 
   $scope.slick.responsive = _.times(4).reverse().map((i) => {
     return {
@@ -33,4 +37,7 @@ angular.module('learntubeApp')
     $scope.popularClasses = res.items;
   })
   .catch(console.error);
+
+  $scope.changeToYellow = false;
+
 });

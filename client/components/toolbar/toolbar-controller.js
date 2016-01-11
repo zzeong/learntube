@@ -86,6 +86,7 @@ angular.module('learntubeApp')
 
 
   $scope.loginOauth = function (provider) {
+    console.log('google oauth');
     $window.location.href = '/auth/' + provider;
   };
 

@@ -1,0 +1,40 @@
+.home {
+
+  md-toolbar {
+    position: absolute;
+  }
+
+  md-toolbar:not(.md-menu-toolbar) {
+    background: $toolbar-transparent;
+    color: $white;
+  }
+
+  .md-whiteframe-z1 {
+    box-shadow: none;
+  }
+}
+
+.home__default-toolbar {
+
+  md-toolbar:not(.md-menu-toolbar) {
+    // jsHint error로 인하여 하나만 남겨둠
+    transition: background 1s ease-in-out;
+
+    background: $toolbar-default;
+  }
+}
+
+.home__transparent-toolbar {
+
+  md-toolbar:not(.md-menu-toolbar) {
+    // jsHint error로 인하여 하나만 남겨둠
+    transition: background 1s ease-in-out;
+
+    background: $toolbar-transparent;
+    color: $white;
+
+    md-icon {
+      color: $white;
+    }
+  }
+}

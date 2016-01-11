@@ -12,11 +12,18 @@
   .md-button.md-raised {
     background-color: $star-color;
   }
+}
 
+.intro__box {
+  padding-top: 75px;
+
+  @include respond-to('small') {
+    padding-top: 140px;
+  }
 }
 
 .intro__slogan {
-  margin: 4px;
+  margin: 2px;
   color: $text-color-alt;
 
   @include respond-to('small') {
@@ -26,7 +33,7 @@
 }
 
 .intro__sub-slogan {
-  margin: 4px;
+  margin: 2px;
   color: $text-color-alt;
 
   @include respond-to('small') {
@@ -38,9 +45,9 @@
 .intro__btn {
   width: 112px;
   height: 36px;
-  margin-top: 40px;
+  margin-top: 30px;
 
   @include respond-to('small') {
-    margin-top: 80px;
+    margin-top: 60px;
   }
 }

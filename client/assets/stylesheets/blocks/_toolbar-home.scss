@@ -1,0 +1,27 @@
+.toolbar-home {
+  padding-top: 8px;
+
+  md-icon {
+    color: $white;
+  }
+}
+
+.toolbar-home__logo {
+  width: auto;
+  height: 24px;
+  margin: 8px 16px;
+}
+
+.toolbar-home__icon {
+  float: right;
+  color: $white;
+
+  @include respond-to('small') {
+    right: 14px;
+  }
+}
+
+.toolbar-home__login-btn {
+  right: 0;
+  float: right;
+}

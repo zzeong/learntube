@@ -1,0 +1,36 @@
+<div class="toolbar-home" ng-controller="ToolbarCtrl">
+  <a href="/">
+    <img ng-show="!changeToYellow" class="toolbar-home__logo" src="/assets/images/logo_learntube_white.png" alt="learntube-logo">
+    <img ng-show="changeToYellow" class="toolbar-home__logo" src="/assets/images/logo_learntube_black.png" alt="learntube-logo">
+  </a>
+
+  <md-menu md-offset="12 -1" md-position-mode="target-right target">
+    <!-- 로그인 메뉴를 여는 more icon -->
+    <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button toolbar-home__icon">
+      <md-icon md-menu-origin md-font-set="material-icons">more_vert</md-icon>
+    </md-button>
+
+    <md-menu-content width="3">
+      <div ng-if="isLoggedIn()">
+        <md-menu-item ng-repeat="item in personalMenu">
+          <md-button ng-href="{{ item.url }}">
+            {{ item.name }}
+          </md-button>
+        </md-menu-item>
+        <md-menu-divider></md-menu-divider>
+        <md-menu-item>
+          <md-button ng-click="logout()">
+            Log out
+          </md-button>
+        </md-menu-item>
+      </div>
+
+      <md-menu-item ng-if="!isLoggedIn()">
+        <md-button ng-click="loginOauth('google')">
+          Sign in with <i class="fa fa-youtube-play youtube-logo"></i>
+        </md-button>
+      </md-menu-item>
+
+    </md-menu-content>
+  </md-menu>
+</div>

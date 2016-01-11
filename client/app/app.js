@@ -98,6 +98,31 @@ angular.module('learntubeApp', [
   };
 })
 
+.directive('scroll', function () {
+  return {
+    scope: {
+      scrollPosition: '=scrollPosition',
+      changeToYellow: '=changeToYellow',
+      setBackground: '=setBackground'
+    },
+    link: function ($scope, element) {
+      angular.element(element).bind('scroll', function (event) {
+
+        $scope.$apply(function () {
+          $scope.scrollPosition = event.currentTarget.scrollTop;
+
+          if ($scope.scrollPosition <= 100) {
+            $scope.changeToYellow = false;
+          } else {
+            $scope.changeToYellow = true;
+          }
+
+        });
+      });
+    }
+  };
+})
+
 .factory('authInterceptor', function ($rootScope, $q, $cookieStore, $location, $window) {
   return {
     // Add authorization token to headers

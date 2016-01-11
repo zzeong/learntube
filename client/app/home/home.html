@@ -1,11 +1,13 @@
-<div flex layout="column">
-  <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
-  <md-content flex md-scroll-y layout="column">
+<div flex layout="column" class="home" ng-class="{'home__default-toolbar': changeToYellow, 'home__transparent-toolbar': !changeToYellow}">
+  <md-toolbar class="css_class md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar-home.html'"></md-toolbar>
+  <md-content scroll change-to-yellow="changeToYellow" scroll-position="scrollPosition" change-to-yellow="changeToYellow" test="test" flex md-scroll-y layout="column">
     <div flex>
-      <div class="intro" layout="column" layout-align="center center">
-        <h3 class="md-headline intro__slogan" class="md-headline"><strong>Lorem Ipsum</strong></h2>
-        <h4 class="md-subhead intro__sub-slogan">consectetur adipiscing elit.</h4>
-        <md-button ng-click="go('category-all')" class="md-raised intro__btn">Learn more</md-button>
+      <div class="intro">
+        <div class="intro__box" layout="column" layout-align="center center">
+          <h3 class="md-headline intro__slogan" class="md-headline"><strong>Lorem Ipsum</strong></h2>
+          <h4 class="md-subhead intro__sub-slogan">consectetur adipiscing elit.</h4>
+          <md-button ng-click="go('category-all')" class="md-raised intro__btn">Learn more</md-button>
+        </div>
       </div>
 
       <div class="service-feature">
