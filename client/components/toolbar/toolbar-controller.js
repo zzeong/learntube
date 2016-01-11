@@ -107,7 +107,7 @@ angular.module('learntubeApp')
     $scope.focusInput = true;
     $scope.greyToolbar = !$scope.greyToolbar;
     $scope.searchAtMobile = !$scope.searchAtMobile;
-    $scope.clearIcon = true;
+    $scope.clearIcon = !$scope.clearIcon;
   };
 
   $scope.stateNameCheck = function (name) {
