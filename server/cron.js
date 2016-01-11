@@ -16,7 +16,7 @@ var logger = null;
 mkdirp('logs', (err) => {
   initLogger();
   stealth.addPorter('db', process.env.MONGO_URI, cfg.mongo.options).activate();
-  stealth.on('ready', executeJob('* 0 * * *'));
+  stealth.on('ready', executeJob('0 0 * * *'));
 });
 
 function executeJob(crontime) {
