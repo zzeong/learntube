@@ -8,8 +8,8 @@ public
 client/bower_components
 dist
 /server/config/local.env.js
-npm-debug.log
 *.sw[op]
+*.log
 _site/
 coverage/
 apidoc/
