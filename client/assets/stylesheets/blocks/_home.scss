@@ -18,7 +18,7 @@
 
   md-toolbar:not(.md-menu-toolbar) {
     // jsHint error로 인하여 하나만 남겨둠
-    transition: background 1s ease-in-out;
+    transition: background 0.5s ease-in-out;
 
     background: $toolbar-default;
   }
@@ -28,7 +28,7 @@
 
   md-toolbar:not(.md-menu-toolbar) {
     // jsHint error로 인하여 하나만 남겨둠
-    transition: background 1s ease-in-out;
+    transition: background 0.5s ease-in-out;
 
     background: $toolbar-transparent;
     color: $white;
