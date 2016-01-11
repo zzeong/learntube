@@ -8,7 +8,7 @@ var getHash = function (name) {
 };
 
 exports.credential = function (req, res) {
-  aws.config.update({ accessKeyId: process.env.AWS_ACCESSOKEYID, secretAccessKey: process.env.AWS_SECRETKEY });
+  aws.config.update({ accessKeyId: process.env.AWS_ACCESSKEY_ID, secretAccessKey: process.env.AWS_SECRETKEY });
   aws.config.update({ region: 'us-east-1' , signatureVersion: 'v4' });
 
   var s3 = new aws.S3();
@@ -27,4 +27,3 @@ exports.credential = function (req, res) {
   });
 
 };
-
