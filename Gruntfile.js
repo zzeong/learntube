@@ -562,9 +562,11 @@ module.exports = function (grunt) {
       }
     },
 
+    // Overrides .env variables
     env: {
       test: {
-        NODE_ENV: 'test'
+        NODE_ENV: 'test',
+        MONGO_URI: 'mongodb://localhost/learntube-test'
       },
     },
 
