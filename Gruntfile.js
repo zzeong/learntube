@@ -303,14 +303,12 @@ module.exports = function (grunt) {
     // Renames files for browser caching purposes
     filerev: {
       dist: {
-        files: {
-          src: [
-            '<%= yeoman.dist %>/node/<%= yeoman.client %>/{,*/}*.js',
-            '<%= yeoman.dist %>/node/<%= yeoman.client %>/{,*/}*.css',
-            '<%= yeoman.dist %>/node/<%= yeoman.client %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
-            '<%= yeoman.dist %>/node/<%= yeoman.client %>/assets/fonts/*'
-          ]
-        }
+        src: [
+          '<%= yeoman.dist %>/node/<%= yeoman.client %>/!(bower_components){,*/}*.js',
+          '<%= yeoman.dist %>/node/<%= yeoman.client %>/assets/stylesheets/*.css',
+          '<%= yeoman.dist %>/node/<%= yeoman.client %>/assets/images/{,*/}*.{png,jpg,jpeg,gif,webp,svg}',
+          '<%= yeoman.dist %>/node/<%= yeoman.client %>/assets/fonts/*'
+        ]
       }
     },
 
@@ -326,9 +324,9 @@ module.exports = function (grunt) {
 
     // Performs rewrites based on rev and the useminPrepare configuration
     usemin: {
-      html: ['<%= yeoman.dist %>/node/<%= yeoman.client %>/{,*/}*.html'],
-      css: ['<%= yeoman.dist %>/node/<%= yeoman.client %>/{,*/}*.css'],
-      js: ['<%= yeoman.dist %>/node/<%= yeoman.client %>/{,*/}*.js'],
+      html: ['<%= yeoman.dist %>/node/<%= yeoman.client %>/{,!(bower_components)/**/}*.html'],
+      css: ['<%= yeoman.dist %>/node/<%= yeoman.client %>/assets/stylesheets/*.css'],
+      js: ['<%= yeoman.dist %>/node/<%= yeoman.client %>/!(bower_components){,*/}*.js'],
       options: {
         assetsDirs: [
           '<%= yeoman.dist %>/node/<%= yeoman.client %>',
