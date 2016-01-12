@@ -349,19 +349,8 @@ module.exports = function (grunt) {
         files: [{
           expand: true,
           cwd: '<%= yeoman.client %>/assets/images',
-          src: '{,*/}*.{png,jpg,jpeg,gif}',
-          dest: '<%= yeoman.dist %>/node/public/assets/images'
-        }]
-      }
-    },
-
-    svgmin: {
-      dist: {
-        files: [{
-          expand: true,
-          cwd: '<%= yeoman.client %>/assets/images',
-          src: '{,*/}*.svg',
-          dest: '<%= yeoman.dist %>/public/assets/images'
+          src: '{,*/}*.{png,jpg,jpeg,gif,svg}',
+          dest: '<%= yeoman.dist %>/node/<%= yeoman.client %>/assets/images'
         }]
       }
     },
@@ -536,7 +525,6 @@ module.exports = function (grunt) {
         'babel',
         'sass',
         'imagemin',
-        'svgmin'
       ]
     },
 
