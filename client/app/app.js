@@ -140,13 +140,11 @@ angular.module('learntubeApp', [
       }
       return res;
     },
-    // Intercept 401s and redirect you to login
     responseError: function (response) {
       if (response.status === 401) {
-        $location.path('/');
         // remove any stale tokens
         $cookieStore.remove('token');
-        $window.location.reload();
+        $window.location.href = '/';
         return $q.reject(response);
       } else {
         return $q.reject(response);
