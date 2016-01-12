@@ -485,7 +485,7 @@ module.exports = function (grunt) {
       },
       aws: {
         options: {
-          remote: 'ubuntu@52.5.145.162:git-bare/learntube.git',
+          remote: 'ubuntu@52.70.85.29:git-bare/learntube.git',
           branch: 'master'
         }
       },
