@@ -4,6 +4,7 @@ public
 .sass-cache
 .idea
 .env
+.env.prod
 .rebooted
 client/bower_components
 dist

@@ -429,6 +429,9 @@ module.exports = function (grunt) {
             'package.json',
             'server/**/*'
           ]
+        }, {
+          src: '.env.prod',
+          dest: '<%= yeoman.dist %>/node/.env'
         }]
       },
       docker: {
