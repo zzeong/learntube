@@ -1,14 +1,4 @@
-# Set the base image to Ubuntu
-FROM ubuntu:14.04
-
-# Set the env variable DEBIAN_FRONTEND to noninteractive
-ENV DEBIAN_FRONTEND noninteractive
-
-# Install Node.js and other dependencies
-RUN apt-get update && \
-    apt-get -y install curl git && \
-    curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash - \
-    apt-get -y install python build-essential nodejs libkrb5-dev
+FROM nodesource/trusty:4.2.3
 
 # Install pm2
 RUN npm install -g pm2
