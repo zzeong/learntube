@@ -1,8 +1,5 @@
 # Set the base image to Ubuntu
-FROM    ubuntu
-
-# File Author / Maintainer
-MAINTAINER Anand Mani Sankar
+FROM ubuntu:14.04
 
 # Set the env variable DEBIAN_FRONTEND to noninteractive
 ENV DEBIAN_FRONTEND noninteractive
@@ -10,7 +7,7 @@ ENV DEBIAN_FRONTEND noninteractive
 # Install Node.js and other dependencies
 RUN apt-get update && \
     apt-get -y install curl git && \
-    curl -sL https://deb.nodesource.com/setup_0.12 | sudo -E bash - \
+    curl -sL https://deb.nodesource.com/setup_4.x | sudo -E bash - \
     apt-get -y install python build-essential nodejs libkrb5-dev
 
 # Install pm2
@@ -28,8 +25,9 @@ ADD . /src
 # set environment to production
 ENV NODE_ENV production
 
+# Run app using pm2
+CMD ["pm2", "start", "/src/server/app.js", "--no-daemon"]
+
 # Expose port
 EXPOSE  8080
 
-# Run app using pm2
-CMD ["pm2", "start", "/src/server/app.js", "--no-daemon"]

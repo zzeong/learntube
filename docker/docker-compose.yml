@@ -8,7 +8,15 @@ node1:
     build: ./node
     links:
         - mongo:mongo
+        - rabbit:rabbit
 mongo:
     build: ./mongo
     ports:
         - "27017:27017"
+        - "28017:28017"
+rabbit:
+    build: ./rabbit
+    ports:
+      - "5672:5672"
+      - "15672:15672"
+
