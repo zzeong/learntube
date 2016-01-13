@@ -229,6 +229,7 @@
       for (var i in $scope.lectureList) {
         $scope.lectureList[i].selected = false;
       }
+      $scope.willBeDeleted = [];
       $scope.deleteToolbarState = false;
     };
 
