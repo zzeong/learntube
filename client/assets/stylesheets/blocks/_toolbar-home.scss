@@ -22,6 +22,36 @@
 }
 
 .toolbar-home__login-btn {
-  right: 0;
+  bottom: 4px;
   float: right;
+
+  span {
+    color: $white;
+  }
+}
+
+.toolbar-home__login-btn-black {
+  span {
+    color: $black;
+  }
+}
+
+.toolbar-home__account-btn {
+  right: 16px;
+  bottom: 4px;
+  width: 210px;
+  height: 48px;
+  margin: 0;
+  float: right;
+  text-transform: none;
+
+  p {
+    color: $white;
+  }
+}
+
+.toolbar-home__account-btn-black {
+  p {
+    color: $black;
+  }
 }

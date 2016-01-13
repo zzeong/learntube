@@ -4,9 +4,44 @@
     <img ng-show="changeToYellow" class="toolbar-home__logo" src="/assets/images/logo_learntube_black.png" alt="learntube-logo">
   </a>
 
+  <md-button hide-xs class="toolbar-home__login-btn" ng-hide="isLoggedIn()"
+  ng-click="loginOauth('google')" ng-class="{'toolbar-home__login-btn-black': changeToYellow}">
+    Sign in with <i class="fa fa-youtube-play youtube-logo"></i>
+  </md-button>
+
+  <!-- USER INFO -->
+  <md-menu md-offset="12 -1" md-position-mode="target-right target" style="margin-right:0">
+    <md-button class="toolbar-home__account-btn" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()"
+    ng-class="{'toolbar-home__account-btn-black': changeToYellow}" hide-xs>
+      <img class="account-btn__thumb thumb-radius" ng-src="{{ getUserImgPath(getCurrentUser()) }}"
+      alt="Account Image" />
+
+      <div class="account-btn__info">
+        <p class="md-body-1 account-btn__email">{{ getCurrentUser().email }}</p>
+        <p class="md-body-2">{{ getCurrentUser().name }}</p>
+      </div>
+    </md-button>
+
+    <md-menu-content width="3">
+      <md-menu-item ng-repeat="item in personalMenu">
+        <md-button ng-href="{{ item.url }}">
+          {{ item.name }}
+        </md-button>
+      </md-menu-item>
+      <md-menu-divider></md-menu-divider>
+      <md-menu-item>
+        <md-button ng-click="logout()">
+          Log out
+        </md-button>
+      </md-menu-item>
+    </md-menu-content>
+
+  </md-menu>
+
+
   <md-menu md-offset="12 -1" md-position-mode="target-right target">
     <!-- 로그인 메뉴를 여는 more icon -->
-    <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button toolbar-home__icon">
+    <md-button hide-gt-xs ng-click="$mdOpenMenu($event)" class="md-icon-button toolbar-home__icon">
       <md-icon md-menu-origin md-font-set="material-icons">more_vert</md-icon>
     </md-button>
 
