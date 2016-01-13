@@ -9,6 +9,8 @@ node1:
   links:
     - mongo:mongo
     - rabbit:rabbit
+  ports:
+    - "8080"
 mongo:
   build: ./mongo
   ports:

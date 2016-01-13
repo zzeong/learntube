@@ -1,7 +1,17 @@
 FROM nodesource/trusty:4.2.3
 
+# Update npm
+RUN npm install -g npm@3.5.3
+
 # Install pm2
-RUN npm install -g pm2
+RUN npm install -g pm2@1.0.0
+
+# Set the env variable DEBIAN_FRONTEND to noninteractive
+ENV DEBIAN_FRONTEND noninteractive
+
+# Install Dependency for https://github.com/christkv/kerberos
+RUN apt-get update && \
+    apt-get -y install libkrb5-dev
 
 # Provides cached layer for node_modules
 ADD package.json /tmp/package.json
