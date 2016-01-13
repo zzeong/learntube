@@ -11,6 +11,7 @@ dist
 /server/config/local.env.js
 *.sw[op]
 *.log
+*.csv
 _site/
 coverage/
 apidoc/
