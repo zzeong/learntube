@@ -33,7 +33,7 @@ require('./config/mq')(mqContext);
 // Start server and prevent multiple listening
 if (!module.parent) {
   server.listen(process.env.PORT, process.env.IP, function () {
-    console.log(`Express server listening on http://${process.env.IP}:${process.env.PORT}, in ${app.get('env')} mode`);
+    console.log(`Express server listening on ${process.env.PORT} port, in ${app.get('env')} mode`);
   });
 }
 
