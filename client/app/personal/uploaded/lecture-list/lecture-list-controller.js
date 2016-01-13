@@ -225,6 +225,13 @@
       console.log('Touch end');
     };
 
+    $scope.goBackward = function () {
+      for (var i in $scope.lectureList) {
+        $scope.lectureList[i].selected = false;
+      }
+      $scope.deleteToolbarState = false;
+    };
+
   }
 
   UploadedLectureListCtrl.$inject = ['$scope', '$state', 'Auth', '$http', '$mdDialog', '$q', '$mdToast', 'GApi', 'GoogleConst', 'YoutubeHelper'];
