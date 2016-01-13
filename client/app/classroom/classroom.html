@@ -1,24 +1,6 @@
 <md-content class="classroom-content" layout="column" layout-gt-xs="row">
   <div flex-xs="none" flex-gt-xs layout-gt-xs="column" class="classroom-view-area">
-    <md-toolbar class="md-whiteframe-z1" flex="none">
-      <div class="md-toolbar-tools">
-        <md-button class="md-icon-button" aria-label="Back" ng-href="{{ href('class-summary', { pid: playlistId }) }}">
-          <md-icon md-font-set="material-icons">arrow_back</md-icon>
-        </md-button>
-        <h2 class="ellipsis-1">
-          <span>{{ item.snippet.title }}</span>
-        </h2>
-        <span flex></span>
-        <md-button class="md-icon-button" aria-label="Complete lecture" ng-show="isLoggedIn()"
-        ng-disabled="haveLecture" ng-click="completeLecture()">
-          <md-icon md-font-set="material-icons">done</md-icon>
-        </md-button>
-        <md-button class="md-icon-button" target="_self" ng-href="{{ getDownloadUrl() }}"
-        aria-label="Download handout" download>
-          <md-icon md-font-set="material-icons">file_download</md-icon>
-        </md-button>
-      </div>
-    </md-toolbar>
+    <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar-classroom.html'"></md-toolbar>
     <div class="youtube-video youtube-video--fullsize" flex>
       <youtube-video class="youtube-video__item" video-id="videoId"></youtube-video>
     </div>

@@ -2,7 +2,7 @@
 
 
   <!-- Mobile - basic element -->
-  <div class="toolbar-icon-left" hide-gt-xs>
+  <div class="toolbar-icon" hide-gt-xs>
     <md-button class="toolbar-icon-left__btn md-icon-button" aria-label="Settings">
       <md-icon ng-hide="onSearching" ng-click="mainIconTrigger()" md-font-set="material-icons">menu</md-icon>
       <md-icon ng-show="onSearching" ng-click="goBackward()" md-font-set="material-icons">arrow_back</md-icon>
@@ -15,12 +15,6 @@
       <span>{{ title }}</span>
     </h2>
   </div>
-
-  <!-- onSearching으로 진입하는 search icon -->
-  <md-button hide-gt-xs ng-hide="onSearching" class="md-icon-button" aria-label="More"
-  ng-click="toggleSearchingState();">
-    <md-icon md-font-set="material-icons">search</md-icon>
-  </md-button>
 
   <!-- SEARCH INPUT -->
   <div class="toolbar-search" ng-show="onSearching">
@@ -67,6 +61,13 @@
   <!-- 검색어를 한번에 지우는 clear icon -->
   <md-button class="md-icon-button" aria-label="More" ng-show="clearIcon" ng-click="deleteValue()">
     <md-icon md-font-set="material-icons">clear</md-icon>
+  </md-button>
+
+
+  <!-- onSearching으로 진입하는 search icon -->
+  <md-button hide-gt-xs ng-hide="onSearching" class="md-icon-button" aria-label="More"
+  ng-click="toggleSearchingState();">
+    <md-icon md-font-set="material-icons">search</md-icon>
   </md-button>
 
   <md-menu md-offset="12 -1" md-position-mode="target-right target" hide-gt-xs>

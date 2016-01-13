@@ -1,0 +1,28 @@
+<div class="md-toolbar-tools">
+
+  <div class="toolbar-icon">
+    <md-button class="toolbar-icon-left__btn md-icon-button" aria-label="Back" ng-href="{{ href('class-summary', { pid: playlistId }) }}">
+      <md-icon md-font-set="material-icons">arrow_back</md-icon>
+    </md-button>
+  </div>
+
+  <h2 class="ellipsis-1">
+    <span>{{ item.snippet.title }}</span>
+  </h2>
+
+  <span flex></span>
+
+  <div class="toolbar__done-div">
+    <md-button class="toolbar-icon toolbar__done-icon md-icon-button" aria-label="Complete lecture" ng-show="isLoggedIn()"
+    ng-disabled="haveLecture" ng-click="completeLecture()">
+      <md-icon md-font-set="material-icons">done</md-icon>
+    </md-button>
+  </div>
+
+  <div>
+    <md-button class="toolbar-icon toolbar-icon-right md-icon-button" target="_self" ng-href="{{ getDownloadUrl() }}"
+    aria-label="Download handout" download>
+      <md-icon md-font-set="material-icons">file_download</md-icon>
+    </md-button>
+  </div>
+</div>

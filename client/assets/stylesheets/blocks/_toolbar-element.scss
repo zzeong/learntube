@@ -1,5 +1,9 @@
-.toolbar-icon-left {
+.toolbar-icon {
   width: 38px;
+}
+
+.toolbar-icon-right {
+  right: -14px;
 }
 
 .toolbar-icon-left__btn {
@@ -56,18 +60,20 @@
   background: $search-toolbar-web;
 }
 
-.toolbar-userinfo {
-  margin-right: 0;
-}
-
-.toolbar-userinfo__btn {
-  right: -14px;
-}
-
 .yellow-input {
   background: $yellow-input;
 }
 
 .web-sign-in {
+  right: -14px;
+}
+
+.toolbar__done-div {
+  .md-button {
+    margin-bottom: 6px;
+  }
+}
+
+.toolbar__done-icon {
   right: -14px;
 }
