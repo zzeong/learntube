@@ -26,7 +26,7 @@ ADD . /src
 ENV NODE_ENV production
 
 # Run app using pm2
-CMD ["pm2", "start", "/src/server/app.js", "--no-daemon"]
+CMD ["pm2", "start", "/src/server/app.js", "/src/server/cron.js", "/src/server/worker.js", "--no-daemon"]
 
 # Expose port
 EXPOSE  8080
