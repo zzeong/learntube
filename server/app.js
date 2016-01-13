@@ -13,8 +13,8 @@ var cfg = require('./config/environment');
 
 // Connect to back services
 stealth
-.addPorter('db', process.env.MONGO_URI, cfg.mongo.options)
-.addPorter('mq', process.env.RABBIT_URI)
+.addPorter('db', `mongodb://${process.env.MONGO_IP}:${process.env.MONGO_DBNAME}`, cfg.mongo.options)
+.addPorter('mq', `amqp://${process.env.RABBIT_URI}`)
 .activate();
 
 stealth.on('error', exitWebapp(1));
