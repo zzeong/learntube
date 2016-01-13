@@ -9,7 +9,7 @@ const stealth = require('./components/stealth');
 
 stealth
 .addPorter('db', `mongodb://${process.env.MONGO_IP}:${process.env.MONGO_DBNAME}`, cfg.mongo.options)
-.addPorter('mq', `amqp://${process.env.RABBIT_URI}`)
+.addPorter('mq', `amqp://${process.env.RABBIT_IP}`)
 .activate();
 
 stealth.on('ready', beginWork);
