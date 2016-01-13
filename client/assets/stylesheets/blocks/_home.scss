@@ -2,6 +2,10 @@
 
   md-toolbar {
     position: absolute;
+
+    @include respond-to('small') {
+      right: 15px;
+    }
   }
 
   md-toolbar:not(.md-menu-toolbar) {

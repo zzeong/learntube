@@ -10,15 +10,15 @@
   width: auto;
   height: 24px;
   margin: 8px 16px;
+
+  @include respond-to('small') {
+    margin-left: 32px;
+  }
 }
 
 .toolbar-home__icon {
   float: right;
   color: $white;
-
-  @include respond-to('small') {
-    right: 14px;
-  }
 }
 
 .toolbar-home__login-btn {
