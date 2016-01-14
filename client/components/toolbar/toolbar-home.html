@@ -10,7 +10,7 @@
   </md-button>
 
   <!-- USER INFO -->
-  <md-menu md-offset="12 -1" md-position-mode="target-right target" style="margin-right:0">
+  <md-menu md-offset="12 -1" md-position-mode="target-right target">
     <md-button class="toolbar-home__account-btn" ng-show="isLoggedIn()" ng-click="$mdOpenMenu()"
     ng-class="{'toolbar-home__account-btn-black': changeToYellow}" hide-xs>
       <img class="account-btn__thumb thumb-radius" ng-src="{{ getUserImgPath(getCurrentUser()) }}"
