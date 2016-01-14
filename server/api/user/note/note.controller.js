@@ -29,7 +29,7 @@ exports.index = function (req, res) {
 
 exports.create = (req, res, next) => {
   var hash = createRandomHash();
-  var uploadPath = '/' + req.user.email + '/' + hash;
+  var uploadPath = `/${req.user.email}/notes/${hash}`;
 
   s3.putFile(req.files.file.path, uploadPath, {
     'Content-Type': req.files.file.type,

@@ -70,6 +70,7 @@ describe('REST API:', function () {
         var properties = ['_id', 'playlistId', 'videoId', 'type', 'resourceType', 'url'];
         res.body.should.have.properties(properties);
         res.body.should.not.have.property('userId');
+        res.body.url.should.match(/\/notes\//);
         nid = res.body._id;
         done();
       })
