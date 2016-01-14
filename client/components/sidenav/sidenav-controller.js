@@ -1,8 +1,7 @@
 'use strict';
 
 angular.module('learntubeApp')
-.controller('SidenavCategoryCtrl', SidenavCategoryCtrl)
-.controller('SidenavNoteCtrl', SidenavNoteCtrl);
+.controller('SidenavCategoryCtrl', SidenavCategoryCtrl);
 
 function SidenavCategoryCtrl($scope, Category, $state, $filter) {
   $scope.href = $state.href.bind(null);
@@ -10,8 +9,4 @@ function SidenavCategoryCtrl($scope, Category, $state, $filter) {
   $scope.getSafeUrl = function (string) {
     return $filter('urlSafely')(string);
   };
-}
-
-function SidenavNoteCtrl() {
-
 }
