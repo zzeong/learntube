@@ -10,10 +10,6 @@
   width: auto;
   height: 24px;
   margin: 8px 16px;
-
-  @include respond-to('small') {
-    margin-left: 32px;
-  }
 }
 
 .toolbar-home__icon {
@@ -22,6 +18,7 @@
 }
 
 .toolbar-home__login-btn {
+  right: 16px;
   bottom: 4px;
   float: right;
 
