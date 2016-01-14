@@ -61,7 +61,6 @@
     "grunt-env": "~0.4.4",
     "grunt-filerev": "^2.3.1",
     "grunt-githooks": "^0.3.1",
-    "grunt-google-cdn": "~0.4.3",
     "grunt-injector": "~0.6.0",
     "grunt-jscs": "^2.2.0",
     "grunt-karma": "~0.12.0",

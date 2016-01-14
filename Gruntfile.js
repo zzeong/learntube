@@ -6,7 +6,6 @@ module.exports = function (grunt) {
   require('jit-grunt')(grunt, {
     useminPrepare: 'grunt-usemin',
     ngtemplates: 'grunt-angular-templates',
-    cdnify: 'grunt-google-cdn',
     protractor: 'grunt-protractor-runner',
     buildcontrol: 'grunt-build-control'
   });
@@ -391,13 +390,6 @@ module.exports = function (grunt) {
         cwd: '.tmp',
         src: ['{app,components}/**/*.html'],
         dest: '.tmp/tmp-templates.js'
-      }
-    },
-
-    // Replace Google CDN references
-    cdnify: {
-      dist: {
-        html: ['<%= yeoman.dist %>/node/<%= yeoman.client %>/*.html']
       }
     },
 
@@ -833,7 +825,6 @@ module.exports = function (grunt) {
     'ngAnnotate',
     'copy:docker',
     'copy:dist',
-    'cdnify',
     'cssmin',
     'uglify',
     'filerev',
