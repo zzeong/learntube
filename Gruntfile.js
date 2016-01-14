@@ -555,8 +555,8 @@ module.exports = function (grunt) {
     env: {
       test: {
         NODE_ENV: 'test',
-        MONGO_URI: 'mongodb://localhost/learntube-test'
-      },
+        MONGO_DBNAME: 'learntube-test'
+      }
     },
 
     // Compiles ES6 to JavaScript using Babel
