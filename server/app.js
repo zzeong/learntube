@@ -38,7 +38,10 @@ if (!module.parent) {
 }
 
 function exitWebapp(code) {
-  return () => { process.exit(code); };
+  return (err) => {
+    console.error(err);
+    process.exit(code);
+  };
 }
 
 // Expose app
