@@ -175,6 +175,36 @@ module.exports = function (grunt) {
 
     nodemon: {
       options: { ignore: ['node_modules/**'] },
+      preprod: {
+        script: 'server/app.js',
+        options: {
+          watch: [
+            'dist/node',
+          ],
+          cwd: 'dist/node',
+          callback: (nodemon) => {
+            const open = require('open');
+            const fs = require('fs');
+
+            nodemon.on('log', (event) => {
+              let logOnlyStatus = event.type === 'status' ? console.log : function () {};
+              logOnlyStatus(event.colour);
+            });
+
+            nodemon.on('config:update', () => {
+              setTimeout(() => {
+                open('http://localhost:8080');
+              }, 1500);
+            });
+
+            nodemon.on('restart', (ev) => {
+              setTimeout(() => {
+                fs.writeFileSync('.rebooted', 'rebooted');
+              }, 1500);
+            });
+          }
+        },
+      },
       web: {
         script: 'server/app.js',
         options: {
@@ -315,8 +345,11 @@ module.exports = function (grunt) {
     // concat, minify and revision files. Creates configurations in memory so
     // additional tasks can operate on them
     useminPrepare: {
-      html: ['<%= yeoman.client %>/index.html'],
+      prod: { src: ['<%= yeoman.client %>/index.html'] },
+      preprod: { src: ['<%= yeoman.client %>/index.html'] },
       options: {
+        //flow: { steps: { js: ['concat'], css: ['concat'] }, post: {} }, // for preprod, switch comments with below line manually
+        flow: { steps: { js: ['concat', 'uglify'], css: ['concat', 'cssmin'] }, post: {} }, // for prod, switch comments with above line manually
         dest: '<%= yeoman.dist %>/node/<%= yeoman.client %>',
       },
     },
@@ -421,10 +454,15 @@ module.exports = function (grunt) {
             'package.json',
             'server/**/*'
           ]
-        }, {
-          src: '.env.prod',
-          dest: '<%= yeoman.dist %>/node/.env'
         }]
+      },
+      envProd: {
+        src: '.env.prod',
+        dest: '<%= yeoman.dist %>/node/.env'
+      },
+      envPreprod: {
+        src: '.env.preprod',
+        dest: '<%= yeoman.dist %>/node/.env'
       },
       docker: {
         expand: true,
@@ -812,19 +850,34 @@ module.exports = function (grunt) {
 
   grunt.registerTask('doc', ['apidoc']);
 
+  grunt.registerTask('prebuild', (target) => {
+    return grunt.task.run([
+      'clean:dist',
+      'injectSass',
+      'concurrent:dist',
+      'injector',
+      'wiredep',
+      `useminPrepare:${target}`,
+      'autoprefixer',
+      'ngtemplates',
+      'concat',
+      'ngAnnotate',
+      'copy:docker',
+      'copy:dist'
+    ]);
+  });
+
+  grunt.registerTask('build-debug', [
+    'prebuild:preprod',
+    'copy:envPreprod',
+    'filerev',
+    'usemin',
+    'nodemon:preprod'
+  ]);
+
   grunt.registerTask('build', [
-    'clean:dist',
-    'injectSass',
-    'concurrent:dist',
-    'injector',
-    'wiredep',
-    'useminPrepare',
-    'autoprefixer',
-    'ngtemplates',
-    'concat',
-    'ngAnnotate',
-    'copy:docker',
-    'copy:dist',
+    'prebuild:prod',
+    'copy:envProd',
     'cssmin',
     'uglify',
     'filerev',
