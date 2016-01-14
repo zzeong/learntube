@@ -26,6 +26,7 @@
     $scope.shouldBeEmbedded = shouldBeEmbedded;
     $scope.getUserImgPath = getUserImgPath;
     $scope.myNotes = null;
+    $scope.goBackward = goBackward;
 
     $scope.fab = {
       DURATION: 200,
@@ -235,6 +236,11 @@
       note.isEditing = false;
       return note;
     }
+
+    function goBackward() {
+      window.history.back();
+    }
+
   }
 
   ClassroomCtrl.$inject = [
