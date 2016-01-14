@@ -593,7 +593,9 @@ module.exports = function (grunt) {
     env: {
       test: {
         NODE_ENV: 'test',
-        MONGO_DBNAME: 'learntube-test'
+        MONGO_DBNAME: 'knowbridge-test',
+        AWS_S3_BUCKET: 'knowbridge-test',
+        SESSION_SECRET: 'test'
       }
     },
 
