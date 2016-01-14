@@ -62,6 +62,13 @@
     <script src="bower_components/es5-shim/es5-shim.js"></script>
     <script src="bower_components/json3/lib/json3.min.js"></script>
     <![endif]-->
+    <script>
+      // preset ckeditor resource located in
+      (function (window) {
+        const assetPath = '/bower_components/knowbridge-ckeditor/';
+        window.CKEDITOR_BASEPATH = window.location.origin + assetPath;
+      })(window);
+    </script>
   <script src="https://www.youtube.com/iframe_api"></script>
 
   <!-- build:js({client,node_modules}) app/vendor.js -->
@@ -80,7 +87,6 @@
   <script src="bower_components/angular-sanitize/angular-sanitize.js"></script>
   <script src="bower_components/angular-ui-router/release/angular-ui-router.js"></script>
   <script src="bower_components/angular-youtube-mb/src/angular-youtube-embed.js"></script>
-  <script src="bower_components/ckeditor/ckeditor.js"></script>
   <script src="bower_components/lodash/lodash.js"></script>
   <script src="bower_components/ng-file-upload/ng-file-upload.js"></script>
   <script src="bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js"></script>
@@ -91,6 +97,7 @@
   <script src="bower_components/c3-angular/c3-angular.min.js"></script>
   <script src="bower_components/slick-carousel/slick/slick.min.js"></script>
   <script src="bower_components/angular-slick/dist/slick.js"></script>
+  <script src="bower_components/knowbridge-ckeditor/ckeditor.js"></script>
   <!-- endbower -->
   <!-- endbuild -->
 

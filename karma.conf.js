@@ -27,7 +27,6 @@ module.exports = function (config) {
       'client/bower_components/angular-sanitize/angular-sanitize.js',
       'client/bower_components/angular-ui-router/release/angular-ui-router.js',
       'client/bower_components/angular-youtube-mb/src/angular-youtube-embed.js',
-      'client/bower_components/ckeditor/ckeditor.js',
       'client/bower_components/lodash/lodash.js',
       'client/bower_components/ng-file-upload/ng-file-upload.js',
       'client/bower_components/ngInfiniteScroll/build/ng-infinite-scroll.js',
@@ -38,6 +37,7 @@ module.exports = function (config) {
       'client/bower_components/c3-angular/c3-angular.min.js',
       'client/bower_components/slick-carousel/slick/slick.min.js',
       'client/bower_components/angular-slick/dist/slick.js',
+      'client/bower_components/knowbridge-ckeditor/ckeditor.js',
       'client/bower_components/Blob/Blob.js',
       'client/bower_components/angular-mocks/angular-mocks.js',
       // endbower

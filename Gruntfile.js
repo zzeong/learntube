@@ -446,12 +446,6 @@ module.exports = function (grunt) {
         dest: '.tmp/',
         src: ['{app,components}/**/*.css']
       },
-      ckeditorskin: {
-        expand: true,
-        cwd: '<%= yeoman.client %>/bower_components/ckeditor-skin-minimalist/',
-        dest: '<%= yeoman.client %>/bower_components/ckeditor/skins/minimalist/',
-        src: '**',
-      },
       componentsSass: {
         expand: true,
         flatten: true,

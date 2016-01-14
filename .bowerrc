@@ -1,6 +1,3 @@
 {
-  "directory": "client/bower_components",
-  "scripts": {
-    "postinstall": "grunt copy:ckeditorskin"
-  }
+  "directory": "client/bower_components"
 }
