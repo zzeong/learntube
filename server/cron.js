@@ -2,6 +2,7 @@
 
 require('dotenv').load();
 
+const _ = require('lodash');
 const schedule = require('node-schedule');
 const winston = require('winston');
 const moment = require('moment');
@@ -24,6 +25,7 @@ function executeJob(crontime) {
     logger.info('Reserve cron to scrap');
 
     schedule.scheduleJob(crontime, () => {
+      const CHUNK_LEN = 100;
       let count = 0;
       let classes = [];
 
@@ -33,21 +35,26 @@ function executeJob(crontime) {
       .on('data', (c) => { classes.push(c); })
       .on('error', logger.error)
       .on('close', () => {
-        let updateClasses = classes.map((c) => {
-          return scraper.fetchViews(c.playlistId)
-          .then((views) => {
-            c.views = views;
-            return c.save();
-          })
-          .then((c) => {
-            count++;
-            logger.log('verbose', `Class#${count} is completed`, {
-              doc: c.toObject({ transform: delId })
+        let chunked = _.chunk(classes, CHUNK_LEN);
+        chunked.reduce((promise, partialClasses) => {
+          return promise.then(() => {
+            let updateClasses = partialClasses.map((c) => {
+              return scraper.fetchViews(c.playlistId)
+              .then((views) => {
+                c.views = views;
+                return c.save();
+              })
+              .then((c) => {
+                count++;
+                logger.log('verbose', `Class#${count} is completed`, {
+                  doc: c.toObject({ transform: delId })
+                });
+              });
             });
-          });
-        });
 
-        Promise.all(updateClasses)
+            return Promise.all(updateClasses);
+          });
+        }, Promise.resolve())
         .then(() => {
           logger.info('Cron is finished');
           process.exit(0);
