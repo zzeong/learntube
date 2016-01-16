@@ -15,7 +15,7 @@ var logger = null;
 
 mkdirp('logs', (err) => {
   initLogger();
-  stealth.addPorter('db', `mongodb://${process.env.MONGO_IP}:${process.env.MONGO_DBNAME}`, cfg.mongo.options).activate();
+  stealth.addPorter('db', `mongodb://${process.env.MONGO_IP}/${process.env.MONGO_DBNAME}`, cfg.mongo.options).activate();
   stealth.on('ready', executeJob('0 0 * * *'));
 });
 
