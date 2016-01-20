@@ -4,7 +4,7 @@
   "dependencies": {
     "es5-shim": "~4.4.1",
     "es6-shim": "~0.34.0",
-    "angular": ">=1.2.*",
+    "angular": "1.5.0-rc.1",
     "angular-cookies": ">=1.2.*",
     "angular-file-model": "~0.3.1",
     "angular-google-gapi": "~0.1.3",
