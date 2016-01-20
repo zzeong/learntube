@@ -8,7 +8,7 @@ const scraper = require('./components/scraper');
 const stealth = require('./components/stealth');
 
 stealth
-.addPorter('db', `mongodb://${process.env.MONGO_IP}:${process.env.MONGO_DBNAME}`, cfg.mongo.options)
+.addPorter('db', `mongodb://${process.env.MONGO_IP}/${process.env.MONGO_DBNAME}`, cfg.mongo.options)
 .addPorter('mq', `amqp://${process.env.RABBIT_IP}`)
 .activate();
 
