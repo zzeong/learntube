@@ -6,6 +6,10 @@ var expressJwt = require('express-jwt');
 var compose = require('composable-middleware');
 var User = require('../models/user.model');
 var validateJwt = expressJwt({ secret: process.env.SESSION_SECRET });
+var validateJwtLoosely = expressJwt({
+  secret: process.env.SESSION_SECRET,
+  credentialsRequired: false
+});
 
 /**
  * Attaches the user object to the request if authenticated
@@ -14,13 +18,7 @@ var validateJwt = expressJwt({ secret: process.env.SESSION_SECRET });
 function isAuthenticated() {
   return compose()
     // Validate jwt
-    .use(function (req, res, next) {
-      // allow access_token to be passed through query parameter as well
-      if (req.query && req.query.hasOwnProperty('access_token')) {
-        req.headers.authorization = 'Bearer ' + req.query.access_token;
-      }
-      validateJwt(req, res, next);
-    })
+    .use(validateJwtFromHeader(true))
     // refresh token when over 1 hour
     .use(function (req, res, next) {
       var REFRESH_EXPIRATION_SECONDS = 60 * 60;
@@ -43,6 +41,32 @@ function isAuthenticated() {
         next();
       });
     });
+}
+
+function validateJwtFromHeader(isStrict) {
+  let validate = isStrict ? validateJwt : validateJwtLoosely;
+  return (req, res, next) => {
+    if (req.query && req.query.hasOwnProperty('access_token')) {
+      req.headers.authorization = 'Bearer ' + req.query.access_token;
+    }
+    validate(req, res, next);
+  };
+}
+
+function getValidatedUser() {
+  return compose()
+  .use(validateJwtFromHeader(false))
+  .use((req, res, next) => {
+    if (typeof req.user === 'undefined') { return next(); }
+
+    User.findById(req.user._id).exec()
+    .then((user) => {
+      if (!user) { return res.status(401).send('Unauthorized'); }
+      req.user = user;
+      next();
+    })
+    .catch(next);
+  });
 }
 
 /**
@@ -79,6 +103,7 @@ function setTokenCookie(req, res) {
   res.redirect('/');
 }
 
+exports.getValidatedUser = getValidatedUser;
 exports.isAuthenticated = isAuthenticated;
 exports.hasRole = hasRole;
 exports.signToken = signToken;

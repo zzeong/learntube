@@ -21,11 +21,11 @@
 
     var scope = $scope;
 
-    $http.get('/api/youtube/mine/playlists', {
-      params: { id: $scope.playlistId, },
+    $http.get('/api/classes', {
+      params: { playlistId: $scope.playlistId },
     })
     .then((res) => {
-      $scope.class = res.data.items[0];
+      $scope.class = res.data[0];
       $scope.desc.html = newlineToBr($scope.class.description);
       $scope.desc.editing = $scope.class.description;
     })
@@ -170,14 +170,10 @@
     }
 
     function updateDesc() {
-      $http.put('/api/youtube/mine/playlists', {
-        resource: {
-          id: $scope.playlistId,
-          snippet: {
-            title: $scope.class.title,
-            description: $scope.desc.editing,
-          }
-        },
+      $http.put(`/api/classes/${$scope.class._id}`, {
+        playlistId: $scope.playlistId,
+        title: $scope.class.title,
+        description: $scope.desc.editing,
       })
       .then((res) => {
         $scope.class = res.data;

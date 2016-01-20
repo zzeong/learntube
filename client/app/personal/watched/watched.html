@@ -7,19 +7,19 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
   <div class="flex-scroll">
     <div class="main-content__inner">
       <ul class="adaptable-card-wrapper">
-        <li class="adaptable-card" ng-repeat="class in classes">
-          <a class="anchor-mask" ng-href="{{ href('watched-lecture-list', { pid: class.playlistId }) }}" ng-click="passToToolbar(class)">
+        <li class="adaptable-card" ng-repeat="content in contents">
+          <a class="anchor-mask" ng-href="{{ href('watched-lecture-list', { pid: content._class.playlistId }) }}" ng-click="passToToolbar(content)">
             <lt-listcard lt-responsive-morph="true">
               <lt-listcard-media>
-                <img ng-src="{{ class.thumbnailUrl }}" alt="Class thumbnail">
+                <img ng-src="{{ content._class.thumbnailUrl }}" alt="Class thumbnail">
               </lt-listcard-media>
 
               <lt-listcard-content>
                 <div class="lt-listcard__height-keeper--higher">
-                  <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ class.title }}</h3>
+                  <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ content._class.title }}</h3>
                   <div>
-                    <md-progress-linear md-mode="determinate" value="{{ class.watchingRatio * 100 }}"></md-progress-linear>
-                    <p class="lt-caption-s">{{ class.watchingRatio | percentage: 1 }}</p>
+                    <md-progress-linear md-mode="determinate" value="{{ content.watchingRatio * 100 }}"></md-progress-linear>
+                    <p class="lt-caption-s">{{ content.watchingRatio | percentage: 1 }}</p>
                   </div>
                 </div>
 
@@ -29,14 +29,14 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
                   ng-click="$mdOpenMenu($event)" aria-label="Actions menu">more_vert</md-icon>
                   <md-menu-content width="2">
                     <md-menu-item>
-                      <md-button ng-click="showConfirmDialog(class, $event)">Delete</md-button>
+                      <md-button ng-click="showConfirmDialog(content, $event)">Delete</md-button>
                     </md-menu-item>
                   </md-menu-content>
                 </md-menu>
               </lt-listcard-content>
 
               <lt-listcard-actions layout="row" layout-align="end center" hide-xs>
-                <md-button class="lt-button-s md-accent" ng-click="showConfirmDialog(class, $event)">Delete</md-button>
+                <md-button class="lt-button-s md-accent" ng-click="showConfirmDialog(content, $event)">Delete</md-button>
               </lt-listcard-actions>
             </lt-listcard>
           </a>

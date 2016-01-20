@@ -15,6 +15,10 @@ var all = {
   // List of user roles
   userRoles: ['guest', 'user', 'admin'],
 
+  google: {
+    maxResults: 20
+  },
+
   // MongoDB connection options
   mongo: {
     options: {

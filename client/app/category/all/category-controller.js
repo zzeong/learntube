@@ -4,7 +4,7 @@ angular.module('learntubeApp')
 .controller('CategoryAllCtrl', function ($scope, $http, Category, $state, $filter) {
   $scope.href = $state.href;
 
-  $http.get('/api/categories/get-each-top')
+  $http.get('/api/classes/get-each-category')
   .then(function (res) {
     for (var i in res.data) {
       for (var k in Category.name) {

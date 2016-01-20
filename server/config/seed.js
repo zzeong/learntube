@@ -11,7 +11,7 @@ var csv = require('fast-csv');
 var User = require('../models/user.model');
 var Note = require('../models/note.model');
 var Upload = require('../models/upload.model');
-var WContent = require('../models/watched-content.model');
+var WatCtt = require('../models/watched-content.model');
 var Class = require('../models/class.model.js');
 var mongoose = require('mongoose');
 var aws = require('aws-sdk');
@@ -52,7 +52,7 @@ var seedNote = function (users) {
     playlistId: 'PLuHgQVnccGMCB06JE7zFIAOJtdcZBVrap',
     type: 'editor',
     resourceType: 'text/html',
-    url: 'https://learntubebucket.s3.amazonaws.com/learntubebot01@gmail.com/22760531b17c2d835740821a104f41ab',
+    url: 'https://knowbridge-dev.s3.amazonaws.com/learntubebot01@gmail.com/notes/22760531b17c2d835740821a104f41ab',
     created: offsetDate(_.random(-8, 0)),
   }, {
     userId: users[0]._id,
@@ -60,18 +60,17 @@ var seedNote = function (users) {
     playlistId: 'PLuHgQVnccGMCB06JE7zFIAOJtdcZBVrap',
     type: 'file',
     resourceType: 'image/jpeg',
-    url: 'https://learntubebucket.s3.amazonaws.com/learntubebot01@gmail.com/1fd76c508230960e31cfda588f6bba75',
+    url: 'https://knowbridge-dev.s3.amazonaws.com/learntubebot01@gmail.com/notes/1fd76c508230960e31cfda588f6bba75',
     created: offsetDate(_.random(-8, 0)),
   }];
 
   return Note.create(docs);
 };
 
-var seedWatchedContent = function (users) {
-
-  return WContent.create([{
-    userId: users[0]._id,
-    playlistId: 'PLtEAazd2E1Vr5ycRfR2pRQSjqFlB9uSow',
+var seedWatchedContent = function (users, classes) {
+  return WatCtt.create([{
+    _watcher: users[0]._id,
+    _class: classes[0]._id,
     lectures: [{
       videoId: '7BafU1p_OKo',
       completedAt: offsetDate(_.random(-8, 0)),
@@ -101,16 +100,16 @@ var seedWatchedContent = function (users) {
       completedAt: offsetDate(_.random(-8, 0)),
     }]
   }, {
-    userId: users[0]._id,
-    playlistId: 'PLXYHQ27KYu7VmsPc5BUN2UBJn1MyYLpsw',
+    _watcher: users[0]._id,
+    _class: classes[1]._id,
     lectures: [{
       videoId: 'ZQZtCVkypAo'
     }, {
       videoId: '5z_d0soK1cI'
     }]
   }, {
-    userId: users[0]._id,
-    playlistId: 'PL46F0A159EC02DF82',
+    _watcher: users[0]._id,
+    _class: classes[2]._id,
     lectures: [{
       videoId: 'yUyJ1gcaraM',
       completedAt: offsetDate(_.random(-8, 0)),
@@ -149,16 +148,16 @@ var seedWatchedContent = function (users) {
       completedAt: offsetDate(_.random(-8, 0)),
     }]
   }, {
-    userId: users[0]._id,
-    playlistId: 'PLuHgQVnccGMA0lO0qip6Phh6UL73TS0es',
+    _watcher: users[0]._id,
+    _class: classes[3]._id,
     lectures: [{
       videoId: 'YuC__aN-v04'
     }, {
       videoId: 'V38uZEimeck'
     }]
   }, {
-    userId: users[0]._id,
-    playlistId: 'PLuHgQVnccGMCB06JE7zFIAOJtdcZBVrap',
+    _watcher: users[0]._id,
+    _class: classes[4]._id,
     lectures: [{
       videoId: 'XUEuYq64HKI',
       completedAt: offsetDate(_.random(-8, 0)),
@@ -191,8 +190,8 @@ var seedWatchedContent = function (users) {
       completedAt: offsetDate(_.random(-8, 0)),
     }]
   }, {
-    userId: users[0]._id,
-    playlistId: 'PLVIfzJWJwLxl2BEs-lJmngN70L_NJmgZy',
+    _watcher: users[0]._id,
+    _class: classes[5]._id,
     lectures: [{
       videoId: 'uLhvu0IanPE'
     }, {
@@ -223,52 +222,60 @@ var seedUpload = function (users) {
 };
 
 function seedClassFromFile(path) {
-  return new Promise(function (resolve, reject) {
-    var bucket = [];
-    var rs = fs.createReadStream(path);
+  return new Promise((resolve, reject) => {
+    let bucket = [];
+    let rs = fs.createReadStream(path);
     rs.pipe(csv({ headers: true }))
-    .on('data', function (data) { bucket.push(data); })
-    .on('end', function () {
+    .on('data', (data) => bucket.push(data))
+    .on('end', () => {
       Class.create(bucket)
-      .then(function (classes) { resolve(classes); })
-      .catch(function (err) { console.log(err); reject(err); });
+      .then(() => {
+        let docs = [
+          'PLtEAazd2E1Vr5ycRfR2pRQSjqFlB9uSow',
+          'PLXYHQ27KYu7VmsPc5BUN2UBJn1MyYLpsw',
+          'PL46F0A159EC02DF82',
+          'PLuHgQVnccGMA0lO0qip6Phh6UL73TS0es',
+          'PLuHgQVnccGMCB06JE7zFIAOJtdcZBVrap',
+          'PLVIfzJWJwLxl2BEs-lJmngN70L_NJmgZy'
+        ]
+        .map((id) => {
+          return {
+            playlistId: id,
+            categorySlug: 'BUFA',
+            channelId: 'UCvlN-EjFtYgVEe3m1qKOmIQ',
+            rate: _.random(0, 5),
+            views: _.random(10, 1000)
+          };
+        });
+
+        return Class.create(docs);
+      })
+      .then(resolve)
+      .catch((err) => {
+        console.log(err);
+        reject(err);
+      });
     });
   });
 }
 
-
-
-
-/**
- * Note Test URL:
- * http://localhost:9000/class/PL9B61DEF63FC19BD9/lecture/1ZRb1we80kM
- * http://localhost:9000/class/PL9B61DEF63FC19BD9/lecture/rJnICByeL8Q
- *
- * Upload Test URL:
- * http://localhost:9000/class/PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx/lecture/miUYEpXDitc
- * http://localhost:9000/class/PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx/lecture/F-xd3G0PW0k
- */
 Promise.all([
   User.remove({}).exec(),
   Note.remove({}).exec(),
-  WContent.remove({}).exec(),
+  WatCtt.remove({}).exec(),
   Upload.remove({}).exec(),
   Class.remove({}).exec()
 ])
 .then(initialUser)
-.then(function (users) {
-  return Promise.all([
+.then((users) => {
+  return seedClassFromFile('db/class.csv')
+  .then((classes) => Promise.all([
     seedNote(users),
-    seedWatchedContent(users),
+    seedWatchedContent(users, classes),
     seedUpload(users),
-    seedClassFromFile('db/class.csv')
-  ]);
+  ]));
 })
-.then(function () {
-  console.log('Finish seeding');
-})
-.catch(function (err) {
-  console.error(err.stack);
-});
+.then(() => console.log('Finish seeding'))
+.catch((err) => console.error(err.stack));
 
 exports.seedClassFromFile = seedClassFromFile;

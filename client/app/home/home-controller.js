@@ -24,17 +24,7 @@ angular.module('learntubeApp')
     params: { num: 8 }
   })
   .then(function (res) {
-    var params = {
-      key: GoogleConst.browserKey,
-      part: 'snippet',
-      id: res.data.map((d) => { return d.playlistId; }).join(','),
-      maxResults: 20
-    };
-
-    return GApi.execute('youtube', 'playlists.list', params);
-  })
-  .then(function (res) {
-    $scope.popularClasses = res.items;
+    $scope.popularClasses = res.data;
   })
   .catch(console.error);
 

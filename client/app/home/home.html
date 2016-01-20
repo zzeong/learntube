@@ -41,12 +41,12 @@
         data="popularClasses" autoplay="true" autoplay-speed="5000" slides-to-show="5"
         speed="1000" touch-move="true" responsive="slick.responsive">
           <div ng-repeat="classe in popularClasses">
-            <a class="anchor-mask" ng-href="{{ href('class-summary', { pid: classe.id }) }}">
+            <a class="anchor-mask" ng-href="{{ href('class-summary', { pid: classe.playlistId }) }}">
               <md-card class="carousel__card">
-                <img ng-src="{{ classe.snippet.thumbnails.medium.url }}">
+                <img ng-src="{{ classe.thumbnailUrl }}">
                 <div class="carousel__info">
-                  <h2 class="ellipsis-2 lt-title-s">{{ classe.snippet.title }}</h2>
-                  <p class="lt-subhead-s">{{ classe.snippet.channelTitle }}</p>
+                  <h2 class="ellipsis-2 lt-title-s">{{ classe.title }}</h2>
+                  <p class="lt-subhead-s">{{ classe.channelTitle }}</p>
                 </div>
               </md-card>
             </a>

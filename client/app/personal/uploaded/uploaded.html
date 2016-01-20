@@ -12,7 +12,7 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
     <div class="main-content__inner">
       <ul class="adaptable-card-wrapper">
         <li class="adaptable-card" ng-repeat="class in classes">
-          <a class="anchor-mask" ng-href="{{ href('uploaded-lecture-list', { pid: class.id }) }}" ng-click="passToToolbar(class)">
+          <a class="anchor-mask" ng-href="{{ href('uploaded-lecture-list', { pid: class.playlistId }) }}" ng-click="passToToolbar(class)">
             <lt-listcard lt-responsive-morph="true">
               <lt-listcard-media>
                 <img ng-src="{{ class.thumbnailUrl }}" alt="class Thumbnail">

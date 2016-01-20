@@ -15,14 +15,13 @@ module.exports = function (app) {
   app.use('/api/youtube', require('./api/youtube'));
   app.use('/api/s3', require('./api/s3'));
   app.use('/api/classes', require('./api/class'));
-  app.use('/api/categories', require('./api/category'));
 
   app.use('/auth', require('./auth'));
 
   // Error handling
   app.use(function (err, req, res, next) { // jscs:ignore disallowUnusedParams
     console.error(err.stack);
-    if (err.name === 'UnauthorizedError') {
+    if (err.name.match(/unauthorize/i) || err.message.match(/unauthorize/i)) {
       return res.status(401).json({ message: 'not authorized' });
     }
     return res.status(500).json({ message: 'something went wrong' });

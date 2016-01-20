@@ -5,12 +5,16 @@ var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
 var WatchedContentSchema = new Schema({
-  userId: {
+  _watcher: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     required: true,
   },
-  playlistId: { type: String, required: true },
+  _class: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Class',
+    required: true
+  },
   addedAt: { type: Date, default: Date.now },
   lectures: [{
     videoId: { type: String, required: true },
@@ -20,13 +24,13 @@ var WatchedContentSchema = new Schema({
 
 WatchedContentSchema
 .pre('save', function (next) {
-  var that = this;
+  let that = this;
 
   mongoose.models.WatchedContent.findOne({
-    userId: that.userId,
-    playlistId: that.playlistId,
+    _watcher: that._watcher,
+    _class: that._class
   })
-  .then(function (classe) {
+  .then((classe) => {
     var errMsg = 'item already exists';
 
     function hasDuplicates(list) {
@@ -38,7 +42,7 @@ WatchedContentSchema
     }
 
     if (that.lectures.length) {
-      var videoIds = that.lectures.map(function (el) { return el.videoId; });
+      var videoIds = that.lectures.map((el) => el.videoId);
       if (hasDuplicates(videoIds)) { return next(new Error(errMsg)); }
     }
 

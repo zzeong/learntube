@@ -10,9 +10,11 @@
     $scope.showDeleteDialog = showDeleteDialog;
     $scope.deleteClass = deleteClass;
 
-    $http.get('/api/youtube/mine/playlists')
+    $http.get('/api/classes', {
+      params: { mine: true },
+    })
     .then((res) => {
-      $scope.classes = res.data.items;
+      $scope.classes = res.data;
     })
     .catch(console.error);
 
@@ -35,19 +37,10 @@
         $scope.categories = Category.name;
 
         function addClass(classe) {
-          $http.post('/api/youtube/mine/playlists', {
-            resource: {
-              snippet: {
-                title: classe.title,
-                description: classe.desc,
-              },
-              status: {
-                privacyStatus: 'public',
-              },
-            },
-            extras: {
-              categorySlug: classe.slug,
-            },
+          $http.post('/api/classes', {
+            title: classe.title,
+            description: classe.desc,
+            categorySlug: classe.slug,
           })
           .then((res) => {
             $mdDialog.hide(res.data);
@@ -73,10 +66,8 @@
     }
 
     function deleteClass(classe) {
-      $http.delete('/api/youtube/mine/playlists', {
-        params: { playlistId: classe.id }
-      })
-      .then(() => { _.remove($scope.classes, classe); })
+      $http.delete(`/api/classes/${classe._id}`)
+      .then(() => _.remove($scope.classes, classe))
       .catch(console.error);
     }
 

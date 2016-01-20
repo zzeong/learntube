@@ -10,7 +10,7 @@
       return _.isEqual($filter('urlSafely')(name.orig), $state.params.ctname);
     });
 
-    $http.get('/api/categories', { params: { slug: $scope.category.slug } })
+    $http.get('/api/classes', { params: { categorySlug: $scope.category.slug } })
     .then((res) => { $scope.classes = res.data; });
   }
 

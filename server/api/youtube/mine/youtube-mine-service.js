@@ -1,18 +1,14 @@
 'use strict';
 
+const _ = require('lodash');
+
 function applyAdditional(g, list) {
   if (!list.length) { list = [list]; }
-  var id = serializeId(list, ',');
-
-  function serializeId(list, delimiter) {
-    return list.map(function (item) {
-      return item.snippet.resourceId.videoId;
-    }).join(delimiter);
-  }
+  let ids = list.map(_.property('snippet.resourceId.videoId'));
 
   return g.youtube('videos.list', {
     part: 'contentDetails,status,statistics',
-    id: id,
+    id: ids,
     fields: 'items(contentDetails(duration),status(uploadStatus,rejectionReason,privacyStatus),statistics)',
   })
   .then(function (response) {
