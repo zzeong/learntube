@@ -13,19 +13,11 @@
       seleted: null
     };
 
-    $http.get('/api/youtube/mine/playlistitems', {
-      params: {
-        videoId: $scope.videoId,
-        playlistId: $scope.playlistId,
-        withDuration: true,
-      },
+    $http.get('/api/lectures', {
+      params: _.pick($scope, ['videoId', 'playlistId'])
     })
     .then((res) => {
-      $scope.lecture = res.data.items[0];
-      $scope.lectureDate = ($scope.lecture.snippet.publishedAt).substring(0, 10);
-      $scope.lectureTitle = $scope.lecture.snippet.title;
-      $scope.lectureDescription = $scope.lecture.snippet.description;
-
+      $scope.lecture = _.first(res.data);
       return $http.get('/api/users/' + Auth.getCurrentUser()._id + '/uploads', {
         params: {
           playlistId: $scope.playlistId,

@@ -16,7 +16,7 @@
     "angular-youtube-mb": "~1.1.0",
     "font-awesome": ">=4.1.0",
     "json3": "~3.3.1",
-    "lodash": "~3.10.1",
+    "lodash": "~4.0.0",
     "ng-file-upload": "^10.1.0",
     "ngInfiniteScroll": "~1.2.1",
     "normalize-scss": "~3.0.3",

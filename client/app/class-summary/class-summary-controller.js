@@ -4,10 +4,9 @@
   angular.module('learntubeApp')
   .controller('ClassSummaryCtrl', ClassSummaryCtrl);
 
-  function ClassSummaryCtrl($scope, $http, $state, WatchedContent, Auth, $filter, GoogleConst, GApi, $q, $mdToast, $document, PlaylistItem) {
+  function ClassSummaryCtrl($scope, $http, $state, WatchedContent, Auth, $filter, GoogleConst, GApi, $q, $mdToast) {
     $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.playlistId = $state.params.pid;
-    $scope.getPageToken = PlaylistItem.getPageToken;
     $scope.haveClass = false;
     $scope.href = $state.href;
     $scope.addClass = addClass;
@@ -44,12 +43,10 @@
       .catch(console.error);
     }
 
-    PlaylistItem.get({ playlistId: $scope.playlistId }, {
-      initialToken: true,
+    $http.get('/api/lectures', {
+      params: { playlistId: $scope.playlistId }
     })
-    .then(function (list) {
-      $scope.lectureList = list;
-    })
+    .then((res) => $scope.lectures = res.data)
     .catch(console.error);
 
     function addClass() {
@@ -90,8 +87,6 @@
     'GoogleConst',
     'GApi',
     '$q',
-    '$mdToast',
-    '$document',
-    'PlaylistItem'
+    '$mdToast'
   ];
 })();

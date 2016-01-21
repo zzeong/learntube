@@ -15,7 +15,7 @@ ng-click="addClass()" ng-show="isLoggedIn()">
         <div class="whiteframe-wrapper">
           <div class="video-box">
             <div class="youtube-video">
-              <youtube-video class="youtube-video__item" video-id="lectureList[0].snippet.resourceId.videoId"></youtube-video>
+              <youtube-video class="youtube-video__item" video-id="lectures[0].videoId"></youtube-video>
             </div>
           </div>
 
@@ -39,20 +39,20 @@ ng-click="addClass()" ng-show="isLoggedIn()">
           <md-whiteframe class="lecturelist-fixer__whiteframe responsive-whiteframe">
             <div class="classroom-tabs__lecturelist">
               <ul class="numbering whiteframe__lecturelist">
-                <li ng-repeat="lecture in lectureList">
-                  <a class="anchor-mask" ng-href="{{ href('classroom', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
+                <li ng-repeat="lecture in lectures">
+                  <a class="anchor-mask" ng-href="{{ href('classroom', { pid: playlistId, vid: lecture.videoId }) }}">
                     <lt-listcard lt-responsive-morph="false">
                       <lt-listcard-media>
                         <div class="video-thumb">
-                          <img ng-src="{{ lecture.snippet.thumbnails.medium.url }}" alt="Lecture thumbnail">
-                          <p class="video-thumb__duration lt-caption-s">{{ lecture.contentDetails.duration | humanable }}</p>
+                          <img ng-src="{{ lecture.thumbnailUrl }}" alt="Lecture thumbnail">
+                          <p class="video-thumb__duration lt-caption-s">{{ lecture.duration | humanable }}</p>
                         </div>
                       </lt-listcard-media>
 
                       <lt-listcard-content>
-                        <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ lecture.snippet.title }}</h3>
-                        <p class="ellipsis-1 lt-subhead-s">{{ lecture.snippet.channelTitle }}</p>
-                        <span class="lt-listcard__small-sign lt-caption-s">{{ lecture.statistics.viewCount | thousandSuffix }}</span>
+                        <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ lecture.title }}</h3>
+                        <p class="ellipsis-1 lt-subhead-s">{{ lecture.channelTitle }}</p>
+                        <span class="lt-listcard__small-sign lt-caption-s">{{ lecture.stats.viewCount | thousandSuffix }}</span>
                       </lt-listcard-content>
                     </lt-listcard>
                   </a>

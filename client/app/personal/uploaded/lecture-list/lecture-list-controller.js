@@ -31,21 +31,17 @@
     })
     .catch(console.error);
 
-    $http.get('/api/youtube/mine/playlistitems', {
-      params: {
-        playlistId: $scope.playlistId,
-        withDuration: true,
-      },
+    $http.get('/api/lectures', {
+      params: _.pick($scope, 'playlistId')
     })
-    .then((res) => { $scope.lectureList = res.data.items;
+    .then((res) => {
+      $scope.lectures = res.data;
 
-      // lectureList에 강의 삭제시 필요한 selected속성 부여
-      for (var lecIdx in $scope.lectureList) {
-        $scope.lectureList[lecIdx].selected = false;
+      // lectures에 강의 삭제시 필요한 selected속성 부여
+      for (var lecIdx in $scope.lectures) {
+        $scope.lectures[lecIdx].selected = false;
       }
-    })
-    .catch(console.error);
-
+    });
 
     function haveUploadedFile(lecture) {
       return 'file' in lecture;
@@ -79,11 +75,9 @@
         function getMyVideos() {
           if ($scope.myVideos) { return; }
 
-          $http.get('/api/youtube/mine/videos', {
-            params: { withDuration: true }
-          })
+          $http.get('/api/lectures/mine')
           .then((res) => {
-            $scope.myVideos = res.data.items;
+            $scope.myVideos = res.data;
           })
           .catch(console.error);
         }
@@ -102,24 +96,13 @@
         }
 
         function addLecture(video) {
-          $http.post('/api/youtube/mine/playlistitems', {
-            resource: {
-              snippet: {
-                playlistId: scope.playlistId,
-                resourceId: {
-                  kind: video.id.kind || 'youtube#video',
-                  videoId: video.id.videoId || video.snippet.resourceId.videoId
-                }
-              }
-            },
-          }, {
-            params: { withDuration: true }
+          $http.post('/api/lectures', {
+            playlistId: scope.playlistId,
+            videoId: video.videoId || video.snippet.resourceId.videoId,
           })
           .then((res) => {
-            if (res.status === 201) {
-              scope.lectureList.push(res.data);
-              $mdDialog.hide();
-            }
+            scope.lectures.push(res.data);
+            $mdDialog.hide();
           })
           .catch(console.error);
         }
@@ -127,11 +110,9 @@
     }
 
     function deleteLectures () {
-      var joinedId = $scope.willBeDeleted.map(function (obj) {
-        return obj.snippet.resourceId.videoId;
-      }).join(',');
+      var joinedId = $scope.willBeDeleted.map(_.property('videoId')).join(',');
 
-      $http.delete('/api/youtube/mine/playlistitems', {
+      $http.delete('/api/lectures', {
         params: {
           playlistId: $scope.playlistId,
           videoId: joinedId
@@ -140,7 +121,7 @@
       .then(() => {
         var ea = $scope.willBeDeleted.length;
         showToast(ea + ' Lectures deleted');
-        $scope.lectureList = _.xor($scope.lectureList, $scope.willBeDeleted);
+        $scope.lectures = _.xor($scope.lectures, $scope.willBeDeleted);
         $scope.willBeDeleted = [];
         $scope.deleteToolbarState = false;
       })
@@ -201,10 +182,10 @@
 
     // mobile에서는 long-press로 고르기
     $scope.makeDeleteListMobile = function (lecture) {
-      for (var idx in $scope.lectureList) {
+      for (var idx in $scope.lectures) {
         // highlight를 주기 위한 처리
-        if ($scope.lectureList[idx] === lecture) {
-          $scope.lectureList[idx].selected = true;
+        if ($scope.lectures[idx] === lecture) {
+          $scope.lectures[idx].selected = true;
         }
       }
 
@@ -222,8 +203,8 @@
     };
 
     $scope.goBackward = function () {
-      for (var i in $scope.lectureList) {
-        $scope.lectureList[i].selected = false;
+      for (var i in $scope.lectures) {
+        $scope.lectures[i].selected = false;
       }
       $scope.willBeDeleted = [];
       $scope.deleteToolbarState = false;

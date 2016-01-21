@@ -19,23 +19,23 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
             <table>
               <tr>
                 <td class="md-body-2 table-layout__key">Published At</td>
-                <td class="md-body-1 table-layout__value">{{ lectureDate }}</td>
+                <td class="md-body-1 table-layout__value">{{ lecture.publishedAt | amDateFormat: 'YYYY-MM-DD' }}</td>
               </tr>
               <tr>
                 <td class="md-body-2 table-layout__key">Duration</td>
-                <td class="md-body-1 table-layout__value">{{ lecture.contentDetails.duration | humanable}}</td>
+                <td class="md-body-1 table-layout__value">{{ lecture.duration | humanable}}</td>
               </tr>
               <tr>
                 <td class="md-body-2 table-layout__key">Views</td>
-                <td class="md-body-1 table-layout__value">{{ lecture.statistics.viewCount }}</td>
+                <td class="md-body-1 table-layout__value">{{ lecture.stats.viewCount }}</td>
               </tr>
               <tr>
                 <td class="md-body-2 table-layout__key">Like</td>
-                <td class="md-body-1 table-layout__value">{{ lecture.statistics.likeCount }}</td>
+                <td class="md-body-1 table-layout__value">{{ lecture.stats.likeCount }}</td>
               </tr>
               <tr>
                 <td class="md-body-2 table-layout__key">Dislike</td>
-                <td class="md-body-1 table-layout__value">{{ lecture.statistics.dislikeCount }}</td>
+                <td class="md-body-1 table-layout__value">{{ lecture.stats.dislikeCount }}</td>
               </tr>
             </table>
           </div>
@@ -44,12 +44,12 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
 
         <div class="whiteframe-wrapper--behind">
           <md-whiteframe class="frame-padding responsive-whiteframe whiteframe">
-            <h2 class="md-title">{{ lectureTitle }}</h2>
+            <h2 class="md-title">{{ lecture.title }}</h2>
             <md-content class="frame-top-padding">
 
               <!-- 단순 출력만을 위한 ui -->
               <div>
-                <p class="md-body-1 lecture-info-body">{{ lectureDescription }}</p>
+                <p class="md-body-1 lecture-info-body">{{ lecture.description }}</p>
               </div>
 
               <!-- 기존 input과 textarea -->

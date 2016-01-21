@@ -12,9 +12,9 @@ module.exports = function (app) {
   // Insert routes below
   app.use('/api/users', require('./api/user'));
   app.use('/api/others-notes', require('./api/others-note'));
-  app.use('/api/youtube', require('./api/youtube'));
   app.use('/api/s3', require('./api/s3'));
   app.use('/api/classes', require('./api/class'));
+  app.use('/api/lectures', require('./api/lecture'));
 
   app.use('/auth', require('./auth'));
 

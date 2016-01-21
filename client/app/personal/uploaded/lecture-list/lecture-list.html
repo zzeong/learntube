@@ -32,22 +32,22 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
           <h2 class="md-body-2 category-title" hide-gt-xs>Lecture list</h2>
           <md-whiteframe class="responsive-whiteframe">
             <ul class="numbering whiteframe__lecturelist">
-              <li ng-repeat="lecture in lectureList | onlyPublic | onlyProcessed">
+              <li ng-repeat="lecture in lectures | onlyPublic | onlyProcessed">
                 <ion-item on-long-press="makeDeleteListMobile(lecture)" on-touch-end="itemOnTouchEnd()">
-                  <a class="anchor-mask" ng-href="{{ href('lecture-info', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
+                  <a class="anchor-mask" ng-href="{{ href('lecture-info', { pid: playlistId, vid: lecture.videoId }) }}">
                     <lt-listcard ng-class="{ 'uploaded-lecturelist--selected': lecture.selected }"
                     lt-responsive-morph="false">
                       <lt-listcard-media>
                         <div class="video-thumb">
-                          <img ng-src="{{ lecture.snippet.thumbnails.medium.url }}" alt="Lecture thumbnail">
-                          <p class="video-thumb__duration lt-caption-s">{{ lecture.contentDetails.duration | humanable }}</p>
+                          <img ng-src="{{ lecture.thumbnailUrl }}" alt="Lecture thumbnail">
+                          <p class="video-thumb__duration lt-caption-s">{{ lecture.duration | humanable }}</p>
                         </div>
                       </lt-listcard-media>
 
                       <lt-listcard-content class="lt-listcard__inner--squashed-only-desktop">
-                        <h3 class="ellipsis-2 lt-title-s">{{ lecture.snippet.title }}</h3>
-                        <p class="ellipsis-1 lt-subhead-s">{{ lecture.snippet.channelTitle }}</p>
-                        <p class="lt-subhead-s">{{ lecture.statistics.viewCount | thousandSuffix }}</p>
+                        <h3 class="ellipsis-2 lt-title-s">{{ lecture.title }}</h3>
+                        <p class="ellipsis-1 lt-subhead-s">{{ lecture.channelTitle }}</p>
+                        <p class="lt-subhead-s">{{ lecture.stats.viewCount | thousandSuffix }}</p>
                       </lt-listcard-content>
 
                       <lt-listcard-actions hide-xs>

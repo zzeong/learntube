@@ -34,21 +34,21 @@
       </md-tab-label>
       <md-tab-body>
         <div class="frame-padding">
-          <h1 class="md-title">{{ item.snippet.title }}</h1>
-          <p class="md-body-1" ng-bind-html="item.snippet.description"></p>
+          <h1 class="md-title">{{ video.title }}</h1>
+          <p class="md-body-1" ng-bind-html="video.description"></p>
           <div class="lecture-info">
-            <span class="md-caption lecture-info__etc">Hits : {{ item.statistics.viewCount }}</span>
-            <span class="md-caption lecture-info__etc">Upload : {{ publishedDate }}</span>
+            <span class="md-caption lecture-info__etc">Hits : {{ video.stats.viewCount }}</span>
+            <span class="md-caption lecture-info__etc">Upload : {{ video.publishedAt | amDateFormat: 'YYYY-MM-DD' }}</span>
           </div>
 
           <div class="lecture-info">
             <span class="lecture-info__sub">
               <md-icon md-font-set="material-icons">thumb_up</md-icon>
-              <span class="md-caption">{{ item.statistics.likeCount }}</span>
+              <span class="md-caption">{{ video.stats.likeCount }}</span>
             </span>
             <span class="lecture-info__sub">
               <md-icon md-font-set="material-icons">thumb_down</md-icon>
-              <span class="md-caption">{{ item.statistics.dislikeCount }}</span>
+              <span class="md-caption">{{ video.stats.dislikeCount }}</span>
             </span>
           </div>
         </div>
@@ -61,20 +61,20 @@
       </md-tab-label>
       <md-tab-body>
         <ul class="numbering whiteframe__lecturelist">
-          <li ng-repeat="lecture in lectureList">
-            <a class="anchor-mask" ng-href="{{ href('classroom', { pid: playlistId, vid: lecture.snippet.resourceId.videoId }) }}">
+          <li ng-repeat="lecture in lectures">
+            <a class="anchor-mask" ng-href="{{ href('classroom', { pid: playlistId, vid: lecture.videoId }) }}">
               <lt-listcard lt-responsive-morph="false">
                 <lt-listcard-media>
                   <div class="video-thumb">
-                    <img ng-src="{{ lecture.snippet.thumbnails.medium.url }}" alt="Lecture thumbnail">
-                    <p class="video-thumb__duration lt-caption-s">{{ lecture.contentDetails.duration | humanable }}</p>
+                    <img ng-src="{{ lecture.thumbnailUrl }}" alt="Lecture thumbnail">
+                    <p class="video-thumb__duration lt-caption-s">{{ lecture.duration | humanable }}</p>
                   </div>
                 </lt-listcard-media>
 
                 <lt-listcard-content>
-                  <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ lecture.snippet.title }}</h3>
-                  <p class="ellipsis-1 lt-subhead-s">{{ lecture.snippet.channelTitle }}</p>
-                  <span class="lt-listcard__small-sign lt-caption-s">{{ lecture.statistics.viewCount | thousandSuffix }}</span>
+                  <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ lecture.title }}</h3>
+                  <p class="ellipsis-1 lt-subhead-s">{{ lecture.channelTitle }}</p>
+                  <span class="lt-listcard__small-sign lt-caption-s">{{ lecture.stats.viewCount | thousandSuffix }}</span>
                 </lt-listcard-content>
               </lt-listcard>
             </a>

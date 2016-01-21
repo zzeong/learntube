@@ -4,10 +4,9 @@
   angular.module('learntubeApp')
   .controller('WatchedLectureListCtrl', WatchedLectureListCtrl);
 
-  function WatchedLectureListCtrl($scope, Auth, $state, $http, WatchedContent, Note, GApi, GoogleConst, $q, PlaylistItem, $filter, NavToggler) {
+  function WatchedLectureListCtrl($scope, Auth, $state, $http, WatchedContent, Note, $filter, NavToggler) {
     $scope.playlistId = $state.params.pid;
     $scope.href = $state.href;
-    $scope.getPageToken = PlaylistItem.getPageToken;
     $scope.tickFormat = tickFormat;
     $scope.showNote = showNote;
     $scope.isSelected = isSelected;
@@ -21,36 +20,34 @@
       }]
     };
 
-    PlaylistItem.get({ playlistId: $scope.playlistId }, {
-      initialToken: true,
+    $http.get('/api/lectures', {
+      params: _.pick($scope, 'playlistId')
     })
     .then((res) => {
-      let query = { playlistId: $scope.playlistId };
-      $scope.lectures = res;
+      let q = _.pick($scope, 'playlistId');
+      $scope.lectures = res.data;
 
-      WatchedContent.query(query).$promise
+      let fetchWatCtt = WatchedContent.query(q).$promise
       .then((res) => {
-        let grouped = _.groupBy(res[0].lectures, 'videoId');
+        let obj = _.keyBy(_.first(res).lectures, 'videoId');
         $scope.lectures = $scope.lectures.map((lecture) => {
-          let id = lecture.snippet.resourceId.videoId;
-          lecture.watched = _.has(grouped, id) ? grouped[id][0] : null;
+          lecture.watched = _.has(obj, lecture.videoId) ? _.get(obj, lecture.videoId) : null;
           return lecture;
         });
-      })
-      .catch(console.error);
+      });
 
-      Note.query(query).$promise
+      let fetchNote = Note.query(q).$promise
       .then((res) => {
-        let grouped = _.groupBy(res, 'videoId');
+        let obj = _.keyBy(res, 'videoId');
         $scope.lectures = $scope.lectures.map((lecture) => {
-          let id = lecture.snippet.resourceId.videoId;
-          lecture.note = _.has(grouped, id) ? grouped[id][0] : null;
+          lecture.note = _.has(obj, lecture.videoId) ? _.get(obj, lecture.videoId) : null;
           return lecture;
         });
-        $scope.chart.data = transformToChart($scope.lectures);
-      })
-      .catch(console.error);
+      });
+
+      return Promise.all([fetchWatCtt, fetchNote]);
     })
+    .then(() => $scope.chart.data = transformToChart($scope.lectures))
     .catch(console.error);
 
 
@@ -123,5 +120,5 @@
     }
   }
 
-  WatchedLectureListCtrl.$inject = ['$scope', 'Auth', '$state', '$http', 'WatchedContent', 'Note', 'GApi', 'GoogleConst', '$q', 'PlaylistItem', '$filter', 'NavToggler'];
+  WatchedLectureListCtrl.$inject = ['$scope', 'Auth', '$state', '$http', 'WatchedContent', 'Note', '$filter', 'NavToggler'];
 })(angular);

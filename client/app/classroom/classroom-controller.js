@@ -4,7 +4,7 @@
   angular.module('learntubeApp')
   .controller('ClassroomCtrl', ClassroomCtrl);
 
-  function ClassroomCtrl($scope, $state, $http, Auth, Note, GoogleConst, GApi, Upload, PlaylistItem, $mdToast, WatchedContent, $timeout) {
+  function ClassroomCtrl($scope, $state, $http, Auth, Note, GoogleConst, GApi, Upload, $mdToast, WatchedContent, $timeout) {
     $scope.videoId = $state.params.vid;
     $scope.playlistId = $state.params.pid;
     $scope.cid = null;
@@ -14,7 +14,6 @@
     $scope.isEqual = _.isEqual;
     $scope.getCurrentUser = Auth.getCurrentUser;
     $scope.isLoggedIn = Auth.isLoggedIn;
-    $scope.getPageToken = PlaylistItem.getPageToken;
     $scope.getDownloadUrl = getDownloadUrl;
     $scope.showToast = showToast;
     $scope.showUpNote = showUpNote;
@@ -90,15 +89,13 @@
       playlistId: $scope.playlistId,
     });
 
-    GApi.execute('youtube', 'videos.list', {
-      key: GoogleConst.browserKey,
-      part: 'snippet,contentDetails,statistics',
-      id: $scope.videoId
+    $http.get('/api/lectures', {
+      params: _.pick($scope, ['playlistId', 'videoId'])
     })
-    .then(function (res) {
-      $scope.item = res.items[0];
-      $scope.publishedDate = ($scope.item.snippet.publishedAt).substring(0, 10);
-      $scope.item.snippet.description = compileToHTML($scope.item.snippet.description);
+    .then((res) => {
+      let video = res.data[0];
+      video.descriprtion = compileToHTML(video.description);
+      $scope.video = video;
     })
     .catch(console.error);
 
@@ -131,10 +128,10 @@
       .catch(console.error);
     }
 
-    PlaylistItem.get({ playlistId: $scope.playlistId }, {
-      initialToken: true,
+    $http.get('/api/lectures', {
+      params: { playlistId: $scope.playlistId }
     })
-    .then(function (list) { $scope.lectureList = list; })
+    .then((res) => $scope.lectures = res.data)
     .catch(console.error);
 
 
@@ -252,7 +249,6 @@
     'GoogleConst',
     'GApi',
     'Upload',
-    'PlaylistItem',
     '$mdToast',
     'WatchedContent',
     '$timeout'
