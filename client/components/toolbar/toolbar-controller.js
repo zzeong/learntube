@@ -48,12 +48,12 @@ angular.module('learntubeApp')
   var getGreyToolbar = function () {
     var greyToolbar;
 
-      if ($scope.stateNameCheck('search')) {
-        greyToolbar = true;
-      } else {
-        greyToolbar = false;
-        $scope.yellowInput = true;
-      }
+    if ($scope.stateNameCheck('search')) {
+      greyToolbar = true;
+    } else {
+      greyToolbar = false;
+      $scope.yellowInput = true;
+    }
 
     return greyToolbar;
   };
