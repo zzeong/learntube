@@ -4,7 +4,7 @@
   angular.module('learntubeApp')
   .controller('ClassSummaryCtrl', ClassSummaryCtrl);
 
-  function ClassSummaryCtrl($scope, $http, $state, WatchedContent, Auth, $filter, GoogleConst, GApi, $q, $mdToast) {
+  function ClassSummaryCtrl($scope, $http, $state, WatchedContent, Auth, $filter, $mdToast) {
     $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.playlistId = $state.params.pid;
     $scope.haveClass = false;
@@ -19,17 +19,14 @@
     .then((res) => {
       $scope.classe = res.data[0];
       $scope.desc = compileToHTML($scope.classe.description);
-      $scope.channelId = $scope.classe.channelId;
 
-      return GApi.execute('youtube', 'channels.list', {
-        key: GoogleConst.browserKey,
-        part: 'snippet',
-        id: $scope.channelId
+      return $http.get('/api/tutors', {
+        params: _.pick($scope.classe, 'channelId')
       });
     })
     .then((res) => {
-      $scope.channel = res.items[0];
-      $scope.channel.snippet.description = compileToHTML($scope.channel.snippet.description);
+      $scope.channel = _.first(res.data);
+      $scope.channel.description = compileToHTML($scope.channel.description);
     })
     .catch(console.error);
 
@@ -84,9 +81,6 @@
     'WatchedContent',
     'Auth',
     '$filter',
-    'GoogleConst',
-    'GApi',
-    '$q',
     '$mdToast'
   ];
 })();

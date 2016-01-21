@@ -43,6 +43,8 @@ function index(req, res, next) {
       .sort({ views: 'desc' })
       .limit(20).exec()
       .then((classes) => {
+        if (_.isEmpty(classes)) { return ytquery; }
+
         let id = classes.map(_.property('playlistId'));
         return _.assign(ytquery, { id });
       });

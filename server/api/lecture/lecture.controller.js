@@ -1,9 +1,9 @@
 'use strict';
 
-const g = require('../../components/google-api');
 const _ = require('lodash');
+const g = require('../../components/google-api');
+const fetchExtras = require('../../components/youtube-helper').fetchExtras;
 
-let videos = { list: g.youtube.bind(null, 'videos.list') };
 let channels = { list: g.youtube.bind(null, 'channels.list') };
 let playlistItems = {
   list: g.youtube.bind(null, 'playlistItems.list'),
@@ -64,25 +64,6 @@ exports.create = create;
 exports.destroy = destroy;
 
 exports.mine = mine;
-
-function fetchExtras(list) {
-  if (!list.length) { list = [list]; }
-
-  let base = {
-    part: 'id,contentDetails,status,statistics',
-    fields: 'items(id,contentDetails(duration),status(uploadStatus,rejectionReason,privacyStatus),statistics)',
-  };
-  let ids = list.map(_.property('snippet.resourceId.videoId'));
-
-  return videos.list(_.assign(base, { id: ids }))
-  .then((res) => {
-    let obj = _.keyBy(res.items, 'id');
-    return list.map((item) => {
-      let videoId = item.snippet.resourceId.videoId;
-      return _.assign(item, _.omit(obj[videoId], 'id'));
-    });
-  });
-}
 
 function formEntity(item) {
   let get = _.get.bind(null, item);

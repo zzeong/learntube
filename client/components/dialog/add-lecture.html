@@ -2,7 +2,7 @@
   <md-tabs class="add-dialog__lec" md-border-bottom md-stretch-tabs="always">
     <md-tab label="Search">
       <div layout-padding>
-        <form ng-submit="search()">
+        <form ng-submit="search(query)">
           <md-input-container md-no-float class="md-block md-accent md-input-container--no-margin">
             <input type="search" ng-model="query" placeholder="Search videos">
           </md-input-container>
@@ -16,17 +16,17 @@
             ng-class="{ 'search-box--lecture-selected': isSelected(video) }">
               <lt-listcard-media>
                 <div class="video-thumb">
-                  <img ng-src="{{ video.snippet.thumbnails.medium.url }}" alt="Video thumbnail">
-                  <p class="video-thumb__duration lt-caption-s">{{ video.contentDetails.duration | humanable }}</p>
+                  <img ng-src="{{ video.thumbnailUrl }}" alt="Video thumbnail">
+                  <p class="video-thumb__duration lt-caption-s">{{ video.duration | humanable }}</p>
                 </div>
               </lt-listcard-media>
 
               <lt-listcard-content>
                 <div class="lt-listcard__height-keeper">
-                  <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ video.snippet.title }}</h3>
-                  <p class="ellipsis-1 lt-subhead-s">{{ video.snippet.channelTitle }}</p>
+                  <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ video.title }}</h3>
+                  <p class="ellipsis-1 lt-subhead-s">{{ video.channelTitle }}</p>
                 </div>
-                <span class="lt-listcard__small-sign lt-caption-s">{{ video.statistics.viewCount | thousandSuffix }}</span>
+                <span class="lt-listcard__small-sign lt-caption-s">{{ video.stats.viewCount | thousandSuffix }}</span>
               </lt-listcard-content>
             </lt-listcard>
           </button>

@@ -27,10 +27,10 @@ ng-click="addClass()" ng-show="isLoggedIn()">
 
           <md-whiteframe class="frame-padding responsive-whiteframe whiteframe">
             <div class="tutor-intro">
-              <img class="tutor-intro__thumb thumb-radius" ng-src="{{ channel.snippet.thumbnails.default.url }}">
-              <h2 class="tutor-intro__title md-title">{{ channel.snippet.title }}.&nbsp</h2>
+              <img class="tutor-intro__thumb thumb-radius" ng-src="{{ channel.thumbnailUrl }}">
+              <h2 class="tutor-intro__title md-title">{{ channel.title }}.&nbsp</h2>
             </div>
-            <div class="whiteframe-desc md-body-1" ng-bind-html="channel.snippet.description"></div>
+            <div class="whiteframe-desc md-body-1" ng-bind-html="channel.description"></div>
           </md-whiteframe>
           <md-divider hide-gt-xs></md-divider>
         </div>

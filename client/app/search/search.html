@@ -8,16 +8,16 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
     <div class="main-content__inner">
       <ul class="adaptable-card-wrapper">
         <li class="adaptable-card" ng-repeat="class in classes">
-          <a class="anchor-mask" ng-href="{{ href('class-summary', { pid: class.id.playlistId }) }}">
+          <a class="anchor-mask" ng-href="{{ href('class-summary', { pid: class.playlistId }) }}">
             <lt-listcard lt-responsive-morph="true">
               <lt-listcard-media>
-                <img ng-src="{{ class.snippet.thumbnails.medium.url }}" alt="Class thumbnail">
+                <img ng-src="{{ class.thumbnailUrl }}" alt="Class thumbnail">
               </lt-listcard-media>
 
               <lt-listcard-content>
                 <div class="lt-listcard__height-keeper">
-                  <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ class.snippet.title }}</h3>
-                  <p class="ellipsis-1 lt-subhead-s">{{ class.snippet.channelTitle }}</p>
+                  <h3 class="ellipsis-2 lt-listcard__inner--squashed lt-title-s">{{ class.title }}</h3>
+                  <p class="ellipsis-1 lt-subhead-s">{{ class.channelTitle }}</p>
                 </div>
               </lt-listcard-content>
             </lt-listcard>

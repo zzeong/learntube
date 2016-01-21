@@ -4,7 +4,7 @@
   angular.module('learntubeApp')
   .controller('ClassroomCtrl', ClassroomCtrl);
 
-  function ClassroomCtrl($scope, $state, $http, Auth, Note, GoogleConst, GApi, Upload, $mdToast, WatchedContent, $timeout) {
+  function ClassroomCtrl($scope, $state, $http, Auth, Note, Upload, $mdToast, WatchedContent, $timeout) {
     $scope.videoId = $state.params.vid;
     $scope.playlistId = $state.params.pid;
     $scope.cid = null;
@@ -246,8 +246,6 @@
     '$http',
     'Auth',
     'Note',
-    'GoogleConst',
-    'GApi',
     'Upload',
     '$mdToast',
     'WatchedContent',

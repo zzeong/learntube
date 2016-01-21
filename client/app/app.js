@@ -8,7 +8,6 @@ angular.module('learntubeApp', [
   'ui.router',
   'ngMaterial',
   'youtube-embed',
-  'angular-google-gapi',
   'file-model',
   'infinite-scroll',
   'ngFileUpload',
@@ -138,11 +137,7 @@ angular.module('learntubeApp', [
   };
 })
 
-.run(function ($rootScope, $location, Auth, GApi, GAuth, GoogleConst) {
-  GApi.load('youtube', 'v3');
-  GAuth.setClient(GoogleConst.oauth.clientId);
-  GAuth.setScope(GoogleConst.oauth.scope);
-
+.run(function ($rootScope, $location, Auth) {
   // Redirect to login if route requires auth and you're not logged in
   $rootScope.$on('$stateChangeStart', function (event, next) {
     Auth.isLoggedInAsync(function (loggedIn) {

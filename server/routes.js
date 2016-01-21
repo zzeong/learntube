@@ -15,6 +15,8 @@ module.exports = function (app) {
   app.use('/api/s3', require('./api/s3'));
   app.use('/api/classes', require('./api/class'));
   app.use('/api/lectures', require('./api/lecture'));
+  app.use('/api/search', require('./api/search'));
+  app.use('/api/tutors', require('./api/tutor'));
 
   app.use('/auth', require('./auth'));
 

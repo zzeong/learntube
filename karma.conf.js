@@ -18,7 +18,6 @@ module.exports = function (config) {
       'client/bower_components/angular/angular.js',
       'client/bower_components/angular-cookies/angular-cookies.js',
       'client/bower_components/angular-file-model/angular-file-model.js',
-      'client/bower_components/angular-google-gapi/angular-google-gapi.min.js',
       'client/bower_components/angular-animate/angular-animate.js',
       'client/bower_components/angular-aria/angular-aria.js',
       'client/bower_components/angular-messages/angular-messages.js',

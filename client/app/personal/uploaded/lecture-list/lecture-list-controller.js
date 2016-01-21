@@ -4,7 +4,7 @@
   angular.module('learntubeApp')
   .controller('UploadedLectureListCtrl', UploadedLectureListCtrl);
 
-  function UploadedLectureListCtrl($scope, $state, Auth, $http, $mdDialog, $q, $mdToast, GApi, GoogleConst, YoutubeHelper) {
+  function UploadedLectureListCtrl($scope, $state, Auth, $http, $mdDialog, $mdToast) {
     $scope.href = $state.href;
     $scope.playlistId = $state.params.pid;
     $scope.deleteLectures = deleteLectures;
@@ -82,16 +82,11 @@
           .catch(console.error);
         }
 
-        function search() {
-          GApi.execute('youtube', 'search.list', {
-            key: GoogleConst.browserKey,
-            part: 'snippet',
-            q: $scope.query,
-            maxResults: 50,
-            type: 'video',
+        function search(q) {
+          $http.get('/api/search', {
+            params: { q, type: 'video' },
           })
-          .then((res) => YoutubeHelper.applyAdditional(res.items, 'id.videoId'))
-          .then((res) => { $scope.searched = res; })
+          .then((res) => $scope.searched = res.data)
           .catch(console.error);
         }
 
@@ -212,5 +207,5 @@
 
   }
 
-  UploadedLectureListCtrl.$inject = ['$scope', '$state', 'Auth', '$http', '$mdDialog', '$q', '$mdToast', 'GApi', 'GoogleConst', 'YoutubeHelper'];
+  UploadedLectureListCtrl.$inject = ['$scope', '$state', 'Auth', '$http', '$mdDialog', '$mdToast'];
 })(angular);
