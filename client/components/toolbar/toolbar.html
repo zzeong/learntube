@@ -1,26 +1,27 @@
-<div class="md-toolbar-tools" ng-controller="ToolbarCtrl" ng-class="{ 'toolbar--onsearch': greyToolbar, 'toolbar--ondelete' : deleteToolbarState }">
+<div ng-controller="ToolbarCtrl">
 
+<!-- normal toolbar -->
+<div ng-show="!searchAtMobile" class="md-toolbar-tools" ng-class="{ 'toolbar--onsearch': greyToolbar, 'toolbar--ondelete' : deleteToolbarState }">
 
   <!-- Mobile - basic element -->
   <div class="toolbar-icon" hide-gt-xs>
     <md-button class="toolbar-icon-left__btn md-icon-button" aria-label="Settings">
-      <md-icon ng-hide="onSearching" ng-click="mainIconTrigger()" md-font-set="material-icons">menu</md-icon>
-      <md-icon ng-show="onSearching" ng-click="goBackward()" md-font-set="material-icons">arrow_back</md-icon>
+      <md-icon ng-click="mainIconTrigger()" md-font-set="material-icons">menu</md-icon>
     </md-button>
   </div>
 
   <!-- PAGE TITLE -->
-  <div class="page-title ellipsis-1" ng-hide="searchAtMobile">
+  <div class="page-title ellipsis-1">
     <h2>
       <span>{{ title }}</span>
     </h2>
   </div>
 
   <!-- SEARCH INPUT -->
-  <div class="toolbar-search" ng-show="onSearching">
+  <div hide-xs class="toolbar-search">
     <form class="toolbar-search__form" ng-submit="go('search', { q: q });">
       <input my-focus id="input1" class="toolbar-search__input" ng-class="{ 'yellow-input': yellowInput }" ng-model="q" type="search" placeholder="search class"/>
-      <md-icon ng-click="go('search', { q: q });" class="toolbar-search__icon" md-font-set="material-icons" ng-show="webSearchIcon">search</md-icon>
+      <md-icon ng-click="go('search', { q: q });" class="toolbar-search__icon" md-font-set="material-icons">search</md-icon>
     </form>
   </div>
 
@@ -58,21 +59,15 @@
     </md-button>
   </div>
 
-  <!-- 검색어를 한번에 지우는 clear icon -->
-  <md-button class="md-icon-button" aria-label="More" ng-show="clearIcon" ng-click="deleteValue()">
-    <md-icon md-font-set="material-icons">clear</md-icon>
-  </md-button>
-
-
-  <!-- onSearching으로 진입하는 search icon -->
-  <md-button hide-gt-xs ng-hide="onSearching" class="md-icon-button" aria-label="More"
+  <!-- search at mobile로 진입하는 search icon -->
+  <md-button hide-gt-xs class="md-icon-button" aria-label="More"
   ng-click="toggleSearchingState();">
     <md-icon md-font-set="material-icons">search</md-icon>
   </md-button>
 
   <md-menu md-offset="12 -1" md-position-mode="target-right target" hide-gt-xs>
     <!-- 로그인 메뉴를 여는 more icon -->
-    <md-button ng-hide="onSearching" ng-click="$mdOpenMenu($event)" class="md-icon-button">
+    <md-button ng-click="$mdOpenMenu($event)" class="md-icon-button">
       <md-icon md-menu-origin md-font-set="material-icons">more_vert</md-icon>
     </md-button>
 
@@ -98,4 +93,32 @@
       </div>
     </md-menu-content>
   </md-menu>
+</div>
+
+
+
+<!-- mobile search toolbar -->
+<div ng-show="searchAtMobile" class="md-toolbar-tools toolbar--onsearch">
+
+  <!-- backward icon -->
+  <div class="toolbar-icon">
+    <md-button class="toolbar-icon-left__btn md-icon-button" aria-label="Settings">
+      <md-icon ng-click="goBackward()" md-font-set="material-icons">arrow_back</md-icon>
+    </md-button>
+  </div>
+
+  <!-- search input -->
+  <div class="toolbar-search">
+    <form class="toolbar-search__form" ng-submit="go('search', { q: q });">
+      <input my-focus id="input1" class="toolbar-search__input" ng-model="q" type="search" placeholder="search class"/>
+    </form>
+  </div>
+
+  <!-- 검색어를 한번에 지우는 clear icon -->
+  <md-button class="md-icon-button" aria-label="More" ng-click="deleteValue()">
+    <md-icon md-font-set="material-icons">clear</md-icon>
+  </md-button>
+
+</div>
+
 </div>

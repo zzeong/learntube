@@ -15,7 +15,7 @@ angular.module('learntubeApp')
 
   var classTitle = ToolbarService.getClassTitle();
 
-  var getMobileTitle = function () {
+  var getTitle = function () {
     var title = _.has($state.current, 'data') ? $state.current.data.pageName : '';
     if ($scope.stateNameCheck('category-other') === true) {
       title = $scope.categoryTitle.orig;
@@ -32,27 +32,7 @@ angular.module('learntubeApp')
     return title;
   };
 
-
-  // search input에 대한 판단
-  var getOnSearching = function () {
-    var onSearching;
-
-    if ($scope.pageWidth < 600) {
-      onSearching = $scope.stateNameCheck('search') ? true : false;
-      $scope.webSearchIcon = false;
-      $scope.clearIcon = $scope.stateNameCheck('search') ? true : false;
-    } else {
-      onSearching = true;
-      $scope.webSearchIcon = true;
-      $scope.clearIcon = false;
-    }
-
-    return onSearching;
-  };
-
-
-
-  // page title에 대한 판단
+  // search at mobile
   var getSearchAtMobile = function () {
     var searchAtMobile;
 
@@ -65,32 +45,24 @@ angular.module('learntubeApp')
     return searchAtMobile;
   };
 
-  // greyToolbar를 onSearching과 분리시킴 (web구현으로 인한 선택)
-  // mobile = onsearching에 따라 툴바의 색이 결정되지만,
-  // web = search.html이 열렸냐에 따라 툴바의 색이 결정됨
   var getGreyToolbar = function () {
     var greyToolbar;
-    if ($scope.pageWidth < 600) {
-      greyToolbar = ($scope.onSearching === true) ? true : false;
-    } else {
+
       if ($scope.stateNameCheck('search')) {
         greyToolbar = true;
       } else {
         greyToolbar = false;
         $scope.yellowInput = true;
       }
-    }
 
     return greyToolbar;
   };
-
 
   $scope.loginOauth = function (provider) {
     console.log('google oauth');
     $window.location.href = '/auth/' + provider;
   };
 
-  $scope.hidemenu = false;
   $scope.getCurrentUser = Auth.getCurrentUser;
   $scope.isLoggedIn = Auth.isLoggedIn;
   $scope.personalMenu = [{
@@ -102,20 +74,14 @@ angular.module('learntubeApp')
   }];
 
   $scope.toggleSearchingState = function () {
-    $scope.onSearching = !$scope.onSearching;
-    $scope.hidemenu = !$scope.hidemenu;
-    $scope.focusInput = true;
-    $scope.greyToolbar = !$scope.greyToolbar;
     $scope.searchAtMobile = !$scope.searchAtMobile;
-    $scope.clearIcon = !$scope.clearIcon;
   };
 
   $scope.stateNameCheck = function (name) {
     return $state.current.name === name;
   };
 
-  $scope.title = getMobileTitle();
-  $scope.onSearching = getOnSearching();
+  $scope.title = getTitle();
   $scope.searchAtMobile = getSearchAtMobile();
   $scope.greyToolbar = getGreyToolbar();
 
