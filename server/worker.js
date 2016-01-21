@@ -29,11 +29,10 @@ function updateViews(usr) {
   let user = JSON.parse(usr);
   let params = {
     part: 'id,snippet,status',
-    maxResults: process.env.GOOGLE_MAX_RESULTS,
     mine: true,
   };
 
-  g.setOAuth(user);
+  g.bindAuth(user);
   g.youtube('playlists.list', params)
   .then((res) => {
     let fetchPlaylistsViews = res.items.map((p) => scraper.updateClassModel(p));

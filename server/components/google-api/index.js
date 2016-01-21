@@ -46,8 +46,9 @@ function execute(method, params) {
 }
 
 function readyApi(req, res, next) {
-  if (req.user) {
-    auth = setOAuth(req.user);
+  auth = createAuth(req.user);
+
+  if (_.has(auth, 'getAccessToken')) {
     auth.getAccessToken((err, token) => {
       if (err) { next(err); }
 
@@ -61,13 +62,15 @@ function readyApi(req, res, next) {
       }
     });
   } else {
-    auth = process.env.GOOGLE_SERVERKEY;
     next();
   }
 }
 
+function createAuth(user) {
+  if (_.isUndefined(user)) {
+    return process.env.GOOGLE_SERVERKEY;
+  }
 
-function setOAuth(user) {
   let oauth2Client = new google.auth.OAuth2(
     process.env.GOOGLE_ID,
     process.env.GOOGLE_SECRET,
@@ -82,6 +85,10 @@ function setOAuth(user) {
   return oauth2Client;
 }
 
+function bindAuth(user) {
+  auth = createAuth(user);
+}
+
 exports.youtube = execute;
 exports.readyApi = readyApi;
-exports.setOAuth = setOAuth;
+exports.bindAuth = bindAuth;
