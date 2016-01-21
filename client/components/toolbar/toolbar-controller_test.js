@@ -9,14 +9,6 @@ describe('Controller: ToolbarCtrl', function () {
     $controller('ToolbarCtrl', { $scope: $scope });
   }));
 
-  it('should change searching status', inject(function () {
-    var onSearching = $scope.onSearching;
-    $scope.toggleSearchingState();
-
-    expect($scope.focusInput).toEqual(true);
-    expect($scope.onSearching).toEqual(!onSearching);
-  }));
-
   it('should shows an account image when a google user logged in', inject(function () {
     var user = {
       google: {
