@@ -6,7 +6,7 @@ var request = require('supertest-as-promised').agent(app);
 var mongoose = require('mongoose');
 var auth = require('../../../auth/auth.service');
 var User = require('../../../models/user.model');
-var Upload = require('../../../models/upload.model');
+var Handout = require('../../../models/handout.model');
 var knox = require('knox');
 
 mongoose.Promise = Promise;
@@ -39,18 +39,18 @@ describe('REST API:', () => {
     .then(done.bind(null, null), done);
   });
 
-  describe('POST /api/users/:id/uploads', () => {
+  describe('POST /api/users/:id/handouts', () => {
     beforeEach((done) => {
-      Upload.remove({})
+      Handout.remove({})
       .then(done.bind(null, null), done);
     });
 
     afterEach((done) => {
-      Upload.remove({})
+      Handout.remove({})
       .then(done.bind(null, null), done);
     });
 
-    it('should return created \'upload model doc\'', (done) => {
+    it('should return created \'handout model doc\'', (done) => {
       var params = {
         videoId: 'ASDF',
         playlistId: 'QWER',
@@ -59,7 +59,7 @@ describe('REST API:', () => {
       };
 
       request
-      .post('/api/users/' + user._id + '/uploads')
+      .post('/api/users/' + user._id + '/handouts')
       .set('Authorization', 'Bearer ' + user.token)
       .send(params)
       .expect(201)
@@ -73,13 +73,13 @@ describe('REST API:', () => {
   });
 
 
-  describe('GET /api/users/:id/uploads', () => {
+  describe('GET /api/users/:id/handouts', () => {
     beforeEach((done) => {
-      Upload.remove({})
+      Handout.remove({})
       .then(() => {
         var requests = [0, 1, 2].map((n) => {
           return request
-          .post('/api/users/' + user._id + '/uploads')
+          .post('/api/users/' + user._id + '/handouts')
           .set('Authorization', 'Bearer ' + user.token)
           .send({
             videoId: 'ASDF' + n,
@@ -97,13 +97,13 @@ describe('REST API:', () => {
     });
 
     afterEach((done) => {
-      Upload.remove({})
+      Handout.remove({})
       .then(done.bind(null, null), done);
     });
 
-    it('should return uploads when query with playlistId', (done) => {
+    it('should return handouts when query with playlistId', (done) => {
       request
-      .get('/api/users/' + user._id + '/uploads')
+      .get('/api/users/' + user._id + '/handouts')
       .set('Authorization', 'Bearer ' + user.token)
       .query({ playlistId: 'QWER' })
       .expect(200)
@@ -119,7 +119,7 @@ describe('REST API:', () => {
 
     it('should return empty array when no one equals with query condition', (done) => {
       request
-      .get('/api/users/' + user._id + '/uploads')
+      .get('/api/users/' + user._id + '/handouts')
       .set('Authorization', 'Bearer ' + user.token)
       .query({ playlistId: 'IAMNOTTHERE' })
       .expect(200)
@@ -133,8 +133,8 @@ describe('REST API:', () => {
     });
   });
 
-  describe('DELETE /api/users/:id/uploads/:uid', () => {
-    var upload;
+  describe('DELETE /api/users/:id/handouts/:uid', () => {
+    var handout;
 
     beforeEach((done) => {
       var awsClient = knox.createClient({
@@ -143,7 +143,7 @@ describe('REST API:', () => {
         bucket: process.env.AWS_S3_BUCKET
       });
 
-      Upload.remove({})
+      Handout.remove({})
       .then(function () {
         var string = 'hello';
         var fileName = 'foo.txt';
@@ -156,15 +156,15 @@ describe('REST API:', () => {
 
         req.on('response', function (res) {
           if (200 === +res.statusCode) {
-            upload = new Upload({
-              userId: user._id,
+            handout = new Handout({
+              _uploader: user._id,
               playlistId: 'PL34d',
               videoId: 'ASDF0',
               url: req.url,
               fileName: fileName,
             });
 
-            upload.save()
+            handout.save()
             .then(done.bind(null, null), done);
           }
         })
@@ -173,11 +173,11 @@ describe('REST API:', () => {
       .catch(done);
     });
 
-    it('should return 204 when upload resource is removed', (done) => {
-      Upload.findOne({ videoId: 'ASDF0' }).exec()
-      .then((upload) => {
+    it('should return 204 when handout resource is removed', (done) => {
+      Handout.findOne({ videoId: 'ASDF0' }).exec()
+      .then((handout) => {
         return request
-        .delete('/api/users/' + user._id + '/uploads/' + upload._id)
+        .delete('/api/users/' + user._id + '/handouts/' + handout._id)
         .set('Authorization', 'Bearer ' + user.token)
         .expect(204);
       })

@@ -10,7 +10,7 @@ router.use('/:id', auth.isAuthenticated());
 
 router.use('/:id/watched-contents', require('./watched-content'));
 router.use('/:id/notes', require('./note'));
-router.use('/:id/uploads', require('./upload'));
+router.use('/:id/handouts', require('./handout'));
 
 router.get('/', auth.hasRole('admin'), controller.index);
 router.delete('/:id', auth.hasRole('admin'), controller.destroy);

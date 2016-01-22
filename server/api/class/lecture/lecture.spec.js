@@ -2,7 +2,7 @@
 
 var should = require('should');
 var mongoose = require('mongoose');
-var Upload = require('../../../models/upload.model');
+var Handout = require('../../../models/handout.model');
 var User = require('../../../models/user.model');
 var app = require('../../../app');
 var request = require('supertest-as-promised').agent(app);
@@ -15,7 +15,7 @@ describe('REST API:', function () {
   before(function (done) {
     Promise.all([
       User.remove({}),
-      Upload.remove({})
+      Handout.remove({})
     ])
     .then(function () {
       var user = {
@@ -35,33 +35,33 @@ describe('REST API:', function () {
   after(function (done) {
     Promise.all([
       User.remove({}),
-      Upload.remove({})
+      Handout.remove({})
     ])
     .then(done.bind(null, null), done);
   });
 
   describe('GET /api/classes/:pid/lectures/:vid/get-handout', () => {
     before((done) => {
-      var uploads = [{
+      var handouts = [{
         videoId: 'miUYEpXDitc',
         fileName: 'just.txt',
-        url: 'https://s3.amazonaws.com/learntubebucket/learntubebot01%40gmail.com/uploads/dummytxt'
+        url: 'https://s3.amazonaws.com/learntubebucket/learntubebot01%40gmail.com/handouts/dummytxt'
       }, {
         videoId: 'F-xd3G0PW0k',
         fileName: 'just.pdf',
-        url: 'https://s3.amazonaws.com/learntubebucket/learntubebot01%40gmail.com/uploads/dummypdf'
+        url: 'https://s3.amazonaws.com/learntubebucket/learntubebot01%40gmail.com/handouts/dummypdf'
       }].map((el) => {
-        el.userId = id;
+        el._uploader = id;
         el.playlistId = 'PLReOOCELOIi93J42_bOw_Fe-zMpLxKUMx';
         return el;
       });
 
-      Upload.create(uploads)
+      Handout.create(handouts)
       .then(done.bind(null, null), done);
     });
 
     after((done) => {
-      Upload.remove({})
+      Handout.remove({})
       .then(done.bind(null, null), done);
     });
 

@@ -1,6 +1,6 @@
 'use strict';
 
-var Upload = require('../../../models/upload.model');
+var Handout = require('../../../models/handout.model');
 var knox = require('knox');
 var url = require('url');
 var fs = require('fs');
@@ -32,16 +32,16 @@ exports.getHandout = (req, res, next) => {
     videoId: req.params.vid
   };
 
-  Upload.findOne(query).exec()
-  .then((upload) => {
-    if (!upload) { throw new Error('not found'); }
+  Handout.findOne(query).exec()
+  .then((handout) => {
+    if (!handout) { throw new Error('not found'); }
 
-    var filePath = './' + upload.fileName;
+    var filePath = './' + handout.fileName;
     var ws = fs.createWriteStream(filePath);
-    var s3Path = url.parse(upload.url).pathname;
+    var s3Path = url.parse(handout.url).pathname;
 
     res.setHeader('Content-Type', 'application/octet-stream');
-    res.setHeader('Content-Disposition', 'attachment; filename=' + upload.fileName);
+    res.setHeader('Content-Disposition', 'attachment; filename=' + handout.fileName);
 
     s3.getFile(s3Path.substring(s3Path.indexOf('/', 1)), (error, response) => {
       if (error) { throw new Error(); }

@@ -1,7 +1,7 @@
 'use strict';
 
 var _ = require('lodash');
-var Upload = require('../../../models/upload.model');
+var Handout = require('../../../models/handout.model');
 var mongoose = require('mongoose');
 var knox = require('knox');
 var url = require('url');
@@ -15,30 +15,30 @@ var awsClient = knox.createClient({
 mongoose.Promise = Promise;
 
 exports.index = (req, res, next) => {
-  var query = _.assign({ userId: req.params.id }, req.query);
+  var query = _.assign({ _uploader: req.params.id }, req.query);
 
-  Upload.find(query).exec()
-  .then((uploads) => res.status(200).json(uploads))
+  Handout.find(query).exec()
+  .then((handouts) => res.status(200).json(handouts))
   .catch(next);
 };
 
 exports.create = (req, res, next) => {
-  var query = _.assign({ userId: req.params.id }, req.body);
+  var query = _.assign({ _uploader: req.params.id }, req.body);
 
-  Upload.create(query)
-  .then((upload) => res.status(201).json(upload))
+  Handout.create(query)
+  .then((handout) => res.status(201).json(handout))
   .catch(next);
 };
 
 exports.destroy = (req, res, next) => {
-  Upload.findById(req.params.uid).exec()
-  .then((upload) => {
-    if (!upload) { throw new Error('not found'); }
+  Handout.findById(req.params.uid).exec()
+  .then((handout) => {
+    if (!handout) { throw new Error('not found'); }
 
-    awsClient.del(url.parse(upload.url).pathname)
+    awsClient.del(url.parse(handout.url).pathname)
     .on('response', function (response) {
       console.log('[S3]:DELETE', response.statusCode, response.headers);
-      upload.remove()
+      handout.remove()
       .then(() => res.status(204).send())
       .catch(next);
     })

@@ -10,7 +10,7 @@ var fs = require('fs');
 var csv = require('fast-csv');
 var User = require('../models/user.model');
 var Note = require('../models/note.model');
-var Upload = require('../models/upload.model');
+var Handout = require('../models/handout.model');
 var WatCtt = require('../models/watched-content.model');
 var Class = require('../models/class.model.js');
 var mongoose = require('mongoose');
@@ -200,23 +200,23 @@ var seedWatchedContent = function (users, classes) {
   }]);
 };
 
-var seedUpload = function (users) {
+var seedHandout = function (users) {
   var hashes = [
     'd3e6cfa0eb57bab5c50a88a049b42930',
     '8af01a82ad2ce86d8d0e16fbc40b069b'
   ];
 
-  return Upload.create([{
-    userId: users[1]._id,
+  return Handout.create([{
+    _uploader: users[1]._id,
     playlistId: 'PLtEAazd2E1Vr5ycRfR2pRQSjqFlB9uSow',
     lectures: [{
       videoId: '7BafU1p_OKo',
       fileName: 'handout.pdf',
-      url: s3.endpoint.href + process.env.AWS_S3_BUCKET + '/' + users[1].email + '/uploads/' + hashes[0],
+      url: s3.endpoint.href + process.env.AWS_S3_BUCKET + '/' + users[1].email + '/handouts/' + hashes[0],
     }, {
       videoId: '8rQGMW7nt4s',
       fileName: 'handout.pdf',
-      url: s3.endpoint.href + process.env.AWS_S3_BUCKET + '/' + users[1].email + '/uploads/' + hashes[1],
+      url: s3.endpoint.href + process.env.AWS_S3_BUCKET + '/' + users[1].email + '/handouts/' + hashes[1],
     }],
   }]);
 };
@@ -263,7 +263,7 @@ Promise.all([
   User.remove({}).exec(),
   Note.remove({}).exec(),
   WatCtt.remove({}).exec(),
-  Upload.remove({}).exec(),
+  Handout.remove({}).exec(),
   Class.remove({}).exec()
 ])
 .then(initialUser)
@@ -272,7 +272,7 @@ Promise.all([
   .then((classes) => Promise.all([
     seedNote(users),
     seedWatchedContent(users, classes),
-    seedUpload(users),
+    seedHandout(users),
   ]));
 })
 .then(() => console.log('Finish seeding'))
