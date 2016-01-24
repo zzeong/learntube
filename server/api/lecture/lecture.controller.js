@@ -19,7 +19,8 @@ function index(req, res, next) {
   let base = { part: 'id,snippet,status' };
   playlistItems.list(_.assign(base, req.query))
   .then((res) => fetchExtras(res.items))
-  .then((lectures) => res.status(200).json(lectures.map(formEntity)))
+  .then((lectures) => Promise.all(lectures.map(formEntity).map(addPropsAsync)))
+  .then((lectures) => res.status(200).json(lectures))
   .catch(next);
 }
 
@@ -27,7 +28,8 @@ function create(req, res, next) {
   let base = { part: 'snippet,status' };
   playlistItems.insert(_.assign(base, { resource: formResource(req.body)}))
   .then(fetchExtras)
-  .then((lectures) => res.status(201).json(_.first(lectures.map(formEntity))))
+  .then((lectures) => Promise.all(lectures.map(formEntity).map(addPropsAsync)))
+  .then((lectures) => res.status(201).json(_.first(lectures)))
   .catch(next);
 }
 
@@ -58,7 +60,8 @@ function mine(req, res, next) {
     return playlistItems.list(params);
   })
   .then((res) => fetchExtras(res.items))
-  .then((lectures) => res.status(200).json(lectures.map(formEntity)))
+  .then((lectures) => Promise.all(lectures.map(formEntity).map(addPropsAsync)))
+  .then((lectures) => res.status(200).json(lectures))
   .catch(next);
 }
 
@@ -144,5 +147,13 @@ function streamFile(res, path) {
     rs.pipe(res);
     rs.on('end', removeFile(path));
   };
+}
+
+function addPropsAsync(lecture) {
+  return Handout.findOne(_.pick(lecture, ['playlistId', 'videoId']))
+  .then((handout) => {
+    lecture.hasHandout = _.isNull(handout) ? false : true;
+    return lecture;
+  });
 }
 
