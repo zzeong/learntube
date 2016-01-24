@@ -1,8 +1,11 @@
 'use strict';
 
 const _ = require('lodash');
+const fs = require('fs');
 const g = require('../../components/google-api');
+const s3 = require('../../components/s3');
 const fetchExtras = require('../../components/youtube-helper').fetchExtras;
+const Handout = require('../../models/handout.model');
 
 let channels = { list: g.youtube.bind(null, 'channels.list') };
 let playlistItems = {
@@ -59,11 +62,36 @@ function mine(req, res, next) {
   .catch(next);
 }
 
+function getHandout(req, res, next) {
+  let query = _.pick(req.query, ['playlistId', 'videoId']);
+
+  Handout.findOne(query).exec()
+  .then((handout) => {
+    if (!handout) { return res.status(404).json({ message: 'no resource' }); }
+
+    let filePath = './' + handout.fileName;
+    let ws = fs.createWriteStream(filePath);
+
+
+    return s3.getFile(handout.s3Path)
+    .then((s3res) => {
+      res.setHeader('Content-Type', s3res.headers['content-type']);
+      res.setHeader('Content-Disposition', `attachment; filename=${handout.fileName}`);
+      res.setHeader('Content-Length', s3res.headers['content-length']);
+
+      s3res.pipe(ws);
+      s3res.on('end', streamFile(res, filePath));
+    });
+  })
+  .catch(next);
+}
+
 exports.index = index;
 exports.create = create;
 exports.destroy = destroy;
 
 exports.mine = mine;
+exports.getHandout = getHandout;
 
 function formEntity(item) {
   let get = _.get.bind(null, item);
@@ -100,5 +128,21 @@ function findId(p) {
   let base = { part: 'id' };
   return playlistItems.list(_.assign(base, p))
   .then(_.property('items[0].id'));
+}
+
+function removeFile(path) {
+  return () => {
+    fs.unlink(path, () => {
+      console.log('Successfully deleted %s', path);
+    });
+  };
+}
+
+function streamFile(res, path) {
+  return () => {
+    var rs = fs.createReadStream(path);
+    rs.pipe(res);
+    rs.on('end', removeFile(path));
+  };
 }
 

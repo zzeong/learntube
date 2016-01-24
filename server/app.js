@@ -7,7 +7,6 @@
 require('dotenv').load();
 
 var express = require('express');
-//var mongoose = require('mongoose');
 var stealth = require('./components/stealth');
 var cfg = require('./config/environment');
 

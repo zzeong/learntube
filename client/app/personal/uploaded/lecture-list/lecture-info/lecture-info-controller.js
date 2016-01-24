@@ -4,10 +4,13 @@
   angular.module('learntubeApp')
   .controller('LectureInfoCtrl', LectureInfoCtrl);
 
-  function LectureInfoCtrl($scope, $state, $mdDialog, $q, $http, Auth, $mdToast) {
+  function LectureInfoCtrl($scope, $state, $mdDialog, $q, $http, Auth, $mdToast, Upload) {
     $scope.playlistId = $state.params.pid;
     $scope.videoId = $state.params.vid;
     $scope.showConfirmDialog = showConfirmDialog;
+    $scope.selectFile = selectFile;
+    $scope.uploadHandout = uploadHandout;
+    $scope.removeHandout = removeHandout;
     $scope.handout = {
       uploaded: null,
       seleted: null
@@ -18,7 +21,7 @@
     })
     .then((res) => {
       $scope.lecture = _.first(res.data);
-      return $http.get('/api/users/' + Auth.getCurrentUser()._id + '/uploads', {
+      return $http.get('/api/users/' + Auth.getCurrentUser()._id + '/handouts', {
         params: {
           playlistId: $scope.playlistId,
           videoId: $scope.videoId
@@ -32,68 +35,24 @@
     })
     .catch(console.error);
 
-    $scope.selectFile = (file) => { $scope.handout.selected = file; };
-    $scope.removeHandout = removeHandout;
-    $scope.uploadHandout = (handout) => {
-      getSignedUrl(handout)
-      .then((s3Urls) => uploadFile(handout, s3Urls))
-      .then((url) => postToBack({
-        videoId: $scope.videoId,
-        playlistId: $scope.playlistId,
-        url: url,
-        fileName: handout.name
-      }))
-      .then((handout) => {
-        $scope.handout.uploaded = handout;
+
+    function selectFile(file) {
+      $scope.handout.selected = file;
+    }
+
+    function uploadHandout(file) {
+      Upload.upload({
+        url: `/api/users/${Auth.getCurrentUser()._id}/handouts`,
+        method: 'POST',
+        fields: _.pick($scope, ['playlistId', 'videoId']),
+        file: file,
+      })
+      .then((res) => {
+        $scope.handout.uploaded = res.data;
         $scope.handout.selected = null;
         showToast('File uploaded');
       })
       .catch(console.error);
-    };
-
-    function uploadFile(file, urls) {
-      var deferred = $q.defer();
-      var xhr = new XMLHttpRequest();
-      xhr.file = file;
-
-      xhr.onreadystatechange = () => {
-        if (xhr.readyState === 4) {
-          if (xhr.status === 200) {
-            deferred.resolve(urls.accessUrl);
-          } else {
-            deferred.reject(this);
-          }
-        }
-      };
-      xhr.open('PUT', urls.signedUrl, true);
-      xhr.send(file);
-
-      return deferred.promise;
-    }
-
-    function postToBack(params) {
-      var deferred = $q.defer();
-
-      $http.post('/api/users/' + Auth.getCurrentUser()._id + '/uploads', params)
-      .then((res) => deferred.resolve(res.data))
-      .catch(console.error);
-
-      return deferred.promise;
-    }
-
-    function getSignedUrl(file) {
-      var deferred = $q.defer();
-
-      $http.get('/api/s3/credential', {
-        params: {
-          fileName: file.name,
-          fileType: file.type,
-        },
-      })
-      .then((res) => deferred.resolve(res.data))
-      .catch(console.error);
-
-      return deferred.promise;
     }
 
     function showToast(text) {
@@ -106,7 +65,7 @@
     }
 
     function removeHandout() {
-      $http.delete('/api/users/' + Auth.getCurrentUser()._id + '/uploads/' + $scope.handout.uploaded._id)
+      $http.delete('/api/users/' + Auth.getCurrentUser()._id + '/handouts/' + $scope.handout.uploaded._id)
       .then(() => {
         $scope.handout.uploaded = null;
         showToast('File removed');
@@ -125,8 +84,7 @@
       $mdDialog.show(confirm)
       .then(removeHandout);
     }
-
   }
 
-  LectureInfoCtrl.$inject = ['$scope', '$state', '$mdDialog', '$q', '$http', 'Auth', '$mdToast'];
+  LectureInfoCtrl.$inject = ['$scope', '$state', '$mdDialog', '$q', '$http', 'Auth', '$mdToast', 'Upload'];
 })(angular);

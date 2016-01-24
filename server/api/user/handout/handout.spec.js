@@ -4,10 +4,10 @@ require('should');
 var app = require('../../../app');
 var request = require('supertest-as-promised').agent(app);
 var mongoose = require('mongoose');
+var _ = require('lodash');
 var auth = require('../../../auth/auth.service');
 var User = require('../../../models/user.model');
 var Handout = require('../../../models/handout.model');
-var knox = require('knox');
 
 mongoose.Promise = Promise;
 
@@ -51,21 +51,17 @@ describe('REST API:', () => {
     });
 
     it('should return created \'handout model doc\'', (done) => {
-      var params = {
-        videoId: 'ASDF',
-        playlistId: 'QWER',
-        url: 'http://foo.com',
-        fileName: 'foo.txt',
-      };
-
       request
-      .post('/api/users/' + user._id + '/handouts')
-      .set('Authorization', 'Bearer ' + user.token)
-      .send(params)
+      .post(`/api/users/${user._id}/handouts`)
+      .set('Authorization', `Bearer ${user.token}`)
+      .field('playlistId', 'QWER')
+      .field('videoId', 'ASDF')
+      .attach('file', './test/fixtures/dummy.html')
       .expect(201)
       .expect('Content-Type', /json/)
       .then((res) => {
-        res.body.should.have.properties(Object.keys(params));
+        let props = ['_uploader', 'playlistId', 'videoId', 'fileName', 's3Path'];
+        res.body.should.have.properties(props);
         done();
       })
       .catch(done);
@@ -74,44 +70,53 @@ describe('REST API:', () => {
 
 
   describe('GET /api/users/:id/handouts', () => {
-    beforeEach((done) => {
+    let handoutIds = null;
+
+    before((done) => {
       Handout.remove({})
       .then(() => {
         var requests = [0, 1, 2].map((n) => {
           return request
-          .post('/api/users/' + user._id + '/handouts')
-          .set('Authorization', 'Bearer ' + user.token)
-          .send({
-            videoId: 'ASDF' + n,
-            playlistId: 'QWER',
-            url: 'http://foo.com',
-            fileName: 'foo' + n + '.txt',
-          })
+          .post(`/api/users/${user._id}/handouts`)
+          .set('Authorization', `Bearer ${user.token}`)
+          .field('playlistId', 'QWER')
+          .field('videoId', `ASDF${n}`)
+          .attach('file', './test/fixtures/dummy.html')
           .expect(201)
           .expect('Content-Type', /json/);
         });
 
         return Promise.all(requests);
       })
+      .then((ress) => handoutIds = ress.map(_.property('body._id')))
       .then(done.bind(null, null), done);
     });
 
-    afterEach((done) => {
-      Handout.remove({})
+    after((done) => {
+      let requests = handoutIds.map((id) => {
+        return request
+        .delete(`/api/users/${user._id}/handouts/${id}`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .expect(204);
+      });
+
+      Promise.all(requests)
+      .then(() => Handout.remove({}))
       .then(done.bind(null, null), done);
     });
 
     it('should return handouts when query with playlistId', (done) => {
       request
-      .get('/api/users/' + user._id + '/handouts')
-      .set('Authorization', 'Bearer ' + user.token)
+      .get(`/api/users/${user._id}/handouts`)
+      .set('Authorization', `Bearer ${user.token}`)
       .query({ playlistId: 'QWER' })
       .expect(200)
       .expect('Content-Type', /json/)
       .then((res) => {
+        let props = ['_uploader', 'videoId', 'playlistId', 's3Path', 'fileName'];
         res.body.should.have.instanceof(Array);
         res.body.should.have.length(3);
-        res.body[0].should.have.properties(['videoId', 'playlistId', 'url', 'fileName']);
+        res.body[0].should.have.properties(props);
         done();
       })
       .catch(done);
@@ -119,14 +124,13 @@ describe('REST API:', () => {
 
     it('should return empty array when no one equals with query condition', (done) => {
       request
-      .get('/api/users/' + user._id + '/handouts')
-      .set('Authorization', 'Bearer ' + user.token)
+      .get(`/api/users/${user._id}/handouts`)
+      .set('Authorization', `Bearer ${user.token}`)
       .query({ playlistId: 'IAMNOTTHERE' })
-      .expect(200)
+      .expect(404)
       .expect('Content-Type', /json/)
       .then((res) => {
-        res.body.should.have.instanceof(Array);
-        res.body.should.have.length(0);
+        res.body.message.should.match(/no/);
         done();
       })
       .catch(done);
@@ -134,53 +138,34 @@ describe('REST API:', () => {
   });
 
   describe('DELETE /api/users/:id/handouts/:uid', () => {
-    var handout;
+    let handoutId;
 
     beforeEach((done) => {
-      var awsClient = knox.createClient({
-        key: process.env.AWS_ACCESSKEY_ID,
-        secret: process.env.AWS_SECRETKEY,
-        bucket: process.env.AWS_S3_BUCKET
-      });
-
       Handout.remove({})
-      .then(function () {
-        var string = 'hello';
-        var fileName = 'foo.txt';
-
-        var req = awsClient.put('/' + user.email + '/' + fileName, {
-          'x-amz-acl': 'private',
-          'Content-Length': Buffer.byteLength(string),
-          'Content-Type': 'text/plain'
-        });
-
-        req.on('response', function (res) {
-          if (200 === +res.statusCode) {
-            handout = new Handout({
-              _uploader: user._id,
-              playlistId: 'PL34d',
-              videoId: 'ASDF0',
-              url: req.url,
-              fileName: fileName,
-            });
-
-            handout.save()
-            .then(done.bind(null, null), done);
-          }
-        })
-        .end(string);
+      .then(() => {
+        return request
+        .post(`/api/users/${user._id}/handouts`)
+        .set('Authorization', `Bearer ${user.token}`)
+        .field('playlistId', 'QWER')
+        .field('videoId', `ASDF`)
+        .attach('file', './test/fixtures/dummy.html')
+        .expect(201)
+        .expect('Content-Type', /json/);
       })
-      .catch(done);
+      .then((res) => handoutId = res.body._id)
+      .then(done.bind(null, null), done);
+    });
+
+    after((done) => {
+      Handout.remove({})
+      .then(done.bind(null, null), done);
     });
 
     it('should return 204 when handout resource is removed', (done) => {
-      Handout.findOne({ videoId: 'ASDF0' }).exec()
-      .then((handout) => {
-        return request
-        .delete('/api/users/' + user._id + '/handouts/' + handout._id)
-        .set('Authorization', 'Bearer ' + user.token)
-        .expect(204);
-      })
+      request
+      .delete(`/api/users/${user._id}/handouts/${handoutId}`)
+      .set('Authorization', `Bearer ${user.token}`)
+      .expect(204)
       .then(done.bind(null, null))
       .catch(done);
     });

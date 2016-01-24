@@ -2,19 +2,9 @@
 
 var _ = require('lodash');
 var url = require('url');
-var crypto = require('crypto');
-var knox = require('knox');
 var Note = require('../../../models/note.model');
-var s3 = knox.createClient({
-  key: process.env.AWS_ACCESSKEY_ID,
-  secret: process.env.AWS_SECRETKEY,
-  bucket: process.env.AWS_S3_BUCKET
-});
-
-var createRandomHash = function () {
-  var id = crypto.randomBytes(20).toString('hex');
-  return crypto.createHash('md5').update(id).digest('hex');
-};
+var s3 = require('../../../components/s3');
+var kutil = require('../../../components/util');
 
 exports.index = function (req, res) {
   var data = _.assign(req.query, { userId: req.params.id });
@@ -28,16 +18,15 @@ exports.index = function (req, res) {
 };
 
 exports.create = (req, res, next) => {
-  var hash = createRandomHash();
+  var hash = kutil.getUniqueHash();
   var uploadPath = `/${req.user.email}/notes/${hash}`;
 
   s3.putFile(req.files.file.path, uploadPath, {
     'Content-Type': req.files.file.type,
     'x-amz-acl': 'public-read'
-  }, (err) => {
-    if (err) { next(err); }
-
-    var uploadUrl = s3.url(uploadPath);
+  })
+  .then(() => {
+    var uploadUrl = s3.client.url(uploadPath);
     console.log('[S3]:PUT saved to %s', uploadUrl);
 
     var note = new Note({
@@ -49,10 +38,10 @@ exports.create = (req, res, next) => {
       url: uploadUrl
     });
 
-    note.save()
-    .then(() => res.status(201).json(_.omit(note.toObject(), 'userId')))
-    .catch(next);
-  });
+    return note.save();
+  })
+  .then((note) => res.status(201).json(_.omit(note.toObject(), 'userId')))
+  .catch(next);
 };
 
 
@@ -65,74 +54,66 @@ exports.show = function (req, res) {
   });
 };
 
-
 exports.getContents = (req, res, next) => {
   Note.findById(req.params.nid).exec()
   .then((note) => {
-    s3.get(url.parse(note.url).pathname)
-    .on('response', (response) => {
-      let body = {
+    return s3.getFile(url.parse(note.url).pathname)
+    .then((s3res) => {
+      let entity = {
         _id: note._id,
         contents: ''
       };
-      console.log('[S3]:GET', response.statusCode, response.headers);
 
-      response.setEncoding('utf8');
-      response.on('data', (chunked) => {
-        body.contents += chunked;
+      console.log('[S3]:GET', s3res.statusCode, s3res.headers);
+
+      s3res.setEncoding('utf8');
+      s3res.on('data', (chunked) => {
+        entity.contents += chunked;
       });
-      response.on('end', () => res.status(200).json(body));
-    })
-    .end();
+      s3res.on('end', () => res.status(200).json(entity));
+    });
   })
   .catch(next);
 };
 
-
-exports.update = function (req, res) {
-  Note.findById(req.params.nid, function (err, note) {
-    if (err) { return res.status(500).send(err); }
+exports.update = function (req, res, next) {
+  Note.findById(req.params.nid)
+  .then((note) => {
     if (!note) { return res.status(404).send('Not Found'); }
 
     var uploadPath = url.parse(note.url).pathname;
-    s3.putFile(req.files.file.path, uploadPath, {
+
+    return s3.putFile(req.files.file.path, uploadPath, {
       'Content-Type': req.files.file.type,
       'x-amz-acl': 'public-read',
-    }, function (error) {
-      if (error) { return res.status(500).send(error); }
-
-      var uploadUrl = s3.url(uploadPath);
+    })
+    .then(() => {
+      var uploadUrl = s3.client.url(uploadPath);
       console.log('[S3]:PUT saved to %s', uploadUrl);
 
       note.videoId = req.query.videoId || note.videoId;
       note.playlistId = req.query.playlistId || note.playlistId;
       note.type = req.query.type || note.type;
 
-      note.save(function (error) {
-        if (error) { return res.status(500).send(error); }
-        return res.status(201).json(note);
-      });
+      return note.save();
     });
-  });
+  })
+  .then((note) => res.status(201).json(note))
+  .catch(next);
 };
-
-
 
 exports.destroy = (req, res, next) => {
   Note.findById(req.params.nid)
   .then((note) => {
     if (!note) { return res.status(404).send('Not Found'); }
-
     let uploadPath = url.parse(note.url).pathname;
-    s3.del(uploadPath).on('response', (response) => {
-      console.log('[S3]:DELETE', response.statusCode, response.headers);
-
-      note.remove()
-      .then(() => res.status(204).send())
-      .catch(next);
-    })
-    .end();
+    return s3.deleteFile(uploadPath)
+    .then((res) => {
+      console.log('[S3]:DELETE', res.statusCode, res.headers);
+      return note.remove();
+    });
   })
+  .then(() => res.status(204).send())
   .catch(next);
 };
 

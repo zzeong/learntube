@@ -8,7 +8,6 @@ var g = require('../../components/google-api');
 var router = express.Router();
 
 router.use('/', auth.getValidatedUser(), g.readyApi);
-router.use('/:pid/lectures', require('./lecture'));
 
 router.get('/', controller.index);
 router.post('/', controller.create);

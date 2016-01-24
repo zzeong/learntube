@@ -14,5 +14,6 @@ router.post('/', controller.create);
 router.delete('/', controller.destroy);
 
 router.get('/mine', controller.mine);
+router.get('/get-handout', controller.getHandout);
 
 module.exports = router;

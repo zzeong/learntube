@@ -14,7 +14,7 @@
     $scope.isEqual = _.isEqual;
     $scope.getCurrentUser = Auth.getCurrentUser;
     $scope.isLoggedIn = Auth.isLoggedIn;
-    $scope.getDownloadUrl = getDownloadUrl;
+    $scope.downloadHandout = downloadHandout;
     $scope.showToast = showToast;
     $scope.showUpNote = showUpNote;
     $scope.completeLecture = completeLecture;
@@ -162,8 +162,14 @@
       );
     }
 
-    function getDownloadUrl() {
-      return '/api/classes/' + $scope.playlistId + '/lectures/' + $scope.videoId + '/get-handout';
+    function downloadHandout() {
+      let paramsUrl = _($scope)
+      .pick(['playlistId', 'videoId'])
+      .map((val, key) => `${key}=${val}`)
+      .value()
+      .join('&');
+
+      return `/api/lectures/get-handout?${paramsUrl}`;
     }
 
     function showUpNote(note, activator) {

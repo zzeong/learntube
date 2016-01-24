@@ -1,7 +1,6 @@
 'use strict';
 
 require('should');
-var knox  = require('knox');
 var mongoose = require('mongoose');
 var url = require('url');
 var User = require('../../models/user.model');
@@ -9,15 +8,9 @@ var Note = require('../../models/note.model');
 var app = require('../../app');
 var auth = require('../../auth/auth.service');
 var request = require('supertest-as-promised').agent(app);
+var s3 = require('../../components/s3');
 
 mongoose.Promise = Promise;
-
-var s3 = knox.createClient({
-  key: process.env.AWS_ACCESSKEY_ID,
-  secret: process.env.AWS_SECRETKEY,
-  bucket: process.env.AWS_S3_BUCKET
-});
-
 
 describe('REST API:', function () {
   var users;
@@ -88,18 +81,13 @@ describe('REST API:', function () {
       .then(done.bind(null, null), done);
     });
 
-    after(function (done) {
+    after((done) => {
       Note.find({ userId: { $in: [users[0]._id, users[1]._id] }}).exec()
-      .then(function (notes) {
-        var items = notes.map(function (note) {
-          return url.parse(note.url).pathname;
-        });
-
-        s3.deleteMultiple(items, function (err) {
-          if (err) { return done(err); }
-          done();
-        });
+      .then((notes) => {
+        var items = notes.map((note) => url.parse(note.url).pathname);
+        return s3.deleteMultiple(items);
       })
+      .then(done.bind(null, null))
       .catch(done);
     });
 

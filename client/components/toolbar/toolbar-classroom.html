@@ -13,16 +13,17 @@
   <span flex></span>
 
   <div class="toolbar__done-div">
-    <md-button class="toolbar-icon toolbar__done-icon md-icon-button" aria-label="Complete lecture" ng-show="isLoggedIn()"
-    ng-disabled="haveLecture" ng-click="completeLecture()">
+    <md-button class="toolbar-icon toolbar__done-icon md-icon-button" aria-label="Complete lecture"
+    ng-show="isLoggedIn()" ng-disabled="haveLecture" ng-click="completeLecture()">
       <md-icon md-font-set="material-icons">done</md-icon>
     </md-button>
   </div>
 
   <div>
-    <md-button class="toolbar-icon toolbar-icon-right md-icon-button" target="_self" ng-href="{{ getDownloadUrl() }}"
+    <md-button class="toolbar-icon toolbar-icon-right md-icon-button" target="_blank" ng-href="{{ downloadHandout() }}"
     aria-label="Download handout" download>
       <md-icon md-font-set="material-icons">file_download</md-icon>
     </md-button>
   </div>
 </div>
+

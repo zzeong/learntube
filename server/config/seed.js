@@ -14,8 +14,6 @@ var Handout = require('../models/handout.model');
 var WatCtt = require('../models/watched-content.model');
 var Class = require('../models/class.model.js');
 var mongoose = require('mongoose');
-var aws = require('aws-sdk');
-var s3 = new aws.S3();
 
 mongoose.Promise = Promise;
 
@@ -201,23 +199,24 @@ var seedWatchedContent = function (users, classes) {
 };
 
 var seedHandout = function (users) {
-  var hashes = [
-    'd3e6cfa0eb57bab5c50a88a049b42930',
-    '8af01a82ad2ce86d8d0e16fbc40b069b'
-  ];
-
   return Handout.create([{
     _uploader: users[1]._id,
     playlistId: 'PLtEAazd2E1Vr5ycRfR2pRQSjqFlB9uSow',
-    lectures: [{
-      videoId: '7BafU1p_OKo',
-      fileName: 'handout.pdf',
-      url: s3.endpoint.href + process.env.AWS_S3_BUCKET + '/' + users[1].email + '/handouts/' + hashes[0],
-    }, {
-      videoId: '8rQGMW7nt4s',
-      fileName: 'handout.pdf',
-      url: s3.endpoint.href + process.env.AWS_S3_BUCKET + '/' + users[1].email + '/handouts/' + hashes[1],
-    }],
+    videoId: '7BafU1p_OKo',
+    fileName: 'handout.pdf',
+    s3Path: `/${users[1].email}/handouts/just.pdf`,
+  }, {
+    _uploader: users[1]._id,
+    playlistId: 'PLtEAazd2E1Vr5ycRfR2pRQSjqFlB9uSow',
+    videoId: 'iokDryA747s',
+    fileName: 'handout.txt',
+    s3Path: `/${users[1].email}/handouts/just.txt`,
+  }, {
+    _uploader: users[1]._id,
+    playlistId: 'PLtEAazd2E1Vr5ycRfR2pRQSjqFlB9uSow',
+    videoId: 'btk_iTh55_0',
+    fileName: 'handout.png',
+    s3Path: `/${users[1].email}/handouts/just.png`,
   }]);
 };
 

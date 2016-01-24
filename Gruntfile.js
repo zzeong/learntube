@@ -571,6 +571,7 @@ module.exports = function (grunt) {
         options: {
           reporter: 'spec',
           timeout: 15000,
+          require: [() => { require('dotenv').load(); }]
         },
         src: ['server/**/*.spec.js'],
       },
