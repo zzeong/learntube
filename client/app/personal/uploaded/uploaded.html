@@ -2,11 +2,11 @@
 ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-xs')">
 </md-sidenav>
 
-<md-button class="md-fab md-fab-bottom-right" aria-label="Add class" ng-click="showAddDialog($event)">
+<md-button class="md-fab md-fab-bottom-right" aria-label="Add class" ng-click="showAddDialog($event)" ng-disabled="!hasChannel">
   <md-icon md-font-set="material-icons">add</md-icon>
 </md-button>
 
-<div flex layout="column">
+<div flex="auto" layout="column">
   <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
   <div class="flex-scroll">
     <div class="main-content__inner">

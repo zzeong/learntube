@@ -31,7 +31,16 @@ function index(req, res, next) {
     return Promise.all(updateClasses);
   })
   .then((classes) => res.status(200).json(classes))
-  .catch(next);
+  .catch((err) => {
+    if (_.has(err, 'errors')) {
+      if (_.find(err.errors, { reason: 'channelNotFound' })) {
+        return res.status(404).json({ message: 'channelNotFound' });
+      } else {
+        return next(err);
+      }
+    }
+    next(err);
+  });
 
   function prefetchData(query) {
     let ytquery = queryFor(query, 'youtube');
