@@ -42,11 +42,13 @@ function validateJwtFromHeader(isStrict) {
 }
 
 function checkAndRefreshToken(req, res, next) {
+  console.log(`Auth] valid user: ${!!req.user}`);
   if (typeof req.user === 'undefined') { return next(); }
   let timegap = Math.floor(Date.now() / 1000) - req.user.iat;
 
   if (timegap > config.expirationSeconds) {
     let refreshedToken = signToken(req.user._id);
+    console.log('Auth] jwt is refreshed');
     res.set('Authorization', 'Bearer ' + refreshedToken);
   }
 

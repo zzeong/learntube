@@ -46,6 +46,8 @@ function execute(method, params) {
 }
 
 function readyApi(req, res, next) {
+  let tokenForLog = _.get(req, 'user.google.accessToken');
+  console.log(`Auth] current access_token: ${tokenForLog}`);
   auth = createAuth(req.user);
 
   if (_.has(auth, 'getAccessToken')) {
