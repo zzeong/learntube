@@ -52,9 +52,10 @@ function readyApi(req, res, next) {
     auth.getAccessToken((err, token) => {
       if (err) { next(err); }
 
-      let userToken = req.user.google.accessToken;
-      if (userToken !== token) {
-        userToken = token;
+      if (req.user.google.accessToken !== token) {
+        let google = req.user.toObject().google;
+        google.accessToken = token;
+        req.user.google = google;
         req.user.save()
         .then(next.bind(null, null));
       } else {
