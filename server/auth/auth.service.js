@@ -17,29 +17,17 @@ var validateJwtLoosely = expressJwt({
  */
 function isAuthenticated() {
   return compose()
-    // Validate jwt
     .use(validateJwtFromHeader(true))
-    // refresh token when over 1 hour
-    .use(function (req, res, next) {
-      var REFRESH_EXPIRATION_SECONDS = 60 * 60;
-      var timegap = Math.floor(Date.now() / 1000) - req.user.iat;
-
-      if (timegap > REFRESH_EXPIRATION_SECONDS) {
-        var refreshedToken = signToken(req.user._id);
-        res.set('Authorization', 'Bearer ' + refreshedToken);
-      }
-
-      next();
-    })
+    .use(checkAndRefreshToken)
     // Attach user to request
-    .use(function (req, res, next) {
-      User.findById(req.user._id, function (err, user) {
-        if (err) { return next(err); }
+    .use((req, res, next) => {
+      User.findById(req.user._id).exec()
+      .then((user) => {
         if (!user) { return res.status(401).send('Unauthorized'); }
-
         req.user = user;
         next();
-      });
+      })
+      .catch(next);
     });
 }
 
@@ -53,9 +41,22 @@ function validateJwtFromHeader(isStrict) {
   };
 }
 
+function checkAndRefreshToken(req, res, next) {
+  if (typeof req.user === 'undefined') { return next(); }
+  let timegap = Math.floor(Date.now() / 1000) - req.user.iat;
+
+  if (timegap > config.expirationSeconds) {
+    let refreshedToken = signToken(req.user._id);
+    res.set('Authorization', 'Bearer ' + refreshedToken);
+  }
+
+  next();
+}
+
 function getValidatedUser() {
   return compose()
   .use(validateJwtFromHeader(false))
+  .use(checkAndRefreshToken)
   .use((req, res, next) => {
     if (typeof req.user === 'undefined') { return next(); }
 

@@ -11,6 +11,7 @@ var all = {
   // Should we populate the DB with sample data?
   seedDB: false,
   seedWithOAuth: false,
+  expirationSeconds: 3600,
 
   // List of user roles
   userRoles: ['guest', 'user', 'admin'],
