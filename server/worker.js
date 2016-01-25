@@ -41,5 +41,5 @@ function updateViews(usr) {
   .then((all) => {
     console.log(`${user.email}'s all playlists was updated`);
   })
-  .catch(console.error);
+  .catch((err) => console.error(err.stack));
 }
