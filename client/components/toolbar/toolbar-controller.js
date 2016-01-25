@@ -4,7 +4,6 @@ angular.module('learntubeApp')
 .controller('ToolbarCtrl', function ($scope, $location, $state, $window, Auth, NavToggler, $filter, Category, ToolbarService) {
   $scope.logout = Auth.logout;
 
-
   // url에서 Toolbar title을 받아오자 (카테고리 이름)
   $scope.categoryTitle = _.find(Category.name, (name) => {
     return _.isEqual($filter('urlSafely')(name.orig), $state.params.ctname);
@@ -13,9 +12,14 @@ angular.module('learntubeApp')
   // pageWidth를 측정하여 툴바 모양 결정
   $scope.pageWidth = document.documentElement.clientWidth;
 
-  var classTitle = ToolbarService.getClassTitle();
+  $scope.classTitle = function () {
+    $scope.cTitle = ToolbarService.getClassTitle();
+    return $scope.cTitle;
+  };
 
   var getTitle = function () {
+    $scope.normalTitle = true;
+    $scope.contentListTitle = false;
     var title = _.has($state.current, 'data') ? $state.current.data.pageName : '';
     if ($scope.stateNameCheck('category-other') === true) {
       title = $scope.categoryTitle.orig;
@@ -24,7 +28,8 @@ angular.module('learntubeApp')
         title = $state.params.q;
       } else {title = 'search';}
     } else if ($scope.stateNameCheck('watched-lecture-list') === true || $scope.stateNameCheck('uploaded-lecture-list') === true) {
-      title = classTitle;
+      $scope.normalTitle = false;
+      $scope.contentListTitle = true;
     } else {
       title = title;
     }

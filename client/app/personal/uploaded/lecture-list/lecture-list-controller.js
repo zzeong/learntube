@@ -28,6 +28,7 @@
       $scope.class = res.data[0];
       $scope.desc.html = newlineToBr($scope.class.description);
       $scope.desc.editing = $scope.class.description;
+      $scope.listTitle = $scope.class.title;
     })
     .catch(console.error);
 

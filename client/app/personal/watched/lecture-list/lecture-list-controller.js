@@ -27,6 +27,8 @@
       let q = _.pick($scope, 'playlistId');
       $scope.lectures = res.data;
 
+      $scope.listTitle = $scope.lectures[0].title;
+
       let fetchWatCtt = WatchedContent.query(q).$promise
       .then((res) => {
         let obj = _.keyBy(_.first(res).lectures, 'videoId');

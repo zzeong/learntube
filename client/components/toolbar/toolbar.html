@@ -13,7 +13,8 @@
   <!-- PAGE TITLE -->
   <div class="page-title ellipsis-1">
     <h2>
-      <span>{{ title }}</span>
+      <span ng-show="normalTitle">{{ title }}</span>
+      <span ng-show="contentListTitle">{{ listTitle }}</span>
     </h2>
   </div>
 
@@ -97,7 +98,7 @@
 
 
 
-<!-- mobile search toolbar -->
+<!-- mobile전용 search toolbar -->
 <div ng-show="searchAtMobile" class="md-toolbar-tools toolbar--onsearch">
 
   <!-- backward icon -->
