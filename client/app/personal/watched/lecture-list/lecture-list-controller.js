@@ -20,14 +20,20 @@
       }]
     };
 
+    $http.get('/api/classes', {
+      params: { playlistId: $scope.playlistId },
+    }).
+    then((res) => {
+      $scope.listTitle = res.data[0].title;
+    })
+    .catch(console.error);
+
     $http.get('/api/lectures', {
       params: _.pick($scope, 'playlistId')
     })
     .then((res) => {
       let q = _.pick($scope, 'playlistId');
       $scope.lectures = res.data;
-
-      $scope.listTitle = $scope.lectures[0].title;
 
       let fetchWatCtt = WatchedContent.query(q).$promise
       .then((res) => {
