@@ -4,10 +4,9 @@
   angular.module('learntubeApp')
   .controller('WatchedContentsCtrl', WatchedContentsCtrl);
 
-  function WatchedContentsCtrl($scope, $http, WatchedContent, $state, $mdDialog, ToolbarService) {
+  function WatchedContentsCtrl($scope, $http, WatchedContent, $state, $mdDialog) {
     $scope.href = $state.href;
     $scope.showConfirmDialog = showConfirmDialog;
-    $scope.passToToolbar = passToToolbar;
     $scope.contents = null;
 
     WatchedContent.query().$promise
@@ -42,9 +41,6 @@
       ev.preventDefault();
     }
 
-    function passToToolbar(content) {
-      ToolbarService.setClassTitle(content._class);
-    }
   }
 
   WatchedContentsCtrl.$inject = [
@@ -52,7 +48,6 @@
     '$http',
     'WatchedContent',
     '$state',
-    '$mdDialog',
-    'ToolbarService'
+    '$mdDialog'
   ];
 })();
