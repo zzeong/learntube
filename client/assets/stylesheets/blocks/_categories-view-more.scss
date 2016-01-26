@@ -1,29 +1,23 @@
 .categories-view-more {
   text-align: center;
+  @include respond-to('small') { text-align: right; }
+}
+
+.categories-view-more__button {
+  display: inline-block;
+  width: 100%;
+  min-height: 50px;
+  margin: 0;
+  background: $white;
+  line-height: 50px;
 
   @include respond-to('small') {
-    text-align: right;
+    right: 8px;
+    bottom: 10px;
+    width: auto;
+    min-height: 36px;
+    background: none;
+    line-height: 36px;
   }
-
-
-  .md-button {
-    display: inline-block;
-    width: 100%;
-    min-height: 50px;
-    margin: 0;
-    background: $white;
-    color: $view-more-btn;
-    line-height: 50px;
-
-    @include respond-to('small') {
-      right: 8px;
-      bottom: 10px;
-      width: auto;
-      min-height: 36px;
-      background: none;
-      line-height: 36px;
-    }
-
-  }
-
 }
+

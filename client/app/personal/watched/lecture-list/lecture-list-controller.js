@@ -4,13 +4,17 @@
   angular.module('learntubeApp')
   .controller('WatchedLectureListCtrl', WatchedLectureListCtrl);
 
-  function WatchedLectureListCtrl($scope, Auth, $state, $http, WatchedContent, Note, $filter, NavToggler) {
+  function WatchedLectureListCtrl($scope, Auth, $state, $http, WatchedContent, Note, $filter, NavToggler, LoadMore) {
     $scope.playlistId = $state.params.pid;
     $scope.href = $state.href;
     $scope.tickFormat = tickFormat;
     $scope.showNote = showNote;
     $scope.isSelected = isSelected;
     $scope.lectures = [];
+    $scope.fetchLectures = fetchLectures;
+    $scope.objByVideoId = {};
+    $scope.pageToken = null;
+
     $scope.chart = {
       data: [],
       x: { id: 'x' },
@@ -21,10 +25,15 @@
       }]
     };
 
+    $scope.reqLectures = LoadMore.createRequest('/api/lectures', (data) => {
+      let p = _.pick($scope, 'playlistId');
+      return _.has(data, 'nextPageToken') ? _.set(p, 'pageToken', data.nextPageToken) : p;
+    });
+
     $http.get('/api/classes', {
       params: { playlistId: $scope.playlistId },
-    }).
-    then((res) => {
+    })
+    .then((res) => {
       $scope.listTitle = res.data[0].title;
     })
     .catch(console.error);
@@ -34,11 +43,13 @@
     })
     .then((res) => {
       let q = _.pick($scope, 'playlistId');
-      $scope.lectures = $scope.lectures.concat(res.data);
+      $scope.lectures = $scope.lectures.concat(res.data.items);
+      $scope.existNextLectures = _.has(res.data, 'nextPageToken');
+      $scope.pageToken = $scope.existNextLectures ? res.data.nextPageToken : $scope.pageToken;
 
       let fetchWatCtt = WatchedContent.query(q).$promise
       .then((res) => {
-        let obj = _.keyBy(_.first(res).lectures, 'videoId');
+        let obj = $scope.objByVideoId.watCtt = _.keyBy(_.first(res).lectures, 'videoId');
         $scope.lectures = $scope.lectures.map((lecture) => {
           lecture.watched = _.has(obj, lecture.videoId) ? _.get(obj, lecture.videoId) : null;
           return lecture;
@@ -47,7 +58,7 @@
 
       let fetchNote = Note.query(q).$promise
       .then((res) => {
-        let obj = _.groupBy(res, 'videoId');
+        let obj = $scope.objByVideoId.note = _.groupBy(res, 'videoId');
         $scope.lectures = $scope.lectures.map((lecture) => {
           lecture.notes = _.has(obj, lecture.videoId) ? _.get(obj, lecture.videoId) : null;
           return lecture;
@@ -135,7 +146,26 @@
     function isSelected(lecture) {
       return $scope.selectedLecture === lecture;
     }
+
+    function fetchLectures(req) {
+      return req({ params: _.pick($scope, 'pageToken')})
+      .then((res) => {
+        $scope.lectures = $scope.lectures.concat(res.data.items)
+        .map((lecture) => {
+          lecture.watched = _.has($scope.objByVideoId.watCtt, lecture.videoId) ?
+            _.get($scope.objByVideoId.watCtt, lecture.videoId) : null;
+          lecture.notes = _.has($scope.objByVideoId.note, lecture.videoId) ?
+            _.get($scope.objByVideoId.note, lecture.videoId) : null;
+          return lecture;
+        });
+
+        $scope.existNextLectures = _.has(res.data, 'nextPageToken');
+        $scope.pageToken = $scope.existNextLectures ? res.data.nextPageToken : $scope.pageToken;
+      })
+      .then(() => $scope.chart.data = transformToChart($scope.lectures))
+      .catch((err) => console.error(err));
+    }
   }
 
-  WatchedLectureListCtrl.$inject = ['$scope', 'Auth', '$state', '$http', 'WatchedContent', 'Note', '$filter', 'NavToggler'];
+  WatchedLectureListCtrl.$inject = ['$scope', 'Auth', '$state', '$http', 'WatchedContent', 'Note', '$filter', 'NavToggler', 'LoadMore'];
 })(angular);

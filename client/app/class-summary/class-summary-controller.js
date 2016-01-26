@@ -4,7 +4,7 @@
   angular.module('learntubeApp')
   .controller('ClassSummaryCtrl', ClassSummaryCtrl);
 
-  function ClassSummaryCtrl($scope, $http, $state, WatchedContent, Auth, $filter, $mdToast) {
+  function ClassSummaryCtrl($scope, $http, $state, WatchedContent, Auth, $filter, $mdToast, LoadMore) {
     $scope.isLoggedIn = Auth.isLoggedIn;
     $scope.playlistId = $state.params.pid;
     $scope.haveClass = false;
@@ -12,6 +12,14 @@
     $scope.addClass = addClass;
     $scope.showToast = showToast;
     $scope.lectures = [];
+    $scope.fetchLectures = fetchLectures;
+
+    $scope.reqLectures = LoadMore.createRequest('/api/lectures', (data) => {
+      let p = _.pick($scope, 'playlistId');
+      return _.has(data, 'nextPageToken') ? _.set(p, 'pageToken', data.nextPageToken) : p;
+    });
+
+    $scope.fetchLectures($scope.reqLectures);
 
     // 재생목록에 대한 정보 받아오기 (title, channelTitle, description)
     $http.get('/api/classes', {
@@ -41,12 +49,6 @@
       .catch(console.error);
     }
 
-    $http.get('/api/lectures', {
-      params: { playlistId: $scope.playlistId }
-    })
-    .then((res) => $scope.lectures = $scope.lectures.concat(res.data))
-    .catch(console.error);
-
     function addClass() {
       WatchedContent.create({
         playlistId: $scope.playlistId
@@ -73,6 +75,15 @@
       .map((p) => `<p>${p}</p>`)
       .join('');
     }
+
+    function fetchLectures(req) {
+      return req()
+      .then((res) => {
+        $scope.lectures = $scope.lectures.concat(res.data.items);
+        $scope.existNextLectures = _.has(res.data, 'nextPageToken');
+      })
+      .catch((err) => console.error(err));
+    }
   }
 
   ClassSummaryCtrl.$inject = [
@@ -82,6 +93,7 @@
     'WatchedContent',
     'Auth',
     '$filter',
-    '$mdToast'
+    '$mdToast',
+    'LoadMore'
   ];
 })();

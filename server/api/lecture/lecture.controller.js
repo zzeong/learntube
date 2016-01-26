@@ -18,9 +18,11 @@ let playlistItems = {
 function index(req, res, next) {
   let base = { part: 'id,snippet,status' };
   playlistItems.list(_.assign(base, req.query))
-  .then((res) => fetchExtras(res.items))
-  .then((lectures) => Promise.all(lectures.map(formEntity).map(addPropsAsync)))
-  .then((lectures) => res.status(200).json(lectures))
+  .then((ytres) => {
+    return fetchExtras(ytres.items)
+    .then((lectures) => Promise.all(lectures.map(formEntity).map(addPropsAsync)))
+    .then((lectures) => res.status(200).json(getIndexEntity(ytres, lectures)));
+  })
   .catch(next);
 }
 
@@ -155,5 +157,11 @@ function addPropsAsync(lecture) {
     lecture.hasHandout = _.isNull(handout) ? false : true;
     return lecture;
   });
+}
+
+function getIndexEntity(res, items) {
+  let entity = { items };
+  if (_.has(res, 'nextPageToken')) { entity.nextPageToken = res.nextPageToken; }
+  return entity;
 }
 

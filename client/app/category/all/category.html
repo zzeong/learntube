@@ -29,10 +29,11 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
             </a>
           </li>
           <div class="categories-view-more">
-            <md-button ng-href="{{ href('category-other', { ctname: getSafeUrl(category[0].categorySlug) }) }}">View more</md-button>
+            <md-button class="categories-view-more__button md-accent" ng-href="{{ href('category-other', { ctname: getSafeUrl(category[0].categorySlug) }) }}">View more</md-button>
           </div>
         </ul>
       </div>
     </div>
   </div>
 </div>
+

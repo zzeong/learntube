@@ -35,8 +35,7 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
               <li ng-repeat="lecture in lectures | onlyPublic | onlyProcessed">
                 <ion-item on-long-press="makeDeleteListMobile(lecture)" on-touch-end="itemOnTouchEnd()">
                   <a class="anchor-mask" ng-href="{{ href('lecture-info', { pid: playlistId, vid: lecture.videoId }) }}">
-                    <lt-listcard ng-class="{ 'uploaded-lecturelist--selected': lecture.selected }"
-                    lt-responsive-morph="false">
+                    <lt-listcard ng-class="{ 'uploaded-lecturelist--selected': lecture.selected }" lt-responsive-morph="false">
                       <lt-listcard-media>
                         <div class="video-thumb">
                           <img ng-src="{{ lecture.thumbnailUrl }}" alt="Lecture thumbnail">
@@ -51,14 +50,19 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
                       </lt-listcard-content>
 
                       <lt-listcard-actions hide-xs>
-                        <md-checkbox class="lecturelist__second-action--centered"
-                        ng-click="toggle(lecture, willBeDeleted, $event)"
+                        <md-checkbox class="lecturelist__second-action--centered" ng-click="toggle(lecture, willBeDeleted, $event)"
                         aria-label="Select lecture"></md-checkbox>
                       </lt-listcard-actions>
                     </lt-listcard>
                   </a>
                 </ion-item>
               </li>
+              <div class="load-more-lectures" layout="column" layout-align="start stretch">
+                <md-button class="load-more-lectures__button md-accent" ng-click="fetchLectures(reqLectures)"
+                ng-show="existNextLectures">
+                  Load more
+                </md-button>
+              </div>
             </ul>
           </md-whiteframe>
         </div>
@@ -66,3 +70,4 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
     </div>
   </div>
 </div>
+

@@ -79,6 +79,12 @@
               </lt-listcard>
             </a>
           </li>
+          <div class="load-more-lectures" layout="column" layout-align="start stretch">
+            <md-button class="load-more-lectures__button md-accent" ng-click="fetchLectures(reqLectures)"
+            ng-show="existNextLectures">
+              Load more
+            </md-button>
+          </div>
         </ul>
       </md-tab-body>
     </md-tab>
@@ -128,3 +134,4 @@
     </md-tab>
   </md-tabs>
 </md-content>
+

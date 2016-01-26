@@ -4,7 +4,7 @@
   angular.module('learntubeApp')
   .controller('ClassroomCtrl', ClassroomCtrl);
 
-  function ClassroomCtrl($scope, $state, $http, Auth, Note, Upload, $mdToast, WatchedContent, $timeout) {
+  function ClassroomCtrl($scope, $state, $http, Auth, Note, Upload, $mdToast, WatchedContent, $timeout, LoadMore) {
     $scope.videoId = $state.params.vid;
     $scope.playlistId = $state.params.pid;
     $scope.cid = null;
@@ -26,6 +26,7 @@
     $scope.getUserImgPath = getUserImgPath;
     $scope.myNotes = null;
     $scope.goBackward = goBackward;
+    $scope.fetchLectures = fetchLectures;
     $scope.lectures = [];
 
     $scope.fab = {
@@ -85,16 +86,23 @@
       },
     };
 
+    $scope.reqLectures = LoadMore.createRequest('/api/lectures', (data) => {
+      let p = _.pick($scope, 'playlistId');
+      return _.has(data, 'nextPageToken') ? _.set(p, 'pageToken', data.nextPageToken) : p;
+    });
+
     Note.setIds({
       videoId: $scope.videoId,
       playlistId: $scope.playlistId,
     });
 
+    $scope.fetchLectures($scope.reqLectures);
+
     $http.get('/api/lectures', {
       params: _.pick($scope, ['playlistId', 'videoId'])
     })
     .then((res) => {
-      let video = res.data[0];
+      let video = _.head(res.data.items);
       video.descriprtion = compileToHTML(video.description);
       $scope.video = video;
     })
@@ -132,13 +140,6 @@
       })
       .catch((err) => console.error(err.data));
     }
-
-    $http.get('/api/lectures', {
-      params: { playlistId: $scope.playlistId }
-    })
-    .then((res) => $scope.lectures = $scope.lectures.concat(res.data))
-    .catch(console.error);
-
 
     function addCompletedLecture(params) {
       if (_.isNull($scope.cid)) {
@@ -249,6 +250,14 @@
       window.history.back();
     }
 
+    function fetchLectures(req) {
+      return req()
+      .then((res) => {
+        $scope.lectures = $scope.lectures.concat(res.data.items);
+        $scope.existNextLectures = _.has(res.data, 'nextPageToken');
+      })
+      .catch((err) => console.error(err));
+    }
   }
 
   ClassroomCtrl.$inject = [
@@ -260,7 +269,8 @@
     'Upload',
     '$mdToast',
     'WatchedContent',
-    '$timeout'
+    '$timeout',
+    'LoadMore'
   ];
 
 })(angular);

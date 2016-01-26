@@ -4,7 +4,7 @@
   angular.module('learntubeApp')
   .controller('UploadedLectureListCtrl', UploadedLectureListCtrl);
 
-  function UploadedLectureListCtrl($scope, $state, Auth, $http, $mdDialog, $mdToast) {
+  function UploadedLectureListCtrl($scope, $state, Auth, $http, $mdDialog, $mdToast, LoadMore) {
     $scope.href = $state.href;
     $scope.playlistId = $state.params.pid;
     $scope.deleteLectures = deleteLectures;
@@ -19,8 +19,16 @@
     $scope.willBeDeleted = [];
     $scope.lectures = [];
     $scope.deleteToolbarState = ($scope.willBeDeleted.length > 0) ? true : false;
+    $scope.fetchLectures = fetchLectures;
+
+    $scope.reqLectures = LoadMore.createRequest('/api/lectures', (data) => {
+      let p = _.pick($scope, 'playlistId');
+      return _.has(data, 'nextPageToken') ? _.set(p, 'pageToken', data.nextPageToken) : p;
+    });
 
     var scope = $scope;
+
+    $scope.fetchLectures($scope.reqLectures);
 
     $http.get('/api/classes', {
       params: { playlistId: $scope.playlistId },
@@ -32,18 +40,6 @@
       $scope.listTitle = $scope.class.title;
     })
     .catch(console.error);
-
-    $http.get('/api/lectures', {
-      params: _.pick($scope, 'playlistId')
-    })
-    .then((res) => {
-      $scope.lectures = $scope.lectures.concat(res.data);
-
-      // lectures에 강의 삭제시 필요한 selected속성 부여
-      for (var lecIdx in $scope.lectures) {
-        $scope.lectures[lecIdx].selected = false;
-      }
-    });
 
     function haveUploadedFile(lecture) {
       return 'file' in lecture;
@@ -161,6 +157,20 @@
       .catch(console.error);
     }
 
+    function fetchLectures(req) {
+      return req()
+      .then((res) => {
+        $scope.lectures = $scope.lectures.concat(res.data.items);
+        $scope.existNextLectures = _.has(res.data, 'nextPageToken');
+
+        // lectures에 강의 삭제시 필요한 selected속성 부여
+        for (var lecIdx in $scope.lectures) {
+          $scope.lectures[lecIdx].selected = false;
+        }
+      })
+      .catch((err) => console.error(err));
+    }
+
     $scope.toggle = function (lecture, list, ev) {
       var idx = list.indexOf(lecture);
       if (idx > -1) {
@@ -206,8 +216,7 @@
       $scope.willBeDeleted = [];
       $scope.deleteToolbarState = false;
     };
-
   }
 
-  UploadedLectureListCtrl.$inject = ['$scope', '$state', 'Auth', '$http', '$mdDialog', '$mdToast'];
+  UploadedLectureListCtrl.$inject = ['$scope', '$state', 'Auth', '$http', '$mdDialog', '$mdToast', 'LoadMore'];
 })(angular);

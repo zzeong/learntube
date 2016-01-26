@@ -62,6 +62,12 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
                     </lt-listcard>
                   </a>
                 </li>
+                <div class="load-more-lectures" layout="column" layout-align="start stretch">
+                  <md-button class="load-more-lectures__button md-accent" ng-click="fetchLectures(reqLectures)"
+                  ng-show="existNextLectures">
+                    Load more
+                  </md-button>
+                </div>
               </ul>
             </md-whiteframe>
           </div>
