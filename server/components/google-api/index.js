@@ -46,9 +46,6 @@ function execute(method, params) {
 }
 
 function readyApi(req, res, next) {
-  let tokenForLog = _.get(req, 'user.google.accessToken');
-  console.log(`Auth] current access_token: ${tokenForLog}`);
-
   createAuthAsync(req.user)
   .then((created) => {
     auth = created;
@@ -71,32 +68,39 @@ function createAuthAsync(user) {
 
     oauth2Client.setCredentials({
       access_token: user.google.accessToken,
-      refresh_token: user.google.refreshToken,
+      refresh_token: user.google.refreshToken
     });
 
-    oauth2Client.getAccessToken((err, token) => {
-      if (err) { reject(err); }
+    if (isAccessTokenExpired(user.google.expiryTime)) {
+      oauth2Client.refreshAccessToken((err, tokens, res) => {
+        console.log('Auth] access_token is refreshed');
 
-      if (user.google.accessToken !== token) {
         let google = user.toObject().google;
-        google.accessToken = token;
+        google.accessToken = tokens.access_token;
+        google.expiryTime = res.body.expiry_date;
         user.google = google;
 
         user.save()
         .then((u) => {
-          console.log(`Auth] refreshed access_token: ${u.google.accessToken}`);
+          console.log('Auth] refresh access_token is saved to user');
           resolve(oauth2Client);
-        });
-      } else {
-        resolve(oauth2Client);
-      }
-    });
+        })
+        .catch(reject);
+      });
+    } else {
+      resolve(oauth2Client);
+    }
   });
 }
 
 function bindAuthAsync(user) {
   return createAuthAsync(user)
   .then((created) => auth = created);
+}
+
+function isAccessTokenExpired(expiryTime) {
+  const TIME_OFFSET = 5000;
+  return expiryTime - TIME_OFFSET <= Date.now();
 }
 
 exports.youtube = execute;

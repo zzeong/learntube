@@ -7,7 +7,7 @@ exports.setup = function (User, config) {
     clientID: process.env.GOOGLE_ID,
     clientSecret: process.env.GOOGLE_SECRET,
     callbackURL: process.env.GOOGLE_CALLBACK_URL
-  }, (accessToken, refreshToken, profile, done) => {
+  }, (accessToken, refreshToken, params, profile, done) => {
     User.findOne({ 'google.id': profile.id }, (err, user) => {
       if (err) { return done(err); }
 
@@ -16,6 +16,7 @@ exports.setup = function (User, config) {
         var google = u.toObject().google;
         google.accessToken = accessToken;
         google.refreshToken = google.refreshToken || refreshToken;
+        google.expiryTime = Date.now() + (params.expires_in * 1000);
         u.google = google;
         return u.save();
       })

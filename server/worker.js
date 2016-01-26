@@ -6,6 +6,7 @@ const g = require('./components/google-api');
 const cfg = require('./config/environment');
 const scraper = require('./components/scraper');
 const stealth = require('./components/stealth');
+const User = require('./models/user.model');
 
 stealth
 .addPorter('db', `mongodb://${process.env.MONGO_IP}/${process.env.MONGO_DBNAME}`, cfg.mongo.options)
@@ -32,7 +33,8 @@ function updateViews(usr) {
     mine: true,
   };
 
-  g.bindAuthAsync(user)
+  User.findById(user._id).exec()
+  .then(g.bindAuthAsync)
   .then(() => g.youtube('playlists.list', params))
   .then((res) => {
     let fetchPlaylistsViews = res.items.map((p) => scraper.updateClassModel(p));
