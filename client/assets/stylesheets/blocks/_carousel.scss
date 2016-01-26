@@ -4,8 +4,14 @@
 }
 
 .carousel__card {
-  width: 230px;
+  $w: 230px;
+  width: $w;
   margin: 8px auto;
+
+  img {
+    width: $w;
+    height: $w * 9 / 16;
+  }
 }
 
 .carousel__info {
