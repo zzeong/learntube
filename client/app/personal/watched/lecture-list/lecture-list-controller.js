@@ -10,6 +10,7 @@
     $scope.tickFormat = tickFormat;
     $scope.showNote = showNote;
     $scope.isSelected = isSelected;
+    $scope.lectures = [];
     $scope.chart = {
       data: [],
       x: { id: 'x' },
@@ -33,7 +34,7 @@
     })
     .then((res) => {
       let q = _.pick($scope, 'playlistId');
-      $scope.lectures = res.data;
+      $scope.lectures = $scope.lectures.concat(res.data);
 
       let fetchWatCtt = WatchedContent.query(q).$promise
       .then((res) => {

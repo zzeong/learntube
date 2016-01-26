@@ -11,6 +11,7 @@
     $scope.href = $state.href;
     $scope.addClass = addClass;
     $scope.showToast = showToast;
+    $scope.lectures = [];
 
     // 재생목록에 대한 정보 받아오기 (title, channelTitle, description)
     $http.get('/api/classes', {
@@ -43,7 +44,7 @@
     $http.get('/api/lectures', {
       params: { playlistId: $scope.playlistId }
     })
-    .then((res) => $scope.lectures = res.data)
+    .then((res) => $scope.lectures = $scope.lectures.concat(res.data))
     .catch(console.error);
 
     function addClass() {

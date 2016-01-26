@@ -7,14 +7,14 @@
   function WatchedContentsCtrl($scope, $http, WatchedContent, $state, $mdDialog) {
     $scope.href = $state.href;
     $scope.showConfirmDialog = showConfirmDialog;
-    $scope.contents = null;
+    $scope.contents = [];
 
     WatchedContent.query().$promise
     .then((res) => {
-      $scope.contents = res.map((ctt) => {
+      $scope.contents = $scope.contents.concat(res.map((ctt) => {
         ctt.watchingRatio = ctt.lectures.length / ctt._class.videoCount;
         return ctt;
-      });
+      }));
     })
     .catch(console.error);
 

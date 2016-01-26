@@ -10,12 +10,13 @@
     $scope.showDeleteDialog = showDeleteDialog;
     $scope.deleteClass = deleteClass;
     $scope.hasChannel = true;
+    $scope.classes = [];
 
     $http.get('/api/classes', {
       params: { mine: true },
     })
     .then((res) => {
-      $scope.classes = res.data;
+      $scope.classes = $scope.classes.concat(res.data);
     })
     .catch((err) => {
       if (_.has(err.data, 'message') && _.isEqual(err.data.message, 'channelNotFound')) {

@@ -6,7 +6,7 @@ angular.module('learntubeApp')
     if (typeof items === 'undefined') { return items; }
 
     return items.filter(function (item) {
-      return item.status.privacyStatus === 'public';
+      return _.get(item, 'status.privacyStatus') === 'public';
     });
   };
 })
@@ -15,7 +15,7 @@ angular.module('learntubeApp')
     if (typeof items === 'undefined') { return items; }
 
     return items.filter(function (item) {
-      return item.status.uploadStatus === 'processed';
+      return _.get(item, 'status.uploadStatus') === 'processed';
     });
   };
 })

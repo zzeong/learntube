@@ -17,6 +17,7 @@
     $scope.updateDesc = updateDesc;
     $scope.desc = {};
     $scope.willBeDeleted = [];
+    $scope.lectures = [];
     $scope.deleteToolbarState = ($scope.willBeDeleted.length > 0) ? true : false;
 
     var scope = $scope;
@@ -36,7 +37,7 @@
       params: _.pick($scope, 'playlistId')
     })
     .then((res) => {
-      $scope.lectures = res.data;
+      $scope.lectures = $scope.lectures.concat(res.data);
 
       // lectures에 강의 삭제시 필요한 selected속성 부여
       for (var lecIdx in $scope.lectures) {

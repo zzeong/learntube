@@ -26,6 +26,7 @@
     $scope.getUserImgPath = getUserImgPath;
     $scope.myNotes = null;
     $scope.goBackward = goBackward;
+    $scope.lectures = [];
 
     $scope.fab = {
       DURATION: 200,
@@ -135,7 +136,7 @@
     $http.get('/api/lectures', {
       params: { playlistId: $scope.playlistId }
     })
-    .then((res) => $scope.lectures = res.data)
+    .then((res) => $scope.lectures = $scope.lectures.concat(res.data))
     .catch(console.error);
 
 
