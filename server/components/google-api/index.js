@@ -48,50 +48,57 @@ function execute(method, params) {
 function readyApi(req, res, next) {
   let tokenForLog = _.get(req, 'user.google.accessToken');
   console.log(`Auth] current access_token: ${tokenForLog}`);
-  auth = createAuth(req.user);
 
-  if (_.has(auth, 'getAccessToken')) {
-    auth.getAccessToken((err, token) => {
-      if (err) { next(err); }
+  createAuthAsync(req.user)
+  .then((created) => {
+    auth = created;
+    next();
+  })
+  .catch(next);
+}
 
-      if (req.user.google.accessToken !== token) {
-        let google = req.user.toObject().google;
+function createAuthAsync(user) {
+  return new Promise((resolve, reject) => {
+    if (_.isUndefined(user)) {
+      return resolve(process.env.GOOGLE_SERVERKEY);
+    }
+
+    let oauth2Client = new google.auth.OAuth2(
+      process.env.GOOGLE_ID,
+      process.env.GOOGLE_SECRET,
+      process.env.GOOGLE_CALLBACK_URL
+    );
+
+    oauth2Client.setCredentials({
+      access_token: user.google.accessToken,
+      refresh_token: user.google.refreshToken,
+    });
+
+    oauth2Client.getAccessToken((err, token) => {
+      if (err) { reject(err); }
+
+      if (user.google.accessToken !== token) {
+        let google = user.toObject().google;
         google.accessToken = token;
-        req.user.google = google;
-        req.user.save()
-        .then(next.bind(null, null));
+        user.google = google;
+
+        user.save()
+        .then((u) => {
+          console.log(`Auth] refreshed access_token: ${u.google.accessToken}`);
+          resolve(oauth2Client);
+        });
       } else {
-        next();
+        resolve(oauth2Client);
       }
     });
-  } else {
-    next();
-  }
-}
-
-function createAuth(user) {
-  if (_.isUndefined(user)) {
-    return process.env.GOOGLE_SERVERKEY;
-  }
-
-  let oauth2Client = new google.auth.OAuth2(
-    process.env.GOOGLE_ID,
-    process.env.GOOGLE_SECRET,
-    process.env.GOOGLE_CALLBACK_URL
-  );
-
-  oauth2Client.setCredentials({
-    access_token: user.google.accessToken,
-    refresh_token: user.google.refreshToken,
   });
-
-  return oauth2Client;
 }
 
-function bindAuth(user) {
-  auth = createAuth(user);
+function bindAuthAsync(user) {
+  return createAuthAsync(user)
+  .then((created) => auth = created);
 }
 
 exports.youtube = execute;
 exports.readyApi = readyApi;
-exports.bindAuth = bindAuth;
+exports.bindAuthAsync = bindAuthAsync;

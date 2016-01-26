@@ -32,8 +32,8 @@ function updateViews(usr) {
     mine: true,
   };
 
-  g.bindAuth(user);
-  g.youtube('playlists.list', params)
+  g.bindAuthAsync(user)
+  .then(() => g.youtube('playlists.list', params))
   .then((res) => {
     let fetchPlaylistsViews = res.items.map((p) => scraper.updateClassModel(p));
     return Promise.all(fetchPlaylistsViews);
