@@ -116,16 +116,20 @@
       .catch(console.error);
 
       Note.query({ videoId: $scope.videoId }).$promise
-      .then(function (notes) {
+      .then((notes) => {
         $scope.myNotes = notes.map((note) => keepConstantNote(note));
-        let editorNotes = notes.filter((note) => _.isEqual(note.type, 'editor'));
-        editorNotes.forEach((note) => {
-          Note.getContents({ nid: note._id }).$promise
-          .then((res) => { note.contents = res.contents; })
-          .catch(console.error);
-        });
+
+        let editorNotes = notes.filter(_.matches({ type: 'editor' }))
+        .sort((a, b) => Date.parse(a.created) < Date.parse(b.created));
+
+        return editorNotes.reduce((promise, note) => {
+          return promise.then(() => {
+            return Note.getContents({ nid: note._id }).$promise
+            .then((res) => note.contents = res.contents);
+          });
+        }, Promise.resolve());
       })
-      .catch(console.error);
+      .catch((err) => console.error(err.data));
     }
 
     $http.get('/api/lectures', {

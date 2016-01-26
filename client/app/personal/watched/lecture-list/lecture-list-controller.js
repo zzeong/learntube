@@ -46,9 +46,9 @@
 
       let fetchNote = Note.query(q).$promise
       .then((res) => {
-        let obj = _.keyBy(res, 'videoId');
+        let obj = _.groupBy(res, 'videoId');
         $scope.lectures = $scope.lectures.map((lecture) => {
-          lecture.note = _.has(obj, lecture.videoId) ? _.get(obj, lecture.videoId) : null;
+          lecture.notes = _.has(obj, lecture.videoId) ? _.get(obj, lecture.videoId) : null;
           return lecture;
         });
       });
@@ -65,10 +65,16 @@
         let date = _.has(el.watched, 'completedAt') ? el.watched.completedAt : null;
         return y4m2d2Format(date);
       });
-      let groupedByNote = _.groupBy(list, (el) => {
-        let date = _.has(el.note, 'created') ? el.note.created : null;
+
+      let groupedByNote = _(list)
+      .map(_.property('notes'))
+      .compact()
+      .flatten()
+      .groupBy((el) => {
+        let date = _.has(el, 'created') ? el.created : null;
         return y4m2d2Format(date);
-      });
+      })
+      .value();
 
       return v11nData.map((datum) => {
         let watchedArrInDay = groupedByWatched[y4m2d2Format(datum.x)] || [];
@@ -109,17 +115,19 @@
     function showNote(lecture, ev) {
       $scope.selectedLecture = lecture;
 
-      if (lecture.note.type === 'editor') {
-        Note.getContents({ nid: lecture.note._id }).$promise
-        .then((res) => {
-          lecture.note.contents = res.contents;
-          NavToggler.right();
-        })
-        .catch(console.error);
-      } else {
-        NavToggler.right();
-      }
+      let notes = lecture.notes
+      .filter(_.matches({ type: 'editor' }))
+      .sort((a, b) => Date.parse(a.created) < Date.parse(b.created));
 
+      notes.reduce((promise, note) => {
+        return promise.then(() => {
+          return Note.getContents({ nid: note._id }).$promise
+          .then((res) => note.contents = res.contents);
+        });
+      }, Promise.resolve())
+      .catch((err) => console.error(err.data));
+
+      NavToggler.right();
       ev.preventDefault();
     }
 

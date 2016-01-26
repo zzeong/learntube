@@ -6,11 +6,13 @@
     <header class="frame-padding">
       <h2 class="md-title">Note</h2>
       <p class="md-caption ellipsis-1">{{ selectedLecture.channelTitle }} - {{ selectedLecture.title }}</p>
-      <span class="frame-caption md-caption" am-time-ago="selectedLecture.note.created"></span>
     </header>
     <md-divider></md-divider>
-    <div class="frame-padding">
-      <lt-note-viewer lt-note="selectedLecture.note"></lt-note-viewer>
+    <div class="frame-padding" ng-repeat="note in selectedLecture.notes | orderBy: '-created'">
+      <div>
+        <p class="md-caption" am-time-ago="note.created"></p>
+        <lt-note-viewer lt-note="note"></lt-note-viewer>
+      </div>
     </div>
   </div>
 </div>
