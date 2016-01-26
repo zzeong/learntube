@@ -48,8 +48,11 @@ function index(req, res, next) {
     if (query.mine) {
       return Promise.resolve(_.assign(ytquery, { mine: query.mine }));
     } else {
+      let sort = {};
+      sort[req.query.orderBy || 'rating'] = 'desc';
+
       return Class.find(queryFor(query, 'db'))
-      .sort({ views: 'desc' })
+      .sort(sort)
       .limit(20).exec()
       .then((classes) => {
         if (_.isEmpty(classes)) { return ytquery; }

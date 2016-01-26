@@ -10,7 +10,7 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
       <md-tab-body>
         <div class="main-content__inner">
           <ul class="adaptable-card-wrapper">
-            <li class="adaptable-card" ng-repeat="class in classes | orderBy: '-rate'">
+            <li class="adaptable-card" ng-repeat="class in classes.byRating | orderBy: '-rate'">
               <a class="anchor-mask" ng-href="{{ href('class-summary', { pid: class.playlistId }) }}">
                 <lt-listcard lt-responsive-morph="true">
                   <lt-listcard-media>
@@ -38,7 +38,7 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
       <md-tab-body>
         <div class="main-content__inner">
           <ul class="adaptable-card-wrapper">
-            <li class="adaptable-card" ng-repeat="class in classes | orderBy: '-views'">
+            <li class="adaptable-card" ng-repeat="class in classes.byViews | orderBy: '-views'">
               <a class="anchor-mask" ng-href="{{ href('class-summary', { pid: class.playlistId }) }}">
                 <lt-listcard lt-responsive-morph="true">
                   <lt-listcard-media>
