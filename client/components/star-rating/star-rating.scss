@@ -1,4 +1,4 @@
-.star-rate {
+.star-rating {
   position: relative;
   margin-top: 4px;
 
@@ -6,16 +6,16 @@
   }
 }
 
-.star-rate__depressor {
+.star-rating__depressor {
   width: 90px;
 }
 
-.star-rate__item {
+.star-rating__item {
   width: 100%;
   margin: 0;
 }
 
-.star-rate__bar {
+.star-rating__bar {
   height: 17px;
   margin-top: -17px;
   background: $star-color;

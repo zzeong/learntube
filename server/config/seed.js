@@ -242,7 +242,7 @@ function seedClassFromFile(path) {
             playlistId: id,
             categorySlug: 'BUFA',
             channelId: 'UCvlN-EjFtYgVEe3m1qKOmIQ',
-            rate: _.random(0, 5),
+            rating: _.random(0, 5),
             views: _.random(10, 1000)
           };
         });

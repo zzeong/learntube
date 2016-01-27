@@ -8,7 +8,7 @@ var ClassSchema = new Schema({
   categorySlug: { type: String },
   playlistId: { type: String, required: true },
   channelId: { type: String, required: true },
-  rate: { type: Number, default: 0 },
+  rating: { type: Number, default: 0 },
   views: Number,
   registeredAt: { type: Date, default: Date.now },
 });
@@ -42,7 +42,7 @@ function extractDoc(item) {
   return {
     playlistId: get('id'),
     channelId: get('snippet.channelId'),
-    rate: 0,
+    rating: 0,
     views: 0,
   };
 }

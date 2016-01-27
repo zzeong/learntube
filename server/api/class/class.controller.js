@@ -141,7 +141,7 @@ function getTops(req, res, next) {
 function getEachCategory(req, res, next) {
   var findClassesByCategory = slugs.map((slug) => {
     return Class.find({ categorySlug: slug })
-    .sort({ rate: 'desc' })
+    .sort({ rating: 'desc' })
     .limit(5).exec();
   });
 
