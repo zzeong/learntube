@@ -8,7 +8,7 @@ var ClassSchema = new Schema({
   categorySlug: { type: String },
   playlistId: { type: String, required: true },
   channelId: { type: String, required: true },
-  rate: Number,
+  rate: { type: Number, default: 0 },
   views: Number,
   registeredAt: { type: Date, default: Date.now },
 });
@@ -16,6 +16,10 @@ var ClassSchema = new Schema({
 ClassSchema.methods.bindYoutube = bindYoutube;
 ClassSchema.statics.pickYoutubeData = pickYoutubeData;
 ClassSchema.statics.extractDoc = extractDoc;
+ClassSchema.statics.createOrUpdate = createOrUpdate;
+
+var Class = mongoose.model('Class', ClassSchema);
+module.exports = Class;
 
 function bindYoutube(item) {
   /*jshint validthis:true */
@@ -43,4 +47,17 @@ function extractDoc(item) {
   };
 }
 
-module.exports = mongoose.model('Class', ClassSchema);
+function createOrUpdate(item) {
+  let query = { playlistId: item.id };
+  let update = {
+    $set: { channelId: item.snippet.channelId }
+  };
+  let options = {
+    new: true,
+    upsert: true,
+    setDefaultsOnInsert: true
+  };
+
+  return Class.findOneAndUpdate(query, update, options).exec();
+}
+

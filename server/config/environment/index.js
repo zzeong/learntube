@@ -12,6 +12,7 @@ var all = {
   seedDB: false,
   seedWithOAuth: false,
   expirationSeconds: 3600,
+  scrapConcurrentNum: 100,
 
   // List of user roles
   userRoles: ['guest', 'user', 'admin'],

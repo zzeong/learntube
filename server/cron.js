@@ -25,7 +25,6 @@ function executeJob(crontime) {
     logger.info('Reserve cron to scrap');
 
     schedule.scheduleJob(crontime, () => {
-      const CHUNK_LEN = 100;
       let count = 0;
       let classes = [];
 
@@ -35,7 +34,7 @@ function executeJob(crontime) {
       .on('data', (c) => { classes.push(c); })
       .on('error', logger.error)
       .on('close', () => {
-        let chunked = _.chunk(classes, CHUNK_LEN);
+        let chunked = _.chunk(classes, cfg.scrapConcurrentNum);
         chunked.reduce((promise, partialClasses) => {
           return promise.then(() => {
             let updateClasses = partialClasses.map((c) => {

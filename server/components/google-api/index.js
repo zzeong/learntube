@@ -6,7 +6,6 @@ google.options({ params: { maxResults: config.google.maxResults }});
 
 const youtube = google.youtube('v3');
 const _ = require('lodash');
-const MAX_ID_LEN = 20;
 
 let auth = null;
 
@@ -24,8 +23,8 @@ function execute(method, params) {
   params.auth = params.auth || auth;
 
   if (_.isArray(params.id)) {
-    if (params.id.length > MAX_ID_LEN) {
-      let chunkedIds = _.chunk(params.id, MAX_ID_LEN);
+    if (params.id.length > config.google.maxResults) {
+      let chunkedIds = _.chunk(params.id, config.google.maxResults);
       let requestApis = chunkedIds.map((ids) => {
         let id = ids.join(',');
         return api(method, _.assign(params, { id }));
