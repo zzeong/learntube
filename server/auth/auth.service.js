@@ -64,7 +64,7 @@ function getValidatedUser() {
 
     User.findById(req.user._id).exec()
     .then((user) => {
-      if (!user) { return res.status(401).send('Unauthorized'); }
+      if (!user) { return next(new Error('Unauthorized')); }
       req.user = user;
       next();
     })
