@@ -510,7 +510,7 @@ module.exports = function (grunt) {
       },
       aws: {
         options: {
-          remote: 'ubuntu@52.70.85.29:git-bare/learntube.git',
+          remote: 'ubuntu@knowbridge.co:git-bare/learntube.git',
           branch: 'master'
         }
       },
