@@ -4,27 +4,22 @@
   angular.module('learntubeApp')
   .controller('UploadedContentsCtrl', UploadedContentsCtrl);
 
-  function UploadedContentsCtrl($state, $scope, $mdDialog, $http, $window) {
+  function UploadedContentsCtrl($state, $scope, $mdDialog, $http, $window, LoadMore) {
     $scope.href = $state.href;
     $scope.showAddDialog = showAddDialog;
     $scope.showDeleteDialog = showDeleteDialog;
     $scope.deleteClass = deleteClass;
     $scope.hasChannel = true;
     $scope.classes = [];
+    $scope.fetchClasses = fetchClasses;
+    $scope.existNextClasses = false;
 
-    $http.get('/api/classes', {
-      params: { mine: true },
-    })
-    .then((res) => {
-      $scope.classes = $scope.classes.concat(res.data);
-    })
-    .catch((err) => {
-      if (_.has(err.data, 'message') && _.isEqual(err.data.message, 'channelNotFound')) {
-        $scope.hasChannel = false;
-        return showConfirmDialog();
-      }
-      console.error(err);
+    $scope.reqClasses = LoadMore.createRequest('/api/classes', (data) => {
+      let p = { mine: true };
+      return _.has(data, 'nextPage') ? _.set(p, 'page', data.nextPage) : p;
     });
+
+    $scope.fetchClasses($scope.reqClasses);
 
     function showConfirmDialog() {
       var confirm = $mdDialog.confirm()
@@ -91,7 +86,21 @@
       .catch(console.error);
     }
 
+    function fetchClasses(req) {
+      return req()
+      .then((res) => {
+        $scope.classes = $scope.classes.concat(res.data.items);
+        $scope.existNextClasses = _.has(res.data, 'nextPage');
+      })
+      .catch((err) => {
+        if (_.has(err.data, 'message') && _.isEqual(err.data.message, 'channelNotFound')) {
+          $scope.hasChannel = false;
+          return showConfirmDialog();
+        }
+        console.error(err);
+      });
+    }
   }
 
-  UploadedContentsCtrl.$inject = ['$state', '$scope', '$mdDialog', '$http', '$window'];
+  UploadedContentsCtrl.$inject = ['$state', '$scope', '$mdDialog', '$http', '$window', 'LoadMore'];
 })(angular);

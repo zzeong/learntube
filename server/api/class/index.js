@@ -2,6 +2,7 @@
 
 var express = require('express');
 var controller = require('./class.controller');
+var service = require('./class.service');
 var auth = require('../../auth/auth.service');
 var g = require('../../components/google-api');
 
@@ -9,7 +10,7 @@ var router = express.Router();
 
 router.use('/', auth.getValidatedUser(), g.readyApi);
 
-router.get('/', controller.index);
+router.get('/', service.validateAndextractQuery(), controller.index);
 router.post('/', controller.create);
 router.put('/:cid', controller.update);
 router.delete('/:cid', controller.destroy);

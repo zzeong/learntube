@@ -15,53 +15,17 @@ let playlists = {
 };
 
 function index(req, res, next) {
-  req.query.mine = req.query.mine || false;
-  if (!req.user && req.query.mine) {
-    return next(new Error('Unauthorized'));
-  }
-
-  prefetchData(req.query)
-  .then(playlists.list)
+  playlists.list(req.ytquery)
   .then((res) => {
     let updateClasses = res.items.map((item) => {
-      return createOrUpdateClass(item)
+      return Class.createOrUpdate(item)
       .then(_.method('bindYoutube', item));
     });
 
     return Promise.all(updateClasses);
   })
-  .then((classes) => res.status(200).json(classes))
-  .catch((err) => {
-    if (_.has(err, 'errors')) {
-      if (_.find(err.errors, { reason: 'channelNotFound' })) {
-        return res.status(404).json({ message: 'channelNotFound' });
-      } else {
-        return next(err);
-      }
-    }
-    next(err);
-  });
-
-  function prefetchData(query) {
-    let ytquery = queryFor(query, 'youtube');
-
-    if (query.mine) {
-      return Promise.resolve(_.assign(ytquery, { mine: query.mine }));
-    } else {
-      let sort = {};
-      sort[req.query.orderBy || 'rating'] = 'desc';
-
-      return Class.find(queryFor(query, 'db'))
-      .sort(sort)
-      .limit(20).exec()
-      .then((classes) => {
-        if (_.isEmpty(classes)) { return ytquery; }
-
-        let id = classes.map(_.property('playlistId'));
-        return _.assign(ytquery, { id });
-      });
-    }
-  }
+  .then((classes) => res.status(200).json(getIndexEntity(req, classes)))
+  .catch(next);
 }
 
 function create(req, res, next) {
@@ -170,43 +134,6 @@ exports.destroy = destroy;
 exports.getTops = getTops;
 exports.getEachCategory = getEachCategory;
 
-function queryFor(reqQuery, target) {
-  let refinder = {
-    db: (q) => {
-      let query = {};
-      if (q.categorySlug) { query.categorySlug = q.categorySlug; }
-      if (q.playlistId) { query.playlistId = q.playlistId; }
-
-      return query;
-    },
-    youtube: (q) => {
-      let query = { part: 'id,snippet,status' };
-
-      if (q.mine) { query.mine = q.mine; }
-      if (q.playlistId) { query.id = q.playlistId; }
-      query = q.mine ? _.omit(query, 'id') : _.omit(query, 'mine');
-
-      return query;
-    }
-  };
-  return refinder[target](reqQuery);
-}
-
-function createOrUpdateClass(item) {
-  let query = { playlistId: item.id };
-  let update = {
-    $set: { channelId: item.snippet.channelId },
-    $setOnInsert: { rate: 0 }
-  };
-  let options = {
-    new: true,
-    upsert: true,
-    setDefaultsOnInsert: true
-  };
-
-  return Class.findOneAndUpdate(query, update, options).exec();
-}
-
 function getResource(d) {
   let resource = {
     snippet: {
@@ -219,3 +146,8 @@ function getResource(d) {
   return resource;
 }
 
+function getIndexEntity(req, items) {
+  let entity = { items };
+  if (_.has(req, 'nextPage')) { entity.nextPage = req.nextPage; }
+  return entity;
+}

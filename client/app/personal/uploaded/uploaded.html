@@ -2,7 +2,8 @@
 ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-xs')">
 </md-sidenav>
 
-<md-button class="md-fab md-fab-bottom-right" aria-label="Add class" ng-click="showAddDialog($event)" ng-disabled="!hasChannel">
+<md-button class="md-fab md-fab-bottom-right" aria-label="Add class" ng-click="showAddDialog($event)"
+ng-disabled="!hasChannel">
   <md-icon md-font-set="material-icons">add</md-icon>
 </md-button>
 
@@ -46,7 +47,8 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
       </ul>
 
       <div class="load-more-classes" layout="column" layout-align="start stretch">
-        <md-button class="md-raised md-raised-color-accent load-more-lectures__button">
+        <md-button class="md-raised md-raised-color-accent load-more-lectures__button" ng-click="fetchClasses(reqClasses)"
+        ng-show="existNextClasses">
           Load more
         </md-button>
       </div>
@@ -54,3 +56,4 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
     </div>
   </div>
 </div>
+

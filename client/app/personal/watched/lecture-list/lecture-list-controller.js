@@ -34,7 +34,7 @@
       params: { playlistId: $scope.playlistId },
     })
     .then((res) => {
-      $scope.listTitle = res.data[0].title;
+      $scope.listTitle = _.first(res.data.items).title;
     })
     .catch(console.error);
 
@@ -47,9 +47,9 @@
       $scope.existNextLectures = _.has(res.data, 'nextPageToken');
       $scope.pageToken = $scope.existNextLectures ? res.data.nextPageToken : $scope.pageToken;
 
-      let fetchWatCtt = WatchedContent.query(q).$promise
+      let fetchWatCtt = WatchedContent.get(q).$promise
       .then((res) => {
-        let obj = $scope.objByVideoId.watCtt = _.keyBy(_.first(res).lectures, 'videoId');
+        let obj = $scope.objByVideoId.watCtt = _.keyBy(_.first(res.items).lectures, 'videoId');
         $scope.lectures = $scope.lectures.map((lecture) => {
           lecture.watched = _.has(obj, lecture.videoId) ? _.get(obj, lecture.videoId) : null;
           return lecture;

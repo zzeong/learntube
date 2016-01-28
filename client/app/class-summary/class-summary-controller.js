@@ -26,7 +26,7 @@
       params: { playlistId: $scope.playlistId }
     })
     .then((res) => {
-      $scope.classe = res.data[0];
+      $scope.classe = _.first(res.data.items);
       $scope.desc = compileToHTML($scope.classe.description);
 
       return $http.get('/api/tutors', {
@@ -40,9 +40,9 @@
     .catch(console.error);
 
     if ($scope.isLoggedIn()) {
-      WatchedContent.query().$promise
-      .then((items) => {
-        $scope.haveClass = _.find(items, (item) => {
+      WatchedContent.get().$promise
+      .then((res) => {
+        $scope.haveClass = _.find(res.items, (item) => {
           return item._class.playlistId === $scope.playlistId;
         }) ? true : false;
       })

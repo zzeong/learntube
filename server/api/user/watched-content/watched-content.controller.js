@@ -4,6 +4,8 @@ const _ = require('lodash');
 const WatCtt = require('../../../models/watched-content.model');
 const Class = require('../../../models/class.model');
 const g = require('../../../components/google-api');
+const config = require('../../../config/environment');
+const pagenation = require('../../../components/pagenation');
 
 require('mongoose').Promise = Promise;
 
@@ -16,7 +18,10 @@ let playlists = {
 
 function index(req, res, next) {
   WatCtt.find({ _watcher: req.params.id })
-  .populate('_class').exec()
+  .populate('_class')
+  .sort(_.set({}, req.query.orderBy || 'addedAt', -1))
+  .skip(pagenation.toSkip(req.query.page))
+  .limit(config.google.maxResults).exec()
   .then((contents) => {
     contents = contents.filter((ctt) => {
       return _.has(req.query, 'playlistId') ?
@@ -27,13 +32,13 @@ function index(req, res, next) {
     return playlists.list(_.assign(defaults, { id }))
     .then((response) => {
       let obj = _.keyBy(response.items, 'id');
-      let entity = contents.map((ctt) => {
+      let items = contents.map((ctt) => {
         let c = ctt._class.bindYoutube(obj[ctt._class.playlistId]);
         ctt = ctt.toObject();
         ctt._class = c;
         return ctt;
       });
-      res.status(200).json(entity);
+      res.status(200).json(getIndexEntity(req, items));
     });
   })
   .catch(next);
@@ -87,4 +92,10 @@ exports.index = index;
 exports.show = show;
 exports.create = create;
 exports.destroy = destroy;
+
+function getIndexEntity(req, items) {
+  let entity = { items };
+  if (_.has(req, 'nextPage')) { entity.nextPage = req.nextPage; }
+  return entity;
+}
 

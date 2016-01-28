@@ -10,7 +10,7 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
       <md-tab-body>
         <div class="main-content__inner">
           <ul class="adaptable-card-wrapper">
-            <li class="adaptable-card" ng-repeat="class in classes.byRating | orderBy: '-rating'">
+            <li class="adaptable-card" ng-repeat="class in classes.byRating.items | orderBy: '-rating'">
               <a class="anchor-mask" ng-href="{{ href('class-summary', { pid: class.playlistId }) }}">
                 <lt-listcard lt-responsive-morph="true">
                   <lt-listcard-media>
@@ -31,7 +31,8 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
           </ul>
 
           <div class="load-more-classes" layout="column" layout-align="start stretch">
-            <md-button class="md-raised md-raised-color-accent load-more-lectures__button">
+            <md-button class="md-raised md-raised-color-accent load-more-lectures__button" ng-click="fetchClasses(classes.byRating)"
+            ng-show="classes.byRating.existNext">
               Load more
             </md-button>
           </div>
@@ -45,7 +46,7 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
       <md-tab-body>
         <div class="main-content__inner">
           <ul class="adaptable-card-wrapper">
-            <li class="adaptable-card" ng-repeat="class in classes.byViews | orderBy: '-views'">
+            <li class="adaptable-card" ng-repeat="class in classes.byViews.items | orderBy: '-views'">
               <a class="anchor-mask" ng-href="{{ href('class-summary', { pid: class.playlistId }) }}">
                 <lt-listcard lt-responsive-morph="true">
                   <lt-listcard-media>
@@ -66,7 +67,8 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
           </ul>
 
           <div class="load-more-classes" layout="column" layout-align="start stretch">
-            <md-button class="md-raised md-raised-color-accent load-more-lectures__button">
+            <md-button class="md-raised md-raised-color-accent load-more-lectures__button" ng-click="fetchClasses(classes.byViews)"
+            ng-show="classes.byViews.existNext">
               Load more
             </md-button>
           </div>

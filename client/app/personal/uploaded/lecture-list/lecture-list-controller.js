@@ -34,7 +34,7 @@
       params: { playlistId: $scope.playlistId },
     })
     .then((res) => {
-      $scope.class = res.data[0];
+      $scope.class = _.first(res.data.items);
       $scope.desc.html = newlineToBr($scope.class.description);
       $scope.desc.editing = $scope.class.description;
       $scope.listTitle = $scope.class.title;

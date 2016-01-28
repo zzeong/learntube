@@ -103,16 +103,16 @@
     })
     .then((res) => {
       let video = _.head(res.data.items);
-      video.descriprtion = compileToHTML(video.description);
+      video.description = compileToHTML(video.description);
       $scope.video = video;
     })
     .catch(console.error);
 
     if ($scope.isLoggedIn()) {
-      WatchedContent.query({ playlistId: $scope.playlistId }).$promise
-      .then((items) => {
-        if (items.length) {
-          markHaveLecture(items[0]);
+      WatchedContent.get(_.pick($scope, 'playlistId')).$promise
+      .then((res) => {
+        if (res.items.length) {
+          markHaveLecture(_.first(res.items));
         }
 
         function markHaveLecture(item) {
@@ -122,7 +122,7 @@
           });
         }
       })
-      .catch(console.error);
+      .catch((e) => console.error(e));
 
       Note.query({ videoId: $scope.videoId }).$promise
       .then((notes) => {

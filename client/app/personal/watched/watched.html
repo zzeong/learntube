@@ -44,7 +44,7 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
       </ul>
 
       <div class="load-more-classes" layout="column" layout-align="start stretch">
-        <md-button class="md-raised md-raised-color-accent load-more-lectures__button">
+        <md-button class="md-raised md-raised-color-accent load-more-lectures__button" ng-click="fetchContents(reqContents)" ng-show="existNextContents">
           Load more
         </md-button>
       </div>
