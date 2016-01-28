@@ -539,7 +539,7 @@ module.exports = function (grunt) {
       ],
       debug: {
         tasks: [
-          'nodemon',
+          'nodemon:debug',
           'node-inspector'
         ],
         options: {
