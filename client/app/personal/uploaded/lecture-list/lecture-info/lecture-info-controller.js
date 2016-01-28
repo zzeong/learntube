@@ -20,7 +20,7 @@
       params: _.pick($scope, ['videoId', 'playlistId'])
     })
     .then((res) => {
-      $scope.lecture = _.first(res.data);
+      $scope.lecture = _.first(res.data.items);
       return $http.get('/api/users/' + Auth.getCurrentUser()._id + '/handouts', {
         params: {
           playlistId: $scope.playlistId,
