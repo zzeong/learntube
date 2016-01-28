@@ -42,7 +42,6 @@ function validateJwtFromHeader(isStrict) {
 }
 
 function checkAndRefreshToken(req, res, next) {
-  console.log(`Auth] valid user: ${!!req.user}`);
   if (typeof req.user === 'undefined') { return next(); }
   let timegap = Math.floor(Date.now() / 1000) - req.user.iat;
 
