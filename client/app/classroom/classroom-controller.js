@@ -185,7 +185,7 @@
       note.setActivator(activator);
     }
 
-    function compileToHTML(str) {
+    function compileToHTML(str = '') {
       var html = str.split('\n')
       .filter(function (p) { return p.length; })
       .map(function (p) { return '<p>' + p + '</p>'; })

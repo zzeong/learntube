@@ -69,7 +69,7 @@
       );
     }
 
-    function compileToHTML(str) {
+    function compileToHTML(str = '') {
       return str.split('\n')
       .filter((p) => p.length)
       .map((p) => `<p>${p}</p>`)
