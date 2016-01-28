@@ -37,7 +37,7 @@
       $scope.channel = _.first(res.data);
       $scope.channel.description = compileToHTML($scope.channel.description);
     })
-    .catch(console.error);
+    .catch((e) => console.error(e));
 
     if ($scope.isLoggedIn()) {
       WatchedContent.get().$promise
@@ -46,7 +46,7 @@
           return item._class.playlistId === $scope.playlistId;
         }) ? true : false;
       })
-      .catch(console.error);
+      .catch((e) => console.error(e));
     }
 
     function addClass() {
@@ -57,7 +57,7 @@
         $scope.haveClass = true;
         $scope.showToast('Class is added');
       })
-      .catch(console.error);
+      .catch((e) => console.error(e));
     }
 
     function showToast(text) {

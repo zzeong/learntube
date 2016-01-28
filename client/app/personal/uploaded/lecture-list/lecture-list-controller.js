@@ -39,7 +39,7 @@
       $scope.desc.editing = $scope.class.description;
       $scope.listTitle = $scope.class.title;
     })
-    .catch(console.error);
+    .catch((e) => console.error(e));
 
     function haveUploadedFile(lecture) {
       return 'file' in lecture;
@@ -56,7 +56,7 @@
       .then(() => {
         showToast('Lecture added');
       })
-      .catch(console.error);
+      .catch((e) => console.error(e));
 
       function Controller ($scope, $mdDialog) {
         $scope.getMyVideos = getMyVideos;
@@ -77,7 +77,7 @@
           .then((res) => {
             $scope.myVideos = res.data;
           })
-          .catch(console.error);
+          .catch((e) => console.error(e));
         }
 
         function search(q) {
@@ -85,7 +85,7 @@
             params: { q, type: 'video' },
           })
           .then((res) => $scope.searched = res.data)
-          .catch(console.error);
+          .catch((e) => console.error(e));
         }
 
         function addLecture(video) {
@@ -97,7 +97,7 @@
             scope.lectures.push(res.data);
             $mdDialog.hide();
           })
-          .catch(console.error);
+          .catch((e) => console.error(e));
         }
       }
     }
@@ -118,7 +118,7 @@
         $scope.willBeDeleted = [];
         $scope.deleteToolbarState = false;
       })
-      .catch(console.error);
+      .catch((e) => console.error(e));
     }
 
     function showToast(text) {
@@ -154,7 +154,7 @@
         $scope.desc.html = newlineToBr($scope.desc.editing);
         $scope.isOnWrite = false;
       })
-      .catch(console.error);
+      .catch((e) => console.error(e));
     }
 
     function fetchLectures(req) {

@@ -44,7 +44,7 @@
       .then((item) => {
         $scope.classes.unshift(item);
       })
-      .catch(console.error);
+      .catch((e) => console.error(e));
 
       function Controller($scope, $mdDialog, Category) {
         $scope.cancel = $mdDialog.cancel;
@@ -60,7 +60,7 @@
           .then((res) => {
             $mdDialog.hide(res.data);
           })
-          .catch(console.error);
+          .catch((e) => console.error(e));
         }
       }
     }
@@ -83,7 +83,7 @@
     function deleteClass(classe) {
       $http.delete(`/api/classes/${classe._id}`)
       .then(() => _.remove($scope.classes, classe))
-      .catch(console.error);
+      .catch((e) => console.error(e));
     }
 
     function fetchClasses(req) {

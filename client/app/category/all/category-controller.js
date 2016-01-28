@@ -18,7 +18,7 @@ angular.module('learntubeApp')
 
     $scope.classArr = _.chunk(res.data, 5);
   })
-  .catch(console.error);
+  .catch((e) => console.error(e));
 
   $scope.getSafeUrl = function (string) {
     return $filter('urlSafely')(string);

@@ -33,7 +33,7 @@
         $scope.handout.uploaded = res.data[0];
       }
     })
-    .catch(console.error);
+    .catch((e) => console.error(e));
 
 
     function selectFile(file) {
@@ -52,7 +52,7 @@
         $scope.handout.selected = null;
         showToast('File uploaded');
       })
-      .catch(console.error);
+      .catch((e) => console.error(e));
     }
 
     function showToast(text) {

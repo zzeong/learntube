@@ -10,5 +10,5 @@ angular.module('learntubeApp')
     params: { q: $scope.q, type: 'playlist' }
   })
   .then((res) => $scope.classes = $scope.classes.concat(res.data))
-  .catch(console.error);
+  .catch((e) => console.error(e));
 });

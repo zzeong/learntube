@@ -36,7 +36,7 @@
     .then((res) => {
       $scope.listTitle = _.first(res.data.items).title;
     })
-    .catch(console.error);
+    .catch((e) => console.error(e));
 
     $http.get('/api/lectures', {
       params: _.pick($scope, 'playlistId')
@@ -68,7 +68,7 @@
       return Promise.all([fetchWatCtt, fetchNote]);
     })
     .then(() => $scope.chart.data = transformToChart($scope.lectures))
-    .catch(console.error);
+    .catch((e) => console.error(e));
 
 
     function transformToChart(list) {

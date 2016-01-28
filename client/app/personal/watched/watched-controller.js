@@ -34,7 +34,7 @@
         .then(function () {
           _.remove($scope.contents, content);
         })
-        .catch(console.error);
+        .catch((e) => console.error(e));
       }
 
       ev.preventDefault();

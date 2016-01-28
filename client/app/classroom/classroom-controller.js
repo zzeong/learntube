@@ -72,12 +72,12 @@
             .then((res) => {
               note.contents = res.contents;
             })
-            .catch(console.error);
+            .catch((e) => console.error(e));
           }
 
           $scope.myNotes.push(note);
         })
-        .catch(console.error);
+        .catch((e) => console.error(e));
       },
       editor: Note.editor,
       file: Note.file,
@@ -106,7 +106,7 @@
       video.description = compileToHTML(video.description);
       $scope.video = video;
     })
-    .catch(console.error);
+    .catch((e) => console.error(e));
 
     if ($scope.isLoggedIn()) {
       WatchedContent.get(_.pick($scope, 'playlistId')).$promise
@@ -200,7 +200,7 @@
         $scope.haveLecture = true;
         $scope.showToast('Lecture completed');
       })
-      .catch(console.error);
+      .catch((e) => console.error(e));
     }
 
     function editNote(note) { note.isEditing = true; }
@@ -212,7 +212,7 @@
       .then(() => {
         _.remove($scope.myNotes, { _id: note._id });
       })
-      .catch(console.error);
+      .catch((e) => console.error(e));
     }
 
     function updateNote(note) {
@@ -226,7 +226,7 @@
         note.contents = res.contents;
         note.isEditing = false;
       })
-      .catch(console.error);
+      .catch((e) => console.error(e));
     }
 
     function shouldBeEmbedded(note) {

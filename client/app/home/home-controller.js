@@ -26,7 +26,7 @@ angular.module('learntubeApp')
   .then(function (res) {
     $scope.popularClasses = res.data;
   })
-  .catch(console.error);
+  .catch((e) => console.error(e));
 
   $scope.changeToYellow = false;
 
