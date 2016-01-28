@@ -59,7 +59,7 @@ module.exports = function (grunt) {
       },
       copyComponentsSass: {
         files: ['<%= yeoman.client %>/components/**/*.scss'],
-        tasks: ['copy:componentsSass'],
+        tasks: ['clean:componentsSass', 'copy:componentsSass'],
       },
       sass: {
         files: ['<%= yeoman.client %>/assets/stylesheets/**/*.scss'],
@@ -144,7 +144,8 @@ module.exports = function (grunt) {
           ]
         }]
       },
-      server: '.tmp'
+      server: '.tmp',
+      componentsSass: '<%= yeoman.client %>/assets/stylesheets/components',
     },
 
     // Add vendor prefixed styles
@@ -756,6 +757,7 @@ module.exports = function (grunt) {
   });
 
   grunt.registerTask('injectSass', [
+    'clean:componentsSass',
     'copy:componentsSass',
     'injector:sass',
   ]);
