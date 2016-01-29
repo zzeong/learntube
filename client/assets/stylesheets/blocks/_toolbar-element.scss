@@ -17,7 +17,7 @@
 
   @include respond-to('small') {
     display: table-cell;
-    width: 500px;
+    max-width: 500px;
     padding: 10px;
   }
 }
