@@ -32,14 +32,14 @@ function extractYoutubeQuery(req, res, next) {
   .skip(pagenation.toSkip(q.page))
   .limit(config.google.maxResults).exec()
   .then((classes) => {
-    if (!classes) {
+    if (_.isEmpty(classes)) {
       req.ytquery = ytquery;
       next();
+    } else {
+      let id = classes.map(_.property('playlistId'));
+      req.ytquery = _.assign(ytquery, { id });
+      next();
     }
-
-    let id = classes.map(_.property('playlistId'));
-    req.ytquery = _.assign(ytquery, { id });
-    next();
   })
   .catch(next);
 }
