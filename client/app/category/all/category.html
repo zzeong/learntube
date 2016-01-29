@@ -1,8 +1,12 @@
+<div class="star-rating--preload">
+  <img class="star-rating__item" src="assets/images/star_rating.png" alt="star rate">
+</div>
+
 <md-sidenav flex="none" class="md-sidenav-left md-whiteframe-z2 category-sidenav"
 ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" md-is-locked-open="$mdMedia('gt-xs')">
 </md-sidenav>
 
-<div flex layout="column">
+<div flex="100" layout="column">
   <md-toolbar class="md-whiteframe-z1" flex="none" ng-include="'components/toolbar/toolbar.html'"></md-toolbar>
   <div flex class="flex-scroll categories">
     <div class="main-content__inner">
@@ -36,4 +40,3 @@ ng-include="'components/sidenav/sidenav-category.html'" md-component-id="left" m
     </div>
   </div>
 </div>
-
